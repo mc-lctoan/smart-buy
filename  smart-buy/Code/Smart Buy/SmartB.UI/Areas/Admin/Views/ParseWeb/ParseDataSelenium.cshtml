@@ -1,0 +1,11 @@
+﻿@model IList<OpenQA.Selenium.IWebElement>
+
+@{
+    ViewBag.Title = "ParseDataSelenium";
+}
+
+<h2>ParseDataSelenium</h2>
+@foreach (var element in Model)
+{
+    <p>@element.Text</p>
+}
