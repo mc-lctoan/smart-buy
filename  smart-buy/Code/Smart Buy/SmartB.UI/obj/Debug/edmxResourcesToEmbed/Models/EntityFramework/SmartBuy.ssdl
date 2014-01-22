@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SmartBuyModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="SmartBuyModelStoreContainer">
+    <EntitySet Name="History" EntityType="SmartBuyModel.Store.History" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="LogFile" EntityType="SmartBuyModel.Store.LogFile" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Market" EntityType="SmartBuyModel.Store.Market" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ParseInfo" EntityType="SmartBuyModel.Store.ParseInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Product" EntityType="SmartBuyModel.Store.Product" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductAttribute" EntityType="SmartBuyModel.Store.ProductAttribute" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Role" EntityType="SmartBuyModel.Store.Role" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SellProduct" EntityType="SmartBuyModel.Store.SellProduct" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="User" EntityType="SmartBuyModel.Store.User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserPrice" EntityType="SmartBuyModel.Store.UserPrice" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_History_Product" Association="SmartBuyModel.Store.FK_History_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="History" EntitySet="History" />
+    </AssociationSet>
+    <AssociationSet Name="FK_History_User" Association="SmartBuyModel.Store.FK_History_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="History" EntitySet="History" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ParseInfo_Market" Association="SmartBuyModel.Store.FK_ParseInfo_Market">
+      <End Role="Market" EntitySet="Market" />
+      <End Role="ParseInfo" EntitySet="ParseInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProductAttribute_Product" Association="SmartBuyModel.Store.FK_ProductAttribute_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="ProductAttribute" EntitySet="ProductAttribute" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SellProduct_Market" Association="SmartBuyModel.Store.FK_SellProduct_Market">
+      <End Role="Market" EntitySet="Market" />
+      <End Role="SellProduct" EntitySet="SellProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SellProduct_Product" Association="SmartBuyModel.Store.FK_SellProduct_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="SellProduct" EntitySet="SellProduct" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Role" Association="SmartBuyModel.Store.FK_User_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserPrice_Market" Association="SmartBuyModel.Store.FK_UserPrice_Market">
+      <End Role="Market" EntitySet="Market" />
+      <End Role="UserPrice" EntitySet="UserPrice" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserPrice_Product" Association="SmartBuyModel.Store.FK_UserPrice_Product">
+      <End Role="Product" EntitySet="Product" />
+      <End Role="UserPrice" EntitySet="UserPrice" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserPrice_User" Association="SmartBuyModel.Store.FK_UserPrice_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserPrice" EntitySet="UserPrice" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="History">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="BuyTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LogFile">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FileName" Type="varchar" MaxLength="200" />
+    <Property Name="CreatedTime" Type="datetime" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Market">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Address" Type="nvarchar" MaxLength="200" />
+    <Property Name="Latitude" Type="varchar" MaxLength="20" />
+    <Property Name="Longitude" Type="varchar" MaxLength="20" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ParseInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="MarketId" Type="int" />
+    <Property Name="ParseLink" Type="nvarchar" Nullable="false" MaxLength="500" />
+    <Property Name="ParseType" Type="int" Nullable="false" />
+    <Property Name="ProductNameXpath" Type="nvarchar" MaxLength="300" />
+    <Property Name="PriceXpath" Type="nvarchar" MaxLength="300" />
+    <Property Name="DetailLinkXpath" Type="nvarchar" MaxLength="300" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" MaxLength="300" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductAttribute">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="MinPrice" Type="int" />
+    <Property Name="MaxPrice" Type="int" />
+    <Property Name="LastUpdatedTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="SellProduct">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="MarketId" Type="int" />
+    <Property Name="ProductId" Type="int" />
+    <Property Name="SellPrice" Type="int" />
+    <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Username" />
+    </Key>
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="Email" Type="varchar" MaxLength="100" />
+    <Property Name="DefinedRoute" Type="nvarchar" MaxLength="300" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserPrice">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="varchar" MaxLength="50" />
+    <Property Name="MarketId" Type="int" />
+    <Property Name="ProductId" Type="int" />
+    <Property Name="UpdatedPrice" Type="int" />
+    <Property Name="LastUpdatedTime" Type="datetime" />
+  </EntityType>
+  <Association Name="FK_History_Product">
+    <End Role="Product" Type="SmartBuyModel.Store.Product" Multiplicity="1" />
+    <End Role="History" Type="SmartBuyModel.Store.History" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="History">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_History_User">
+    <End Role="User" Type="SmartBuyModel.Store.User" Multiplicity="1" />
+    <End Role="History" Type="SmartBuyModel.Store.History" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Username" />
+      </Principal>
+      <Dependent Role="History">
+        <PropertyRef Name="Username" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ParseInfo_Market">
+    <End Role="Market" Type="SmartBuyModel.Store.Market" Multiplicity="0..1" />
+    <End Role="ParseInfo" Type="SmartBuyModel.Store.ParseInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Market">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ParseInfo">
+        <PropertyRef Name="MarketId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProductAttribute_Product">
+    <End Role="Product" Type="SmartBuyModel.Store.Product" Multiplicity="1" />
+    <End Role="ProductAttribute" Type="SmartBuyModel.Store.ProductAttribute" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProductAttribute">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SellProduct_Market">
+    <End Role="Market" Type="SmartBuyModel.Store.Market" Multiplicity="0..1" />
+    <End Role="SellProduct" Type="SmartBuyModel.Store.SellProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Market">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SellProduct">
+        <PropertyRef Name="MarketId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SellProduct_Product">
+    <End Role="Product" Type="SmartBuyModel.Store.Product" Multiplicity="0..1" />
+    <End Role="SellProduct" Type="SmartBuyModel.Store.SellProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SellProduct">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Role">
+    <End Role="Role" Type="SmartBuyModel.Store.Role" Multiplicity="1" />
+    <End Role="User" Type="SmartBuyModel.Store.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserPrice_Market">
+    <End Role="Market" Type="SmartBuyModel.Store.Market" Multiplicity="0..1" />
+    <End Role="UserPrice" Type="SmartBuyModel.Store.UserPrice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Market">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserPrice">
+        <PropertyRef Name="MarketId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserPrice_Product">
+    <End Role="Product" Type="SmartBuyModel.Store.Product" Multiplicity="0..1" />
+    <End Role="UserPrice" Type="SmartBuyModel.Store.UserPrice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserPrice">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserPrice_User">
+    <End Role="User" Type="SmartBuyModel.Store.User" Multiplicity="0..1" />
+    <End Role="UserPrice" Type="SmartBuyModel.Store.UserPrice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Username" />
+      </Principal>
+      <Dependent Role="UserPrice">
+        <PropertyRef Name="Username" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
