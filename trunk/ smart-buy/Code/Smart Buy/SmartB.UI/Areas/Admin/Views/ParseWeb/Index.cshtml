@@ -1,0 +1,20 @@
+﻿@model SmartB.UI.Areas.Admin.Models.ParserCreator
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section script
+{
+    <script src="@Url.Content("~/Areas/Admin/Scripts/getXPath.js")"></script>
+}
+
+<h2>Create parser</h2>
+@using (Html.BeginForm("LoadWeb", "ParseWeb"))
+{
+    @Html.LabelFor(x => x.ParseLink)
+    @Html.TextBoxFor(x => x.ParseLink)
+    <input type="submit" value="View" />
+}
+<iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="1024" height="768"></iframe>

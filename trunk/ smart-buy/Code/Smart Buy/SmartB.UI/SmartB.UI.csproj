@@ -47,6 +47,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -117,9 +119,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver">
-      <HintPath>..\packages\Selenium.WebDriver.2.39.0\lib\net40\WebDriver.dll</HintPath>
-    </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
@@ -189,6 +188,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ParseWebController.cs" />
+    <Compile Include="Areas\Admin\Helper\ParseHelper.cs" />
+    <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -196,9 +197,55 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\EntityFramework\History.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\LogFile.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\Market.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\ParseInfo.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\Product.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\ProductAttribute.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\Role.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\SellProduct.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\SmartBuy.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmartBuy.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\SmartBuy.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\SmartBuy.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmartBuy.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\User.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\UserPrice.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Scripts\getXPath.js" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -257,7 +304,25 @@
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\Web.config" />
     <Content Include="Areas\Admin\Views\ParseWeb\ParseData.cshtml" />
-    <Content Include="Areas\Admin\Views\ParseWeb\ParseDataSelenium.cshtml" />
+    <EntityDeploy Include="Models\EntityFramework\SmartBuy.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SmartBuy.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\EntityFramework\SmartBuy.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SmartBuy.edmx</DependentUpon>
+      <LastGenOutput>SmartBuy.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\EntityFramework\SmartBuy.edmx.diagram">
+      <DependentUpon>SmartBuy.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\EntityFramework\SmartBuy.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SmartBuy.edmx</DependentUpon>
+      <LastGenOutput>SmartBuy.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Admin\Views\ParseWeb\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -315,11 +380,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Admin\SavedPages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

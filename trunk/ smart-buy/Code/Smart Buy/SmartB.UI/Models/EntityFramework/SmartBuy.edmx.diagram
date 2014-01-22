@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3758b0045a884389ac23ae39e66515e1" Name="Diagram1">
+        <EntityTypeShape EntityType="SmartBuyModel.History" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.LogFile" Width="1.5" PointX="5.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.Market" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.ParseInfo" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.Product" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.ProductAttribute" Width="1.5" PointX="3" PointY="17.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.Role" Width="1.5" PointX="1.5" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.SellProduct" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.User" Width="1.5" PointX="0.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SmartBuyModel.UserPrice" Width="1.5" PointX="6" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="SmartBuyModel.FK_History_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_History_User" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_ParseInfo_Market" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_SellProduct_Market" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_UserPrice_Market" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_ProductAttribute_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_SellProduct_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_UserPrice_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_User_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="SmartBuyModel.FK_UserPrice_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
