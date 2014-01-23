@@ -1,48 +1,46 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
-        </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
-                </div>
-            </div>
-        </footer>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/metro-bootstrap.css")">
+    <script src="@Url.Content("~/Metro/js/jquery/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Metro/js/jquery/jquery.widget.min.js")"></script>
+    <script src="@Url.Content("~/Metro/js/metro/metro.min.js")"></script>
+</head>
+<body class="metro">
+    <nav class="navigation-bar dark">
+        <nav class="navigation-bar-content">
+            <a class="element" href="#">Smart Buy</a>
+            <span class="element-divider"></span>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+            <button class="element image-button image-left place-right">
+                Welcome, Sergey Pimenov
+            </button>
+        </nav>
+    </nav>
+    <div class="grid" style="height:100%">
+        <div class="row" style="margin-top: 0; height: 100%">
+            <div class="span4 bg-dark" style="height:100%">
+                <nav class="sidebar">
+                    <ul>
+                        <li class="title">Chức năng chính</li>
+                        <li><a href="@Url.Action("SearchProduct", "Product")"><i class="icon-search"></i>Tìm kiếm</a></li>
+                        <li><a href="@Url.Action("ViewCart", "Product")"><i class="icon-cart-2"></i>Giỏ hàng</a></li>
+
+                        <li class="title">Thông tin tài khoản</li>
+                        <li><a href="@Url.Action("AccountDetails", "Account")"><i class="icon-user"></i>Sửa thông tin cá nhân</a></li>
+                        <li><a href="@Url.Action("BuyingHistory", "Account")"><i class="icon-history"></i>Lịch sử mua sắm</a></li>
+                        <li><a href="@Url.Action("DefineRoute", "Account")"><i class="icon-location"></i>Định nghĩa đường đi</a></li>
+                        <li><a href="@Url.Action("LogOff", "Account")"><i class="icon-switch"></i>Thoát</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="span8">@RenderBody()</div>
+        </div>
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
 </html>
