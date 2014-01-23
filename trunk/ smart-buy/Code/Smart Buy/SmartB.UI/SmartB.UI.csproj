@@ -192,6 +192,7 @@
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -308,6 +309,82 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmartBuy.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Metro\css\docs.css" />
+    <Content Include="Metro\css\metro-bootstrap-responsive.css" />
+    <Content Include="Metro\css\metro-bootstrap.css" />
+    <Content Include="Metro\fonts\iconFont.dev.svg" />
+    <Content Include="Metro\fonts\iconFont.svg" />
+    <Content Include="Metro\js\holder\holder.js" />
+    <Content Include="Metro\js\jquery\jquery.easing.1.3.min.js" />
+    <Content Include="Metro\js\jquery\jquery.min.js" />
+    <Content Include="Metro\js\jquery\jquery.mousewheel.js" />
+    <Content Include="Metro\js\jquery\jquery.widget.min.js" />
+    <Content Include="Metro\js\metro\metro-accordion.js" />
+    <Content Include="Metro\js\metro\metro-button-set.js" />
+    <Content Include="Metro\js\metro\metro-calendar.js" />
+    <Content Include="Metro\js\metro\metro-carousel.js" />
+    <Content Include="Metro\js\metro\metro-core.js" />
+    <Content Include="Metro\js\metro\metro-countdown.js" />
+    <Content Include="Metro\js\metro\metro-date-format.js" />
+    <Content Include="Metro\js\metro\metro-datepicker.js" />
+    <Content Include="Metro\js\metro\metro-dialog.js" />
+    <Content Include="Metro\js\metro\metro-drag-tile.js" />
+    <Content Include="Metro\js\metro\metro-dropdown.js" />
+    <Content Include="Metro\js\metro\metro-fluentmenu.js" />
+    <Content Include="Metro\js\metro\metro-global.js" />
+    <Content Include="Metro\js\metro\metro-hint.js" />
+    <Content Include="Metro\js\metro\metro-initiator.js" />
+    <Content Include="Metro\js\metro\metro-input-control.js" />
+    <Content Include="Metro\js\metro\metro-listview.js" />
+    <Content Include="Metro\js\metro\metro-live-tile.js" />
+    <Content Include="Metro\js\metro\metro-loader.js" />
+    <Content Include="Metro\js\metro\metro-locale.js" />
+    <Content Include="Metro\js\metro\metro-notify.js" />
+    <Content Include="Metro\js\metro\metro-plugin-template.js" />
+    <Content Include="Metro\js\metro\metro-progressbar.js" />
+    <Content Include="Metro\js\metro\metro-pull.js" />
+    <Content Include="Metro\js\metro\metro-rating.js" />
+    <Content Include="Metro\js\metro\metro-scroll.js" />
+    <Content Include="Metro\js\metro\metro-slider.js" />
+    <Content Include="Metro\js\metro\metro-stepper.js" />
+    <Content Include="Metro\js\metro\metro-streamer.js" />
+    <Content Include="Metro\js\metro\metro-tab-control.js" />
+    <Content Include="Metro\js\metro\metro-table.js" />
+    <Content Include="Metro\js\metro\metro-times.js" />
+    <Content Include="Metro\js\metro\metro-touch-handler.js" />
+    <Content Include="Metro\js\metro\metro-treeview.js" />
+    <Content Include="Metro\js\metro\metro.min.js" />
+    <Content Include="Metro\js\prettify\lang-apollo.js" />
+    <Content Include="Metro\js\prettify\lang-basic.js" />
+    <Content Include="Metro\js\prettify\lang-clj.js" />
+    <Content Include="Metro\js\prettify\lang-css.js" />
+    <Content Include="Metro\js\prettify\lang-dart.js" />
+    <Content Include="Metro\js\prettify\lang-erlang.js" />
+    <Content Include="Metro\js\prettify\lang-go.js" />
+    <Content Include="Metro\js\prettify\lang-hs.js" />
+    <Content Include="Metro\js\prettify\lang-lisp.js" />
+    <Content Include="Metro\js\prettify\lang-llvm.js" />
+    <Content Include="Metro\js\prettify\lang-lua.js" />
+    <Content Include="Metro\js\prettify\lang-matlab.js" />
+    <Content Include="Metro\js\prettify\lang-ml.js" />
+    <Content Include="Metro\js\prettify\lang-mumps.js" />
+    <Content Include="Metro\js\prettify\lang-n.js" />
+    <Content Include="Metro\js\prettify\lang-pascal.js" />
+    <Content Include="Metro\js\prettify\lang-proto.js" />
+    <Content Include="Metro\js\prettify\lang-r.js" />
+    <Content Include="Metro\js\prettify\lang-rd.js" />
+    <Content Include="Metro\js\prettify\lang-scala.js" />
+    <Content Include="Metro\js\prettify\lang-sql.js" />
+    <Content Include="Metro\js\prettify\lang-tcl.js" />
+    <Content Include="Metro\js\prettify\lang-tex.js" />
+    <Content Include="Metro\js\prettify\lang-vb.js" />
+    <Content Include="Metro\js\prettify\lang-vhdl.js" />
+    <Content Include="Metro\js\prettify\lang-wiki.js" />
+    <Content Include="Metro\js\prettify\lang-xq.js" />
+    <Content Include="Metro\js\prettify\lang-yaml.js" />
+    <Content Include="Metro\js\prettify\prettify.css" />
+    <Content Include="Metro\js\prettify\prettify.js" />
+    <Content Include="Metro\js\prettify\run_prettify.js" />
     <Content Include="Models\EntityFramework\SmartBuy.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SmartBuy.edmx</DependentUpon>
@@ -323,6 +400,12 @@
     </Content>
     <Content Include="Areas\Admin\Views\ParseWeb\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Metro\css\less\docs.less" />
+    <Content Include="Metro\fonts\iconFont.eot" />
+    <Content Include="Metro\fonts\iconFont.json" />
+    <Content Include="Metro\fonts\iconFont.ttf" />
+    <Content Include="Metro\fonts\iconFont.woff" />
+    <Content Include="Metro\js\metro\README.md" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -377,6 +460,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\Product\SearchProduct.cshtml" />
+    <Content Include="Views\Product\ViewCart.cshtml" />
+    <Content Include="Views\Account\AccountDetails.cshtml" />
+    <Content Include="Views\Account\BuyingHistory.cshtml" />
+    <Content Include="Views\Account\DefineRoute.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

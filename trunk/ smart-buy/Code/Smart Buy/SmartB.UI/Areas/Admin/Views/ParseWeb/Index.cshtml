@@ -17,4 +17,7 @@
     @Html.TextBoxFor(x => x.ParseLink)
     <input type="submit" value="View" />
 }
-<iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="1024" height="768"></iframe>
+@if (TempData["tmp"] != null)
+{
+    <iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="1024" height="768"></iframe>   
+}

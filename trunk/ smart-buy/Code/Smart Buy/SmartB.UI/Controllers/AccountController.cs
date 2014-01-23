@@ -13,8 +13,8 @@ using SmartB.UI.Models;
 
 namespace SmartB.UI.Controllers
 {
-    [Authorize]
-    [InitializeSimpleMembership]
+    //[Authorize]
+    //[InitializeSimpleMembership]
     public class AccountController : Controller
     {
         //
@@ -326,6 +326,21 @@ namespace SmartB.UI.Controllers
 
             ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
+        }
+
+        public ActionResult AccountDetails()
+        {
+            return View();
+        }
+
+        public ActionResult BuyingHistory() 
+        {
+            return View();
+        }
+
+        public ActionResult DefineRoute()
+        {
+            return View();
         }
 
         #region Helpers
