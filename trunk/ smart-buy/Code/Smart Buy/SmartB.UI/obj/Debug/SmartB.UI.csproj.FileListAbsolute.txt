@@ -173,3 +173,4 @@ E:\Smart Buy\trunk\ smart-buy\Code\Smart Buy\SmartB.UI\bin\zh-Hans\System.Spatia
 E:\Smart Buy\trunk\ smart-buy\Code\Smart Buy\SmartB.UI\bin\zh-Hant\System.Spatial.resources.dll
 E:\Smart Buy\trunk\ smart-buy\Code\Smart Buy\SmartB.UI\obj\Debug\SmartB.UI.dll
 E:\Smart Buy\trunk\ smart-buy\Code\Smart Buy\SmartB.UI\obj\Debug\SmartB.UI.pdb
+E:\Smart Buy\trunk\ smart-buy\Code\Smart Buy\SmartB.UI\obj\Debug\SmartB.UI.csprojResolveAssemblyReference.cache
