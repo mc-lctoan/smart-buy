@@ -17,6 +17,10 @@
     @Html.TextBoxFor(x => x.ParseLink)
     <input type="submit" value="View" />
 }
+
+<input type="radio" name="viewType" id="rad_tabularView" value="1" checked="checked"/> Dạng bảng <br/>
+<input type="radio" name="viewType" id="rad_gridView" value="2"/> Dạng lưới <br/>
+<h3 id="chosenPath"></h3>
 @if (TempData["tmp"] != null)
 {
     <iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="1024" height="768"></iframe>   
