@@ -1,21 +1,24 @@
 var tmp = document.getElementById("webDiv");
+var myFrameDoc;
 tmp.onload = init;
 var webDiv = null;
 
 function init() {
     webDiv = (tmp.contentWindow || tmp.contentDocument);
-    if (webDiv.document)webDiv = webDiv.document.body;
+    if (webDiv.document) {
+        myFrameDoc = webDiv.document;
+        webDiv = webDiv.document.body;
+    }
     tmp.width = webDiv.scrollWidth;
     if (webDiv != null) {
-        webDiv.onclick = getPath;
+        webDiv.onclick = getTabularPath;
         var divChild = webDiv.childNodes;
-        for (i = 0; i < divChild.length; i++) {
+        for (var i = 0; i < divChild.length; i++) {
             divChild[i].onmouseover = mouseIn;
             divChild[i].onmouseout = mouseOut;
         }
     }
 }
-
 
 function mouseIn(event) {
     var element = event.target;
@@ -27,19 +30,35 @@ function mouseOut(event) {
     element.style.outline = "none";
 }
 
+function highlightElement(xpathExpression) {
+    var selected = myFrameDoc.evaluate(xpathExpression, myFrameDoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    for (var i = 0; i < selected.snapshotLength; i++) {
+        var node = selected.snapshotItem(i);
+        node.style.outline = "thin dashed #FF0000";
+    }
+}
+
+function XpathElement(tagName, id, className, position) {
+    this.tagName = tagName;
+    this.id = id;
+    this.className = className;
+    this.position = position;
+}
+
 function getPath(event) {
     var node = event.target;
     event.preventDefault();
 
     var parent = null;
     var children = null;
+    var element = null;
     var pos = 0;
     var xpath = [];
-    var tmp = "";
+    //var tmp = "";
     var counter = 0;
     var foundId = false;
     while (true) {
-        tmp = "";
+        //tmp = "";
         if (node === webDiv) {
             break;
         }
@@ -51,7 +70,7 @@ function getPath(event) {
         children = parent.childNodes;
         counter = 0;
         pos = 0;
-        for (i = 0; i < children.length; i++) {
+        for (var i = 0; i < children.length; i++) {
             if (children[i].nodeType == 1 && children[i].tagName == node.tagName) {
                 counter++;
             }
@@ -62,20 +81,65 @@ function getPath(event) {
                 break;
             }
         }
-        tmp += node.tagName;
+        //tmp += node.tagName.toLowerCase();
+        element = new XpathElement(node.tagName.toLowerCase(), node.id, node.className, -1);
         if (counter > 1) {
-            tmp += "[" + pos + "]";
+            //tmp += "[" + pos + "]";
+            element.position = pos;
         }
-        xpath.push(tmp);
+        //xpath.push(tmp);
+        xpath.push(element);
         node = parent;
     }
     if (foundId) {
-        xpath.push("//*" + "[@id='" + node.id + "']");
+        element = new XpathElement(node.tagName.toLowerCase(), node.id, node.className, -1);
+        xpath.push(element);
+        //xpath.push("//*" + "[@id='" + node.id + "']");
     } else {
-        xpath.push("body");
-        xpath.push("html");
+        element = new XpathElement("body", node.id, node.className, -1);
+        xpath.push(element);
+        element = new XpathElement("html", node.id, node.className, -1);
+        xpath.push(element);
+    }
+    return xpath;
+    //xpath.reverse();
+    //var result = xpath.join("/");
+    //document.getElementById("chosenPath").innerHTML = result;
+    //alert(result);
+}
+
+function getTabularPath(event) {
+    var xpath = getPath(event);
+    var result = "";
+    for (var i = 0; i < xpath.length; i++) {
+        if (xpath[i].tagName == "tr") {
+            xpath[i].position = -1;
+            break;
+        }
     }
     xpath.reverse();
-    var result = xpath.join("/").toLowerCase();
-    alert(result);
+    if (xpath[0].id != "") {
+        result += "//*[@id='" + xpath[0].id + "']";
+        for (i = 1; i < xpath.length; i++) {
+            result += "/" + xpath[i].tagName;
+            if (xpath[i].position != -1) {
+                result += "[" + xpath[i].position + "]";
+            }
+        }
+    } else {
+        for (i = 0; i < xpath.length; i++) {
+            result += xpath[i].tagName;
+            if (xpath[i].position != -1) {
+                result += "[" + xpath[i].position + "]";
+            }
+            result += "/";
+        }
+        result = result.slice(0, -1);
+    }
+    
+    highlightElement(result);
+}
+
+function getGridPath() {
+    
 }
