@@ -11,7 +11,7 @@ function init() {
     }
     tmp.width = webDiv.scrollWidth;
     if (webDiv != null) {
-        webDiv.onclick = getTabularPath;
+        webDiv.onclick = getXPath;
         var divChild = webDiv.childNodes;
         for (var i = 0; i < divChild.length; i++) {
             divChild[i].onmouseover = mouseIn;
@@ -108,6 +108,22 @@ function getPath(event) {
     //alert(result);
 }
 
+function setTextBoxXpathValue(expression) {
+    if (document.getElementById("rad_productName").checked) {
+        document.getElementById("xpathProductName").value = expression;
+    } else if (document.getElementById("rad_price").checked) {
+        document.getElementById("xpathPrice").value = expression;
+    }
+}
+
+function getXPath(event) {
+    if (document.getElementById("rad_tabularView").checked) {
+        getTabularPath(event);
+    } else if (document.getElementById("rad_gridView").checked) {
+        getGridPath(event);
+    }
+}
+
 function getTabularPath(event) {
     var xpath = getPath(event);
     var result = "";
@@ -136,10 +152,10 @@ function getTabularPath(event) {
         }
         result = result.slice(0, -1);
     }
-    
+    setTextBoxXpathValue(result);
     highlightElement(result);
 }
 
-function getGridPath() {
-    
+function getGridPath(event) {
+    alert("Under construction!");
 }

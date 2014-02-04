@@ -47,6 +47,11 @@ namespace SmartB.UI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        public RedirectToRouteResult CreateParser(ParserCreator model)
+        {
+            return RedirectToAction("Index");
+        }
+
         public ActionResult ParseData()
         {
             HtmlWeb web = new HtmlWeb();
