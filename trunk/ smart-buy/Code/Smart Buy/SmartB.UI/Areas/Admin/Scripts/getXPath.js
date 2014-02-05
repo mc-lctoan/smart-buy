@@ -47,7 +47,6 @@ function XpathElement(tagName, id, className, position) {
 
 function getPath(event) {
     var node = event.target;
-    event.preventDefault();
 
     var parent = null;
     var children = null;
@@ -117,6 +116,7 @@ function setTextBoxXpathValue(expression) {
 }
 
 function getXPath(event) {
+    event.preventDefault();
     if (document.getElementById("rad_tabularView").checked) {
         getTabularPath(event);
     } else if (document.getElementById("rad_gridView").checked) {
@@ -157,5 +157,53 @@ function getTabularPath(event) {
 }
 
 function getGridPath(event) {
-    alert("Under construction!");
+    var target = event.target;
+    //if (target.className == "") {
+    //    alert("Cannot get XPath for this element!");
+    //    return;
+    //}
+    var xpath = getPath(event);
+    var parent = target.parentNode;
+    var children = parent.childNodes;
+    var counter = 0;
+    var pos = 0;
+    for (var i = 0; i < children.length; i++) {
+        if (children[i].nodeType == 1 && children[i].tagName == target.tagName && children[i].className == target.className) {
+            counter++;
+        }
+        if (children[i] == target) {
+            pos = counter;
+        }
+        if (pos > 0 && counter > 1) {
+            break;
+        }
+    }
+    var posExpression = "";
+    if (counter > 1) {
+        posExpression = "[" + pos + "]";
+    }
+
+    var newXpathArray = null;
+    for (i = 1; i < xpath.length; i++) {
+        if (xpath[i].className != "") {
+            newXpathArray = xpath.slice(0, i + 1);
+            break;
+        }
+    }
+    if (newXpathArray != null) {
+        newXpathArray.reverse();
+        var result = "//" + newXpathArray[0].tagName + "[@class='" + newXpathArray[0].className + "']";
+        for (i = 1; i < newXpathArray.length - 1; i++) {
+            result += "/" + newXpathArray[i].tagName + "[" + newXpathArray[i].position +"]";
+        }
+        var tmp = newXpathArray.length - 1;
+        result += "/" + newXpathArray[tmp].tagName;
+        if (newXpathArray[tmp].className != "") {
+            result += "[@class='" + newXpathArray[tmp].className + "']";
+        }
+        result += posExpression;
+        
+        setTextBoxXpathValue(result);
+        highlightElement(result);
+    }
 }
