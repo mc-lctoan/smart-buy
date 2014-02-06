@@ -23,7 +23,12 @@
 
 @using (Html.BeginForm("CreateParser", "ParseWeb"))
 {
-    <input type="radio" name="xpathValue" id="rad_productName" checked="checked"/>
+    <input type="radio" name="xpathValue" id="rad_tile" checked="checked"/>
+    <label>Khung thông tin</label>
+    <input type="text" id="xpathTile"/>
+    <br/>
+    
+    <input type="radio" name="xpathValue" id="rad_productName"/>
     @Html.LabelFor(x => x.ProductNameXpath)
     @Html.TextBoxFor(x => x.ProductNameXpath, new { id = "xpathProductName" })
     <br/>
