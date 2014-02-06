@@ -1,7 +1,8 @@
-var tmp = document.getElementById("webDiv");
+﻿var tmp = document.getElementById("webDiv");
 var myFrameDoc;
 tmp.onload = init;
 var webDiv = null;
+var tile = null;
 
 function init() {
     webDiv = (tmp.contentWindow || tmp.contentDocument);
@@ -45,20 +46,18 @@ function XpathElement(tagName, id, className, position) {
     this.position = position;
 }
 
-function getPath(event) {
-    var node = event.target;
+function getPath(clickedNode, root) {
+    var node = clickedNode;
 
     var parent = null;
     var children = null;
     var element = null;
     var pos = 0;
     var xpath = [];
-    //var tmp = "";
     var counter = 0;
     var foundId = false;
     while (true) {
-        //tmp = "";
-        if (node === webDiv) {
+        if (node === root) {
             break;
         }
         if (node.id !== "") {
@@ -80,31 +79,23 @@ function getPath(event) {
                 break;
             }
         }
-        //tmp += node.tagName.toLowerCase();
         element = new XpathElement(node.tagName.toLowerCase(), node.id, node.className, -1);
         if (counter > 1) {
-            //tmp += "[" + pos + "]";
             element.position = pos;
         }
-        //xpath.push(tmp);
         xpath.push(element);
         node = parent;
     }
     if (foundId) {
         element = new XpathElement(node.tagName.toLowerCase(), node.id, node.className, -1);
         xpath.push(element);
-        //xpath.push("//*" + "[@id='" + node.id + "']");
-    } else {
+    } else if (root == webDiv) {
         element = new XpathElement("body", node.id, node.className, -1);
         xpath.push(element);
         element = new XpathElement("html", node.id, node.className, -1);
         xpath.push(element);
     }
     return xpath;
-    //xpath.reverse();
-    //var result = xpath.join("/");
-    //document.getElementById("chosenPath").innerHTML = result;
-    //alert(result);
 }
 
 function setTextBoxXpathValue(expression) {
@@ -112,6 +103,8 @@ function setTextBoxXpathValue(expression) {
         document.getElementById("xpathProductName").value = expression;
     } else if (document.getElementById("rad_price").checked) {
         document.getElementById("xpathPrice").value = expression;
+    } else if (document.getElementById("rad_tile").checked) {
+        document.getElementById("xpathTile").value = expression;
     }
 }
 
@@ -125,7 +118,7 @@ function getXPath(event) {
 }
 
 function getTabularPath(event) {
-    var xpath = getPath(event);
+    var xpath = getPath(event.target, webDiv);
     var result = "";
     for (var i = 0; i < xpath.length; i++) {
         if (xpath[i].tagName == "tr") {
@@ -158,52 +151,28 @@ function getTabularPath(event) {
 
 function getGridPath(event) {
     var target = event.target;
-    //if (target.className == "") {
-    //    alert("Cannot get XPath for this element!");
-    //    return;
-    //}
-    var xpath = getPath(event);
-    var parent = target.parentNode;
-    var children = parent.childNodes;
-    var counter = 0;
-    var pos = 0;
-    for (var i = 0; i < children.length; i++) {
-        if (children[i].nodeType == 1 && children[i].tagName == target.tagName && children[i].className == target.className) {
-            counter++;
-        }
-        if (children[i] == target) {
-            pos = counter;
-        }
-        if (pos > 0 && counter > 1) {
-            break;
-        }
-    }
-    var posExpression = "";
-    if (counter > 1) {
-        posExpression = "[" + pos + "]";
-    }
-
-    var newXpathArray = null;
-    for (i = 1; i < xpath.length; i++) {
-        if (xpath[i].className != "") {
-            newXpathArray = xpath.slice(0, i + 1);
-            break;
-        }
-    }
-    if (newXpathArray != null) {
-        newXpathArray.reverse();
-        var result = "//" + newXpathArray[0].tagName + "[@class='" + newXpathArray[0].className + "']";
-        for (i = 1; i < newXpathArray.length - 1; i++) {
-            result += "/" + newXpathArray[i].tagName + "[" + newXpathArray[i].position +"]";
-        }
-        var tmp = newXpathArray.length - 1;
-        result += "/" + newXpathArray[tmp].tagName;
-        if (newXpathArray[tmp].className != "") {
-            result += "[@class='" + newXpathArray[tmp].className + "']";
-        }
-        result += posExpression;
-        
+    var result = "";
+    if (document.getElementById("rad_tile").checked) {
+        tile = target;
+        result += "//" + target.tagName.toLowerCase() + "[@class='" + target.className + "']";
         setTextBoxXpathValue(result);
         highlightElement(result);
+        return;
     }
+
+    if (tile == null) {
+        alert("Phải chọn khung thông tin trước!");
+        return;
+    }
+    result = document.getElementById("xpathTile").value;
+    var xpath = getPath(target, tile);
+    xpath.reverse();
+    for (var i = 0; i < xpath.length; i++) {
+        result += "/" + xpath[i].tagName;
+        if (xpath[i].position != -1) {
+            result += "[" + xpath[i].position + "]";
+        }
+    }
+    setTextBoxXpathValue(result);
+    highlightElement(result);
 }
