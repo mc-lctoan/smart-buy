@@ -28,12 +28,12 @@ namespace SmartB.UI.Models.EntityFramework
         public DbSet<History> Histories { get; set; }
         public DbSet<LogFile> LogFiles { get; set; }
         public DbSet<Market> Markets { get; set; }
-        public DbSet<ParseInfo> ParseInfoes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductAttribute> ProductAttributes { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<SellProduct> SellProducts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserPrice> UserPrices { get; set; }
+        public DbSet<ParseInfo> ParseInfoes { get; set; }
     }
 }

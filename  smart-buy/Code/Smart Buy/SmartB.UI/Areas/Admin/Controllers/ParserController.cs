@@ -8,11 +8,14 @@ using System.Web.Mvc;
 using HtmlAgilityPack;
 using SmartB.UI.Areas.Admin.Helper;
 using SmartB.UI.Areas.Admin.Models;
+using SmartB.UI.Models.EntityFramework;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
-    public class ParseWebController : Controller
+    public class ParserController : Controller
     {
+        SmartBuyEntities context = new SmartBuyEntities();
+
         //
         // GET: /Admin/ParseWeb/
 
@@ -22,19 +25,19 @@ namespace SmartB.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public RedirectToRouteResult LoadWeb(ParserCreator model)
+        public RedirectToRouteResult LoadWeb(string parseLink)
         {
             // Create Firefox browser
             var web = new HtmlWeb {UserAgent = "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"};
 
             // Load website
-            var document = web.Load(model.ParseLink);
+            var document = web.Load(parseLink);
 
             // Correct links
             var src = new List<HtmlNode>(document.DocumentNode.Descendants().Where(x => x.Attributes["src"] != null));
             var link = new List<HtmlNode>(document.DocumentNode.Descendants().Where(x => x.Attributes["href"] != null));
-            ParseHelper.CorrectLink(src, model.ParseLink, "src");
-            ParseHelper.CorrectLink(link, model.ParseLink, "href");
+            ParseHelper.CorrectLink(src, parseLink, "src");
+            ParseHelper.CorrectLink(link, parseLink, "href");
 
             // TODO: Remove all script?
             document.DocumentNode.Descendants().Where(x => x.Name == "script").ToList().ForEach(x => x.Remove());
@@ -43,24 +46,36 @@ namespace SmartB.UI.Areas.Admin.Controllers
             string path = Path.Combine(Server.MapPath("~/Areas/Admin/SavedPages"), fileName);
             document.Save(path, new UTF8Encoding());
 
-            TempData["tmp"] = true;
+            TempData["link"] = parseLink;
             return RedirectToAction("Index");
         }
 
         public RedirectToRouteResult CreateParser(ParserCreator model)
         {
+            ParseInfo parser = new ParseInfo
+                                   {
+                                       // TODO: fix market for testing
+                                       MarketId = 1,
+                                       ParseLink = model.ParseLink,
+                                       ProductNameXpath = model.ProductNameXpath,
+                                       PriceXpath = model.PriceXpath,
+                                       IsActive = true
+                                   };
+            context.ParseInfoes.Add(parser);
+            context.SaveChanges();
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public ActionResult ParseData()
         {
-            HtmlWeb web = new HtmlWeb();
-            web.UserAgent = "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0";
-            HtmlDocument document = new HtmlDocument();
-            document.OptionFixNestedTags = true;
-            document = web.Load("http://www.chobinhtay.gov.vn/PriceBoard.aspx");
-            HtmlNodeCollection nodes = document.DocumentNode.SelectNodes(".//*[@id='ctl00_Mnt_Cnt_Gr_List']/tr/td[1]");
-            return View(nodes);
+            return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            context.Dispose();
         }
     }
 }

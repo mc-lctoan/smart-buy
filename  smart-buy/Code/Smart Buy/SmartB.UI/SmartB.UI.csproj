@@ -187,7 +187,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\ParseWebController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ParserController.cs" />
     <Compile Include="Areas\Admin\Helper\ParseHelper.cs" />
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -304,7 +304,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\Web.config" />
-    <Content Include="Areas\Admin\Views\ParseWeb\ParseData.cshtml" />
+    <Content Include="Areas\Admin\Views\Parser\ParseData.cshtml" />
     <EntityDeploy Include="Models\EntityFramework\SmartBuy.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmartBuy.Designer.cs</LastGenOutput>
@@ -398,7 +398,7 @@
       <DependentUpon>SmartBuy.edmx</DependentUpon>
       <LastGenOutput>SmartBuy.cs</LastGenOutput>
     </Content>
-    <Content Include="Areas\Admin\Views\ParseWeb\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Parser\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Metro\css\less\docs.less" />
     <Content Include="Metro\fonts\iconFont.eot" />

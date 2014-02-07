@@ -11,7 +11,7 @@
 }
 
 <h2>Create parser</h2>
-@using (Html.BeginForm("LoadWeb", "ParseWeb"))
+@using (Html.BeginForm("LoadWeb", "Parser"))
 {
     @Html.LabelFor(x => x.ParseLink)
     @Html.TextBoxFor(x => x.ParseLink)
@@ -21,8 +21,9 @@
 <input type="radio" name="viewType" id="rad_tabularView" checked="checked"/> Dạng bảng <br/>
 <input type="radio" name="viewType" id="rad_gridView"/> Dạng lưới <br/>
 
-@using (Html.BeginForm("CreateParser", "ParseWeb"))
+@using (Html.BeginForm("CreateParser", "Parser"))
 {
+    <input type="hidden" name="ParseLink" value="@TempData["link"]"/>
     <input type="radio" name="xpathValue" id="rad_tile" checked="checked"/>
     <label>Khung thông tin</label>
     <input type="text" id="xpathTile"/>
@@ -36,9 +37,12 @@
     <input type="radio" name="xpathValue" id="rad_price"/>
     @Html.LabelFor(x => x.PriceXpath)
     @Html.TextBoxFor(x => x.PriceXpath, new { id = "xpathPrice" })
+    <br/>
+    
+    <input type="submit" value="Tạo parser"/>
 }
 
-@if (TempData["tmp"] != null)
+@if (TempData["link"] != null)
 {
     <iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="1024" height="768"></iframe>   
 }
