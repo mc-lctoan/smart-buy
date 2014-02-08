@@ -66,9 +66,10 @@ namespace SmartB.UI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult ParseData()
         {
+            ParseHelper.ParseData();
             return View();
         }
 
