@@ -1,13 +1,6 @@
-﻿@*@model IList<OpenQA.Selenium.IWebElement>*@
-@using HtmlAgilityPack
-@model HtmlAgilityPack.HtmlNodeCollection
-
+﻿
 @{
     ViewBag.Title = "ParseData";
 }
 
 <h2>ParseData</h2>
-@foreach (HtmlNode node in Model)
-{
-    <p>@node.InnerHtml</p>
-}

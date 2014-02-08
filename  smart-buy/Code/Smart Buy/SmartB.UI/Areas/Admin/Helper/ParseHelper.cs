@@ -69,7 +69,7 @@ namespace SmartB.UI.Areas.Admin.Helper
                     var data = MatchNamePrice(names, prices);
 
                     // Insert to database
-                    InsertProductToDb(data);
+                    InsertProductToDb(data, parseInfo.MarketId.Value);
                 }
             }
             return true;
@@ -109,10 +109,12 @@ namespace SmartB.UI.Areas.Admin.Helper
                     result += c;
                 }
             }
-            return Int32.Parse(result);
+            double tmp = Double.Parse(result);
+            tmp = Math.Round(tmp/1000);
+            return (int) tmp;
         }
 
-        private static void InsertProductToDb(IEnumerable<KeyValuePair<string, string>> data)
+        private static void InsertProductToDb(IEnumerable<KeyValuePair<string, string>> data, int marketId)
         {
             using (var context = new SmartBuyEntities())
             {
@@ -159,8 +161,17 @@ namespace SmartB.UI.Areas.Admin.Helper
                             MaxPrice = price,
                             LastUpdatedTime = DateTime.Now
                         };
-
                         newProduct.ProductAttributes.Add(attribute);
+
+                        // Add product selling information
+                        var sell = new SellProduct
+                                       {
+                                           MarketId = marketId,
+                                           SellPrice = price,
+                                           LastUpdatedTime = DateTime.Now
+                                       };
+                        newProduct.SellProducts.Add(sell);
+
                         context.Products.Add(newProduct);
                         context.SaveChanges();
                     }

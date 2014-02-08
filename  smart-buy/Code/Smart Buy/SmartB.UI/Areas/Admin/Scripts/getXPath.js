@@ -145,8 +145,9 @@ function getTabularPath(event) {
         }
         result = result.slice(0, -1);
     }
-    setTextBoxXpathValue(result);
     highlightElement(result);
+    result = result.replace("/tbody", "");
+    setTextBoxXpathValue(result);
 }
 
 function getGridPath(event) {
