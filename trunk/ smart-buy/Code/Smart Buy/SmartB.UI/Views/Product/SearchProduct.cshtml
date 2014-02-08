@@ -1,85 +1,63 @@
-﻿@{
+﻿@model IEnumerable<SmartB.UI.Models.EntityFramework.ProductAttribute>
+
+@{
     ViewBag.Title = "SearchProduct";
 }
 
-<form>
+@using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get))
+{    
     <h3>Tìm kiếm theo tên</h3>
-    <div class="input-control text">
-        <input type="text" />
-        <button class="btn-search"></button>
-    </div>
-</form>
+    <form>
+        <div class="input-control text">
+            @*<input type="text" />*@
+            @Html.TextBox("q")
+            <button class="btn-search"></button>
+        </div>
+    </form>
+}
 
-<h3>Kết quả tìm kiếm</h3>
-<table class="table bordered hovered">
-    <thead>
-        <tr>
-            <th>STT</th>
-            <th>Tên sản phẩm</th>
-            <th>Giá sản phẩm (nghìn đồng)</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>Thịt bò</td>
-            <td>100 - 120</td>
-            <td>
-                <button>
-                    <i class="icon-plus-2 on-left"></i>
-                    Thêm
-                </button>
-                <button>
-                    <i class="icon-dollar-2 on-left"></i>
-                    Đề xuất giá
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Thịt heo</td>
-            <td>80 - 100</td>
-            <td>
-                <button>
-                    <i class="icon-plus-2 on-left"></i>
-                    Thêm
-                </button>
-                <button>
-                    <i class="icon-dollar-2 on-left"></i>
-                    Đề xuất giá
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Thịt gà</td>
-            <td>50 - 70</td>
-            <td>
-                <button>
-                    <i class="icon-plus-2 on-left"></i>
-                    Thêm
-                </button>
-                <button>
-                    <i class="icon-dollar-2 on-left"></i>
-                    Đề xuất giá
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Thịt cừu</td>
-            <td>90 - 110</td>
-            <td>
-                <button>
-                    <i class="icon-plus-2 on-left"></i>
-                    Thêm
-                </button>
-                <button>
-                    <i class="icon-dollar-2 on-left"></i>
-                    Đề xuất giá
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+@if (Model != null)
+{
+    <h3>Kết quả tìm kiếm</h3>
+    <table class="table bordered hovered">
+        <thead>
+            <tr>                
+                <th>Tên sản phẩm</th>
+                <th>Giá sản phẩm (nghìn đồng)</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Product.Name)
+                        @{
+                var productID = item.ProductId;
+                var productName = item.Product.Name;
+                        }
+
+                    </td>
+
+                    <td>@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                        @{
+                var minPrice = item.MinPrice;
+                var maxPrice = item.MaxPrice;
+                        }
+                    </td>
+                    <td>
+                        <button onclick="addCarttoSession('@productID','@productName','@minPrice','@maxPrice')">
+                            <i class="icon-plus-2 on-left"></i>
+                            Thêm
+                            @*<a href="#" onclick="addCarttoSession('@productID','@productName','@minPrice','@maxPrice')">Thêm</a>*@
+                        </button>
+                        <button>
+                            <i class="icon-dollar-2 on-left"></i>
+                            Đề xuất giá
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SmartB.UI.Models.EntityFramework;
+using System.Data.Entity;
 
 namespace SmartB.UI.Controllers
 {
@@ -10,10 +12,19 @@ namespace SmartB.UI.Controllers
     {
         //
         // GET: /Product/
+        private SmartBuyEntities db = new SmartBuyEntities();
+        public ActionResult SearchProduct(String q)
+        {                     
+            if (!String.IsNullOrEmpty(q))
+            {                
+                var products = db.ProductAttributes.Include(x => x.Product).Where(s => s.Product.Name.Contains(q));                
+                return View(products);
+            }
 
-        public ActionResult SearchProduct()
-        {
-            return View();
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult ViewCart()

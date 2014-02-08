@@ -9,8 +9,9 @@
     <script src="@Url.Content("~/Metro/js/jquery/jquery.min.js")"></script>
     <script src="@Url.Content("~/Metro/js/jquery/jquery.widget.min.js")"></script>
     <script src="@Url.Content("~/Metro/js/metro/metro.min.js")"></script>
+    <script src="@Url.Content("~/Metro/js/utils/productUtils.js")"></script>
 </head>
-<body class="metro">
+<body class="metro" onload="start('itemCart')">
     <nav class="navigation-bar dark">
         <nav class="navigation-bar-content">
             <a class="element" href="#">Smart Buy</a>
@@ -28,7 +29,7 @@
                     <ul>
                         <li class="title">Chức năng chính</li>
                         <li><a href="@Url.Action("SearchProduct", "Product")"><i class="icon-search"></i>Tìm kiếm</a></li>
-                        <li><a href="@Url.Action("ViewCart", "Product")"><i class="icon-cart-2"></i>Giỏ hàng</a></li>
+                        <li><a href="@Url.Action("ViewCart", "Product")"><i class="icon-cart-2"></i>Giỏ hàng <span id="totalProduct"></span></a></li>
 
                         <li class="title">Thông tin tài khoản</li>
                         <li><a href="@Url.Action("AccountDetails", "Account")"><i class="icon-user"></i>Sửa thông tin cá nhân</a></li>

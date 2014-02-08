@@ -385,6 +385,7 @@
     <Content Include="Metro\js\prettify\prettify.css" />
     <Content Include="Metro\js\prettify\prettify.js" />
     <Content Include="Metro\js\prettify\run_prettify.js" />
+    <Content Include="Metro\js\utils\productUtils.js" />
     <Content Include="Models\EntityFramework\SmartBuy.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SmartBuy.edmx</DependentUpon>
