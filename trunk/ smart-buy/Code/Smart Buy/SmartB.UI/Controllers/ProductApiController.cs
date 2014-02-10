@@ -1,42 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using SmartB.UI.Areas.Admin.Models;
 using SmartB.UI.Models.EntityFramework;
 
 namespace SmartB.UI.Controllers
 {
     public class ProductApiController : ApiController
     {
-        SmartBuyEntities context = new SmartBuyEntities();
+        private SmartBuyEntities context = new SmartBuyEntities();
 
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        [AcceptVerbs("GET")]
+        public List<ProductInfo> Search(string keyword)
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        public string Get(string id)
-        {
-            return id;
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
+            // TODO: may change to full text search
+            var products = context.Products
+                .Include(x => x.ProductAttributes)
+                .Where(x => x.Name.Contains(keyword))
+                .ToList();
+            var result = new List<ProductInfo>();
+            foreach (Product product in products)
+            {
+                List<int?> minPrice = product.ProductAttributes
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MinPrice)
+                    .ToList();
+                List<int?> maxPrice = product.ProductAttributes
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MaxPrice)
+                    .ToList();
+                var info = new ProductInfo
+                               {
+                                   Name = product.Name,
+                                   MinPrice = minPrice[0].Value,
+                                   MaxPrice = maxPrice[0].Value
+                               };
+                result.Add(info);
+            }
+            return result;
         }
 
         protected override void Dispose(bool disposing)

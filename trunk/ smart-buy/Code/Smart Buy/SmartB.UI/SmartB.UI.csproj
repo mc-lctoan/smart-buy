@@ -190,6 +190,7 @@
     <Compile Include="Areas\Admin\Controllers\ParserController.cs" />
     <Compile Include="Areas\Admin\Helper\ParseHelper.cs" />
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
+    <Compile Include="Areas\Admin\Models\ProductInfo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\JsonContentNegotiator.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\EntityFramework\History.cs">
       <DependentUpon>SmartBuy.tt</DependentUpon>
