@@ -10,7 +10,7 @@ function init() {
         myFrameDoc = webDiv.document;
         webDiv = webDiv.document.body;
     }
-    tmp.width = webDiv.scrollWidth;
+    //tmp.width = webDiv.scrollWidth;
     if (webDiv != null) {
         webDiv.onclick = getXPath;
         var divChild = webDiv.childNodes;

@@ -8,41 +8,92 @@
 @section script
 {
     <script src="@Url.Content("~/Areas/Admin/Scripts/getXPath.js")"></script>
+    <script>
+        $(document).ready(function () {
+            $('#rad_gridView').click(function () {
+                $('#gridItemCheck').show('slow');
+            }); // end click
+
+            $('#rad_tabularView').click(function () {
+                $('#gridItemCheck').hide('slow');
+            }); // end click
+        }); // end ready
+    </script>
 }
 
-<h2>Create parser</h2>
+<h2>Tạo Parser</h2>
+
 @using (Html.BeginForm("LoadWeb", "Parser"))
 {
     @Html.LabelFor(x => x.ParseLink)
-    @Html.TextBoxFor(x => x.ParseLink)
-    <input type="submit" value="View" />
+    <div class="input-control text">
+        @Html.TextBoxFor(x => x.ParseLink, new { placeholder = "Nhập link cần parse", Value = TempData["link"] })
+        <button class="btn-clear"></button>
+    </div>
+    <input class="primary" type="submit" value="Xem" />
 }
 
-<input type="radio" name="viewType" id="rad_tabularView" checked="checked"/> Dạng bảng <br/>
-<input type="radio" name="viewType" id="rad_gridView"/> Dạng lưới <br/>
+<div class="input-control radio" data-role="input-control">
+    <label>
+        <input type="radio" name="viewType" id="rad_tabularView" checked="checked" />
+        <span class="check"></span>
+        Dạng bảng
+    </label>
+</div>
+<div class="input-control radio" data-role="input-control">
+    <label>
+        <input type="radio" name="viewType" id="rad_gridView" />
+        <span class="check"></span>
+        Dạng lưới
+    </label>
+</div>
 
 @using (Html.BeginForm("CreateParser", "Parser"))
 {
     <input type="hidden" name="ParseLink" value="@TempData["link"]"/>
-    <input type="radio" name="xpathValue" id="rad_tile" checked="checked"/>
-    <label>Khung thông tin</label>
-    <input type="text" id="xpathTile"/>
-    <br/>
+    <div id="gridItemCheck" style="display: none">
+        <div class="input-control radio" data-role="input-control">
+            <label>
+                <input type="radio" name="xpathValue" id="rad_tile" />
+                <span class="check"></span>
+                Khung thông tin
+            </label>
+        </div>
+        <div class="input-control text">
+            <input type="text" id="xpathTile" />
+            <button class="btn-clear"></button>
+        </div>
+    </div>
     
-    <input type="radio" name="xpathValue" id="rad_productName"/>
-    @Html.LabelFor(x => x.ProductNameXpath)
-    @Html.TextBoxFor(x => x.ProductNameXpath, new { id = "xpathProductName" })
-    <br/>
-
-    <input type="radio" name="xpathValue" id="rad_price"/>
-    @Html.LabelFor(x => x.PriceXpath)
-    @Html.TextBoxFor(x => x.PriceXpath, new { id = "xpathPrice" })
-    <br/>
+    <div class="input-control radio" data-role="input-control">
+        <label>
+            <input type="radio" name="xpathValue" id="rad_productName" checked="checked" />
+            <span class="check"></span>
+            Tên sản phẩm
+            @*@Html.LabelFor(x => x.ProductNameXpath)*@
+        </label>
+    </div>
+    <div class="input-control text">
+        @Html.TextBoxFor(x => x.ProductNameXpath, new { id = "xpathProductName" })
+        <button class="btn-clear"></button>
+    </div>
     
-    <input type="submit" value="Tạo parser"/>
+    <div class="input-control radio" data-role="input-control">
+        <label>
+            <input type="radio" name="xpathValue" id="rad_price" />
+            <span class="check"></span>
+            Giá sản phẩm
+            @*@Html.LabelFor(x => x.PriceXpath)*@
+        </label>
+    </div>
+    <div class="input-control text">
+        @Html.TextBoxFor(x => x.PriceXpath, new { id = "xpathPrice" })
+        <button class="btn-clear"></button>
+    </div>
+    <input class="primary" type="submit" value="Tạo parser" />
 }
 
 @if (TempData["link"] != null)
 {
-    <iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="1024" height="768"></iframe>   
+    <iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="1024" height="768"></iframe>
 }
