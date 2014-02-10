@@ -25,6 +25,12 @@ namespace SmartB.UI.Areas.Admin.Helper
                 if (node.Attributes[attName] != null && !node.Attributes[attName].Value.StartsWith("http"))
                 {
                     string tmp = node.Attributes[attName].Value;
+                    if (tmp.StartsWith("/"))
+                    {
+                        tmp = host + tmp;
+                        node.Attributes[attName].Value = tmp;
+                        continue;
+                    }
                     if (path.Length > 1)
                     {
                         tmp = host + "/" + path + "/" + tmp;
@@ -33,7 +39,10 @@ namespace SmartB.UI.Areas.Admin.Helper
                     {
                         tmp = host + "/" + tmp;
                     }
-                    tmp = tmp.Replace("//", "/");
+                    while (tmp.IndexOf("//") > 0)
+                    {
+                        tmp = tmp.Replace("//", "/");
+                    }
                     tmp = tmp.Replace("http:/", "http://");
                     node.Attributes[attName].Value = tmp;
                 }

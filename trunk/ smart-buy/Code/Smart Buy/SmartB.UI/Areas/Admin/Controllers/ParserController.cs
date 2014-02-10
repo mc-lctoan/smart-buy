@@ -40,7 +40,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             ParseHelper.CorrectLink(link, parseLink, "href");
 
             // TODO: Remove all script?
-            document.DocumentNode.Descendants().Where(x => x.Name == "script").ToList().ForEach(x => x.Remove());
+            //document.DocumentNode.Descendants().Where(x => x.Name == "script").ToList().ForEach(x => x.Remove());
 
             string fileName = "tmp.html";
             string path = Path.Combine(Server.MapPath("~/Areas/Admin/SavedPages"), fileName);
