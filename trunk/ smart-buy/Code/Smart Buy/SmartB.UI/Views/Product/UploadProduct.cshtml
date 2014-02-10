@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "UploadProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<SmartB.UI.Models.SellProductModel>
+<script src="~/Scripts/jquery-1.8.2.min.js"" type="text/javascript"></script>
+<script type="text/javascript" src="~/Scripts/jquery.validate.js"></script>
+
+<h2 style="font-size: x-large" class="strong">Upload Product</h2>
+
+<form action="/Product/UploadProduct" enctype="multipart/form-data" method="post">
+    <input type="file" id="excelFile" name="excelFile" />
+    <input type="submit" value="Upload!" />
+</form>
+
+@using (Html.BeginForm("SaveProducts", "Product"))
+{
+    if (@ViewBag.ExceptionName == "External table is not in the expected format.")
+    {
+        <label style="color: red"> File không đúng định dạng.</label>
+    }
+    if (@ViewBag.ExceptionName == "Tên sản phẩm phải từ 5 đến 20 ký tự")
+    {
+    <label style="color: red"> @ViewBag.ExceptionName</label>
+    }
+    if (@ViewBag.ExceptionMarket == "Tên chợ phải từ 5 đến 20 ký tự")
+    {
+    <label style="color: red"> @ViewBag.ExceptionMarket</label>
+    }
+    if (@ViewBag.ExceptionPrice == "Giá phải từ 1 đến 10000")
+    {
+    <label style="color: red"> @ViewBag.ExceptionPrice</label>
+    }
+    if (Model != null && @ViewBag.ExceptionName != "External table is not in the expected format.")
+    {
+    <table class="table">
+        <tr style="font-size: x-large; font-weight: bold">
+            <td>STT</td>
+            <td>Tên Sản Phẩm</td>
+            <td>Tên Chợ</td>
+            <td>Giá</td>
+        </tr>
+
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                @Html.HiddenFor(model => model[i].Id)
+                <td>@(i + 1)</td>
+               @if (@Model[i].Name.Length < 5 || @Model[i].MarketName.Length > 20)
+                {
+                    <td style="color: red; width: 50px">@Html.TextBoxFor(model => model[i].Name,new { style = "color: red;font-weight:bold" })</td>
+                     <p style="color:Red">@Html.ValidationMessageFor(model => model[i].Name)</p>
+               }else
+               {
+                   <td style="color: red; width: 50px">@Html.TextBoxFor(model => model[i].Name)</td>
+               }
+                @if (@Model[i].Name.Length < 5 || @Model[i].MarketName.Length > 20)
+                {
+                    <td style="color: red">@Html.TextBoxFor(model => model[i].MarketName,new { style = "color: red;font-weight:bold" })</td>       
+                     <p style="color:Red">@Html.ValidationMessageFor(model => model[i].MarketName)</p>
+                }
+                else
+                {
+                    <td>@Html.TextBoxFor(model => model[i].MarketName)</td> 
+                     <span><p style="color:Red">@Html.ValidationMessageFor(model => model[i].MarketName)</p></span>
+                                       
+                }
+                @if (@Model[i].Price < 1 || @Model[i].Price > 10000)
+                {
+                    <td style="color: red; width: 50px">@Html.TextBoxFor(model => model[i].Price,new { style = "color: red;font-weight:bold" })</td>
+                     <span><p style="color:Red">@Html.ValidationMessageFor(model => model[i].Price)</p></span>
+                }
+                else
+                {
+                    <td style="width: 50px">@Html.TextBoxFor(model => model[i].Price)</td>
+                     <span><p style="color:Red">@Html.ValidationMessageFor(model => model[i].Price)</p></span>
+                }
+            </tr>
+        }
+    </table>
+        if (@ViewBag.ExceptionName != "External table is not in the expected format.")
+        {
+    
+    <input class="primary" type="submit" name="Lưu lại" value="Lưu lại" />
+    <input class="bg-gray fg-white" value="Hủy" type="button" onclick='window.location = "/Product/UploadProduct"' />
+   
+        }
+    }
+}
+
