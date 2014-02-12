@@ -56,13 +56,15 @@ namespace SmartB.UI.Controllers
                 string errorName = "";
                 string errorMarket = "";
                 string errorPrice = "";
+                int errorCount = 0; // Đếm tổng số lỗi
                 try
                 {
-                    sellProductCollection = excelHelper.ReadData((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice);
+                    sellProductCollection = excelHelper.ReadData((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice, out errorCount);
                     ViewBag.SellProductCollection = sellProductCollection;
                     ViewBag.ExceptionName = errorName;
                     ViewBag.ExceptionMarket = errorMarket;
                     ViewBag.ExceptionPrice = errorPrice;
+                    ViewBag.errorCount = errorCount;
                 }
                 catch (Exception exception)
                 {
@@ -70,7 +72,7 @@ namespace SmartB.UI.Controllers
                     ViewBag.ExceptionName = exception.Message;
                     ViewBag.ExceptionMarket = exception.Message;
                     ViewBag.ExceptionPrice = errorPrice;
-
+                    ViewBag.errorCount = errorCount;
                 }
                 return View(sellProductCollection);
 
@@ -86,8 +88,9 @@ namespace SmartB.UI.Controllers
                 foreach (var product in model)
                 {
                     SmartBuyEntities db = new SmartBuyEntities();
-                    //  int errorList = 0; //đếm số lỗi
-
+                   //Trạng thái khi lưu xuống db
+                   int countUpdate = 0;
+                   int countInsert = 0;
                     //Trung db
                     var dupMarket = db.Markets.Where(m => m.Name.Equals(product.MarketName)).FirstOrDefault();
                     var dupProduct = db.Products.Where(p => p.Name.Equals(product.Name)).FirstOrDefault();
@@ -101,6 +104,7 @@ namespace SmartB.UI.Controllers
                                 sellProduct.SellPrice = product.Price;
                             }
                         };
+                        countUpdate++;
                         //if (product.Price > 0)
                         //{
                         //    var addedSellProduct = db.SellProducts.Add(sellProduct);
@@ -124,6 +128,7 @@ namespace SmartB.UI.Controllers
                             LastUpdatedTime = DateTime.Now
                         };
                         var addedSellProduct = db.SellProducts.Add(sellProduct);
+                        countInsert++;
                         db.SaveChanges(); // Save to database
                     }
                     else if (dupMarket == null & dupProduct != null)
@@ -143,6 +148,7 @@ namespace SmartB.UI.Controllers
                             LastUpdatedTime = DateTime.Now
                         };
                         var addedSellProduct = db.SellProducts.Add(sellProduct); // Add SellProduct
+                        countInsert++;
                         db.SaveChanges(); // Save to database
                     }
                     else

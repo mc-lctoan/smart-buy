@@ -1,4 +1,4 @@
-﻿using ExcelUtilities;
+﻿using SmartB.UI.UploadedExcelFiles;
 using SmartB.UI.Models;
 using System;
 using System.Collections.Generic;
@@ -11,13 +11,14 @@ namespace SmartB.UI.UploadedExcelFiles
 {
     public class ExcelHelper
     {
-        public List<SellProductModel> ReadData(string path, out string errorName, out string errorMarket, out string errorPrice)
+        public List<SellProductModel> ReadData(string path, out string errorName, out string errorMarket, out string errorPrice, out int errorCount)
         {
             OleDbConnection oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" +
           path + ";Extended Properties='Excel 12.0;HDR=YES;IMEX=1;';");
             errorName = "";
             errorMarket = "";
             errorPrice = "";
+            errorCount = 0;
             try
             {
 
@@ -31,7 +32,8 @@ namespace SmartB.UI.UploadedExcelFiles
 
                 cmd.Connection = oledbConn;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT [TenSanPham],[TenCho],[Gia] FROM [Sheet1$]";
+              // cmd.CommandText = "SELECT [Tên Sản Phẩm],[Tên Chợ],[Giá] FROM [Sheet1$]";
+                cmd.CommandText = "SELECT * FROM [sheet1$B2:D2000]";
 
                 OleDbDataAdapter oleda = new OleDbDataAdapter(cmd);
                 oleda.Fill(ds, "SellProduct");
@@ -46,26 +48,35 @@ namespace SmartB.UI.UploadedExcelFiles
                     {
                         SellProductModel sellProduct = new SellProductModel();
                         sellProduct.Name = row.ItemArray[0].ToString();
-                        if (sellProduct.Name.Length < 5 || sellProduct.Name.Length > 20)
+                        if (sellProduct.Name.Length < 5 || sellProduct.Name.Length > 100)
                         {
-                            InvalidNumberException invalidNumberException = new InvalidNumberException("Tên sản phẩm phải từ 5 đến 20 ký tự");
+                            InvalidNumberException invalidNumberException = new InvalidNumberException("Tên sản phẩm phải từ 5 đến 100 ký tự");
                             errorName = invalidNumberException.Message;
+                            errorCount++;
                         }
                         sellProduct.MarketName = row.ItemArray[1].ToString();
                         if (sellProduct.MarketName.Length < 5 || sellProduct.MarketName.Length > 20)
                         {
                             InvalidNumberException invalidNumberException = new InvalidNumberException("Tên chợ phải từ 5 đến 20 ký tự");
                             errorMarket = invalidNumberException.Message;
+                            errorCount++;
                         }
                         int price = 0;
 
                         try
                         {
+                            //if (row.ItemArray[2] != @"^[0-9]+$") 
+                            //{
+                            //    InvalidNumberException invalidNumberException = new InvalidNumberException("Giá phải từ 1 đến 10000");
+                            //    errorPrice = invalidNumberException.Message;
+                            //    price = row.ItemArray[2].ToString().FirstOrDefault();
+                            //}else 
                             price = Int32.Parse(row.ItemArray[2].ToString());
-                            if (price < 1 || price > 10000)
+                            if (price < 1 || price > 10000 )
                             {
                                 InvalidNumberException invalidNumberException = new InvalidNumberException("Giá phải từ 1 đến 10000");
                                 errorPrice = invalidNumberException.Message;
+                                errorCount++;
                             }
                         }
                         catch (ArgumentNullException argumentNullException)
