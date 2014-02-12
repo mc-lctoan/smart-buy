@@ -87,7 +87,7 @@ namespace SmartB.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveProducts(List<ExcelUtilities.SellProduct> model)
+        public ActionResult SaveProducts(List<SellProductModel> model)
         {
             if (ModelState.IsValid)
             {
