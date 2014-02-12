@@ -15,6 +15,22 @@
 
 @using (Html.BeginForm("SaveProducts", "Product"))
 {
+    if (@ViewBag.countInsert != null || @ViewBag.countUpdate != null)
+    {
+        if (@ViewBag.countInsert.ToString() != "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() != "Có 0 sản phẩm được cập nhật giá.")
+        {
+          <label style="color: blue;font-weight:bold;font-size:larger">@ViewBag.countUpdate </label>
+          <label style="color: blue;font-weight:bold;font-size:larger">@ViewBag.countInsert</label>
+        }
+        else if (@ViewBag.countInsert.ToString() == "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() != "Có 0 sản phẩm được cập nhật giá.")
+        { 
+        <label style="color: blue;font-weight:bold;font-size:larger">@ViewBag.countUpdate </label>
+        }
+        else if (@ViewBag.countInsert.ToString() != "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() == "Có 0 sản phẩm được cập nhật giá.")
+        {
+        <label style="color: blue;font-weight:bold;font-size:larger">@ViewBag.countInsert</label>
+        }
+    }
     if (@ViewBag.errorCount >= 5)
     {
          <label style="color: red;font-weight:bold;font-size:larger"> <text>File có quá nhiều lỗi.</text><br />
@@ -39,7 +55,7 @@
     {
     <label style="color: red"> @ViewBag.ExceptionPrice</label>
     }
-    if (Model != null && @ViewBag.ExceptionName != "External table is not in the expected format." )
+    if (Model != null && @ViewBag.ExceptionName != "External table is not in the expected format.")
     {
     <table class="table">
         

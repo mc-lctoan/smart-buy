@@ -36,6 +36,8 @@ namespace SmartB.UI.Controllers
 
         public ActionResult UploadProduct()
         {
+            ViewBag.countInsert = TempData["InsertMessage"] as string;
+            ViewBag.countUpdate = TempData["UpdateMessage"] as string;
             return View();
         }
 
@@ -57,6 +59,10 @@ namespace SmartB.UI.Controllers
                 string errorMarket = "";
                 string errorPrice = "";
                 int errorCount = 0; // Đếm tổng số lỗi
+                //int countInsert = 0;
+                //int countUpdate = 0;
+                //ViewBag.countInsert = countInsert;
+                //ViewBag.countUpdate = countUpdate;
                 try
                 {
                     sellProductCollection = excelHelper.ReadData((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice, out errorCount);
@@ -85,26 +91,29 @@ namespace SmartB.UI.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Trạng thái khi lưu xuống db
+                int countUpdate = 0;
+                int countInsert = 0;
                 foreach (var product in model)
                 {
                     SmartBuyEntities db = new SmartBuyEntities();
-                   //Trạng thái khi lưu xuống db
-                   int countUpdate = 0;
-                   int countInsert = 0;
+                   
                     //Trung db
                     var dupMarket = db.Markets.Where(m => m.Name.Equals(product.MarketName)).FirstOrDefault();
                     var dupProduct = db.Products.Where(p => p.Name.Equals(product.Name)).FirstOrDefault();
 
                     if (dupMarket != null & dupProduct != null)
                     {
-                        var sellProduct = db.SellProducts.Where(s => s.MarketId == dupMarket.Id).FirstOrDefault();
+                        var sellProduct = db.SellProducts.Where(s => s.ProductId == dupProduct.Id && s.MarketId == dupMarket.Id).FirstOrDefault();
+                        if (sellProduct.SellPrice != product.Price)
                         {
-                            if (product.Price > 0)
-                            {
-                                sellProduct.SellPrice = product.Price;
-                            }
-                        };
-                        countUpdate++;
+                            sellProduct.SellPrice = product.Price;
+                            countUpdate++;
+                        }
+                        else
+                        {
+                            sellProduct.SellPrice = product.Price;                           
+                        }
                         //if (product.Price > 0)
                         //{
                         //    var addedSellProduct = db.SellProducts.Add(sellProduct);
@@ -174,12 +183,14 @@ namespace SmartB.UI.Controllers
                             SellPrice = product.Price,
                             LastUpdatedTime = DateTime.Now
                         };
-                        var addedSellProduct = db.SellProducts.Add(sellProduct); // add sellProduct                        
+                        var addedSellProduct = db.SellProducts.Add(sellProduct); // add sellProduct    
+                        countInsert++;
                         db.SaveChanges(); // Save to database
-                    }
+                    }                   
                 }
+                TempData["UpdateMessage"] = "Có " + countUpdate + " sản phẩm được cập nhật giá.";
+                TempData["InsertMessage"] = "Có " + countInsert + " sản phẩm được lưu mới.";
             }
-            
             return RedirectToAction("UploadProduct");
         }
     }
