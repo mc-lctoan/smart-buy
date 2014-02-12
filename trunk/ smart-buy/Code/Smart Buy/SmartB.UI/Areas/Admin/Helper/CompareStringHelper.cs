@@ -7,10 +7,17 @@ namespace SmartB.UI.Areas.Admin.Helper
 {
     public static class CompareStringHelper
     {
+        /// <summary>
+        /// Compare two strings for their matching percent
+        /// </summary>
+        /// <param name="str1">First string</param>
+        /// <param name="str2">Second string</param>
+        /// <returns>The matching percent</returns>
         public static double CompareString(string str1, string str2)
         {
             List<string> pairs1 = WordLetterPair(str1.ToUpper());
             List<string> pairs2 = WordLetterPair(str2.ToUpper());
+
             int union = pairs1.Count + pairs2.Count;
             int intersection = 0;
 
@@ -40,7 +47,7 @@ namespace SmartB.UI.Areas.Admin.Helper
             string[] words = str.Split(' ');
             foreach (string word in words)
             {
-                List<string> tmp = LetterPair(word);
+                IEnumerable<string> tmp = LetterPair(word);
                 foreach (string s in tmp)
                 {
                     allPairs.Add(s);
@@ -54,9 +61,14 @@ namespace SmartB.UI.Areas.Admin.Helper
         /// </summary>
         /// <param name="str">Input string</param>
         /// <returns>An list of adjacent letter pairs contained in the input string</returns>
-        private static List<string> LetterPair(string str)
+        private static IEnumerable<string> LetterPair(string str)
         {
             var pairs = new List<string>();
+            if (str.Length == 1)
+            {
+                pairs.Add(str);
+                return pairs;
+            }
             for (int i = 0; i < str.Length - 1; i++)
             {
                 string tmp = str.Substring(i, 2);
