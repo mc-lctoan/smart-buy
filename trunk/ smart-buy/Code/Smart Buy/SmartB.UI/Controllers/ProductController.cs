@@ -60,10 +60,7 @@ namespace SmartB.UI.Controllers
                 string errorMarket = "";
                 string errorPrice = "";
                 int errorCount = 0; // Đếm tổng số lỗi
-                //int countInsert = 0;
-                //int countUpdate = 0;
-                //ViewBag.countInsert = countInsert;
-                //ViewBag.countUpdate = countUpdate;
+                
                 try
                 {
                     sellProductCollection = excelHelper.ReadData((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice, out errorCount);
@@ -114,11 +111,7 @@ namespace SmartB.UI.Controllers
                         else
                         {
                             sellProduct.SellPrice = product.Price;
-                        }
-                        //if (product.Price > 0)
-                        //{
-                        //    var addedSellProduct = db.SellProducts.Add(sellProduct);
-                        //}
+                        }                        
                         db.SaveChanges(); // Save to database
                     }
                     else if (dupMarket != null & dupProduct == null)
