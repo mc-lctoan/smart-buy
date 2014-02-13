@@ -65,17 +65,34 @@ namespace SmartB.UI.UploadedExcelFiles
                             errorMarket = invalidNumberException.Message;
                             errorCount++;
                         }
-                        var price = 0;
-                        Int32.TryParse(row.ItemArray[3].ToString(), out price);
-                        sellProduct.Price = price;
-                        if (sellProduct.Price < 1 || sellProduct.Price > 10000)
+                        try
                         {
-                            InvalidNumberException invalidNumberException = new InvalidNumberException("Giá phải từ 1 đến 10000");
-                            errorPrice = invalidNumberException.Message;
-                            errorCount++;
+                            var price = 0;
+                            Int32.TryParse(row.ItemArray[3].ToString(), out price);
+                            sellProduct.Price = price;
+                            if (sellProduct.Price < 1 || sellProduct.Price > 10000)
+                            {
+                                InvalidNumberException invalidNumberException = new InvalidNumberException("Giá phải từ 1 đến 10000");
+                                errorPrice = invalidNumberException.Message;
+                                errorCount++;
+                            }
                         }
-
-                        sellProductCollection.Add(sellProduct);
+                        catch (ArgumentNullException argumentNullException)
+                        {
+                            throw argumentNullException;
+                        }
+                        catch (FormatException formatException)
+                        {
+                            throw formatException;
+                        }
+                        catch (OverflowException overflowException)
+                        {
+                            throw overflowException;
+                        }
+                        finally
+                        {
+                            sellProductCollection.Add(sellProduct);
+                        }
                     }
                     return sellProductCollection;
                 }
@@ -143,20 +160,36 @@ namespace SmartB.UI.UploadedExcelFiles
                         {
                             error = true;
                         }
-
-                             int price = 0;
-                            Int32.TryParse(row.ItemArray[3].ToString(),out price);
+                        try
+                        {
+                            int price = 0;
+                            Int32.TryParse(row.ItemArray[3].ToString(), out price);
                             sellProductCorrect.Price = price;
 
                             if (sellProductCorrect.Price < 1 || sellProductCorrect.Price > 10000)
                             {
                                 error = true;
                             }
-
+                        }
+                        catch (ArgumentNullException argumentNullException)
+                        {
+                            throw argumentNullException;
+                        }
+                        catch (FormatException formatException)
+                        {
+                            throw formatException;
+                        }
+                        catch (OverflowException overflowException)
+                        {
+                            throw overflowException;
+                        }
+                        finally
+                        {
                             if (error == false)
                             {
                                 sellProductCorrectCollection.Add(sellProductCorrect);
                             }
+                        }
                     }
                     return sellProductCorrectCollection;
                 }
@@ -235,21 +268,37 @@ namespace SmartB.UI.UploadedExcelFiles
                             error = true;
                             errorCount++;
                         }
-
-                        int price = 0;
-                        Int32.TryParse(row.ItemArray[3].ToString(), out price);
-                        sellProductError.Price = price;
-                        if (sellProductError.Price < 1 || sellProductError.Price > 10000)
+                        try
                         {
-                            InvalidNumberException invalidNumberException = new InvalidNumberException("Giá phải từ 1 đến 10000");
-                            errorPrice = invalidNumberException.Message;
-                            error = true;
-                            errorCount++;
+                            int price = 0;
+                            Int32.TryParse(row.ItemArray[3].ToString(), out price);
+                            sellProductError.Price = price;
+                            if (sellProductError.Price < 1 || sellProductError.Price > 10000)
+                            {
+                                InvalidNumberException invalidNumberException = new InvalidNumberException("Giá phải từ 1 đến 10000");
+                                errorPrice = invalidNumberException.Message;
+                                error = true;
+                                errorCount++;
+                            }
                         }
-
-                        if (error)
+                        catch (ArgumentNullException argumentNullException)
                         {
-                            sellProductErrorCollection.Add(sellProductError);
+                            throw argumentNullException;
+                        }
+                        catch (FormatException formatException)
+                        {
+                            throw formatException;
+                        }
+                        catch (OverflowException overflowException)
+                        {
+                            throw overflowException;
+                        }
+                        finally
+                        {
+                            if (error)
+                            {
+                                sellProductErrorCollection.Add(sellProductError);
+                            }
                         }
                     }
                     return sellProductErrorCollection;

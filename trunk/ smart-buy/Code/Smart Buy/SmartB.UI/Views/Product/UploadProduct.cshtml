@@ -110,7 +110,7 @@
     {
     <label style="color: red"> @ViewBag.ExceptionPrice</label>
     }
-    if (Model != null && @ViewBag.errorCount < 5 )
+    if (Model != null && @ViewBag.errorCount < 5 && @ViewBag.ExceptionName != "External table is not in the expected format." )
     {
         if (@ViewBag.errorCount > 0)
         {
