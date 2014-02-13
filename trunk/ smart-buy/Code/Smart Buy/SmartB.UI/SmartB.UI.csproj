@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentScheduler">
+      <HintPath>..\packages\FluentScheduler.3.1.42\lib\net40\FluentScheduler.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -187,8 +190,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\LogFileController.cs" />
     <Compile Include="Areas\Admin\Controllers\ParserController.cs" />
+    <Compile Include="Areas\Admin\Helper\CompareStringHelper.cs" />
+    <Compile Include="Areas\Admin\Helper\LogFileHelper.cs" />
     <Compile Include="Areas\Admin\Helper\ParseHelper.cs" />
+    <Compile Include="Areas\Admin\Models\LogInfo.cs" />
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
     <Compile Include="Areas\Admin\Models\ProductInfo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -200,6 +207,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\JsonContentNegotiator.cs" />
+    <Compile Include="Infrastructure\ParseService.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\EntityFramework\History.cs">
       <DependentUpon>SmartBuy.tt</DependentUpon>
@@ -410,6 +418,7 @@
     <Content Include="Metro\fonts\iconFont.ttf" />
     <Content Include="Metro\fonts\iconFont.woff" />
     <Content Include="Metro\js\metro\README.md" />
+    <Content Include="Areas\Admin\Views\LogFile\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -472,6 +481,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\LogFiles\" />
     <Folder Include="Areas\Admin\SavedPages\" />
   </ItemGroup>
   <ItemGroup>

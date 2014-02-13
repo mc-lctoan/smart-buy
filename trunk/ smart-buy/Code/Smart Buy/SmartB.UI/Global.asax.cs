@@ -6,6 +6,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using FluentScheduler;
+using SmartB.UI.Infrastructure;
 
 namespace SmartB.UI
 {
@@ -23,6 +25,9 @@ namespace SmartB.UI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            Application["LogPath"] = Server.MapPath("~/Areas/Admin/LogFiles/");
+            TaskManager.Initialize(new ParseService(Application["LogPath"].ToString()));
         }
     }
 }

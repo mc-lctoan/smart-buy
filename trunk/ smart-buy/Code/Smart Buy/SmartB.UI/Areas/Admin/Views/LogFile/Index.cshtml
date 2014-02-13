@@ -1,0 +1,38 @@
+﻿@model List<SmartB.UI.Models.EntityFramework.LogFile>
+
+@{
+    ViewBag.Title = "Smart Buy | Quản lý log files";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Quản lý log files</h2>
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table bordered hovered">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Ngày chạy</th>
+                <th>Giờ chạy</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model[i].CreatedTime.Value.ToShortDateString()</td>
+                    <td>@Model[i].CreatedTime.Value.ToShortTimeString()</td>
+                    <td>
+                        <a href="@Url.Content("~/Areas/Admin/LogFiles/" + Model[i].FileName)" target="_blank">Xem</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h2>Không có log file!</h2>
+}

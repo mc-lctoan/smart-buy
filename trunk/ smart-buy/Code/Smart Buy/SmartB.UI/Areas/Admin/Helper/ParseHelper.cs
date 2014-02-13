@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using HtmlAgilityPack;
+using SmartB.UI.Areas.Admin.Models;
 using SmartB.UI.Models.EntityFramework;
 
 namespace SmartB.UI.Areas.Admin.Helper
@@ -49,8 +52,14 @@ namespace SmartB.UI.Areas.Admin.Helper
             }
         }
 
-        public static bool ParseData()
+        public static void ParseData(string path)
         {
+            // Stopwatch to measure elapsed time
+            var stopwatch = new Stopwatch();
+
+            // Store parsing info
+            var logInfos = new List<LogInfo>();
+
             // Create Firefox browser
             var web = new HtmlWeb { UserAgent = "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0" };
 
@@ -59,6 +68,8 @@ namespace SmartB.UI.Areas.Admin.Helper
                 var info = context.ParseInfoes.Where(x => x.IsActive);
                 foreach (var parseInfo in info)
                 {
+                    stopwatch.Start();
+
                     // Load website
                     HtmlDocument doc = web.Load(parseInfo.ParseLink);
 
@@ -74,14 +85,26 @@ namespace SmartB.UI.Areas.Admin.Helper
                         .Select(x => x.InnerText)
                         .ToList();
 
+                    stopwatch.Stop();
+
+                    var log = new LogInfo
+                                  {
+                                      Link = parseInfo.ParseLink,
+                                      ElapsedTime = stopwatch.Elapsed.Milliseconds,
+                                      TotalItems = names.Count > prices.Count ? prices.Count : names.Count
+                                  };
+
                     // Match name with price
                     var data = MatchNamePrice(names, prices);
 
                     // Insert to database
-                    InsertProductToDb(data, parseInfo.MarketId.Value);
+                    log.ToDatabase = InsertProductToDb(data, parseInfo.MarketId.Value);
+
+                    logInfos.Add(log);
+                    stopwatch.Reset();
                 }
             }
-            return true;
+            LogFileHelper.GenerateLogFile(logInfos, path);
         }
 
         private static IEnumerable<KeyValuePair<string, string>> MatchNamePrice(List<string> names, List<string> prices)
@@ -89,21 +112,12 @@ namespace SmartB.UI.Areas.Admin.Helper
             var result = new List<KeyValuePair<string, string>>();
 
             // User the shorter as base
-            if (names.Count < prices.Count)
+            int length = names.Count < prices.Count ? names.Count : prices.Count;
+
+            for (int i = 0; i < length; i++)
             {
-                for (int i = 0; i < names.Count; i++)
-                {
-                    var pair = new KeyValuePair<string, string>(names[i], prices[i]);
-                    result.Add(pair);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < prices.Count; i++)
-                {
-                    var pair = new KeyValuePair<string, string>(names[i], prices[i]);
-                    result.Add(pair);
-                }
+                var pair = new KeyValuePair<string, string>(names[i], prices[i]);
+                result.Add(pair);
             }
             return result;
         }
@@ -123,8 +137,9 @@ namespace SmartB.UI.Areas.Admin.Helper
             return (int) tmp;
         }
 
-        private static void InsertProductToDb(IEnumerable<KeyValuePair<string, string>> data, int marketId)
+        private static int InsertProductToDb(IEnumerable<KeyValuePair<string, string>> data, int marketId)
         {
+            int success = 0;
             using (var context = new SmartBuyEntities())
             {
                 foreach (var pair in data)
@@ -156,7 +171,15 @@ namespace SmartB.UI.Areas.Admin.Helper
 
                         // Save to database
                         product.ProductAttributes.Add(attribute);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.SaveChanges();
+                            success++;
+                        }
+                        catch (DbUpdateException)
+                        {
+                            // Do nothing
+                        }
                     }
                     else
                     {
@@ -182,10 +205,19 @@ namespace SmartB.UI.Areas.Admin.Helper
                         newProduct.SellProducts.Add(sell);
 
                         context.Products.Add(newProduct);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.SaveChanges();
+                            success++;
+                        }
+                        catch (DbUpdateException)
+                        {
+                            // Do nothing
+                        }
                     }
                 }
             }
+            return success;
         }
     }
 }
