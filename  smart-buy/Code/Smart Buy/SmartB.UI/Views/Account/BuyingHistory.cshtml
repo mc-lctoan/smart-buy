@@ -1,98 +1,47 @@
 ﻿@{
     ViewBag.Title = "Lịch sử mua sắm";
 }
-
+@model IEnumerable<SmartB.UI.Models.EntityFramework.History>
 <h2>Lịch sử mua sắm</h2>
 <table class="table bordered hovered">
     <thead>
         <tr>
             <th>STT</th>
             <th>Ngày mua</th>
-            <th>Tổng tiền (nghìn đồng)</th>
+            <th>Sản phẩm</th>
             <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>20/1/2014</td>
-            <td>200 - 250</td>
-            <td>
-                <button>
-                    <i class="icon-clipboard-2"></i>
-                    Chi tiết
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>21/1/2014</td>
-            <td>150 - 170</td>
-            <td>
-                <button>
-                    <i class="icon-clipboard-2"></i>
-                    Chi tiết
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>22/1/2014</td>
-            <td>100 - 120</td>
-            <td>
-                <button>
-                    <i class="icon-clipboard-2"></i>
-                    Chi tiết
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>23/1/2014</td>
-            <td>115 - 130</td>
-            <td>
-                <button>
-                    <i class="icon-clipboard-2"></i>
-                    Chi tiết
-                </button>
-            </td>
-        </tr>
+        @{var i = 0;}
+        @foreach (var item in Model)
+        {
+            
+            <tr>
+                <td>@{
+            i++;
+                }
+                    @i
+                </td>
+                <td>
+                    @{
+            var historyID = item.Id;
+            var buyTime = item.BuyTime;
+            string buytimeFormat = String.Format("{0:dd/MM/yyyy}", buyTime);
+                    }
+                    @buytimeFormat
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Product.Name)</td>
+                <td>                   
+                        <button onclick="deleteItemHistory('@historyID')">
+                            <i class="icon-cancel-2"></i>
+                            Xóa
+                        </button>
+                        
+                </td>
+            </tr>
+        }
+
     </tbody>
 </table>
 
-<h2>Chi tiết</h2>
-<table class="table bordered hovered">
-    <thead>
-        <tr>
-            <th>STT</th>
-            <th>Tên sản phẩm</th>
-            <th>Giá sản phẩm (nghìn đồng)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>Thịt bò</td>
-            <td>100 - 120</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Thịt heo</td>
-            <td>80 - 100</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Thịt gà</td>
-            <td>50 - 70</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>Thịt cừu</td>
-            <td>90 - 110</td>
-        </tr>
-    </tbody>
-</table>
-<button class="primary">
-    <i class="icon-copy"></i>
-    Sao chép
-</button>
