@@ -70,7 +70,8 @@ function showCart(items, tableID) {
         alert("Your browser is not support storage.");
     }
     
-    if (items.length == 0) {        
+    if (items.length == 0) {
+        document.getElementById('btnSaveCart').setAttribute('disabled', 'true');
         document.getElementById('itemCart').deleteRow(1);
     }
 }
@@ -101,12 +102,12 @@ function addRow(tableId, items) {
         //quantity
         newCell = newRow.insertCell(newRow.cells.length);
         newCell.innerHTML = "<div class='input-control text size1'>"
-                   + "<input type='number' id='quantityItem" + items[i].id + "'value='" + items[i].quantity + "'min='0' max='10' step='0.1'/></div>";
+                   + "<input type='number' id='quantityItem" + items[i].id + "'value='" + items[i].quantity
+                   + "'min='0,1' max='10' step='0.1' onblur=\"updateCart('" + items[i].id + "')\"/></div>";
 
         //thao tác
         newCell = newRow.insertCell(newRow.cells.length);
-        newCell.innerHTML = "<button onclick=\"updateCart('" + items[i].id + "')\"><i class='icon-checkmark'></i>Cập nhật</button>"
-                + " <button onclick=\"removeCartItem('" + items[i].id + "')\"><i class='icon-cancel-2'></i>Xóa</button>";
+        newCell.innerHTML = "<button onclick=\"removeCartItem('" + items[i].id + "')\"><i class='icon-cancel-2'></i> Xóa </button>";
 
     }
     newRow = tableElement.insertRow(tableElement.rows.length);
@@ -169,4 +170,53 @@ function removeCartItem(id) {
     document.getElementById('totalProduct').innerHTML = "( " + ttp + " )";
 
     location.reload();
+}
+
+function saveCart() {
+    var cart = eval(sessionStorage.cart);
+    var cartHistory = [];
+    for (var i = 0; i < cart.length; i++) {
+        cartHistory[i] = {
+            Username: 'Sergey Pimenov',
+            ProductId: cart[i].id,
+        }
+    }
+    var listCartHistory = JSON.stringify(cartHistory);
+    $.ajax({
+        type: 'GET',
+        url: 'SaveCart',
+        data: { 'listCartHistory': listCartHistory },
+        contentType: "application/json",
+        dataType: 'json',
+        success: function (data) {
+            if (data == true) {
+                document.getElementById('saveCartStatus').innerHTML = "(*) Giỏ hàng đã được lưu thành công";
+            } else {
+                document.getElementById('saveCartStatus').innerHTML = "(*) Có lỗi xảy ra. Vui lòng thử lại sau";
+            }
+        },
+        error: function (e) {
+            document.getElementById('saveCartStatus').innerHTML = "(*) " + e.message;
+        }
+    })
+}
+
+function deleteItemHistory(id) {
+    $.ajax({
+        type: 'GET',
+        url: 'DeleteItemHistory',
+        data: { 'historyId': id },
+        contentType: "application/json",
+        dataType: 'json',
+        success: function (data) {
+            if (data == true) {
+                location.reload();
+            } else {
+                alert("Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
+        },
+        error: function (e) {
+            alert("Có lỗi xảy ra. Vui lòng thử lại sau");
+        }
+    })
 }

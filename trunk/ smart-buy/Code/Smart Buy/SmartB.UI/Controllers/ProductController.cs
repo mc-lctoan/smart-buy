@@ -7,6 +7,7 @@ using SmartB.UI.Models.EntityFramework;
 using System.Data.Entity;
 using SmartB.UI.Models;
 using SmartB.UI.UploadedExcelFiles;
+using System.Web.Script.Serialization;
 
 namespace SmartB.UI.Controllers
 {
@@ -16,10 +17,10 @@ namespace SmartB.UI.Controllers
         // GET: /Product/
         private SmartBuyEntities db = new SmartBuyEntities();
         public ActionResult SearchProduct(String q)
-        {                     
+        {
             if (!String.IsNullOrEmpty(q))
-            {                
-                var products = db.ProductAttributes.Include(x => x.Product).Where(s => s.Product.Name.Contains(q));                
+            {
+                var products = db.ProductAttributes.Include(x => x.Product).Where(s => s.Product.Name.Contains(q));
                 return View(products);
             }
 
@@ -54,7 +55,7 @@ namespace SmartB.UI.Controllers
                 List<SellProductModel> sellProductCollection = new List<SellProductModel>();
 
                 //Catch exception 
-                
+
                 string errorName = "";
                 string errorMarket = "";
                 string errorPrice = "";
@@ -97,7 +98,7 @@ namespace SmartB.UI.Controllers
                 foreach (var product in model)
                 {
                     SmartBuyEntities db = new SmartBuyEntities();
-                   
+
                     //Trung db
                     var dupMarket = db.Markets.Where(m => m.Name.Equals(product.MarketName)).FirstOrDefault();
                     var dupProduct = db.Products.Where(p => p.Name.Equals(product.Name)).FirstOrDefault();
@@ -112,7 +113,7 @@ namespace SmartB.UI.Controllers
                         }
                         else
                         {
-                            sellProduct.SellPrice = product.Price;                           
+                            sellProduct.SellPrice = product.Price;
                         }
                         //if (product.Price > 0)
                         //{
@@ -186,12 +187,48 @@ namespace SmartB.UI.Controllers
                         var addedSellProduct = db.SellProducts.Add(sellProduct); // add sellProduct    
                         countInsert++;
                         db.SaveChanges(); // Save to database
-                    }                   
+                    }
                 }
                 TempData["UpdateMessage"] = "Có " + countUpdate + " sản phẩm được cập nhật giá.";
                 TempData["InsertMessage"] = "Có " + countInsert + " sản phẩm được lưu mới.";
             }
             return RedirectToAction("UploadProduct");
+        }
+
+        [HttpGet, ActionName("SaveCart")]
+        public JsonResult SaveCart(String listCartHistory)
+        {
+            var check = false;
+            JavaScriptSerializer ser = new JavaScriptSerializer();
+            List<CartHistory> dataList = ser.Deserialize<List<CartHistory>>(listCartHistory);
+            try
+            {
+                for (int i = 0; i < dataList.Count; i++)
+                {
+                    var username = dataList[i].Username;
+                    var pid = dataList[i].ProductId;
+                    var now = DateTime.Now.Date;
+                    var dupHistory = db.Histories.Where(his => his.Username == username &&
+                        his.ProductId == pid && his.BuyTime == now).FirstOrDefault();
+                    if (dupHistory == null)
+                    {
+                        var h = new History();
+                        h.Username = username;
+                        h.ProductId = pid;
+                        h.BuyTime = now;
+
+                        db.Histories.Add(h);
+                    }
+                }
+                db.SaveChanges();
+                check = true;
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+
         }
     }
 }

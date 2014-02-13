@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using SmartB.UI.Filters;
 using SmartB.UI.Models;
+using SmartB.UI.Models.EntityFramework;
 
 namespace SmartB.UI.Controllers
 {
@@ -19,7 +20,7 @@ namespace SmartB.UI.Controllers
     {
         //
         // GET: /Account/Login
-
+        private SmartBuyEntities db = new SmartBuyEntities();
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -335,7 +336,27 @@ namespace SmartB.UI.Controllers
 
         public ActionResult BuyingHistory() 
         {
-            return View();
+            var history = db.Histories.Where(h => h.Username.Equals("Sergey Pimenov"));
+            return View(history);
+        }
+        
+        [HttpGet, ActionName("DeleteItemHistory")]
+        public JsonResult DeleteItemHistory(int historyId)
+        {
+            var check = false;
+            try
+            {
+                History history = db.Histories.Find(historyId);
+                db.Histories.Remove(history);
+                db.SaveChanges();
+                check = true;
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         public ActionResult DefineRoute()
