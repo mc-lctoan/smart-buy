@@ -28,12 +28,12 @@
     </nav>
     <div class="grid" style="height: 100%; margin-bottom: 0px;">
         <div class="row" style="margin-top: 0; height: 100%">
-            <div class="span4 bg-dark" style="height: 100%">
+            <div class="span3 bg-dark" style="height: 100%">
                 <nav class="sidebar">
                     <ul>
                         <li class="title">Phần hệ thống</li>
                         <li><a href="#"><i class="icon-cog"></i>Cấu hình hệ thống</a></li>
-                        <li><a href="#"><i class="icon-files"></i>Xem log file<span id="totalProduct"></span></a></li>
+                        <li><a href="@Url.Action("Index", "LogFile")"><i class="icon-files"></i>Xem log file</a></li>
 
                         <li class="title">Phần quản lý</li>
                         <li><a href="#"><i class="icon-cart-2"></i>Quản lý chợ</a></li>
@@ -44,7 +44,7 @@
                     </ul>
                 </nav>
             </div>
-            <div class="span8">@RenderBody()</div>
+            <div class="span9">@RenderBody()</div>
         </div>
     </div>
 </body>

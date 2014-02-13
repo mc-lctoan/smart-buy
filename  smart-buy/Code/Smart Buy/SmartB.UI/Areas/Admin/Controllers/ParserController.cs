@@ -69,14 +69,14 @@ namespace SmartB.UI.Areas.Admin.Controllers
         //[HttpPost]
         public ActionResult ParseData()
         {
-            ParseHelper.ParseData();
+            ParseHelper.ParseData(HttpContext.Application["LogPath"].ToString());
             return View();
         }
 
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
             context.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
