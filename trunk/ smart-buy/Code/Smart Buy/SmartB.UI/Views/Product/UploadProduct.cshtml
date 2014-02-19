@@ -47,7 +47,7 @@
                     var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
 
                     $("#ErrorArea").html("");
-                    $("#ProductTable").append("<tr style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + productName +
+                    $("#ProductTable tr:last").after("<tr style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + productName +
                                              "'></input></td><td style='width:202px'><input value='"+productMarketName+"'>"+
                                             "</input></td><td style='width:176px'><input value='" + productPrice + "'></input><td></tr>")
                     
@@ -170,7 +170,8 @@
         {
      
  <table class="table1" id="ErrorProduct">
-        <lable style="font-size: x-large; font-weight: bold;color:blue">Danh sách sản phẩm bị lỗi</lable>
+        <lable style="font-size: x-large; font-weight: bold;color:blue">Danh sách sản phẩm bị lỗi (<text style="font-size: x-large; font-weight: bold;color:red">@ViewBag.InCorrectSellProductsCount lỗi</text>)
+        </lable>
         <tr style="font-size: 14px;line-height: 14pt;padding: 8px;border-bottom: 1px #eaeaea solid; font-weight: bold">
             <td style="padding: 8px;width:55px;">STT</td>
             <td style="padding: 8px;width:187px;">Tên Sản Phẩm</td>
@@ -221,7 +222,7 @@
         }
         
  <table class="table" id="ProductTable">
-        <lable style="font-size: x-large; font-weight: bold;color:blue">Danh sách sản phẩm</lable>
+        <lable style="font-size: x-large; font-weight: bold;color:blue">Danh sách sản phẩm (@ViewBag.CorrectSellProductsCount sản phẩm)</lable>
         <tr style="font-size: 14px;line-height: 14pt;padding: 8px;border-bottom: 1px #eaeaea solid; font-weight: bold">
             <td style="padding: 8px;width:55px;">STT</td>
             <td style="padding: 8px;width:187px;">Tên Sản Phẩm</td>
@@ -241,7 +242,7 @@
                }
                else
                {
-                   <td style="width:187px">@Html.TextBoxFor(model => model.CorrectSellProducts[i].Name)</td>
+                   <td style="width:187px">@Html.TextBoxFor(model => model.CorrectSellProducts[i].Name, new {@readonly = "readonly" })</td>
                    <span><p style="color:Red">@Html.ValidationMessageFor(model => model.CorrectSellProducts[i].Name)</p></span>
                }
                 @if (@Model.CorrectSellProducts[i].MarketName.Length < 5 || @Model.CorrectSellProducts[i].MarketName.Length > 20)
@@ -251,7 +252,7 @@
                 }
                 else
                 {
-                    <td style="width:202px">@Html.TextBoxFor(model => model.CorrectSellProducts[i].MarketName)</td> 
+                    <td style="width:202px">@Html.TextBoxFor(model => model.CorrectSellProducts[i].MarketName, new {@readonly = "readonly" })</td> 
                      <span><p style="color:Red">@Html.ValidationMessageFor(model => model.CorrectSellProducts[i].MarketName)</p></span>
                                        
                 }
@@ -262,7 +263,7 @@
                 }
                 else
                 {
-                    <td style="width:176px">@Html.TextBoxFor(model => model.CorrectSellProducts[i].Price)</td>
+                    <td style="width:176px">@Html.TextBoxFor(model => model.CorrectSellProducts[i].Price, new {@readonly = "readonly" })</td>
                      <span><p style="color:Red">@Html.ValidationMessageFor(model => model.CorrectSellProducts[i].Price)</p></span>
                 }
                 

@@ -8,6 +8,8 @@ using System.Data.Entity;
 using SmartB.UI.Models;
 using SmartB.UI.UploadedExcelFiles;
 using System.Web.Script.Serialization;
+using SmartB.UI.Areas.Admin.Helper;
+using PagedList;
 
 namespace SmartB.UI.Controllers
 {
@@ -43,9 +45,9 @@ namespace SmartB.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadProduct(HttpPostedFileBase excelFile)
+        public ActionResult UploadProduct(HttpPostedFileBase excelFile, int? page)
         {
-
+            
             if (excelFile != null)
             {
                 Guid guid = Guid.NewGuid();
@@ -62,11 +64,7 @@ namespace SmartB.UI.Controllers
                 string errorName = "";
                 string errorMarket = "";
                 string errorPrice = "";
-                int errorCount = 0; // Đếm tổng số lỗi
-                //int countInsert = 0;
-                //int countUpdate = 0;
-                //ViewBag.countInsert = countInsert;
-                //ViewBag.countUpdate = countUpdate;
+                int errorCount = 0; 
                 try
                 {
                     //sellProductCollection = excelHelper.ReadData((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice, out errorCount);
@@ -80,6 +78,8 @@ namespace SmartB.UI.Controllers
                     ViewBag.ExceptionMarket = errorMarket;
                     ViewBag.ExceptionPrice = errorPrice;
                     ViewBag.errorCount = errorCount;
+                    ViewBag.InCorrectSellProductsCount = sellProductErrorCollection.Count();
+                    ViewBag.CorrectSellProductsCount = sellProductCorrectCollection.Count();
                     TempData["CorrectProducts"] = sellProductCorrectCollection;
                     Session["CorrectProducts"] = sellProductCorrectCollection;
                     ViewBag.Test = "test";
@@ -93,7 +93,7 @@ namespace SmartB.UI.Controllers
                     ViewBag.errorCount = errorCount;
                 }
                 return View(model);
-            }
+            }            
             return View();
         }
 
@@ -102,8 +102,6 @@ namespace SmartB.UI.Controllers
         {
             model.CorrectSellProducts = (List<SellProductModel>)Session["CorrectProducts"];
             var errors = ModelState.Values.Where(x => x.Errors.Count > 0);
-            //if (ModelState.IsValid)
-            //{
                 //Trạng thái khi lưu xuống db
                 int countUpdate = 0;
                 int countInsert = 0;
@@ -111,13 +109,15 @@ namespace SmartB.UI.Controllers
                 {
                     SmartBuyEntities db = new SmartBuyEntities();
 
-                    //Trung db
+                    //Trùng data
+                    var productNameFirst = product.Name.Split(';').First(); // Cắt chuỗi 
                     var dupMarket = db.Markets.Where(m => m.Name.Equals(product.MarketName)).FirstOrDefault();
-                    var dupProduct = db.Products.Where(p => p.Name.Equals(product.Name)).FirstOrDefault();
-
+                    var dupProduct = db.Products.Where(p => p.Name.Equals(productNameFirst)).FirstOrDefault();
+                    
                     if (dupMarket != null & dupProduct != null)
                     {
                         var sellProduct = db.SellProducts.Where(s => s.ProductId == dupProduct.Id && s.MarketId == dupMarket.Id).FirstOrDefault();
+                        // Check sellProduct có trùng không??
                         if (sellProduct == null)
                         {
                             var sellProduct1 = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
@@ -128,6 +128,7 @@ namespace SmartB.UI.Controllers
                                 LastUpdatedTime = DateTime.Now
                             };
                             var addedSellProduct = db.SellProducts.Add(sellProduct1);
+                           
                             countInsert++;
                             db.SaveChanges(); // Save to database
                         }
@@ -141,23 +142,38 @@ namespace SmartB.UI.Controllers
                             else
                             {
                                 sellProduct.SellPrice = product.Price;
-                            }
+                            }                            
                         }
-                        //if (product.Price > 0)
-                        //{
-                        //    var addedSellProduct = db.SellProducts.Add(sellProduct);
-                        //}
+                        // Cập nhật giá Min, Max
+                        var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
+                        if (product.Price < dupProductAtt.MinPrice)
+                        {
+                            dupProductAtt.MinPrice = product.Price;
+                        }
+                        else if (product.Price > dupProductAtt.MaxPrice)
+                        {
+                            dupProductAtt.MaxPrice = product.Price;
+                        } 
                         db.SaveChanges(); // Save to database
                     }
-                    else if (dupMarket != null & dupProduct == null)
+                    else if (dupMarket != null & dupProduct == null) // Trùng Market
                     {
                         var newProduct = new SmartB.UI.Models.EntityFramework.Product // add Product
                         {
-                            Name = product.Name,
+                            Name = productNameFirst,
                             IsActive = true,
                         };
                         var addedProduct = db.Products.Add(newProduct);
-
+                        //add new product Attribute                       
+                            var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
+                            {
+                                ProductId = product.Id,
+                                MinPrice = product.Price,
+                                MaxPrice = product.Price,
+                                LastUpdatedTime = DateTime.Now,
+                            };
+                            var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                        
                         var sellProduct = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
                         {
                             Market = dupMarket,
@@ -169,8 +185,16 @@ namespace SmartB.UI.Controllers
                         countInsert++;
                         db.SaveChanges(); // Save to database
                     }
-                    else if (dupMarket == null & dupProduct != null)
+                    else if (dupMarket == null & dupProduct != null) // Trùng Tên sản phẩm
                     {
+                        var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
+                        if (product.Price < dupProductAtt.MinPrice)
+                        {
+                            dupProductAtt.MinPrice = product.Price;
+                        } else if (product.Price > dupProductAtt.MaxPrice)
+                        {
+                            dupProductAtt.MaxPrice = product.Price;
+                        }   
                         var market = new Market
                         {
                             Name = product.MarketName,
@@ -189,8 +213,8 @@ namespace SmartB.UI.Controllers
                         countInsert++;
                         db.SaveChanges(); // Save to database
                     }
-                    else
-                    {
+                    else  //Insert sellProduct mới
+                    { 
                         var market = new Market
                         {
                             Name = product.MarketName,
@@ -200,7 +224,7 @@ namespace SmartB.UI.Controllers
 
                         var newProduct = new SmartB.UI.Models.EntityFramework.Product
                         {
-                            Name = product.Name,
+                            Name = productNameFirst,
                             IsActive = true,
                         };
                         var addedProduct = db.Products.Add(newProduct); // add product
@@ -212,7 +236,32 @@ namespace SmartB.UI.Controllers
                             SellPrice = product.Price,
                             LastUpdatedTime = DateTime.Now
                         };
-                        var addedSellProduct = db.SellProducts.Add(sellProduct); // add sellProduct    
+                        var addedSellProduct = db.SellProducts.Add(sellProduct); // add sellProduct  
+                        //add product Attribute
+                        var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(sellProduct.ProductId)).FirstOrDefault();
+                        if (dupProductAtt == null) //không trùng productAtt thì thêm mới
+                        {
+                            var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
+                            {
+                                ProductId = product.Id,
+                                MinPrice = product.Price,
+                                MaxPrice = product.Price,
+                                LastUpdatedTime = DateTime.Now,
+                            };
+                            var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                        }
+                        else
+                        {
+                            if (product.Price < dupProductAtt.MinPrice)
+                            {
+                                dupProductAtt.MinPrice = product.Price;
+                            }
+                            else if (product.Price > dupProductAtt.MaxPrice)
+                            {
+                                dupProductAtt.MaxPrice = product.Price;
+                            }
+                            db.SaveChanges(); // Save to database
+                        }
                         countInsert++;
                         db.SaveChanges(); // Save to database
                     }
@@ -220,7 +269,6 @@ namespace SmartB.UI.Controllers
                 
                 TempData["UpdateMessage"] = "Có " + countUpdate + " sản phẩm được cập nhật giá.";
                 TempData["InsertMessage"] = "Có " + countInsert + " sản phẩm được lưu mới.";
-           // }
             return RedirectToAction("UploadProduct");
         }
 
@@ -295,5 +343,13 @@ namespace SmartB.UI.Controllers
                 
             return Json(error);
         }
+
+        //private static List<string> WordLetterPair(string str) 
+        //{
+        //    var allPairs = new List<string>();
+        //    string[] words = str.Split(';');
+        //    words.FirstOrDefault();
+        //    return allPairs;
+        //} 
     }
 }

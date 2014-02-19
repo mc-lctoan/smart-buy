@@ -156,6 +156,7 @@ namespace SmartB.UI.UploadedExcelFiles
 
                 DataTableCollection tables = ds.Tables;
                 List<SellProductModel> sellProductCorrectCollection = new List<SellProductModel>();
+                List<SellProductModel> dupSellProductCorrectCollection = new List<SellProductModel>();
                 for (int i = 0; i < tables.Count; i++)
                 {
                     
@@ -164,14 +165,15 @@ namespace SmartB.UI.UploadedExcelFiles
                     {
                         bool error = false;
                         SellProductModel sellProductCorrect = new SellProductModel();
-                      //  sellProductCorrect.RowNumber = Int32.Parse(row.ItemArray[0].ToString()) +2;
                         sellProductCorrect.Name = row.ItemArray[0].ToString();
                         sellProductCorrect.MarketName = row.ItemArray[1].ToString();
+                        //Check trung du lieu
+
+                        //
                         var dupProduct = sellProductCorrectCollection.Where(p => p.Name.Equals(sellProductCorrect.Name) && p.MarketName.Equals(sellProductCorrect.MarketName)).FirstOrDefault();
                         if (dupProduct != null)
                         {
                             int price = 0;
-                            //Int32.TryParse(row.ItemArray[2].ToString(), out price);
                             double doublePrice;
                             Double.TryParse(row.ItemArray[2].ToString(), out doublePrice);
                             price = (int)Math.Round(doublePrice, 0); 
@@ -200,7 +202,6 @@ namespace SmartB.UI.UploadedExcelFiles
                             try
                             {
                                 int price = 0;
-                                //Int32.TryParse(row.ItemArray[2].ToString(), out price);
                                 double doublePrice;
                                 Double.TryParse(row.ItemArray[2].ToString(), out doublePrice);
                                 price = (int)Math.Round(doublePrice, 0); 
@@ -293,20 +294,20 @@ namespace SmartB.UI.UploadedExcelFiles
                         sellProductError.Name = row.ItemArray[0].ToString();
                         sellProductError.MarketName = row.ItemArray[1].ToString();
                         var dupProduct = sellProductErrorCollection.Where(p => p.Name.Equals(sellProductError.Name) && p.MarketName.Equals(sellProductError.MarketName)).FirstOrDefault();
-                        if (dupProduct != null)
-                        {
-                            int price = 0;
-                            double doublePrice;
-                            Double.TryParse(row.ItemArray[2].ToString(), out doublePrice);
-                            price = (int)Math.Round(doublePrice, 0);                        
-                            sellProductError.Price = price;
-                            if (sellProductError.Price < 1 || sellProductError.Price > 10000)
-                            {
-                                dupProduct.Price = dupProduct.Price;
-                            }
-                        }
-                        else
-                        {
+                        //if (dupProduct != null)
+                        //{
+                        //    int price = 0;
+                        //    double doublePrice;
+                        //    Double.TryParse(row.ItemArray[2].ToString(), out doublePrice);
+                        //    price = (int)Math.Round(doublePrice, 0);                        
+                        //    sellProductError.Price = price;
+                        //    if (sellProductError.Price < 1 || sellProductError.Price > 10000)
+                        //    {
+                        //        dupProduct.Price = dupProduct.Price;
+                        //    }
+                        //}
+                        //else
+                        //{
                             
                             if (sellProductError.Name.Length < 5 || sellProductError.Name.Length > 100)
                             {
@@ -359,7 +360,7 @@ namespace SmartB.UI.UploadedExcelFiles
                                     sellProductErrorCollection.Add(sellProductError);
                                 }
                             }
-                        }
+                        //}
                     }
                     return sellProductErrorCollection;
                 }
