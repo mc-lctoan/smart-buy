@@ -1,0 +1,43 @@
+﻿<meta name="viewport" content="width=device-width" />
+<link rel="stylesheet" href="@Url.Content("~/Metro/css/metro-bootstrap.css")">
+<script src="@Url.Content("~/Metro/js/jquery/jquery.min.js")"></script>
+<script src="@Url.Content("~/Metro/js/jquery/jquery.widget.min.js")"></script>
+<script src="@Url.Content("~/Metro/js/metro/metro.min.js")"></script>
+<script src="~/Scripts/utils/productUtils.js"></script>
+
+<body class="metro" id="bodyPPP">
+@model SmartB.UI.Models.EntityFramework.Product
+@{
+    var productId = Model.Id;    
+}
+
+<label>Tên sản phẩm: </label>
+<div class="input-control text">
+    <input type="text" value="@Model.Name" disabled />
+
+</div>
+
+<label>Giá bạn đề xuất (nghìn đồng) (*): </label>
+<div class="input-control text">
+    <input id="txtUserPrice" type="text" value="" onchange="validateUserPrice()" />
+    <button class="btn-clear"></button>
+    <span id="errorUserPrice" style="color: red; font-style: italic;"></span>
+   
+</div>
+    
+<label>Địa điểm (*): </label>
+<div class="input-control text">
+    @Html.DropDownList("ddlMarket", null, String.Empty, new { @onchange = "validateMarket()" })
+    <span id="errorMarket" style="color: red; font-style: italic;"></span>
+</div>
+
+<div>
+    <span id="pppStatus" style="color: red; font-style: italic; font-size: 16px;"></span>
+</div>
+    
+<button class="primary" id="btnSaveUserPrice" onclick="saveUserPrice('@productId')">
+    <i class="icon-box-add"></i>
+    Lưu lại
+</button>
+        
+</body>

@@ -1,8 +1,9 @@
-﻿@model IEnumerable<SmartB.UI.Models.EntityFramework.ProductAttribute>
-
+﻿@model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.ProductAttribute>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "SearchProduct";
 }
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get))
 {    
@@ -10,7 +11,7 @@
     <form>
         <div class="input-control text">
             @*<input type="text" />*@
-            @Html.TextBox("q")
+            @Html.TextBox("q", ViewBag.CurrentFilter as string)
             <button class="btn-search"></button>
         </div>
     </form>
@@ -33,7 +34,7 @@
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.Product.Name)
                         @{
-                var productID = item.ProductId;
+                var productId = item.ProductId;
                 var productName = item.Product.Name;
                         }
 
@@ -46,18 +47,41 @@
                         }
                     </td>
                     <td>
-                        <button onclick="addCarttoSession('@productID','@productName','@minPrice','@maxPrice')">
+                        <button onclick="addCarttoSession('@productId','@productName','@minPrice','@maxPrice')">
                             <i class="icon-plus-2 on-left"></i>
                             Thêm
-                            @*<a href="#" onclick="addCarttoSession('@productID','@productName','@minPrice','@maxPrice')">Thêm</a>*@
                         </button>
-                        <button>
+                        <button class="editDialog">
                             <i class="icon-dollar-2 on-left"></i>
-                            Đề xuất giá
+                            Đề xuất giá                                
                         </button>
+                        <script>                           
+
+                                $(".editDialog").on("click", function (e) { // e.preventDefault(); use this or return false
+                                    $.Dialog({
+                                        overlay: true,
+                                        shadow: true,
+                                        flat: true,
+                                        icon: '<i class="icon-dollar-2 on-left"></i>',
+                                        title: 'Đề xuất giá',
+                                        content: '',
+                                        padding: 10,                                        
+                                        onShow: function (_dialog) {
+                                            var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                            $.Dialog.content(content); 
+                                            $.Metro.initInputs();
+                                        }
+                                    });
+                                    return true;
+                                });
+
+                            
+                        </script>
                     </td>
                 </tr>
             }
         </tbody>
-    </table>
+    </table>    
+    <div> Trang: @Html.PagedListPager(Model, page=>Url.Action("SearchProduct", new {currentFilter = ViewBag.CurrentFilter, page}), PagedListRenderOptions.OnlyShowFivePagesAtATime) </div>
 }
+

@@ -11,6 +11,9 @@ using WebMatrix.WebData;
 using SmartB.UI.Filters;
 using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
+using System.Net;
+using System.Data.Entity;
+using PagedList;
 
 namespace SmartB.UI.Controllers
 {
@@ -334,29 +337,43 @@ namespace SmartB.UI.Controllers
             return View();
         }
 
-        public ActionResult BuyingHistory() 
+        public ActionResult BuyingHistory(int? page)
         {
-            var history = db.Histories.Where(h => h.Username.Equals("Sergey Pimenov"));
-            return View(history);
+            //page = 1;
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            DateTime minusThirty = DateTime.Today.AddDays(-30);
+            DateTime minusZero = DateTime.Today.AddDays(0);
+            var history = from item in db.Histories
+                          where item.BuyTime >= minusThirty && item.BuyTime <= minusZero && item.Username.Equals("Sergey Pimenov")
+                          select item;
+            history = history.OrderByDescending(item => item.BuyTime);
+            return View(history.ToPagedList(pageNumber, pageSize));
         }
-        
-        [HttpGet, ActionName("DeleteItemHistory")]
-        public JsonResult DeleteItemHistory(int historyId)
+
+        public ActionResult BuyingHistoryDetail(int? id)
         {
-            var check = false;
-            try
+
+            if (id == null)
             {
-                History history = db.Histories.Find(historyId);
-                db.Histories.Remove(history);
-                db.SaveChanges();
-                check = true;
-                return Json(check, JsonRequestBehavior.AllowGet);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            catch
+            var modelHistory = db.Histories.Include(h => h.HistoryDetails).Single(q => q.Id == id);
+            var modelProduct = from p in db.ProductAttributes
+                               group p by p.ProductId into grp
+                               select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault();
+            //modelProduct.
+            var hdvModel = new HistoryDetailViewModel
             {
-                return Json(check, JsonRequestBehavior.AllowGet);
+                History = modelHistory,
+                ProductAttributes = modelProduct
+            };
+            if (modelHistory == null)
+            {
+                return HttpNotFound();
             }
 
+            return View(hdvModel);
         }
 
         public ActionResult DefineRoute()

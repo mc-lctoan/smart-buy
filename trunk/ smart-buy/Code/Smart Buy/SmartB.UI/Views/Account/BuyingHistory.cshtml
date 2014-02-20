@@ -1,43 +1,43 @@
 ﻿@{
     ViewBag.Title = "Lịch sử mua sắm";
 }
-@model IEnumerable<SmartB.UI.Models.EntityFramework.History>
-<h2>Lịch sử mua sắm</h2>
+@model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.History>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+<h2>Lịch sử mua sắm 30 ngày gần nhất</h2>
 <table class="table bordered hovered">
     <thead>
-        <tr>
-            <th>STT</th>
+        <tr>            
             <th>Ngày mua</th>
-            <th>Sản phẩm</th>
             <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
-        @{var i = 0;}
+       
         @foreach (var item in Model)
         {
             
-            <tr>
-                <td>@{
-            i++;
-                }
-                    @i
-                </td>
+            <tr>                
                 <td>
                     @{
             var historyID = item.Id;
             var buyTime = item.BuyTime;
             string buytimeFormat = String.Format("{0:dd/MM/yyyy}", buyTime);
+            
                     }
                     @buytimeFormat
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Product.Name)</td>
-                <td>                   
-                        <button onclick="deleteItemHistory('@historyID')">
-                            <i class="icon-cancel-2"></i>
-                            Xóa
+
+                <td>
+                    <a href="@Url.Action("BuyingHistoryDetail", "Account", new { id = @historyID})">
+                        <button>
+                            <i class="icon-clipboard-2"></i>
+                            Chi tiết
                         </button>
-                        
+                    </a>
+                    
                 </td>
             </tr>
         }
@@ -45,3 +45,5 @@
     </tbody>
 </table>
 
+<br />
+Trang: @Html.PagedListPager(Model, page=>Url.Action("BuyingHistory", new {page}), PagedListRenderOptions.OnlyShowFivePagesAtATime)

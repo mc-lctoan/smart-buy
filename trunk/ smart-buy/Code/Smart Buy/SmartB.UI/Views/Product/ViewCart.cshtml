@@ -1,7 +1,27 @@
 ﻿@{
     ViewBag.Title = "ViewCart";
 }
+<script>
+    window.onload = function () {
 
+        if (typeof (sessionStorage) != "undefined") {
+            if (sessionStorage.cart == null) {
+                document.getElementById('totalProduct').innerHTML = "( " + 0 + " )";
+                document.getElementById('btnSaveCart').style.display = "none";
+                document.getElementById('itemCart').deleteRow(0);
+                document.getElementById('savecartStatus').innerHTML = "(*) Không có sản phẩm nào trong giỏ hàng.";
+            } else {
+                document.getElementById('totalProduct').innerHTML = "( " + sessionStorage.items + " )";
+                var items = eval(sessionStorage.cart);
+                showCart(items, 'itemCart');
+            }
+        } else {
+            alert("browser is not support storage!!!");
+
+        }
+
+    }
+</script>
 <h3>Danh sách món hàng</h3>
 <table class="table bordered hovered" id="itemCart">
     <thead>
