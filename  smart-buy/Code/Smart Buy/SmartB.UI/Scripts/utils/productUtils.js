@@ -31,10 +31,7 @@
             sessionStorage.totalMinPrice = Number(sessionStorage.totalMinPrice) + Number(cart[i].totalmin);
             sessionStorage.totalMaxPrice = Number(sessionStorage.totalMaxPrice) + Number(cart[i].totalmax);
         }
-        //var ttp = sessionStorage.totalPrice;
-
-        //document.getElementById('totalPrice').innerHTML = Number(ttp).formatMoney(0);
-
+       
         sessionStorage.items = Number(cart.length);
         var ttp = sessionStorage.items;
 
@@ -123,7 +120,6 @@ function addRow(tableId, items) {
 }
 
 function updateCart(id) {
-    //var e = window.event;
     var el = document.getElementById("quantityItem" + id);
     var quantity = el.value;
     if (validateQuantity(quantity) == false) {
@@ -260,7 +256,6 @@ function saveUserPrice(productId) {
     validateUserPrice();
     if (validateMarket(marketId) == true && validateUserPrice(userPrice) == true) {
 
-        //document.getElementsByClassName("metro window-overlay").
         $.ajax({
             type: 'GET',
             url: '/Product/SaveUserPrice',

@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "BuyingHistoryDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model SmartB.UI.Models.HistoryDetailViewModel
+
+@{
+    var buyTime = Model.History.BuyTime;
+    string buytimeFormat = String.Format("{0:dd/MM/yyyy}", buyTime);
+            
+}
+                    
+<h2>Giỏ sản phẩm trong ngày @buytimeFormat</h2>
+<table class="table bordered hovered">
+    <thead>
+        <tr>            
+            <th>Sản phẩm</th>
+            <th>Giá sản phẩm (nghìn đồng)</th>
+            <th>Giá sản phẩm hôm nay (nghìn đồng)</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model.History.HistoryDetails)
+        {
+            
+            <tr>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)                    
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                </td>
+
+                @foreach (var p in Model.ProductAttributes)
+                {
+                    if (p.ProductId == item.ProductId)
+                    {
+                    <td>
+                        @Html.DisplayFor(modelItem => p.MinPrice) - @Html.DisplayFor(modelItem => p.MaxPrice)
+                    </td>
+                    }
+                }
+            </tr>
+        }
+
+    </tbody>
+</table>
+<button class="primary">
+    @Html.ActionLink("Quay lại", "BuyingHistory")
+    
+</button>

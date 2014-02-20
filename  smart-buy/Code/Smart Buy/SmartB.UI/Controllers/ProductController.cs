@@ -10,6 +10,7 @@ using SmartB.UI.UploadedExcelFiles;
 using System.Web.Script.Serialization;
 using SmartB.UI.Areas.Admin.Helper;
 using PagedList;
+using System.Net;
 
 namespace SmartB.UI.Controllers
 {
@@ -18,18 +19,33 @@ namespace SmartB.UI.Controllers
         //
         // GET: /Product/
         private SmartBuyEntities db = new SmartBuyEntities();
-        public ActionResult SearchProduct(String q)
+        public ActionResult SearchProduct(string q, string currentFilter, int? page)
         {
-            if (!String.IsNullOrEmpty(q))
-            {
-                var products = db.ProductAttributes.Include(x => x.Product).Where(s => s.Product.Name.Contains(q));
-                return View(products);
-            }
 
-            else
+            if (String.IsNullOrEmpty(q) && String.IsNullOrEmpty(currentFilter))
             {
                 return View();
             }
+            if (!String.IsNullOrEmpty(q))
+            {
+                page = 1;
+            }
+            else
+            {
+                q = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = q;
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            var products = from p in db.ProductAttributes
+                           where p.Product.Name.Contains(q)
+                           group p by p.ProductId into grp
+                           select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault();
+
+            products = products.OrderBy(p => p.Product.Name);
+
+            return View(products.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult ViewCart()
@@ -273,11 +289,11 @@ namespace SmartB.UI.Controllers
         }
 
         [HttpGet, ActionName("SaveCart")]
-        public JsonResult SaveCart(String listCartHistory)
+        public JsonResult SaveCart(String totaldata)
         {
             var check = false;
             JavaScriptSerializer ser = new JavaScriptSerializer();
-            List<CartHistory> dataList = ser.Deserialize<List<CartHistory>>(listCartHistory);
+            List<CartHistory> dataList = ser.Deserialize<List<CartHistory>>(totaldata);
             try
             {
                 for (int i = 0; i < dataList.Count; i++)
@@ -286,18 +302,117 @@ namespace SmartB.UI.Controllers
                     var pid = dataList[i].ProductId;
                     var now = DateTime.Now.Date;
                     var dupHistory = db.Histories.Where(his => his.Username == username &&
-                        his.ProductId == pid && his.BuyTime == now).FirstOrDefault();
+                        his.BuyTime == now).FirstOrDefault();
+
+
                     if (dupHistory == null)
                     {
-                        var h = new History();
-                        h.Username = username;
-                        h.ProductId = pid;
-                        h.BuyTime = now;
+                        var newHitory = new History();
+                        newHitory.Username = username;
+                        newHitory.BuyTime = now;
 
-                        db.Histories.Add(h);
+                        db.Histories.Add(newHitory);
+                        var newHistoryDetail = new HistoryDetail();
+                        newHistoryDetail.History = newHitory;
+                        newHistoryDetail.ProductId = pid;
+                        newHistoryDetail.MinPrice = dataList[i].MinPrice;
+                        newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
+                        db.HistoryDetails.Add(newHistoryDetail);
+
                     }
+                    else
+                    {
+                        var historyId = (from h in db.Histories
+                                         where h.BuyTime == now && h.Username == username
+                                         select h.Id).First();
+                        var dupProductId = db.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
+                        if (dupProductId == null)
+                        {
+                            var newHistoryDetail = new HistoryDetail();
+                            newHistoryDetail.History = dupHistory;
+                            newHistoryDetail.ProductId = pid;
+                            newHistoryDetail.MinPrice = dataList[i].MinPrice;
+                            newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
+                            db.HistoryDetails.Add(newHistoryDetail);
+
+                        }
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
+
+                check = true;
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+            //return RedirectToAction("SearchProduct");
+        }
+
+        public ActionResult ProposeProductPrice(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var modelProduct = db.Products.Include(i => i.ProductAttributes).Single(s => s.Id == id);
+
+            if (modelProduct == null)
+            {
+                return HttpNotFound();
+            }
+
+            //bind drop down list
+            var market = from m in db.Markets
+                         orderby m.Name
+                         select m;
+            ViewBag.ddlMarket = new SelectList(market, "Id", "Name");
+            //ViewBag.searchKey = q;
+
+            return PartialView(modelProduct);
+        }
+
+
+        [HttpGet, ActionName("SaveUserPrice")]
+        public JsonResult SaveUserPrice(String userPriceJson)
+        {
+            var check = false;
+
+            // define epsilon
+            var ep = 0.1;
+
+            JavaScriptSerializer ser = new JavaScriptSerializer();
+            UserPrice parseJson = ser.Deserialize<UserPrice>(userPriceJson);
+            try
+            {
+                var pId = parseJson.ProductId;
+                var updatedPrice = parseJson.UpdatedPrice;
+
+                var minPrice = from p in db.ProductAttributes
+                               where p.ProductId == pId
+                               select p.MinPrice;
+
+                var maxPrice = from p in db.ProductAttributes
+                               where p.ProductId == pId
+                               select p.MinPrice;
+
+                var averagePrice = (minPrice.First() + maxPrice.First()) / 2;
+                var rangeFrom = minPrice.First() - ep * averagePrice;
+                var rangeTo = maxPrice.First() + ep * averagePrice;
+
+                if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
+                {
+                    var userPrice = new UserPrice();
+                    userPrice.Username = parseJson.Username;
+                    userPrice.MarketId = parseJson.MarketId;
+                    userPrice.ProductId = pId;
+                    userPrice.UpdatedPrice = updatedPrice;
+                    userPrice.LastUpdatedTime = DateTime.Now;
+                    db.UserPrices.Add(userPrice);
+                    db.SaveChanges();
+                }
+
                 check = true;
                 return Json(check, JsonRequestBehavior.AllowGet);
             }
@@ -306,6 +421,7 @@ namespace SmartB.UI.Controllers
                 return Json(check, JsonRequestBehavior.AllowGet);
             }
         }
+
 
         public JsonResult SaveProductError(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
         {

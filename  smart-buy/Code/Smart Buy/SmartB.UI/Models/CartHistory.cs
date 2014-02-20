@@ -9,5 +9,7 @@ namespace SmartB.UI.Models
     {
         public String Username { get; set; }
         public int ProductId { get; set; }
+        public int MinPrice { get; set; }
+        public int MaxPrice { get; set; }
     }
 }
