@@ -1,0 +1,1 @@
+(function(c,b,a,d){c(a).ready(function(){if(c.fn.contactList){c("#contacts").contactList()}})})(jQuery,window,document);

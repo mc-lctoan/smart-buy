@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->
+
+<head>
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+
+<!-- Bootstrap Stylesheet -->
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="screen" />
+
+<!-- jquery-ui Stylesheets -->
+<link rel="stylesheet" href="assets/jui/css/jquery.ui.all.css" media="screen" />
+<link rel="stylesheet" href="assets/jui/jquery-ui.custom.css" media="screen" />
+<link rel="stylesheet" href="assets/jui/timepicker/jquery-ui-timepicker.css" media="screen" />
+
+<!-- Uniform Stylesheet -->
+<link rel="stylesheet" href="plugins/uniform/css/uniform.default.css" />
+
+<!-- Rating Plugin -->
+<link rel="stylesheet" href="plugins/rating/jquery.rating.css" media="screen" />
+
+<!-- Plugin Stylsheets first to ease overrides -->
+
+<!-- jquery-ui Spinner -->
+<link rel="stylesheet" href="assets/jui/spinner/jquery.ui.spinner.css" media="screen" />
+
+<!-- iButton -->
+<link rel="stylesheet" href="plugins/ibutton/jquery.ibutton.css" media="screen" />
+
+<!-- PickList -->
+<link rel="stylesheet" href="custom-plugins/picklist/picklist.css" media="screen" />
+
+<!-- Select2 -->
+<link rel="stylesheet" href="plugins/select2/select2.css" media="screen" />
+
+<!-- End Plugin Stylesheets -->
+
+<!-- Main Layout Stylesheet -->
+<link rel="stylesheet" href="assets/css/fonts/icomoon/style.css" media="screen" />
+<link rel="stylesheet" href="assets/css/mooncake.min.css" media="screen" />
+<link rel="stylesheet" href="assets/css/plugins/plugins.min.css" media="screen" />
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<title>MoonCake :: Responsive Admin Template</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+<body>
+
+    <div id="customizer">
+        <div id="layoutMode">
+            <label class="checkbox"><input type="checkbox" class="uniform" name="layout-mode" value="boxed" /> Boxed</label>
+        </div>
+    </div>
+    
+	<div id="wrapper">
+        <header id="header" class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+					<div class="brand-wrap pull-left">
+						<div class="brand-img">
+							<a class="brand" href="#">
+								<img src="assets/images/logo.png" alt="" />
+							</a>
+						</div>
+					</div>
+                    
+                    <div id="header-right" class="clearfix">
+						<div id="nav-toggle" data-toggle="collapse" data-target="#navigation" class="collapsed">
+							<i class="icon-caret-down"></i>
+						</div>
+						<div id="header-search">
+							<span id="search-toggle" data-toggle="dropdown">
+								<i class="icon-search"></i>
+							</span>
+							<form class="navbar-search" />
+								<input type="text" class="search-query" placeholder="Search" />
+							</form>
+						</div>
+						<div id="dropdown-lists">
+							<a class="item" href="#">
+								<span class="item-icon"><i class="icon-exclamation-sign"></i></span>
+								<span class="item-label">Notifications</span>
+								<span class="item-count">4</span>
+							</a>
+							<a class="item" href="mail.html">
+								<span class="item-icon"><i class="icon-envelope"></i></span>
+								<span class="item-label">Messages</span>
+								<span class="item-count">16</span>
+							</a>
+						</div>
+                        
+                        <div id="header-functions" class="pull-right">
+                        	<div id="user-info" class="clearfix">
+                                <span class="info">
+                                	Welcome
+                                    <span class="name">Shana-chan</span>
+                                </span>
+                            	<div class="avatar">
+                                	<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                    	<img src="assets/images/pp.jpg" alt="Avatar" />
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                    	<li><a href="profile.html"><i class="icol-user"></i> My Profile</a></li>
+                                    	<li><a href="#"><i class="icol-layout"></i> My Invoices</a></li>                                        
+                                        <li class="divider"></li>
+                                        <li><a href="index.html"><i class="icol-key"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="logout-ribbon">
+                            	<a href="index.html"><i class="icon-off"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div id="content-wrap">
+        	<div id="content">
+            	<div id="content-outer">
+                	<div id="content-inner">
+                    	<aside id="sidebar">
+                        	<nav id="navigation" class="collapse">
+                            	<ul>
+                                	<li>
+                                    	<span title="General">
+                                    		<i class="icon-home"></i>
+											<span class="nav-title">General</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="dashboard.html"><i class="icol-dashboard"></i> Dashboard</a></li>
+                                        	<li><a href="calendar.html"><i class="icol-calendar-2"></i> Calendar</a></li>
+                                            <li><a href="icons.html"><i class="icol-lifebuoy"></i> Icons</a></li>
+                                        	<li><a href="grids.html"><i class="icol-grid"></i> Grids</a></li>
+                                        	<li><a href="typography.html"><i class="icol-font"></i> Typography</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Table">
+                                    		<i class="icon-table"></i>
+											<span class="nav-title">Table</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="tables.html"><i class="icol-style"></i> Static Tables</a></li>
+                                        	<li><a href="responsive_tables.html"><i class="icol-hammer-screwdriver"></i> Responsive Tables</a></li>
+                                        	<li><a href="data_tables.html"><i class="icol-table"></i> Data Tables</a></li>
+                                            <li><a href="detail_view.html"><i class="icol-eye"></i> Detail View Table</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Statistic">
+                                        	<i class="icon-graph"></i>
+											<span class="nav-title">Statistic</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="statistic.html"><i class="icol-chart-curve"></i> Statistical Elements</a></li>
+                                        	<li><a href="charts_gallery.html"><i class="icol-chart-pie"></i> Charts Gallery</a></li>
+                                        </ul>
+                                    </li>
+                                	<li class="active">
+                                    	<span title="Form">
+                                        	<i class="icon-list"></i>
+											<span class="nav-title">Form</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="form_layouts.html"><i class="icol-layout-select"></i> Form Layouts</a></li>
+                                        	<li class="active"><a href="form_elements.html"><i class="icol-ui-text-field-password"></i> Form Elements</a></li>
+											<li><a href="form_wizard.html"><i class="icol-wand"></i> Form Wizard</a></li>
+                                        	<li><a href="form_validation.html"><i class="icol-accept"></i> Form Validation</a></li>
+                                            <li><a href="wysiwyg.html"><i class="icol-pencil"></i> WYSIWYG</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Elements">
+                                        	<i class="icon-cogs"></i>
+											<span class="nav-title">Elements</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="ui_bootstrap.html"><i class="icol-ui-tab-content"></i> Bootstrap Elements</a></li>
+											<li><a href="ui_components.html"><i class="icol-pipette"></i> Other Elements</a></li>
+                                        	<li><a href="alerts.html"><i class="icol-error"></i> Alerts and Notifications</a></li>
+											<li><a href="boxes.html"><i class="icol-cog"></i> Widget Boxes</a></li>
+                                        	<li><a href="buttons.html"><i class="icol-joystick"></i> Buttons</a></li>
+                                        	<li><a href="file_uploader.html"><i class="icol-computer"></i> File Uploader</a></li>
+											<li><a href="file_manager.html"><i class="icol-databases"></i> File Manager</a>
+                                        </li></ul>
+                                    
+                                	<li>
+                                    	<span title="Extra">
+                                        	<i class="icon-gift"></i>
+											<span class="nav-title">Extra</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li><a href="profile.html"><i class="icol-user"></i> Profile Page</a></li>
+                                            <li><a href="mail.html"><i class="icol-email"></i> Mail Page</a></li>
+                                            <li><a href="widgets.html"><i class="icol-ruby"></i> Custom Widgets</a></li>
+                                            <li><a href="gallery.html"><i class="icol-images"></i> Image Gallery</a>
+                                            </li><li><a href="contacts.html"><i class="icol-vcard"></i> Contact List</a></li>
+                                            <li><a href="404.html"><i class="icol-error"></i> Error Page (404)</a></li>
+                                        </ul>
+                                    
+
+                                    <!-- Documentation -->
+                                    <li>
+                                        <a href="documentation/index.html" title="Documentation">
+                                            <i class="icon-book"></i>
+                                            <span class="nav-title">Docs</span>
+                                        </a>
+                                    </li>
+                                    <!-- End -->
+                                </li></li></ul>
+                            </nav>
+                        </aside>
+
+                        <div id="sidebar-separator"></div>
+                        
+                        <section id="main" class="clearfix">
+                        	<div id="main-header" class="page-header">
+                            	<ul class="breadcrumb">
+                                	<li>
+                                    	<i class="icon-home"></i>MoonCake
+                                        <span class="divider">&raquo;</span>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Form</a>
+                                        <span class="divider">&raquo;</span>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Form Elements</a>
+                                    </li>
+                                </ul>
+                                
+                                <h1 id="main-heading">
+                                	Form Elements <span>This page shows all available form elements for this template</span>
+                                </h1>
+                            </div>
+                            
+                            <div id="main-content">
+                                
+                                <div class="row-fluid">
+                                	<div class="span12">
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Default Form Elements</span>
+                                            </div>
+                                            <div class="widget-content form-container">
+                                                <form class="form-horizontal" />
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input00">Usual Text input</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input00" class="span12" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input01">Usual Select input</label>
+                                                        <div class="controls">
+                                                            <select id="input01" class="span12">
+                                                            	<option />Dog
+                                                                <option />Cat
+                                                                <option />Bird
+                                                                <option />Turtle
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input02">Usual Textarea</label>
+                                                        <div class="controls">
+                                                            <textarea id="input02" class="span12"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Checkboxes</label>
+                                                        <div class="controls">
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" />
+                                                                C++
+                                                            </label>
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" />
+                                                                JavaScript
+                                                            </label>
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" />
+                                                                Oracle
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Radio Buttons</label>
+                                                        <div class="controls">
+                                                            <label class="radio">
+                                                                <input type="radio" name="r1" />
+                                                                Married
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="r1" />
+                                                                Divorced
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input03">Usual Fileinput</label>
+                                                        <div class="controls">
+                                                        	<input type="file" id="input03" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input04">Styled Fileinput</label>
+                                                        <div class="controls">
+                                                        	<input type="file" id="input04" data-provide="fileinput" />
+                                                            <p class="help-block"><code>data-provide="fileinput"</code></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button type="reset" class="btn" type="reset">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+        	                            </div>
+
+                                    	<div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Form Element States</span>
+                                            </div>
+                                            <div class="widget-content form-container">
+                                                <form class="form-horizontal" />
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input05">Usual Text input</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input05" class="span12" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input06">Disabled input</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input06" class="span12" disabled="" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input07">Uneditable input</label>
+                                                        <div class="controls">
+                                                            <span id="input07" class="uneditable-input input-large">Some value here</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Checkboxes</label>
+                                                        <div class="controls">
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" disabled="" />
+                                                                I have been disabled
+                                                            </label>
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" />
+                                                                Hey, I'm enabled!
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Radio Buttons</label>
+                                                        <div class="controls">
+                                                            <label class="radio">
+                                                                <input type="radio" disabled="" />
+                                                                I have been disabled
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" />
+                                                                Hey, I'm enabled!
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group warning">
+                                                        <label class="control-label" for="input08">Warning State</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input08" class="span12 focused" />
+                                                            <p class="help-block">This control group is in a warning state</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group error">
+                                                        <label class="control-label" for="input09">Error State</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input09" class="span12 focused" />
+                                                            <p class="help-block">This control group is in an error state</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group success">
+                                                        <label class="control-label" for="input10">Success State</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input10" class="span12 focused" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button type="reset" class="btn" type="reset">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+        	                            </div>
+                                    	<div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Appended &amp; Prepended Form Inputs</span>
+                                            </div>
+                                            <div class="widget-content form-container">
+                                                <form class="form-horizontal" />
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input11">Prepended Text input</label>
+                                                        <div class="controls">
+                                                        	<div class="input-prepend">
+                                                            	<span class="add-on">@</span><input type="text" id="input11" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input12">Appended Text input</label>
+                                                        <div class="controls">
+                                                        	<div class="input-append">
+                                                            	<input type="text" id="input12" /><span class="add-on">.00</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input13">Append &amp; Prepend</label>
+                                                        <div class="controls">
+                                                        	<div class="input-append input-prepend">
+                                                            	<span class="add-on">$</span><input type="text" id="input13" /><span class="add-on">.00</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input14">Appended Button</label>
+                                                        <div class="controls">
+                                                        	<div class="input-append">
+                                                            	<input type="text" id="input14" /><button type="button" class="btn">
+                                                                    <i class="icon-search"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input15">Appended Button with Color Icon</label>
+                                                        <div class="controls">
+                                                        	<div class="input-append">
+                                                            	<input type="text" id="input15" /><button type="button" class="btn">
+                                                                	<i class="icol-magnifier"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input16">Two Colored Buttons Appended</label>
+                                                        <div class="controls">
+                                                        	<div class="input-append">
+                                                            	<input type="text" id="input16" /><button type="button" class="btn btn-warning">
+                                                                	<i class="icon-cog"></i> Settings
+                                                                </button><button type="button" class="btn btn-warning">
+                                                                	<i class="icon-user"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button class="btn" type="reset">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+        	                            </div>
+
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Advanced Select List</span>
+                                            </div>
+                                            <div class="widget-content form-container">
+                                                <form class="form-horizontal" />
+    												<div class="control-group">
+                                                        <label class="control-label" for="input17">Basic Select</label>
+                                                        <div class="controls">
+                                                            <select id="input17" class="select2-select-00 span12">
+    															<option />Alabama
+    															<option />Alaska
+    															<option />Arizona
+    															<option />Arkansas
+    															<option />California
+    															<option />Colorado
+    															<option />Connecticut
+    															<option />Delaware
+    															<option />Florida
+    															<option />Georgia
+    															<option />Hawaii
+    															<option />Idaho
+    															<option />Illinois
+    															<option />Indiana
+    															<option />Iowa
+    															<option />Kansas
+    															<option />Kentucky
+    															<option />Louisiana
+    															<option />Maine
+    															<option />Maryland
+    															<option />Massachusetts
+    															<option />Michigan
+    															<option />Minnesota
+    															<option />Mississippi
+    															<option />Missouri
+    															<option />Montana
+    															<option />Nebraska
+    															<option />Nevada
+    															<option />New Hampshire
+    															<option />New Jersey
+    															<option />New Mexico
+    															<option />New York
+    															<option />North Dakota
+    															<option />North Carolina
+    															<option />Ohio
+    															<option />Oklahoma
+    															<option />Oregon
+    															<option />Pennsylvania
+    															<option />Rhode Island
+    															<option />South Carolina
+    															<option />South Dakota
+    															<option />Tennessee
+    															<option />Texas
+    															<option />Utah
+    															<option />Vermont
+    															<option />Virginia
+    															<option />Washington
+    															<option />West Virginia
+    															<option />Wisconsin
+    															<option />Wyoming
+
+    														</select>
+    														<span class="help-block">This select input is made more advance with jquery <a href="http://ivaynberg.github.com/select2/" target="_blank">select2</a> plugin</span>
+                                                        </div>
+    												</div>
+    												<div class="control-group">
+                                                        <label class="control-label" for="input18">Multiple Select</label>
+                                                        <div class="controls">
+                                                            <select id="input18" class="select2-select-00 span12" multiple="" size="5">
+    															<option />Alabama
+    															<option />Alaska
+    															<option />Arizona
+    															<option />Arkansas
+    															<option />California
+    															<option />Colorado
+    															<option />Connecticut
+    															<option />Delaware
+    															<option />Florida
+    															<option />Georgia
+    															<option />Hawaii
+    															<option />Idaho
+    															<option />Illinois
+    															<option />Indiana
+    															<option />Iowa
+    															<option />Kansas
+    															<option />Kentucky
+    															<option />Louisiana
+    															<option />Maine
+    															<option />Maryland
+    															<option />Massachusetts
+    															<option />Michigan
+    															<option />Minnesota
+    															<option />Mississippi
+    															<option />Missouri
+    															<option />Montana
+    															<option />Nebraska
+    															<option />Nevada
+    															<option />New Hampshire
+    															<option />New Jersey
+    															<option />New Mexico
+    															<option />New York
+    															<option />North Dakota
+    															<option />North Carolina
+    															<option />Ohio
+    															<option />Oklahoma
+    															<option />Oregon
+    															<option />Pennsylvania
+    															<option />Rhode Island
+    															<option />South Carolina
+    															<option />South Dakota
+    															<option />Tennessee
+    															<option />Texas
+    															<option />Utah
+    															<option />Vermont
+    															<option />Virginia
+    															<option />Washington
+    															<option />West Virginia
+    															<option />Wisconsin
+    															<option />Wyoming
+    														</select>
+                                                        </div>
+    												</div>
+    												<div class="control-group">
+    													<label class="control-label" for="input19">With Grouping</label>
+    													<div class="controls">
+    														<select id="input19" class="select2-select-00 span12">
+    															<optgroup label="Alaskan/Hawaiian Time Zone">
+    																<option value="AK" />Alaska
+    																<option value="HI" />Hawaii
+    															</optgroup>
+    															<optgroup label="Pacific Time Zone">
+    																<option value="CA" />California
+    																<option value="NV" />Nevada
+    																<option value="OR" />Oregon
+    																<option value="WA" />Washington
+    															</optgroup>
+    															<optgroup label="Mountain Time Zone">
+    																<option value="AZ" />Arizona
+    																<option value="CO" />Colorado
+    																<option value="ID" />Idaho
+    																<option value="MT" />Montana<option value="NE" />Nebraska
+    																<option value="NM" />New Mexico
+    																<option value="ND" />North Dakota
+    																<option value="UT" />Utah
+    																<option value="WY" />Wyoming
+    															</optgroup>
+    															<optgroup label="Central Time Zone">
+    																<option value="AL" />Alabama
+    																<option value="AR" />Arkansas
+    																<option value="IL" />Illinois
+    																<option value="IA" />Iowa
+    																<option value="KS" />Kansas
+    																<option value="KY" />Kentucky
+    																<option value="LA" />Louisiana
+    																<option value="MN" />Minnesota
+    																<option value="MS" />Mississippi
+    																<option value="MO" />Missouri
+    																<option value="OK" />Oklahoma
+    																<option value="SD" />South Dakota
+    																<option value="TX" />Texas
+    																<option value="TN" />Tennessee
+    																<option value="WI" />Wisconsin
+    															</optgroup>
+    															<optgroup label="Eastern Time Zone">
+    																<option value="CT" />Connecticut
+    																<option value="DE" />Delaware
+    																<option value="FL" />Florida
+    																<option value="GA" />Georgia
+    																<option value="IN" />Indiana
+    																<option value="ME" />Maine
+    																<option value="MD" />Maryland
+    																<option value="MA" />Massachusetts
+    																<option value="MI" />Michigan
+    																<option value="NH" />New Hampshire<option value="NJ" />New Jersey
+    																<option value="NY" />New York
+    																<option value="NC" />North Carolina
+    																<option value="OH" />Ohio
+    																<option value="PA" />Pennsylvania<option value="RI" />Rhode Island<option value="SC" />South Carolina
+    																<option value="VT" />Vermont<option value="VA" />Virginia
+    																<option value="WV" />West Virginia
+    															</optgroup>
+    														</select>
+    													</div>
+    												</div>
+    												<div class="control-group">
+                                                        <label class="control-label" for="input20">With Placeholder</label>
+                                                        <div class="controls">
+                                                            <select id="input20" class="select2-select-00 span12" multiple="" size="5" data-placeholder="Select a State">
+    															<option />Alabama
+    															<option />Alaska
+    															<option />Arizona
+    															<option />Arkansas
+    															<option />California
+    															<option />Colorado
+    															<option />Connecticut
+    															<option />Delaware
+    															<option />Florida
+    															<option />Georgia
+    															<option />Hawaii
+    															<option />Idaho
+    															<option />Illinois
+    															<option />Indiana
+    															<option />Iowa
+    															<option />Kansas
+    															<option />Kentucky
+    															<option />Louisiana
+    															<option />Maine
+    															<option />Maryland
+    															<option />Massachusetts
+    															<option />Michigan
+    															<option />Minnesota
+    															<option />Mississippi
+    															<option />Missouri
+    															<option />Montana
+    															<option />Nebraska
+    															<option />Nevada
+    															<option />New Hampshire
+    															<option />New Jersey
+    															<option />New Mexico
+    															<option />New York
+    															<option />North Dakota
+    															<option />North Carolina
+    															<option />Ohio
+    															<option />Oklahoma
+    															<option />Oregon
+    															<option />Pennsylvania
+    															<option />Rhode Island
+    															<option />South Carolina
+    															<option />South Dakota
+    															<option />Tennessee
+    															<option />Texas
+    															<option />Utah
+    															<option />Vermont
+    															<option />Virginia
+    															<option />Washington
+    															<option />West Virginia
+    															<option />Wisconsin
+    															<option />Wyoming
+    														</select>
+    														<p class="help-block"><code>data-placeholder="Select a State"</code></p>
+                                                        </div>
+    												</div>
+    												<div class="control-group">
+                                                        <label class="control-label" for="input21">With Minimum Input</label>
+                                                        <div class="controls">
+                                                            <select id="input21" class="select2-select-01 span12" multiple="" size="5" data-placeholder="Select a State">
+    															<option />Alabama
+    															<option />Alaska
+    															<option />Arizona
+    															<option />Arkansas
+    															<option />California
+    															<option />Colorado
+    															<option />Connecticut
+    															<option />Delaware
+    															<option />Florida
+    															<option />Georgia
+    															<option />Hawaii
+    															<option />Idaho
+    															<option />Illinois
+    															<option />Indiana
+    															<option />Iowa
+    															<option />Kansas
+    															<option />Kentucky
+    															<option />Louisiana
+    															<option />Maine
+    															<option />Maryland
+    															<option />Massachusetts
+    															<option />Michigan
+    															<option />Minnesota
+    															<option />Mississippi
+    															<option />Missouri
+    															<option />Montana
+    															<option />Nebraska
+    															<option />Nevada
+    															<option />New Hampshire
+    															<option />New Jersey
+    															<option />New Mexico
+    															<option />New York
+    															<option />North Dakota
+    															<option />North Carolina
+    															<option />Ohio
+    															<option />Oklahoma
+    															<option />Oregon
+    															<option />Pennsylvania
+    															<option />Rhode Island
+    															<option />South Carolina
+    															<option />South Dakota
+    															<option />Tennessee
+    															<option />Texas
+    															<option />Utah
+    															<option />Vermont
+    															<option />Virginia
+    															<option />Washington
+    															<option />West Virginia
+    															<option />Wisconsin
+    															<option />Wyoming
+    														</select>
+                                                        </div>
+    												</div>
+    												<div class="control-group">
+                                                        <label class="control-label" for="input22">Tagging Support</label>
+                                                        <div class="controls">
+                                                            <input id="input22" class="select2-select-02 span12" multiple="" data-placeholder="Type to add a Tag" type="hidden" />
+                                                        </div>
+    												</div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button type="reset" class="btn" type="reset">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+        	                            </div>
+
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Styled Radio, Checkbox, Toggle Buttons and Switches</span>
+                                            </div>
+                                            <div class="widget-content form-container">
+                                                <form class="form-horizontal" />
+                                                    <div class="control-group">
+                                                        <label class="control-label">Checkboxes</label>
+                                                        <div class="controls">
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" class="uniform" />
+                                                                C++
+                                                            </label>
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" class="uniform" />
+                                                                JavaScript
+                                                            </label>
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" class="uniform" />
+                                                                Oracle
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Radio Buttons</label>
+                                                        <div class="controls">
+                                                            <label class="radio">
+                                                                <input type="radio" name="r1" class="uniform" />
+                                                                Married
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" name="r1" class="uniform" />
+                                                                Divorced
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">More Checkboxes</label>
+                                                        <div class="controls">
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" class="uniform" disabled="" />
+                                                                I have been disabled
+                                                            </label>
+                                                            <label class="checkbox">
+                                                                <input type="checkbox" class="uniform" />
+                                                                Hey, I'm enabled!
+                                                            </label>
+                                                            <p class="help-block">To avoid conflicts with other plugins, not all radio and checkboxes are styled.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">More Radio Buttons</label>
+                                                        <div class="controls">
+                                                            <label class="radio">
+                                                                <input type="radio" class="uniform" disabled="" />
+                                                                I have been disabled
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" class="uniform" />
+                                                                Hey, I'm enabled!
+                                                            </label>
+                                                            <p class="help-block">If you're sure that no conflict can occur, just style all checkboxes and radio buttons :)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">CheckBox Toggle Buttons</label>
+                                                        <div class="controls">
+                                                            <div class="btn-group" data-toggle="buttons-checkbox">
+                                                                <button type="button" class="btn"><i class="icol-text-bold"></i></button>
+                                                                <button type="button" class="btn"><i class="icol-text-italic"></i></button>
+                                                                <button type="button" class="btn"><i class="icol-text-strikethrough"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Radio Toggle Buttons</label>
+                                                        <div class="controls">
+                                                            <div class="btn-group" data-toggle="buttons-radio">
+                                                                <button type="button" class="btn active"><i class="icol-lock"></i></button>
+                                                                <button type="button" class="btn"><i class="icol-lock-unlock"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">Star Rating</label>
+                                                        <div class="controls">
+                                                            <input type="radio" class="star" />
+                                                            <input type="radio" class="star" />
+                                                            <input type="radio" class="star" />
+                                                            <input type="radio" class="star" />
+                                                            <input type="radio" class="star" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">iOS CheckBoxes</label>
+                                                        <div class="controls">
+                                                            <label class="checkbox inline">
+                                                                <input type="checkbox" data-provide="ibutton" />
+                                                            </label>
+                                                            <label class="checkbox inline">
+                                                                <input type="checkbox" data-provide="ibutton" disabled="" />
+                                                            </label>
+                                                            <label class="checkbox inline">
+                                                                <input type="checkbox" data-provide="ibutton" data-label-on="Like" data-label-off="Dislike" checked="" />
+                                                            </label>
+                                                            <label class="checkbox inline">
+                                                                <input type="checkbox" data-provide="ibutton" data-label-on="Yes, I'm in" data-label-off="No, I'm out" />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label">iOS Radio</label>
+                                                        <div class="controls">
+                                                            <label class="radio">
+                                                                <input type="radio" data-provide="ibutton" name="rd-ios[]" data-label-on="Yes" data-label-off="No" />
+                                                                Engine Started
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" data-provide="ibutton" name="rd-ios[]" data-label-on="Yes" data-label-off="No" />
+                                                                Engine Broken
+                                                            </label>
+                                                            <label class="radio">
+                                                                <input type="radio" data-provide="ibutton" name="rd-ios[]" data-label-on="Yes" data-label-off="No" />
+                                                                Engine Exhausted
+                                                            </label>
+                                                            <p class="help-block"><code>data-provide="ibutton"</code></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button class="btn" type="reset">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+                                    <div class="span6 widget">
+                                        <div class="widget-header">
+                                            <span class="title">Spinner</span>
+                                        </div>
+                                        <div class="widget-content form-container">
+                                            <form class="form-horizontal" />
+                                                <div class="control-group">
+                                                    <label class="control-label" for="spinner-1">Default Spinner</label>
+                                                    <div class="controls">
+                                                        <input type="text" id="spinner-1" class="span12" />
+                                                        <p class="help-block">Try the up, down, left, right, pageup, and pagedown keys :)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="spinner-2">Decimal Spinner</label>
+                                                    <div class="controls">
+                                                        <input type="text" id="spinner-2" class="span12" />
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="spinner-3">Currency Spinner</label>
+                                                    <div class="controls">
+                                                        <input type="text" id="spinner-3" class="span12" />
+                                                    </div>
+                                                </div>
+                                                <div class="form-actions">
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    <button class="btn" type="reset">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="span6 widget">
+
+                                        <div class="widget-header">
+                                            <span class="title">Misc. Form Elements</span>
+                                        </div>
+                                        <div class="widget-content form-container">
+                                            <form class="form-horizontal" />
+                                                <div class="control-group">
+                                                    <label class="control-label" for="input23">Typeahead</label>
+                                                    <div class="controls">
+                                                        <input type="text" id="input23" class="span12" data-provide="typeahead" data-items="4" data-source='["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]' />
+														<span class="help-block">Type something to trigger Typeahead</span>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="autocomplete-ex">jQuery-UI Autocomplete</label>
+                                                    <div class="controls">
+                                                        <input type="text" id="autocomplete-ex" class="span12" />
+                                                        <span class="help-block">Use autocomplete instead of typeahead if you want more functionality</span>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group">
+                                                    <label class="control-label" for="input25">Restrict Other Content Beside Numbers</label>
+                                                    <div class="controls">
+                                                        <input type="text" data-accept="numbers" class="span12" id="input25" />
+                                                        <p class="help-block"><code>data-accept="numbers"</code></p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-actions">
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    <button class="btn" type="reset">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                    	<div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">PickList</span>
+                                            </div>
+                                            <div class="widget-content form-container">
+                                                <form class="form-horizontal" method="post" />
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="picklist-ex">Fruits in Basket</label>
+                                                        <div class="controls">
+                                                            <select id="picklist-ex" name="picklist[]">
+    															<option />Apple
+    															<option selected="selected" />Banana
+    															<option selected="selected" />Kiwi
+    															<option />Orange
+    															<option />Pear
+    															<option />Grape
+    															<option />Mango
+    															<option />Peach
+    															<option />Dragon Fruit
+    															<option />Durian
+    															<option />Avocado
+    															<option />Cherry
+    														</select>
+    														<p class="help-block">Use shift and control keys to select multiple items</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button class="btn" type="reset">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+        	                            </div>
+
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Input Masks</span>
+                                            </div>
+                                            <div class="widget-content form-container">
+                                                <form class="form-horizontal" />
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input26">Number Mask</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input26" data-mask="(999)-999-999" class="span12" />
+                                                            <p class="help-block"><code>data-mask="(999)-999-999"</code></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input27">Letter Mask</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input27" data-mask="aaa-aaa-aaa" class="span12" />
+                                                            <p class="help-block"><code>data-mask="aaa-aaa-aaa"</code></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input28">Alphanumeric Mask</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input28" data-mask="***-***" class="span12" />
+                                                            <p class="help-block"><code>data-mask="***-***"</code></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input29">ISBN Mask</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input29" data-mask="999-9-999-999-999" class="span12" />
+                                                            <p class="help-block"><code>data-mask="999-9-999-999-999</code></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input30">Master Card Mask</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input30" data-mask="9999-9999-9999-9999" class="span12" />
+                                                            <p class="help-block"><code>data-mask="9999-9999-9999-9999</code></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <label class="control-label" for="input31">Date Mask</label>
+                                                        <div class="controls">
+                                                            <input type="text" id="input31" data-mask="$9/@9/9999" data-definitions='{ "$": "[01]", "@": "[0-3]" }' class="span6" />
+                                                            <span class="help-inline">Notice that you can also add your own mask definitions</span>
+                                                            <p class="help-block"><code>data-mask="$9/@9/9999</code></p>
+                                                            <p class="help-block"><code>data-definitions='{ "$": "[01]", "@": "[0-3]" }'</code></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        <button class="btn" type="reset">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+								    </div>
+								</div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer id="footer">
+            <div class="footer-left">MoonCake - Responsive Admin Template</div>
+            <div class="footer-right"><p>Copyright 2012. All Rights Reserved.</p></div>
+        </footer>
+        
+    </div>
+
+	<!-- Core Scripts -->
+	<script src="assets/js/libs/jquery-1.8.2.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/js/libs/jquery.placeholder.min.js"></script>
+	<script src="assets/js/libs/jquery.mousewheel.min.js"></script>
+    
+    <!-- Template Script -->
+    <script src="assets/js/template.js"></script>
+    <script src="assets/js/setup.js"></script>
+
+    <!-- Customizer, remove if not needed -->
+    <script src="assets/js/customizer.js"></script>
+
+    <!-- Uniform Script -->
+    <script src="plugins/uniform/jquery.uniform.min.js"></script>
+
+    <!-- jquery-ui Scripts -->
+    <script src="assets/jui/js/jquery-ui-1.8.24.min.js"></script>
+    <script src="assets/jui/jquery-ui.custom.min.js"></script>
+    <script src="assets/jui/timepicker/jquery-ui-timepicker.min.js"></script>
+	<script src="assets/jui/jquery.ui.touch-punch.min.js"></script>
+    
+    <!-- Plugin Scripts -->
+
+    <!-- Bootstrap FileInput -->
+    <script src="custom-plugins/bootstrap-fileinput.min.js"></script>
+
+    <!-- Bootstrap InputMask -->
+    <script src="custom-plugins/bootstrap-inputmask.min.js"></script>
+
+    <!-- jquery-ui Spinner -->
+    <script src="assets/jui/spinner/jquery.ui.spinner.min.js"></script>
+
+    <!-- iButton -->
+    <script src="plugins/ibutton/jquery.ibutton.min.js"></script>
+	
+	<!-- PickList -->
+	<script src="custom-plugins/picklist/picklist.min.js"></script>
+    
+	<!-- Select2 -->
+	<script src="plugins/select2/select2.min.js"></script>
+
+    <!-- Rating  -->
+    <script src="plugins/rating/jquery.rating.min.js"></script>
+    
+    <!-- Demo Scripts -->
+    <script src="assets/js/demo/form.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+(function(c,b,a,d){c(a).ready(function(){if(c.fn.dataTable){c(".mail .mail-pages table").dataTable({sDom:"t<'dt_footer'<'row-fluid'<'span6'i><'span6'p>>>",aoColumnDefs:[{bSortable:false,aTargets:[0]}],aaSorting:[]})}})})(jQuery,window,document);

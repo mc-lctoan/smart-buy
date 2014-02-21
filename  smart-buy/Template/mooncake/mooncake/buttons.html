@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->
+
+<head>
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+
+<!-- Bootstrap Stylesheet -->
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="screen" />
+
+<!-- jquery-ui Stylesheets -->
+<link rel="stylesheet" href="assets/jui/css/jquery.ui.all.css" media="screen" />
+<link rel="stylesheet" href="assets/jui/jquery-ui.custom.css" media="screen" />
+<link rel="stylesheet" href="assets/jui/timepicker/jquery-ui-timepicker.css" media="screen" />
+
+<!-- Uniform Stylesheet -->
+<link rel="stylesheet" href="plugins/uniform/css/uniform.default.css" />
+
+<!-- Plugin Stylsheets first to ease overrides -->
+
+<!-- End Plugin Stylesheets -->
+
+<!-- Main Layout Stylesheet -->
+<link rel="stylesheet" href="assets/css/fonts/icomoon/style.css" media="screen" />
+<link rel="stylesheet" href="assets/css/mooncake.min.css" media="screen" />
+<link rel="stylesheet" href="assets/css/plugins/plugins.min.css" media="screen" />
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<title>MoonCake :: Responsive Admin Template</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+<body>
+
+    <div id="customizer">
+        <div id="layoutMode">
+            <label class="checkbox"><input type="checkbox" class="uniform" name="layout-mode" value="boxed" /> Boxed</label>
+        </div>
+    </div>
+    
+	<div id="wrapper">
+        <header id="header" class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+					<div class="brand-wrap pull-left">
+						<div class="brand-img">
+							<a class="brand" href="#">
+								<img src="assets/images/logo.png" alt="" />
+							</a>
+						</div>
+					</div>
+                    
+                    <div id="header-right" class="clearfix">
+						<div id="nav-toggle" data-toggle="collapse" data-target="#navigation" class="collapsed">
+							<i class="icon-caret-down"></i>
+						</div>
+						<div id="header-search">
+							<span id="search-toggle" data-toggle="dropdown">
+								<i class="icon-search"></i>
+							</span>
+							<form class="navbar-search" />
+								<input type="text" class="search-query" placeholder="Search" />
+							</form>
+						</div>
+						<div id="dropdown-lists">
+							<a class="item" href="#">
+								<span class="item-icon"><i class="icon-exclamation-sign"></i></span>
+								<span class="item-label">Notifications</span>
+								<span class="item-count">4</span>
+							</a>
+							<a class="item" href="mail.html">
+								<span class="item-icon"><i class="icon-envelope"></i></span>
+								<span class="item-label">Messages</span>
+								<span class="item-count">16</span>
+							</a>
+						</div>
+                        
+                        <div id="header-functions" class="pull-right">
+                        	<div id="user-info" class="clearfix">
+                                <span class="info">
+                                	Welcome
+                                    <span class="name">Shana-chan</span>
+                                </span>
+                            	<div class="avatar">
+                                	<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                    	<img src="assets/images/pp.jpg" alt="Avatar" />
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                    	<li><a href="profile.html"><i class="icol-user"></i> My Profile</a></li>
+                                    	<li><a href="#"><i class="icol-layout"></i> My Invoices</a></li>                                        
+                                        <li class="divider"></li>
+                                        <li><a href="index.html"><i class="icol-key"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="logout-ribbon">
+                            	<a href="index.html"><i class="icon-off"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div id="content-wrap">
+        	<div id="content">
+            	<div id="content-outer">
+                	<div id="content-inner">
+                    	<aside id="sidebar">
+                            <nav id="navigation" class="collapse">
+                                <ul>
+                                    <li>
+                                        <span title="General">
+                                            <i class="icon-home"></i>
+                                            <span class="nav-title">General</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li><a href="dashboard.html"><i class="icol-dashboard"></i> Dashboard</a></li>
+                                            <li><a href="calendar.html"><i class="icol-calendar-2"></i> Calendar</a></li>
+                                            <li><a href="icons.html"><i class="icol-lifebuoy"></i> Icons</a></li>
+                                            <li><a href="grids.html"><i class="icol-grid"></i> Grids</a></li>
+                                            <li><a href="typography.html"><i class="icol-font"></i> Typography</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span title="Table">
+                                            <i class="icon-table"></i>
+                                            <span class="nav-title">Table</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li><a href="tables.html"><i class="icol-style"></i> Static Tables</a></li>
+                                            <li><a href="responsive_tables.html"><i class="icol-hammer-screwdriver"></i> Responsive Tables</a></li>
+                                            <li><a href="data_tables.html"><i class="icol-table"></i> Data Tables</a></li>
+                                            <li><a href="detail_view.html"><i class="icol-eye"></i> Detail View Table</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span title="Statistic">
+                                            <i class="icon-graph"></i>
+                                            <span class="nav-title">Statistic</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li><a href="statistic.html"><i class="icol-chart-curve"></i> Statistical Elements</a></li>
+                                            <li><a href="charts_gallery.html"><i class="icol-chart-pie"></i> Charts Gallery</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span title="Form">
+                                            <i class="icon-list"></i>
+                                            <span class="nav-title">Form</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li><a href="form_layouts.html"><i class="icol-layout-select"></i> Form Layouts</a></li>
+                                            <li><a href="form_elements.html"><i class="icol-ui-text-field-password"></i> Form Elements</a></li>
+                                            <li><a href="form_wizard.html"><i class="icol-wand"></i> Form Wizard</a></li>
+                                            <li><a href="form_validation.html"><i class="icol-accept"></i> Form Validation</a></li>
+                                            <li><a href="wysiwyg.html"><i class="icol-pencil"></i> WYSIWYG</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="active">
+                                        <span title="Elements">
+                                            <i class="icon-cogs"></i>
+                                            <span class="nav-title">Elements</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li><a href="ui_bootstrap.html"><i class="icol-ui-tab-content"></i> Bootstrap Elements</a></li>
+                                            <li><a href="ui_components.html"><i class="icol-pipette"></i> Other Elements</a></li>
+                                            <li><a href="alerts.html"><i class="icol-error"></i> Alerts and Notifications</a></li>
+											<li><a href="boxes.html"><i class="icol-cog"></i> Widget Boxes</a></li>
+                                            <li class="active"><a href="buttons.html"><i class="icol-joystick"></i> Buttons</a></li>
+                                            <li><a href="file_uploader.html"><i class="icol-computer"></i> File Uploader</a></li>
+                                            <li><a href="file_manager.html"><i class="icol-databases"></i> File Manager</a>
+                                        </li></ul>
+                                    
+                                    <li>
+                                        <span title="Extra">
+                                            <i class="icon-gift"></i>
+                                            <span class="nav-title">Extra</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li><a href="profile.html"><i class="icol-user"></i> Profile Page</a></li>
+                                            <li><a href="mail.html"><i class="icol-email"></i> Mail Page</a></li>
+                                            <li><a href="widgets.html"><i class="icol-ruby"></i> Custom Widgets</a></li>
+                                            <li><a href="gallery.html"><i class="icol-images"></i> Image Gallery</a>
+                                            </li><li><a href="contacts.html"><i class="icol-vcard"></i> Contact List</a></li>
+                                            <li><a href="404.html"><i class="icol-error"></i> Error Page (404)</a></li>
+                                        </ul>
+                                    
+
+                                    <!-- Documentation -->
+                                    <li>
+                                        <a href="documentation/index.html" title="Documentation">
+                                            <i class="icon-book"></i>
+                                            <span class="nav-title">Docs</span>
+                                        </a>
+                                    </li>
+                                    <!-- End -->
+                                </li></li></ul>
+                            </nav>
+                        </aside>
+
+                        <div id="sidebar-separator"></div>
+                        
+                        <section id="main" class="clearfix">
+                        	<div id="main-header" class="page-header">
+                            	<ul class="breadcrumb">
+                                	<li>
+                                    	<i class="icon-home"></i>MoonCake
+                                        <span class="divider">&raquo;</span>
+                                    </li>
+                                    <li>
+                                    	<a href="#">UI</a>
+                                        <span class="divider">&raquo;</span>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Buttons</a>
+                                    </li>
+                                </ul>
+                                
+                                <h1 id="main-heading">
+                                	Buttons <span>Examples of buttons usage</span>
+                                </h1>
+                            </div>
+                            
+                            <div id="main-content">
+
+                                <div class="row-fluid">
+                                
+                                	<div class="span12 widget">
+                                        <div class="widget-content" style="text-align: center;">
+                                            <h5>Basic Button Styles</h5>
+                                            
+                                            <div class="btn-toolbar">
+                                                <button class="btn">Default Button</button> 
+                                                <button class="btn btn-primary">Primary Button</button>
+                                                <button class="btn btn-info">Info Button</button>
+                                                <button class="btn btn-success">Success Button</button>
+                                                <button class="btn btn-warning">Warning Button</button>
+                                                <button class="btn btn-danger">Danger Button</button>
+                                                <button class="btn btn-inverse">Inverse Button</button>
+                                            </div>
+                                            
+                                            <h5>Disabled Button Styles</h5>
+                                            
+                                            <div class="btn-toolbar">
+                                                <button class="btn" disabled="">Default Button</button> 
+                                                <button class="btn btn-primary" disabled="">Primary Button</button>
+                                                <button class="btn btn-info" disabled="">Info Button</button>
+                                                <button class="btn btn-success" disabled="">Success Button</button>
+                                                <button class="btn btn-warning" disabled="">Warning Button</button>
+                                                <button class="btn btn-danger" disabled="">Danger Button</button>
+                                                <button class="btn btn-inverse" disabled="">Inverse Button</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row-fluid">
+                                
+                                	<div class="span6 widget">
+                                        <div class="widget-content" style="text-align: center;">
+                                            <h5>Mini Buttons</h5>
+                                            
+                                            <div class="btn-toolbar">
+                                                <button class="btn btn-mini">Default</button> 
+                                                <button class="btn btn-mini btn-primary">Primary</button>
+                                                <button class="btn btn-mini btn-info">Info</button>
+                                                <button class="btn btn-mini btn-success">Success</button>
+                                                <button class="btn btn-mini btn-warning">Warning</button>
+                                                <button class="btn btn-mini btn-danger">Danger</button>
+                                                <button class="btn btn-mini btn-inverse">Inverse</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                	<div class="span6 widget">
+                                        <div class="widget-content" style="text-align: center;">
+                                            <h5>Small Buttons</h5>
+                                            
+                                            <div class="btn-toolbar">
+                                                <button class="btn btn-small">Default</button> 
+                                                <button class="btn btn-small btn-primary">Primary</button>
+                                                <button class="btn btn-small btn-info">Info</button>
+                                                <button class="btn btn-small btn-success">Success</button>
+                                                <button class="btn btn-small btn-warning">Warning</button>
+                                                <button class="btn btn-small btn-danger">Danger</button>
+                                                <button class="btn btn-small btn-inverse">Inverse</button>
+                                            </div>
+                                        </div>
+                                    </div>
+								</div>
+								<div class="row-fluid">
+                                	<div class="span6 widget">
+                                        <div class="widget-content" style="text-align: center;">
+                                            <h5>Large Buttons</h5>
+                                            
+                                            <div class="btn-toolbar">
+                                                <button class="btn btn-large">Default</button> 
+                                                <button class="btn btn-large btn-primary">Primary</button>
+                                                <button class="btn btn-large btn-info">Info</button>
+                                                <button class="btn btn-large btn-success">Success</button>
+                                            </div>
+                                            <div class="btn-toolbar">
+                                                <button class="btn btn-large btn-warning">Warning</button>
+                                                <button class="btn btn-large btn-danger">Danger</button>
+                                                <button class="btn btn-large btn-inverse">Inverse</button>
+                                            </div>
+                                    	</div>
+                                    </div>
+                                	<div class="span6 widget">
+                                        <div class="widget-content" style="text-align: center;">
+                                            <h5>Button With Icons</h5>
+                                            
+                                            <div class="btn-toolbar">
+                                                <button class="btn btn-mini"><i class="icon-cog"></i></button>
+                                                <button class="btn btn-small"><i class="icon-book"></i></button>
+                                                <button class="btn"><i class="icon-stats-up"></i></button>
+                                                <button class="btn btn-large"><i class="icon-home"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row-fluid">
+                                
+                                	<div class="span6 widget">
+                                        <div class="widget-content" style="text-align: center;">
+                                            <h5>Button With Color Icons</h5>
+                                            
+                                            <div class="btn-toolbar">
+                                                <button class="btn btn-mini"><i class="icol-money"></i></button>
+                                                <button class="btn btn-small"><i class="icol-cross"></i></button>
+                                                <button class="btn"><i class="icol-basket"></i></button>
+                                                <button class="btn btn-large"><i class="icol-coins"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                	<div class="span6 widget">
+                                        <div class="widget-content" style="text-align: center;">
+                                            <h5>Button Toolbar</h5>
+                                            
+                                            <div class="btn-toolbar">
+                                                <div class="btn-group">
+                                                    <button class="btn"><i class="icol-text-align-left"></i></button>
+                                                    <button class="btn"><i class="icol-text-align-center"></i></button>
+                                                    <button class="btn"><i class="icol-text-align-right"></i></button>
+                                                    <button class="btn"><i class="icol-text-bold"></i></button>
+                                                    <button class="btn"><i class="icol-text-italic"></i></button>
+                                                    <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                    <ul class="dropdown-menu pull-right" style="text-align: left;">
+                                                        <li><a href="#"><i class="icol-printer"></i> Print</a></li>
+                                                        <li><a href="#"><i class="icol-email"></i> Send Email</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a href="#"><i class="icol-disconnect"></i> Disconnect From Network</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row-fluid">
+                                	<div class="span12">
+                                        <div class="widget">
+                                            <div class="widget-content" style="text-align: center;">
+                                                <h5>Stateful Buttons</h5>
+
+                                                <div class="btn-toolbar">
+                                                    <button type="button" class="btn btn-info" data-toggle="button">Single Toggle</button>
+                                                    <button id="btn-load" class="btn btn-primary" data-loading-text="Loading...">Click to Load</button>
+                                                    <button id="btn-load-then-complete" class="btn btn-success" data-loading-text="Loading..." data-complete-text="Resources Downloaded!">Download Resources</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="widget">
+                                            <div class="widget-content">
+                                                <h5>Button Dropdown</h5>
+                                                
+                                                <div class="btn-toolbar">
+                                                    
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="icol-cog"></i> Settings
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="icol-cog"></i> Settings
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="btn-group">
+                                                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="icol-cog"></i> Settings
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-large dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="icol-cog"></i> Settings
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            
+                                                <h5>Split Button Dropdown</h5>
+                                                
+                                                <div class="btn-toolbar">
+                                                    
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-mini"><i class="icol-doc-pdf"></i> Download File</button>
+                                                        <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-small"><i class="icol-doc-pdf"></i> Download File</button>
+                                                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    
+                                                    <div class="btn-group">
+                                                        <button class="btn"><i class="icol-doc-pdf"></i> Download File</button>
+                                                        <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-large"><i class="icol-doc-pdf"></i> Download File</button>
+                                                        <button class="btn btn-large dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <h5>Button Dropup</h5>
+                                                
+                                                <div class="btn-toolbar">
+                                                    
+                                                    <div class="btn-group dropup">
+                                                        <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><i class="icol-cog"></i> Settings <span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="btn-group dropup">
+                                                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><i class="icol-cog"></i> Settings <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="btn-group dropup">
+                                                        <button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icol-cog"></i> Settings <span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    
+                                                    <div class="btn-group dropup">
+                                                        <button class="btn btn-large dropdown-toggle" data-toggle="dropdown"><i class="icol-cog"></i> Settings <span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            
+                                                <h5>Split Button Dropup</h5>
+                                                
+                                                <div class="btn-toolbar">
+                                                    
+                                                    <div class="btn-group dropup">
+                                                        <button class="btn btn-mini"><i class="icol-doc-pdf"></i> Download File</button>
+                                                        <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="btn-group dropup">
+                                                        <button class="btn btn-small"><i class="icol-doc-pdf"></i> Download File</button>
+                                                        <button class="btn btn-small dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    
+                                                    <div class="btn-group dropup">
+                                                        <button class="btn"><i class="icol-doc-pdf"></i> Download File</button>
+                                                        <button class="btn dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="btn-group dropup">
+                                                        <button class="btn btn-large"><i class="icol-doc-pdf"></i> Download File</button>
+                                                        <button class="btn btn-large dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="#"><i class="icol-color-swatch-1"></i> Color</a></li>
+                                                            <li><a href="#"><i class="icol-font"></i> Font Size</a></li>
+                                                            <li><a href="#"><i class="icol-html"></i> HTML Version</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <div class="alert alert-info">
+                                                    <strong>Notice!</strong><br />Color icons on small and mini button groups are not supported, so they will be hidden as seen on the example above.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer id="footer">
+            <div class="footer-left">MoonCake - Responsive Admin Template</div>
+            <div class="footer-right"><p>Copyright 2012. All Rights Reserved.</p></div>
+        </footer>
+        
+    </div>
+
+	<!-- Core Scripts -->
+	<script src="assets/js/libs/jquery-1.8.2.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/js/libs/jquery.placeholder.min.js"></script>
+	<script src="assets/js/libs/jquery.mousewheel.min.js"></script>
+    
+    <!-- Template Script -->
+    <script src="assets/js/template.js"></script>
+    <script src="assets/js/setup.js"></script>
+
+    <!-- Customizer, remove if not needed -->
+    <script src="assets/js/customizer.js"></script>
+
+    <!-- Uniform Script -->
+    <script src="plugins/uniform/jquery.uniform.min.js"></script>
+    
+    <!-- jquery-ui Scripts -->
+    <script src="assets/jui/js/jquery-ui-1.8.24.min.js"></script>
+    <script src="assets/jui/jquery-ui.custom.min.js"></script>
+    <script src="assets/jui/timepicker/jquery-ui-timepicker.min.js"></script>
+	<script src="assets/jui/jquery.ui.touch-punch.min.js"></script>
+    
+    <!-- Plugin Scripts -->
+    
+    <!-- Demo Scripts -->
+    <script>
+        $(document).ready(function() {
+            $('#btn-load').on( 'click', function() {
+                var btn = $(this);
+                btn.button('loading');
+                setTimeout(function () {
+                    btn.button('reset')
+                }, 1500)
+            });
+            $('#btn-load-then-complete').on( 'click', function() {
+                var btn = $(this);
+                btn.button('loading');
+                setTimeout(function () {
+                    btn.button('complete')
+                }, 1500)
+            });
+        });
+    </script>
+
+</body>
+
+</html>
