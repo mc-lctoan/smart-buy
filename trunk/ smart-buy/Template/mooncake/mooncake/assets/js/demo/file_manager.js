@@ -1,0 +1,1 @@
+(function(h,e,f,g){h(f).ready(function(){if(h.fn.elfinder){h("#elfinder-demo").elfinder({url:"plugins/elfinder/php/connector.php",uiOptions:{toolbar:[["back","forward"],["reload"],["home","up"],["info"],["quicklook"],["copy","cut","paste"],["rm"],["duplicate","rename","edit"],["search"],["view"],["help"]]}})}})})(jQuery,window,document);

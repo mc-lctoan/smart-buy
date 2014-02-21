@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->
+
+<head>
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+
+<!-- Bootstrap Stylesheet -->
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="screen" />
+
+<!-- jquery-ui Stylesheets -->
+<link rel="stylesheet" href="assets/jui/css/jquery.ui.all.css" media="screen" />
+<link rel="stylesheet" href="assets/jui/jquery-ui.custom.css" media="screen" />
+<link rel="stylesheet" href="assets/jui/timepicker/jquery-ui-timepicker.css" media="screen" />
+
+<!-- Uniform Stylesheet -->
+<link rel="stylesheet" href="plugins/uniform/css/uniform.default.css" />
+
+<!-- Plugin Stylsheets first to ease overrides -->
+
+<!-- iButton -->
+<link rel="stylesheet" href="plugins/ibutton/jquery.ibutton.css" media="screen" />
+
+<!-- End Plugin Stylesheets -->
+
+<!-- Main Layout Stylesheet -->
+<link rel="stylesheet" href="assets/css/fonts/icomoon/style.css" media="screen" />
+<link rel="stylesheet" href="assets/css/mooncake.min.css" media="screen" />
+<link rel="stylesheet" href="assets/css/plugins/plugins.min.css" media="screen" />
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<title>MoonCake :: Responsive Admin Template</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+<body>
+
+    <div id="customizer">
+        <div id="layoutMode">
+            <label class="checkbox"><input type="checkbox" class="uniform" name="layout-mode" value="boxed" /> Boxed</label>
+        </div>
+    </div>
+    
+	<div id="wrapper">
+        <header id="header" class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+					<div class="brand-wrap pull-left">
+						<div class="brand-img">
+							<a class="brand" href="#">
+								<img src="assets/images/logo.png" alt="" />
+							</a>
+						</div>
+					</div>
+                    
+                    <div id="header-right" class="clearfix">
+						<div id="nav-toggle" data-toggle="collapse" data-target="#navigation" class="collapsed">
+							<i class="icon-caret-down"></i>
+						</div>
+						<div id="header-search">
+							<span id="search-toggle" data-toggle="dropdown">
+								<i class="icon-search"></i>
+							</span>
+							<form class="navbar-search" />
+								<input type="text" class="search-query" placeholder="Search" />
+							</form>
+						</div>
+						<div id="dropdown-lists">
+							<a class="item" href="#">
+								<span class="item-icon"><i class="icon-exclamation-sign"></i></span>
+								<span class="item-label">Notifications</span>
+								<span class="item-count">4</span>
+							</a>
+							<a class="item" href="mail.html">
+								<span class="item-icon"><i class="icon-envelope"></i></span>
+								<span class="item-label">Messages</span>
+								<span class="item-count">16</span>
+							</a>
+						</div>
+                        
+                        <div id="header-functions" class="pull-right">
+                        	<div id="user-info" class="clearfix">
+                                <span class="info">
+                                	Welcome
+                                    <span class="name">Shana-chan</span>
+                                </span>
+                            	<div class="avatar">
+                                	<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                    	<img src="assets/images/pp.jpg" alt="Avatar" />
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                    	<li><a href="profile.html"><i class="icol-user"></i> My Profile</a></li>
+                                    	<li><a href="#"><i class="icol-layout"></i> My Invoices</a></li>                                        
+                                        <li class="divider"></li>
+                                        <li><a href="index.html"><i class="icol-key"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="logout-ribbon">
+                            	<a href="index.html"><i class="icon-off"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div id="content-wrap">
+        	<div id="content">
+            	<div id="content-outer">
+                	<div id="content-inner">
+                    	<aside id="sidebar">
+                        	<nav id="navigation" class="collapse">
+                            	<ul>
+                                	<li>
+                                    	<span title="General">
+                                    		<i class="icon-home"></i>
+											<span class="nav-title">General</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="dashboard.html"><i class="icol-dashboard"></i> Dashboard</a></li>
+                                        	<li><a href="calendar.html"><i class="icol-calendar-2"></i> Calendar</a></li>
+                                            <li><a href="icons.html"><i class="icol-lifebuoy"></i> Icons</a></li>
+                                        	<li><a href="grids.html"><i class="icol-grid"></i> Grids</a></li>
+                                        	<li><a href="typography.html"><i class="icol-font"></i> Typography</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Table">
+                                    		<i class="icon-table"></i>
+											<span class="nav-title">Table</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="tables.html"><i class="icol-style"></i> Static Tables</a></li>
+                                        	<li><a href="responsive_tables.html"><i class="icol-hammer-screwdriver"></i> Responsive Tables</a></li>
+                                        	<li><a href="data_tables.html"><i class="icol-table"></i> Data Tables</a></li>
+                                            <li><a href="detail_view.html"><i class="icol-eye"></i> Detail View Table</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Statistic">
+                                        	<i class="icon-graph"></i>
+											<span class="nav-title">Statistic</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="statistic.html"><i class="icol-chart-curve"></i> Statistical Elements</a></li>
+                                        	<li><a href="charts_gallery.html"><i class="icol-chart-pie"></i> Charts Gallery</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Form">
+                                        	<i class="icon-list"></i>
+											<span class="nav-title">Form</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="form_layouts.html"><i class="icol-layout-select"></i> Form Layouts</a></li>
+                                        	<li><a href="form_elements.html"><i class="icol-ui-text-field-password"></i> Form Elements</a></li>
+											<li><a href="form_wizard.html"><i class="icol-wand"></i> Form Wizard</a></li>
+                                        	<li><a href="form_validation.html"><i class="icol-accept"></i> Form Validation</a></li>
+                                            <li><a href="wysiwyg.html"><i class="icol-pencil"></i> WYSIWYG</a></li>
+                                        </ul>
+                                    </li>
+                                	<li class="active">
+                                    	<span title="Elements">
+                                        	<i class="icon-cogs"></i>
+											<span class="nav-title">Elements</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="ui_bootstrap.html"><i class="icol-ui-tab-content"></i> Bootstrap Elements</a></li>
+											<li><a href="ui_components.html"><i class="icol-pipette"></i> Other Elements</a></li>
+                                        	<li><a href="alerts.html"><i class="icol-error"></i> Alerts and Notifications</a></li>
+                                            <li class="active"><a href="boxes.html"><i class="icol-cog"></i> Widget Boxes</a></li>
+                                        	<li><a href="buttons.html"><i class="icol-joystick"></i> Buttons</a></li>
+                                        	<li><a href="file_uploader.html"><i class="icol-computer"></i> File Uploader</a></li>
+											<li><a href="file_manager.html"><i class="icol-databases"></i> File Manager</a>
+                                        </li></ul>
+                                    
+                                	<li>
+                                    	<span title="Extra">
+                                        	<i class="icon-gift"></i>
+											<span class="nav-title">Extra</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li><a href="profile.html"><i class="icol-user"></i> Profile Page</a></li>
+                                            <li><a href="mail.html"><i class="icol-email"></i> Mail Page</a></li>
+                                            <li><a href="widgets.html"><i class="icol-ruby"></i> Custom Widgets</a></li>
+                                            <li><a href="gallery.html"><i class="icol-images"></i> Image Gallery</a>
+                                            </li><li><a href="contacts.html"><i class="icol-vcard"></i> Contact List</a></li>
+                                            <li><a href="404.html"><i class="icol-error"></i> Error Page (404)</a></li>
+                                        </ul>
+                                    
+
+                                    <!-- Documentation -->
+                                    <li>
+                                        <a href="documentation/index.html" title="Documentation">
+                                            <i class="icon-book"></i>
+                                            <span class="nav-title">Docs</span>
+                                        </a>
+                                    </li>
+                                    <!-- End -->
+                                </li></li></ul>
+                            </nav>
+                        </aside>
+
+                        <div id="sidebar-separator"></div>
+                        
+                        <section id="main" class="clearfix">
+                        	<div id="main-header" class="page-header">
+                            	<ul class="breadcrumb">
+                                	<li>
+                                    	<i class="icon-home"></i>MoonCake
+                                        <span class="divider">&raquo;</span>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Elements</a>
+                                        <span class="divider">&raquo;</span>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Widget Boxes</a>
+                                    </li>
+                                </ul>
+                                
+                                <h1 id="main-heading">
+                                	Widget Boxes <span>This page shows the amazing things you can do with this template's widget boxes</span>
+                                </h1>
+                            </div>
+                            
+                            <div id="main-content">
+
+								<div class="row-fluid">
+
+                                    <div class="span6 widget">
+                                        <div class="widget-header">
+                                            <span class="title">Default Widget Box</span>
+                                        </div>
+                                        <div class="widget-content">
+                                            <p class="alert alert-info">Hello, I'm a widget box's default body</p>
+                                        </div>
+                                    </div>
+                                    <div class="span6 widget">
+                                        <div class="widget-header">
+                                            <span class="title">Default Widget Box</span>
+                                        </div>
+                                        <div class="widget-content no-padding">
+                                            <p class="alert alert-info">
+                                                Hello, I'm a widget box's body without padding, and this is an alert box which will be stacked on a widget without padding
+                                            </p>
+                                            <p class="alert alert-success">
+                                                Hello, I'm a widget box's body without padding, and this is an alert box which will be stacked on a widget without padding
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+                                    <div class="span6 widget">
+                                        <div class="widget-header light">
+                                            <span class="title">Widget Box with Light Header</span>
+                                        </div>
+                                        <div class="widget-content">
+                                            <p class="alert alert-info">Hello, I'm a widget box's body without borders</p>
+                                        </div>
+                                    </div>
+                                    <div class="span6 widget">
+                                        <div class="widget-header light">
+                                            <span class="title"><i class="icol-heart"></i> Light Header With Icon</span>
+                                        </div>
+                                        <div class="widget-content">
+                                            <p class="alert alert-info">Hello, I'm a widget box's body without borders</p>
+                                        </div>
+                                    </div>
+								</div>
+
+
+                                <div class="row-fluid">
+                                    <div class="span6 widget">
+                                        <div class="widget-header">
+                                            <span class="title">Widget Box With Button Toolbar</span>
+                                            <div class="toolbar">
+                                                <div class="btn-group">
+                                                    <span class="btn"><i class="icon-plus"></i></span>
+                                                    <span class="btn"><i class="icon-minus"></i></span>
+                                                    <span class="btn dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li><a href="#">I'm a menu item</a></li>
+                                                        <li><a href="#">I'm also a menu item</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content">
+                                            <p class="alert alert-info">Hello, I'm a widget box's default body</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="span6 widget">
+                                        <div class="widget-header light">
+                                            <span class="title">Light Widget Box With Button Toolbar</span>
+                                            <div class="toolbar">
+                                                <div class="btn-group">
+                                                    <span class="btn"><i class="icon-plus"></i></span>
+                                                    <span class="btn"><i class="icon-minus"></i></span>
+                                                    <span class="btn dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li><a href="#">I'm a menu item</a></li>
+                                                        <li><a href="#">I'm also a menu item</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content">
+                                            <p class="alert alert-info">Hello, I'm a widget box's default body</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+
+                                    <div class="span6">
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Collapsible Widget Box</span>
+                                                <div class="toolbar">
+                                                    <span class="btn" data-toggle="widget"><i class="icon-sort"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content">
+                                                <h4>Creating a Collapsible Widget Box is easy!</h4>
+                                                <p>Just create an element inside a widget box's header with <code>data-toggle="widget"</code></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="span6">
+                                        <div class="widget collapsed">
+                                            <div class="widget-header">
+                                                <span class="title">Closed Collapsible Widget Box</span>
+                                                <div class="toolbar">
+                                                    <span class="btn" data-toggle="widget"><i class="icon-sort"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content">
+                                                <h4>Creating a Collapsible Widget Box is easy!</h4>
+                                                <p>Just create an element inside a widget box's header with <code>data-toggle="widget"</code></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+
+                                    <div class="span3 widget">
+                                        <div class="widget-header">
+                                            <span class="title">With Labels</span>
+                                            <div class="toolbar">
+                                                <span class="label label-important">+521</span>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content no-padding">
+                                            <p class="alert alert-info">Hello, I'm a widget box's default body</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="span3 widget">
+                                        <div class="widget-header">
+                                            <span class="title">More Labels</span>
+                                            <div class="toolbar">
+                                                <span class="label label-success">75%</span>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content no-padding">
+                                            <p class="alert alert-info">Hello, I'm a widget box's default body</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="span3 widget">
+                                        <div class="widget-header">
+                                            <span class="title">With Badges</span>
+                                            <div class="toolbar">
+                                                <span class="badge badge-warning">Critical!</span>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content no-padding">
+                                            <p class="alert alert-info">Hello, I'm a widget box's default body</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="span3 widget">
+                                        <div class="widget-header">
+                                            <span class="title">More Badges</span>
+                                            <div class="toolbar">
+                                                <span class="badge badge-success">Done</span>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content no-padding">
+                                            <p class="alert alert-info">Hello, I'm a widget box's default body</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+
+                                    <div class="span12">
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">With Progressbar</span>
+                                                <div class="toolbar">
+                                                    <div class="progress progress-striped progress-success active">
+                                                        <div class="bar" style="width: 83%; ">83%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content">
+                                                <h4>Progressbar's width is 150px</h4>
+                                                <p>By default, a progress bar in a widget box's header will be 150px wide, but you can always change this by putting an inline style on the progress bar.</p>
+                                                <p><code>&lt;div class=&quot;progress&quot; style=&quot;width: 200px; &quot;&gt;&lt;/div&gt;</code></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Sliders</span>
+                                                <div class="toolbar">
+                                                    <div id="widget-slider-ex"></div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content">
+                                                <h4>Creating a slider requires jQuery-UI</h4>
+                                                <p>Just create an element on a widget box's header toolbar, and initialize jquery-ui slider on that element. Easy!</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Even Switches!</span>
+                                                <div class="toolbar">
+                                                    <input type="checkbox" data-provide="ibutton" />
+                                                </div>
+                                            </div>
+                                            <div class="widget-content">
+                                                <h4>iOS Style switches</h4>
+                                                <p>Creating switches is very easy!<br /> Just put a checkbox or radio button inside a widget box's header, and give it the attribute</p>
+                                                <p><code>data-provide="ibutton"</code></p>
+                                                <p><strong>Note: </strong> This requires the iButton plugin, do not forget to include it on your page</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row-fluid">
+
+                                    <div class="span12">
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">Combine Them All!</span>
+                                                <div class="toolbar">
+                                                    <div class="progress progress-striped progress-warning active">
+                                                        <div class="bar" style="width: 66%; ">66%</div>
+                                                    </div>
+                                                    <div id="widget-slider-ex-2"></div>
+                                                    <div class="btn-group">
+                                                        <span class="btn"><i class="icon-plus"></i></span>
+                                                        <span class="btn"><i class="icon-minus"></i></span>
+                                                        <span class="btn dropdown-toggle" data-toggle="dropdown">
+                                                            <span class="caret"></span>
+                                                        </span>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li><a href="#">I'm a menu item</a></li>
+                                                            <li><a href="#">I'm also a menu item</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content">
+                                                <h4>But this is not recommended</h4>
+                                                <p>It looks cluttered and might overflow easily, so try to avoid this</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">With Collapsible Form Toolbar</span>
+                                                <div class="toolbar">
+                                                    <span class="btn" data-toggle="collapse" data-target="#toolbar-ex">
+                                                        <i class="icon-sort"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div id="toolbar-ex" class="toolbar form-toolbar collapse in">
+                                                <form class="search-form" />
+                                                    <input type="text" class="span12 search-query" placeholder="Search..." />
+                                                </form>
+                                            </div>
+                                            <div class="widget-content">
+                                                <h4>How to do this?</h4>
+                                                <p>With the help of Bootstrap's Collapse plugin, you do not need to write any javascript code!</p>
+                                                <ol>
+                                                    <li>Create a toolbar with an id attribute <code>your-toolbar-id</code></li>
+                                                    <li>Create a button with <code>data-toggle="collapse" data-target="#your-toolbar-id"</code></li>
+                                                    <li>Give the toolbar the class attribute <code>collapse in</code></li>
+                                                    <li><strong>Done!</strong></li>
+                                                </ol>
+                                                <p><strong>Note:</strong> If you want to have the toolbar collapsed by default, remove the class <code>in</code> from the toolbar</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+                                    <div class="span6 widget">
+                                        <div class="widget-header">
+                                            <span class="title">With Button Toolbar</span>
+                                            <div class="toolbar">
+                                                <span class="btn" data-toggle="widget"><i class="icon-sort"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="toolbar btn-toolbar">
+                                            <div class="btn-group">
+                                                <span class="btn"><i class="icol-accept"></i> Accept</span>
+                                                <span class="btn"><i class="icol-cross"></i> Reject</span>
+                                                <span class="btn"><i class="icol-text-bold"></i></span>
+                                                <span class="btn"><i class="icol-text-italic"></i></span>
+                                                <span class="btn dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icol-font"></i>
+                                                    <span class="caret"></span>
+                                                </span>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li><a href="#">Arial</a></li>
+                                                    <li><a href="#">Times New Roman</a></li>
+                                                    <li><a href="#">Georgia</a></li>
+                                                    <li><a href="#">Courier New</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis. Nullam interdum massa vel nisl fringilla sed viverra erat tincidunt. Phasellus in ipsum velit. Maecenas id erat vel sem convallis blandit. Nunc aliquam enim ut arcu aliquet adipiscing. Fusce dignissim volutpat justo non consectetur. Nulla fringilla eleifend consectetur. Etiam justo nisl, gravida id egestas eu, eleifend vel metus. Pellentesque tellus ipsum, euismod in facilisis quis, aliquet quis sem. Aliquam erat volutpat. Ut eu sapien a lectus tempus consectetur. Duis tortor mauris, faucibus a vestibulum at, condimentum a justo. Aliquam convallis condimentum dolor, nec rutrum elit accumsan tincidunt.</p>
+                                            <p>Praesent adipiscing est eu urna convallis quis cursus libero aliquet. Donec consequat est nec orci euismod cursus. Cras sollicitudin, nulla ac ultricies consectetur, erat diam tincidunt lorem, nec iaculis dui risus vel nisi. Nam ut leo odio, id rutrum libero. Duis dictum vestibulum lectus at iaculis. Nulla auctor odio vitae orci varius at ornare elit pulvinar. Ut lobortis neque vel odio tincidunt ut hendrerit massa aliquam. Maecenas quis felis urna. Sed mauris orci, lobortis sit amet mollis at, imperdiet ut massa. Sed non iaculis nibh. Quisque arcu justo, molestie sed rutrum sed, ullamcorper ac metus.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="span6 widget">
+                                        <div class="widget-header">
+                                            <span class="title">With Bottom Button Toolbar</span>
+                                            <div class="toolbar">
+                                                <span class="btn" data-toggle="widget"><i class="icon-sort"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="widget-content">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis. Nullam interdum massa vel nisl fringilla sed viverra erat tincidunt. Phasellus in ipsum velit. Maecenas id erat vel sem convallis blandit. Nunc aliquam enim ut arcu aliquet adipiscing. Fusce dignissim volutpat justo non consectetur. Nulla fringilla eleifend consectetur. Etiam justo nisl, gravida id egestas eu, eleifend vel metus. Pellentesque tellus ipsum, euismod in facilisis quis, aliquet quis sem. Aliquam erat volutpat. Ut eu sapien a lectus tempus consectetur. Duis tortor mauris, faucibus a vestibulum at, condimentum a justo. Aliquam convallis condimentum dolor, nec rutrum elit accumsan tincidunt.</p>
+                                            <p>Praesent adipiscing est eu urna convallis quis cursus libero aliquet. Donec consequat est nec orci euismod cursus. Cras sollicitudin, nulla ac ultricies consectetur, erat diam tincidunt lorem, nec iaculis dui risus vel nisi. Nam ut leo odio, id rutrum libero. Duis dictum vestibulum lectus at iaculis. Nulla auctor odio vitae orci varius at ornare elit pulvinar. Ut lobortis neque vel odio tincidunt ut hendrerit massa aliquam. Maecenas quis felis urna. Sed mauris orci, lobortis sit amet mollis at, imperdiet ut massa. Sed non iaculis nibh. Quisque arcu justo, molestie sed rutrum sed, ullamcorper ac metus.</p>
+                                        </div>
+                                        <div class="toolbar btn-toolbar">
+                                            <div class="btn-group dropup">
+                                                <span class="btn"><i class="icol-accept"></i> Accept</span>
+                                                <span class="btn"><i class="icol-cross"></i> Reject</span>
+                                                <span class="btn"><i class="icol-text-bold"></i></span>
+                                                <span class="btn"><i class="icol-text-italic"></i></span>
+                                                <span class="btn dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="icol-font"></i>
+                                                    <span class="caret"></span>
+                                                </span>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li><a href="#">Arial</a></li>
+                                                    <li><a href="#">Times New Roman</a></li>
+                                                    <li><a href="#">Georgia</a></li>
+                                                    <li><a href="#">Courier New</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer id="footer">
+            <div class="footer-left">MoonCake - Responsive Admin Template</div>
+            <div class="footer-right"><p>Copyright 2012. All Rights Reserved.</p></div>
+        </footer>
+        
+    </div>
+
+	<!-- Core Scripts -->
+	<script src="assets/js/libs/jquery-1.8.2.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/js/libs/jquery.placeholder.min.js"></script>
+	<script src="assets/js/libs/jquery.mousewheel.min.js"></script>
+    
+    <!-- Template Script -->
+    <script src="assets/js/template.js"></script>
+    <script src="assets/js/setup.js"></script>
+
+    <!-- Customizer, remove if not needed -->
+    <script src="assets/js/customizer.js"></script>
+
+    <!-- Uniform Script -->
+    <script src="plugins/uniform/jquery.uniform.min.js"></script>
+    
+    <!-- jquery-ui Scripts -->
+    <script src="assets/jui/js/jquery-ui-1.8.24.min.js"></script>
+    <script src="assets/jui/jquery-ui.custom.min.js"></script>
+    <script src="assets/jui/timepicker/jquery-ui-timepicker.min.js"></script>
+	<script src="assets/jui/jquery.ui.touch-punch.min.js"></script>
+    
+    <!-- Plugin Scripts -->
+   
+    <!-- iButton -->
+    <script src="plugins/ibutton/jquery.ibutton.min.js"></script>
+     
+    <!-- Demo Scripts -->
+    <script src="assets/js/demo/boxes.js"></script>
+
+</body>
+
+</html>

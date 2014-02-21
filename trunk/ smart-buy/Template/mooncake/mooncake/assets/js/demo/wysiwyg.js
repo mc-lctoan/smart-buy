@@ -1,0 +1,1 @@
+(function(c,b,a,d){c(a).ready(function(){if(c.fn.cleditor){c("#cleditor").cleditor({width:"100%"})}})})(jQuery,window,document);

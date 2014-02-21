@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->
+
+<head>
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+
+<!-- Bootstrap Stylesheet -->
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="screen" />
+
+<!-- jquery-ui Stylesheets -->
+<link rel="stylesheet" href="assets/jui/css/jquery.ui.all.css" media="screen" />
+<link rel="stylesheet" href="assets/jui/jquery-ui.custom.css" media="screen" />
+<link rel="stylesheet" href="assets/jui/timepicker/jquery-ui-timepicker.css" media="screen" />
+
+<!-- Uniform Stylesheet -->
+<link rel="stylesheet" href="plugins/uniform/css/uniform.default.css" />
+
+<!-- Rating Plugin -->
+<link rel="stylesheet" href="plugins/rating/jquery.rating.css" media="screen" />
+
+<!-- Plugin Stylsheets first to ease overrides -->
+
+<!-- pnotify -->
+<link rel="stylesheet" href="plugins/pnotify/jquery.pnotify.css" media="screen" />
+
+<!-- End Plugin Stylesheets -->
+
+<!-- Main Layout Stylesheet -->
+<link rel="stylesheet" href="assets/css/fonts/icomoon/style.css" media="screen" />
+<link rel="stylesheet" href="assets/css/mooncake.min.css" media="screen" />
+<link rel="stylesheet" href="assets/css/plugins/plugins.min.css" media="screen" />
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<title>MoonCake :: Responsive Admin Template</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+<body>
+
+    <div id="customizer">
+        <div id="layoutMode">
+            <label class="checkbox"><input type="checkbox" class="uniform" name="layout-mode" value="boxed" /> Boxed</label>
+        </div>
+    </div>
+    
+	<div id="wrapper">
+        <header id="header" class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+					<div class="brand-wrap pull-left">
+						<div class="brand-img">
+							<a class="brand" href="#">
+								<img src="assets/images/logo.png" alt="" />
+							</a>
+						</div>
+					</div>
+                    
+                    <div id="header-right" class="clearfix">
+						<div id="nav-toggle" data-toggle="collapse" data-target="#navigation" class="collapsed">
+							<i class="icon-caret-down"></i>
+						</div>
+						<div id="header-search">
+							<span id="search-toggle" data-toggle="dropdown">
+								<i class="icon-search"></i>
+							</span>
+							<form class="navbar-search" />
+								<input type="text" class="search-query" placeholder="Search" />
+							</form>
+						</div>
+						<div id="dropdown-lists">
+							<a class="item" href="#">
+								<span class="item-icon"><i class="icon-exclamation-sign"></i></span>
+								<span class="item-label">Notifications</span>
+								<span class="item-count">4</span>
+							</a>
+							<a class="item" href="mail.html">
+								<span class="item-icon"><i class="icon-envelope"></i></span>
+								<span class="item-label">Messages</span>
+								<span class="item-count">16</span>
+							</a>
+						</div>
+                        
+                        <div id="header-functions" class="pull-right">
+                        	<div id="user-info" class="clearfix">
+                                <span class="info">
+                                	Welcome
+                                    <span class="name">Shana-chan</span>
+                                </span>
+                            	<div class="avatar">
+                                	<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                    	<img src="assets/images/pp.jpg" alt="Avatar" />
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                    	<li><a href="profile.html"><i class="icol-user"></i> My Profile</a></li>
+                                    	<li><a href="#"><i class="icol-layout"></i> My Invoices</a></li>                                        
+                                        <li class="divider"></li>
+                                        <li><a href="index.html"><i class="icol-key"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="logout-ribbon">
+                            	<a href="index.html"><i class="icon-off"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div id="content-wrap">
+        	<div id="content">
+            	<div id="content-outer">
+                	<div id="content-inner">
+                    	<aside id="sidebar">
+                        	<nav id="navigation" class="collapse">
+                            	<ul>
+                                	<li>
+                                    	<span title="General">
+                                    		<i class="icon-home"></i>
+											<span class="nav-title">General</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="dashboard.html"><i class="icol-dashboard"></i> Dashboard</a></li>
+                                        	<li><a href="calendar.html"><i class="icol-calendar-2"></i> Calendar</a></li>
+                                        	<li><a href="icons.html"><i class="icol-lifebuoy"></i> Icons</a></li>
+                                        	<li><a href="grids.html"><i class="icol-grid"></i> Grids</a></li>
+                                        	<li><a href="typography.html"><i class="icol-font"></i> Typography</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Table">
+                                    		<i class="icon-table"></i>
+											<span class="nav-title">Table</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="tables.html"><i class="icol-style"></i> Static Tables</a></li>
+                                        	<li><a href="responsive_tables.html"><i class="icol-hammer-screwdriver"></i> Responsive Tables</a></li>
+                                        	<li><a href="data_tables.html"><i class="icol-table"></i> Data Tables</a></li>
+                                            <li><a href="detail_view.html"><i class="icol-eye"></i> Detail View Table</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Statistic">
+                                        	<i class="icon-graph"></i>
+											<span class="nav-title">Statistic</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="statistic.html"><i class="icol-chart-curve"></i> Statistical Elements</a></li>
+                                        	<li><a href="charts_gallery.html"><i class="icol-chart-pie"></i> Charts Gallery</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Form">
+                                        	<i class="icon-list"></i>
+											<span class="nav-title">Form</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="form_layouts.html"><i class="icol-layout-select"></i> Form Layouts</a></li>
+                                        	<li><a href="form_elements.html"><i class="icol-ui-text-field-password"></i> Form Elements</a></li>
+											<li><a href="form_wizard.html"><i class="icol-wand"></i> Form Wizard</a></li>
+                                        	<li><a href="form_validation.html"><i class="icol-accept"></i> Form Validation</a></li>
+                                            <li><a href="wysiwyg.html"><i class="icol-pencil"></i> WYSIWYG</a></li>
+                                        </ul>
+                                    </li>
+                                	<li>
+                                    	<span title="Elements">
+                                        	<i class="icon-cogs"></i>
+											<span class="nav-title">Elements</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="ui_bootstrap.html"><i class="icol-ui-tab-content"></i> Bootstrap Elements</a></li>
+											<li><a href="ui_components.html"><i class="icol-pipette"></i> Other Elements</a></li>
+                                        	<li><a href="alerts.html"><i class="icol-error"></i> Alerts and Notifications</a></li>
+											<li><a href="boxes.html"><i class="icol-cog"></i> Widget Boxes</a></li>
+                                        	<li><a href="buttons.html"><i class="icol-joystick"></i> Buttons</a></li>
+                                        	<li><a href="file_uploader.html"><i class="icol-computer"></i> File Uploader</a></li>
+											<li><a href="file_manager.html"><i class="icol-databases"></i> File Manager</a>
+                                        </li></ul>
+                                    
+                                	<li class="active">
+                                    	<span title="Extra">
+                                        	<i class="icon-gift"></i>
+											<span class="nav-title">Extra</span>
+                                        </span>
+                                    	<ul class="inner-nav">
+                                        	<li><a href="profile.html"><i class="icol-user"></i> Profile Page</a></li>
+                                            <li><a href="mail.html"><i class="icol-email"></i> Mail Page</a></li>
+                                            <li class="active"><a href="widgets.html"><i class="icol-ruby"></i> Custom Widgets</a></li>
+                                        	<li><a href="gallery.html"><i class="icol-images"></i> Image Gallery</a>
+                                        	</li><li><a href="contacts.html"><i class="icol-vcard"></i> Contact List</a></li>
+                                            <li><a href="404.html"><i class="icol-error"></i> Error Page (404)</a></li>
+                                        </ul>
+                                    
+
+                                    <!-- Documentation -->
+                                    <li>
+                                        <a href="documentation/index.html" title="Documentation">
+                                            <i class="icon-book"></i>
+                                            <span class="nav-title">Docs</span>
+                                        </a>
+                                    </li>
+                                    <!-- End -->
+                                </li></li></ul>
+                            </nav>
+                        </aside>
+
+                        <div id="sidebar-separator"></div>
+                        
+                        <section id="main" class="clearfix">
+                        	<div id="main-header" class="page-header">
+                            	<ul class="breadcrumb">
+                                	<li>
+                                    	<i class="icon-home"></i>MoonCake
+                                        <span class="divider">&raquo;</span>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Extra</a>
+                                        <span class="divider">&raquo;</span>
+                                    </li>
+                                    <li>
+                                    	<a href="#">Custom Widgets</a>
+                                    </li>
+                                </ul>
+                                
+                                <h1 id="main-heading">
+                                	Custom Widgets <span>This page shows various useful custom widgets</span>
+                                </h1>
+                            </div>
+                            
+                            <div id="main-content">
+                                <div class="row-fluid">
+								
+									<div class="span6 widget">
+										<div class="widget-header">
+											<span class="title">Shopping Cart Widget</span>
+											<div class="toolbar">
+												<div class="btn-group">
+													<span class="btn"><i class="icon-arrow-up"></i> Checkout</span>
+													<span class="btn" rel="tooltip" title="Items in Basket: 4"><i class="icon-shopping-cart"></i></span>
+												</div>
+											</div>
+										</div>
+										<div class="widget-content shoppingcart">
+											<ul class="thumbnails">
+												<li>
+													<div class="thumbnail">
+														<img src="sample/01.jpg" />
+													</div>
+													<div class="info">
+														<span class="name">The Green Sheep</span>
+														<span class="qty">1 x $24.00</span>
+													</div>
+													<div class="actions">
+														<ul>
+															<li><a href="#" title="Edit" rel="tooltip"><i class="icon-pencil"></i></a></li>
+															<li><a href="#" title="Delete" rel="tooltip"><i class="icon-remove"></i></a></li>
+														</ul>
+													</div>
+												</li>
+												<li>
+													<div class="thumbnail">
+														<img src="sample/02.jpg" />
+													</div>
+													<div class="info">
+														<span class="name">Pink Ribbon Blouse</span>
+														<span class="qty">3 x $12.50</span>
+													</div>
+													<div class="actions">
+														<ul>
+															<li><a href="#" title="Edit" rel="tooltip"><i class="icon-pencil"></i></a></li>
+															<li><a href="#" title="Delete" rel="tooltip"><i class="icon-remove"></i></a></li>
+														</ul>
+													</div>
+												</li>
+												<li>
+													<div class="thumbnail">
+														<img src="sample/03.jpg" />
+													</div>
+													<div class="info">
+														<span class="name">Black Pearls</span>
+														<span class="qty">1 x $55.00</span>
+													</div>
+													<div class="actions">
+														<ul>
+															<li><a href="#" title="Edit" rel="tooltip"><i class="icon-pencil"></i></a></li>
+															<li><a href="#" title="Delete" rel="tooltip"><i class="icon-remove"></i></a></li>
+														</ul>
+													</div>
+												</li>
+												<li>
+													<div class="thumbnail">
+														<img src="sample/04.jpg" />
+													</div>
+													<div class="info">
+														<span class="name">The Two Headed Snake</span>
+														<span class="qty">2 x $31.00</span>
+													</div>
+													<div class="actions">
+														<ul>
+															<li><a href="#" title="Edit" rel="tooltip"><i class="icon-pencil"></i></a></li>
+															<li><a href="#" title="Delete" rel="tooltip"><i class="icon-remove"></i></a></li>
+														</ul>
+													</div>
+												</li>
+												<li class="footer">
+													<span class="btn btn-danger">Clear Cart</span>
+													<span class="price">$178.5</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+									
+									<div class="span6 widget">
+										<div class="widget-header">
+											<span class="title">News Widget</span>
+											<div class="toolbar">
+												<div class="btn-group">
+													<span class="btn" rel="tooltip" title="Refresh"><i class="icon-refresh"></i></span>
+													<span class="btn dropdown-toggle" data-toggle="dropdown">
+														<span class="caret"></span>
+													</span>
+													<ul class="dropdown-menu pull-right">
+														<li><a href="#">Home</a></li>
+														<li><a href="#">Sports</a></li>
+														<li><a href="#">Multimedia</a></li>
+														<li><a href="#">Gadget</a></li>
+														<li><a href="#">Entertainment</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="widget-content news">
+											<ul class="thumbnails">
+												<li>
+													<div class="head">
+														<h2 class="title"><a href="#">Download Mozilla Firefox 15.0 for Linux</a></h2>
+														<span class="date">September 06, 2012</span> <span class="tags"><a href="#">Technology</a>, <a href="#">General</a></span>
+													</div>
+													<div class="thumbnail">
+														<img src="sample/05.jpg" />
+													</div>
+													<div class="info">
+														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+													</div>
+												</li>
+												<li>
+													<div class="head">
+														<h2 class="title"><a href="#">How About an Official Twitter Client for Linux?</a></h2>
+														<span class="date">September 04, 2012</span> <span class="tags"><a href="#">Technology</a>, <a href="#">General</a></span>
+													</div>
+													<div class="thumbnail">
+														<img src="sample/06.jpg" />
+													</div>
+													<div class="info">
+														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+													</div>
+												</li>
+												<li>
+													<div class="head">
+														<h2 class="title"><a href="#">Ubuntu 12.04.1 LTS Officially Released</a></h2>
+														<span class="date">September 01, 2012</span> <span class="tags"><a href="#">Technology</a>, <a href="#">General</a></span>
+													</div>
+													<div class="thumbnail">
+														<img src="sample/07.jpg" />
+													</div>
+													<div class="info">
+														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								
+								</div>
+								
+                                <div class="row-fluid">
+								
+									<div class="span6 widget">
+										<div class="widget-header">
+											<span class="title">Task List Widget</span>
+											<div class="toolbar">
+												<div class="btn-group">
+													<span class="btn" rel="tooltip" title="Add Item"><i class="icon-plus"></i></span>
+												</div>
+											</div>
+										</div>
+                                        <div class="widget-content task-list">
+                                            <ul>
+                                                <li>
+                                                    <span class="checkbox"><input type="checkbox" class="uniform" checked="" /></span>
+                                                    <span class="text">
+	                                                    <span class="text-nowrap">
+	                                                        <i class="icon-food"></i> Feed the cats
+	                                                    </span>
+	                                                </span>
+                                                    <a href="#" class="close">&times;</a>
+                                                </li>
+                                                <li>
+                                                    <span class="checkbox"><input type="checkbox" class="uniform" /></span>
+                                                    <span class="text">
+	                                                    <span class="text-nowrap">
+	                                                        <i class="icon-chemical"></i> Go to the doctor
+	                                                        <span class="badge badge-warning">urgent</span>
+	                                                    </span>
+                                                    </span>
+                                                    <a href="#" class="close">&times;</a>
+                                                </li>
+                                                <li>
+                                                    <span class="checkbox"><input type="checkbox" class="uniform" checked="" /></span>
+                                                    <span class="text">
+	                                                    <span class="text-nowrap">
+	                                                        <i class="icon-bag"></i> Buy my wife a new dress
+	                                                        <span class="badge badge-success">important</span>
+	                                                    </span>
+                                                    </span>
+                                                    <a href="#" class="close">&times;</a>
+                                                </li>
+                                                <li>
+                                                    <span class="checkbox"><input type="checkbox" class="uniform" /></span>
+                                                    <span class="text">
+	                                                    <span class="text-nowrap">
+	                                                        <i class="icon-comments"></i> Introduce my daughter to my boss
+	                                                    </span>
+	                                                </span>
+                                                    <a href="#" class="close">&times;</a>
+                                                </li>
+                                                <li>
+                                                    <span class="checkbox"><input type="checkbox" class="uniform" /></span>
+                                                    <span class="text">
+	                                                    <span class="text-nowrap">
+	                                                        <i class="icon-plane"></i> Buy a new airplane
+	                                                    </span>
+	                                                </span>
+                                                    <a href="#" class="close">&times;</a>
+                                                </li>
+                                                <li>
+                                                    <span class="checkbox"><input type="checkbox" class="uniform" /></span>
+                                                    <span class="text">
+	                                                    <span class="text-nowrap">
+	                                                        <i class="icon-users"></i> Attend a community meetup
+	                                                    </span>
+	                                                </span>
+                                                    <a href="#" class="close">&times;</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+									</div>
+									
+									<div class="span6 widget">
+										<div class="widget-header">
+											<span class="title">Summary Widget</span>
+										</div>
+										<div class="widget-content summary-list">
+											<ul>
+												<li>
+													<span class="key"><i class="icon-calendar"></i> Check in date</span>
+													<span class="val">
+														<span class="text-nowrap">Monday, September 17, 2012</span>
+													</span>
+												</li>
+												<li>
+													<span class="key"><i class="icon-users"></i> Guests</span>
+													<span class="val">
+														<span class="text-nowrap">5</span>
+													</span>
+												</li>
+												<li>
+													<span class="key"><i class="icos-money"></i> Cash Deposit</span>
+													<span class="val">
+														<span class="text-nowrap">$4,500</span>
+													</span>
+												</li>
+												<li>
+													<span class="key"><i class="icon-home"></i> Room Type</span>
+													<span class="val">
+														<span class="text-nowrap">Deluxe</span>
+													</span>
+												</li>
+												<li>
+													<span class="key"><i class="icon-trophy"></i> Extra Items</span>
+													<span class="val">
+														<span class="text-nowrap">Breakfast, extra bed</span>
+													</span>
+												</li>
+												<li>
+													<span class="key"><i class="icon-star"></i> Rating</span>
+													<span class="val">
+														<span class="text-nowrap">
+															<input type="radio" class="star" />
+															<input type="radio" class="star" />
+															<input type="radio" class="star" />
+															<input type="radio" class="star" />
+															<input type="radio" class="star" />
+														</span>
+													</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+								
+								</div>
+								
+                                <div class="row-fluid">
+								
+									<div class="span6 widget">
+										<div class="widget-header">
+											<span class="title">Goal Widget</span>
+										</div>
+										<div class="widget-content goal">
+											<div class="well goal-header">
+												<div class="row-fluid">
+													<div class="info span6">
+														$63,724
+														<small>raised so far</small>
+													</div>
+													<div class="info span6">
+														$250,000
+														<small>our goal</small>
+													</div>
+												</div>
+											</div>
+											<div class="progress progress-small progress-striped progress-warning active">
+												<div class="bar" style="width: 25.48%; "></div>
+											</div>
+											<ul class="ticks">
+												<li style="left: 0%;"><span>$0</span></li>
+												<li style="left: 50%;"><span>$125k</span></li>
+												<li style="left: 100%;"><span>$250k</span></li>
+											</ul>
+											<div class="btn-toolbar row-fluid">
+												<div class="span6">
+													<span class="btn btn-block btn-success btn-large">View Donations</span>
+												</div>
+												<div class="span6">
+													<span class="btn btn-block btn-primary btn-large">View Insights</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="span6 widget">
+										<div class="widget-header">
+											<span class="title">User Widget</span>
+											<div class="toolbar">
+												<div class="btn-group">
+													<span class="btn"><i class="icon-plus"></i> Add Friend</span>
+													<span class="btn"><i class="icon-envelope"></i> Send Message</span>
+												</div>
+											</div>
+										</div>
+										<div class="widget-content user-box">
+											<div class="thumbnail">
+												<img src="sample/p6.jpg" />
+											</div>
+											<div class="info">
+												<span class="name">Weird Guy <small>The swimming glass designer from Atlantis</small></span>
+												<ul class="attributes">
+													<li><i class="icos-marker"></i> Atlantis, Underworld</li>
+													<li><i class="icos-male-symbol"></i> Male, 28</li>
+												</ul>
+												<div class="btn-group">
+													<a href="#" class="btn" style="color: #3B5998;" title="Find on Facebook" rel="tooltip" data-placement="bottom"><i class="icon-facebook"></i></a>
+													<a href="#" class="btn" style="color: #9AE4E8;" title="Follow on Twitter" rel="tooltip" data-placement="bottom"><i class="icon-twitter"></i></a>
+													<a href="#" class="btn" style="color: #ea4c89;" title="Follow on Dribbble" rel="tooltip" data-placement="bottom"><i class="icon-dribbble"></i></a>
+												</div>
+											</div>
+										</div>
+									</div>
+								
+								</div>
+
+								<div class="row-fluid">
+								
+									<div class="span6 widget">
+										<div class="widget-header">
+											<span class="title">Sortable List Widget</span>
+										</div>
+										<div class="widget-content no-padding sortable-list">
+											<p class="alert alert-info">
+												Drag to start sorting items. This is just an <strong>example</strong>, there are endlesss possibilities you can do with the sortable widget.
+											</p>
+											<ul class="thumbnails">
+												<li>
+													<span class="thumbnail">
+														<img src="sample/01.jpg" />
+													</span>
+													<span class="info">
+														The Sheep
+														<span class="order">Item Order: 1</span>
+													</span>
+												</li>
+												<li>
+													<span class="thumbnail">
+														<img src="sample/02.jpg" />
+													</span>
+													<span class="info">
+														The Ribbon
+														<span class="order">Item Order: 2</span>
+													</span>
+												</li>
+												<li>
+													<span class="thumbnail">
+														<img src="sample/03.jpg" />
+													</span>
+													<span class="info">
+														The Pearl
+														<span class="order">Item Order: 3</span>
+													</span>
+												</li>
+												<li>
+													<span class="thumbnail">
+														<img src="sample/04.jpg" />
+													</span>
+													<span class="info">
+														The Two Headed Snake
+														<span class="order">Item Order: 4</span>
+													</span>
+												</li>
+												<li>
+													<span class="thumbnail">
+														<img src="sample/05.jpg" />
+													</span>
+													<span class="info">
+														The Firefox
+														<span class="order">Item Order: 5</span>
+													</span>
+												</li>
+											</ul>
+										</div>
+									</div>
+									
+									<div class="span6 widget">
+										<div class="widget-header">
+											<span class="title">Tweets Widget</span>
+											<div class="toolbar">
+												<div class="btn-group">
+													<span class="btn" rel="tooltip" title="Refresh"><i class="icon-refresh"></i></span>
+												</div>
+											</div>
+										</div>
+										<div id="tweets-widget" class="widget-content tweets"></div>
+									</div>
+								
+								</div>
+								
+
+								<div class="row-fluid">
+								
+									<div class="span12">
+										<div class="widget">
+                                            <div class="widget-header">
+                                                <span class="title">
+                                                    <i class="icon-comments"></i> ChatBox Widget
+                                                </span>
+                                            </div>
+                                            <div class="widget-content chat-box">
+                                            	<ul class="thumbnails">
+	                                                <li class="me">
+	                                                    <div class="thumbnail">
+	                                                        <img src="assets/images/pp.jpg" />
+	                                                    </div>
+	                                                    <div class="message">
+	                                                        <span class="name">Shana-chan</span>
+	                                                        Hello everyone! Mind sharing your time with me today?
+	                                                        <span class="time">15 minutes ago</span>
+	                                                    </div>
+	                                                </li>
+	                                                <li class="others">
+	                                                    <div class="thumbnail">
+	                                                        <img src="sample/p2.jpg" />
+	                                                    </div>
+	                                                    <div class="message">
+	                                                        <span class="name">Jane Well</span>
+	                                                        Hello dear, do you have something in your mind to discuss with us?
+	                                                        <span class="time">14 minutes ago</span>
+	                                                    </div>
+	                                                </li>
+	                                                <li class="me">
+	                                                    <div class="thumbnail">
+	                                                        <img src="assets/images/pp.jpg" />
+	                                                    </div>
+	                                                    <div class="message">
+	                                                        <span class="name">Shana-chan</span>
+	                                                        Cras convallis, odio in ultricies condimentum, dui metus pretium orci, ac sagittis orci eros a leo. Cras lorem est, suscipit quis lacinia sit amet, tempor a tortor. Fusce in vehicula purus. Quisque ut suscipit elit. Fusce ac metus in enim euismod tincidunt. Nunc blandit neque vitae sem egestas id egestas neque bibendum. Etiam eget risus ut dolor convallis consectetur.
+	                                                        <span class="time">10 minutes ago</span>
+	                                                    </div>
+	                                                </li>
+	                                                <li class="others">
+	                                                    <div class="thumbnail">
+	                                                        <img src="sample/p1.jpg" />
+	                                                    </div>
+	                                                    <div class="message">
+	                                                        <span class="name">Jonathan Doe</span>
+	                                                        Wow, that's a long sentence. I don't quite understand what you mean, but it's good overall :)
+	                                                        <span class="time">Just now</span>
+	                                                    </div>
+	                                                </li>
+	                                            </ul>
+                                                <div class="message-form">
+                                                    <div class="row-fluid">
+                                                        <div class="span10">
+                                                            <input type="text" class="span12" placeholder="Type a message..." />
+                                                        </div>
+                                                        <div class="span2">
+                                                            <button type="button" class="btn btn-block btn-primary">Send</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+										<div class="widget">
+											<div class="widget-header">
+												<span class="title">Google Maps Widget</span>
+												<div class="toolbar">
+													<div class="btn-group">
+														<span id="gmap-getpos" class="btn" rel="tooltip" title="Move to your location">
+															<i class="icon-screenshot"></i>
+														</span>
+														<span class="btn dropdown-toggle" data-toggle="collapse" data-target="#gmap-toolbar">
+															<i class="icon-search"></i>
+														</span>
+													</div>
+												</div>
+											</div>
+											<div id="gmap-toolbar" class="toolbar form-toolbar collapse in">
+												<form class="form-search" />
+													<input id="gmap-search-key" type="text" class="span12" placeholder="Search on Maps..." />
+												</form>
+											</div>
+											<div class="widget-content gmap">
+												<div id="gmap-canvas" style="height: 400px;"></div>
+											</div>
+										</div>
+									</div>
+								
+								</div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer id="footer">
+        	<div class="footer-left">MoonCake - Responsive Admin Template</div>
+        	<div class="footer-right"><p>Copyright 2012. All Rights Reserved.</p></div>
+        </footer>
+        
+    </div>
+
+	<!-- Core Scripts -->
+	<script src="assets/js/libs/jquery-1.8.2.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/js/libs/jquery.placeholder.min.js"></script>
+	<script src="assets/js/libs/jquery.mousewheel.min.js"></script>
+    
+    <!-- Template Script -->
+    <script src="assets/js/template.js"></script>
+    <script src="assets/js/setup.js"></script>
+
+    <!-- Customizer, remove if not needed -->
+    <script src="assets/js/customizer.js"></script>
+
+    <!-- Uniform Script -->
+    <script src="plugins/uniform/jquery.uniform.min.js"></script>
+    
+    <!-- jquery-ui Scripts -->
+    <script src="assets/jui/js/jquery-ui-1.8.24.min.js"></script>
+    <script src="assets/jui/jquery-ui.custom.min.js"></script>
+    <script src="assets/jui/timepicker/jquery-ui-timepicker.min.js"></script>
+	<script src="assets/jui/jquery.ui.touch-punch.min.js"></script>
+    
+    <!-- Plugin Scripts -->
+
+    <!-- Google Map -->
+    <script src="https://www.google.com/jsapi"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script src="plugins/map/jquery.ui.map.min.js"></script>
+    <script src="plugins/map/jquery.ui.map.services.min.js"></script>
+    <script src="plugins/map/jquery.ui.map.extensions.js"></script>
+    
+    <!-- Tweets -->
+    <script src="plugins/tweet/jquery.tweet.min.js"></script>
+
+    <!-- Rating  -->
+    <script src="plugins/rating/jquery.rating.min.js"></script>
+
+    <!-- pnotify -->
+    <script src="plugins/pnotify/jquery.pnotify.min.js"></script>        
+    
+    <!-- Demo Scripts -->
+    <script src="assets/js/demo/widgets.js"></script>
+
+</body>
+
+</html>
