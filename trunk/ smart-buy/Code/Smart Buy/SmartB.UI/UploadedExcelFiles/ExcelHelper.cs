@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.Linq;
 using System.Web;
+using SmartB.UI.Areas.Admin.Helper;
 
 namespace SmartB.UI.UploadedExcelFiles
 {
@@ -228,13 +229,33 @@ namespace SmartB.UI.UploadedExcelFiles
                             {
                                 if (error == false)
                                 {
+                                //    sellProductCorrect.Id = sellProductCorrectCollection.Count();
                                     sellProductCorrectCollection.Add(sellProductCorrect);
                                 }
                             }
                         }
                     }
-                    return sellProductCorrectCollection;
                 }
+                //Compare items in Excel
+                List<string> results = new List<string>();
+                for (int i = 0; i < sellProductCorrectCollection.Count - 1; i++)
+                {
+                    var result = sellProductCorrectCollection[i].Name;
+                    for (int j = i + 1; j < sellProductCorrectCollection.Count; j++)
+                    {
+                        var percentage =
+                            CompareStringHelper.CompareString(sellProductCorrectCollection[i].Name, sellProductCorrectCollection[j].Name);
+                        if (percentage > 0.85 && percentage < 1)
+                        {
+                            result += ";" + sellProductCorrectCollection[j].Name;
+                        }
+                    }
+                    if (result != sellProductCorrectCollection[i].Name)
+                    {
+                        results.Add(result);
+                    }
+                }
+                return sellProductCorrectCollection;
             }
 
             catch (System.InvalidOperationException exception)
@@ -250,6 +271,8 @@ namespace SmartB.UI.UploadedExcelFiles
             }
             return null;
         }
+
+       
         public List<SellProductModel> ReadDataError(string path, out string errorName, out string errorMarket, out string errorPrice, out int errorCount)
         {
             OleDbConnection oledbConn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" +
@@ -362,8 +385,27 @@ namespace SmartB.UI.UploadedExcelFiles
                             }
                         //}
                     }
-                    return sellProductErrorCollection;
                 }
+                //Compare items in Excel
+                List<string> results = new List<string>();
+                for (int i = 0; i < sellProductErrorCollection.Count - 1; i++)
+                {
+                    var result = sellProductErrorCollection[i].Name;
+                    for (int j = i + 1; j < sellProductErrorCollection.Count; j++)
+                    {
+                        var percentage =
+                            CompareStringHelper.CompareString(sellProductErrorCollection[i].Name, sellProductErrorCollection[j].Name);
+                        if (percentage > 0.7 && percentage < 1)
+                        {
+                            result += ";" + sellProductErrorCollection[j].Name;
+                        }
+                    }
+                    if (result != sellProductErrorCollection[i].Name)
+                    {
+                        results.Add(result);
+                    }
+                }
+                return sellProductErrorCollection;
             }
 
             catch (System.InvalidOperationException exception)
