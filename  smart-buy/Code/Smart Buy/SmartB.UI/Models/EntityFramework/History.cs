@@ -14,12 +14,16 @@ namespace SmartB.UI.Models.EntityFramework
     
     public partial class History
     {
+        public History()
+        {
+            this.HistoryDetails = new HashSet<HistoryDetail>();
+        }
+    
         public int Id { get; set; }
         public string Username { get; set; }
-        public int ProductId { get; set; }
         public System.DateTime BuyTime { get; set; }
     
-        public virtual Product Product { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<HistoryDetail> HistoryDetails { get; set; }
     }
 }

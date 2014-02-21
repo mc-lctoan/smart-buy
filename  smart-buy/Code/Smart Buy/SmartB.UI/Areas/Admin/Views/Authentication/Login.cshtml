@@ -1,0 +1,116 @@
+﻿@model SmartB.UI.Models.LoginModel
+
+@{
+    //ViewBag.Title = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <!-- Bootstrap Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/bootstrap/css/bootstrap-login.min.css")" media="screen" />
+
+    <!-- Uniform Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/uniform/css/uniform.default.css")" />
+
+    <!-- Main Layout Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/assets/css/fonts/icomoon/style.css")" media="screen" />
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/assets/css/login.min.css")" media="screen" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+    <title>Smart Buy | Login</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        .validation-summary-errors {
+            color: #FFF;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="login-wrap">
+
+        <div id="login-ribbon"><i class="icon-lock"></i></div>
+
+        <div id="login-buttons">
+            <div class="btn-wrap">
+                <button type="button" class="btn btn-inverse" data-target="#login-form"><i class="icon-key"></i></button>
+            </div>
+            <div class="btn-wrap">
+                <button type="button" class="btn btn-inverse" data-target="#forget-form"><i class="icon-question-sign"></i></button>
+            </div>
+        </div>
+
+        <div id="login-inner">
+
+            <div id="login-circle">
+                <section id="login-form" class="login-inner-form active" data-angle="0">
+                    <h1>Login</h1>
+                    @using (Html.BeginForm("Login", "Authentication", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-vertical" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(false)
+                        <div class="control-group">
+                            @Html.TextBoxFor(x => x.UserName, new { @class = "big", placeholder = "Username", id = "input-username" })
+                            @Html.PasswordFor(x => x.Password, new { @class = "big", placeholder = "Password", id = "input-password" })
+                        </div>
+                        <div class="control-group">
+                            <label class="checkbox">
+                                @Html.CheckBoxFor(x => x.RememberMe, new { @class = "uniform" })
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success btn-block btn-large">Login</button>
+                        </div>
+                    }
+                </section>
+
+                <section id="forget-form" class="login-inner-form" data-angle="90">
+                    <h1>Reset Password</h1>
+                    <form class="form-vertical" action="dashboard.html">
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="text" class="big" placeholder="Enter Your Email..." />
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-danger btn-block btn-large">Reset</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/js/libs/jquery-1.8.2.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/js/libs/jquery.placeholder.min.js")"></script>
+
+    <!-- Login Script -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/js/login.js")"></script>
+
+    <!-- Uniform Script -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/uniform/jquery.uniform.min.js")"></script>
+
+</body>
+
+</html>
