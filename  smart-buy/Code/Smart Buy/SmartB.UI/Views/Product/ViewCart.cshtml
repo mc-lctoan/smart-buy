@@ -9,7 +9,7 @@
                 document.getElementById('totalProduct').innerHTML = "( " + 0 + " )";
                 document.getElementById('btnSaveCart').style.display = "none";
                 document.getElementById('itemCart').deleteRow(0);
-                document.getElementById('savecartStatus').innerHTML = "(*) Không có sản phẩm nào trong giỏ hàng.";
+                document.getElementById('saveCartStatus').innerHTML = "(*) Không có sản phẩm nào trong giỏ hàng.";
             } else {
                 document.getElementById('totalProduct').innerHTML = "( " + sessionStorage.items + " )";
                 var items = eval(sessionStorage.cart);
@@ -59,7 +59,7 @@
 <div >
     <span id="saveCartStatus" style="color:red; font-style:italic; font-size:16px;"  ></span>
 </div>
-<button class="primary" onclick="saveCart()">
+<button class="primary" id="btnSaveCart" onclick="saveCart()">
     <i class="icon-box-add"></i>
     Lưu lại
 </button>
