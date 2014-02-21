@@ -16,9 +16,9 @@ namespace SmartB.UI.Models.EntityFramework
     {
         public Market()
         {
+            this.ParseInfoes = new HashSet<ParseInfo>();
             this.SellProducts = new HashSet<SellProduct>();
             this.UserPrices = new HashSet<UserPrice>();
-            this.ParseInfoes = new HashSet<ParseInfo>();
         }
     
         public int Id { get; set; }
@@ -28,8 +28,8 @@ namespace SmartB.UI.Models.EntityFramework
         public string Longitude { get; set; }
         public bool IsActive { get; set; }
     
+        public virtual ICollection<ParseInfo> ParseInfoes { get; set; }
         public virtual ICollection<SellProduct> SellProducts { get; set; }
         public virtual ICollection<UserPrice> UserPrices { get; set; }
-        public virtual ICollection<ParseInfo> ParseInfoes { get; set; }
     }
 }

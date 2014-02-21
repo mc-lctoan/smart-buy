@@ -1,0 +1,1 @@
+(function(c,b,a,d){c(a).ready(function(){if(c.fn.slider){c("#widget-slider-ex").slider({range:"min",value:36});c("#widget-slider-ex-2").slider({range:"min",value:71})}})})(jQuery,window,document);

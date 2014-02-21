@@ -16,7 +16,8 @@ namespace SmartB.UI.Models.EntityFramework
     {
         public Product()
         {
-            this.Histories = new HashSet<History>();
+            this.Dictionaries = new HashSet<Dictionary>();
+            this.HistoryDetails = new HashSet<HistoryDetail>();
             this.ProductAttributes = new HashSet<ProductAttribute>();
             this.SellProducts = new HashSet<SellProduct>();
             this.UserPrices = new HashSet<UserPrice>();
@@ -26,7 +27,8 @@ namespace SmartB.UI.Models.EntityFramework
         public string Name { get; set; }
         public bool IsActive { get; set; }
     
-        public virtual ICollection<History> Histories { get; set; }
+        public virtual ICollection<Dictionary> Dictionaries { get; set; }
+        public virtual ICollection<HistoryDetail> HistoryDetails { get; set; }
         public virtual ICollection<ProductAttribute> ProductAttributes { get; set; }
         public virtual ICollection<SellProduct> SellProducts { get; set; }
         public virtual ICollection<UserPrice> UserPrices { get; set; }
