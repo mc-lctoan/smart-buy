@@ -53,6 +53,151 @@ namespace SmartB.UI.Controllers
             return View();
         }
 
+        [HttpGet, ActionName("SaveCart")]
+        public JsonResult SaveCart(String totaldata)
+        {
+            var check = false;
+            JavaScriptSerializer ser = new JavaScriptSerializer();
+            List<CartHistory> dataList = ser.Deserialize<List<CartHistory>>(totaldata);
+            try
+            {
+                for (int i = 0; i < dataList.Count; i++)
+                {
+                    if (i < 10)
+                    {
+                        var username = dataList[i].Username;
+                        var pid = dataList[i].ProductId;
+                        var now = DateTime.Now.Date;
+                        var dupHistory = db.Histories.Where(his => his.Username == username &&
+                            his.BuyTime == now).FirstOrDefault();
+
+
+
+                        if (dupHistory == null)
+                        {
+                            var newHitory = new History();
+                            newHitory.Username = username;
+                            newHitory.BuyTime = now;
+
+                            db.Histories.Add(newHitory);
+                            var newHistoryDetail = new HistoryDetail();
+                            newHistoryDetail.History = newHitory;
+                            newHistoryDetail.ProductId = pid;
+                            newHistoryDetail.MinPrice = dataList[i].MinPrice;
+                            newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
+                            db.HistoryDetails.Add(newHistoryDetail);
+
+                        }
+                        else
+                        {
+                            var historyId = (from h in db.Histories
+                                             where h.BuyTime == now && h.Username == username
+                                             select h.Id).First();
+                            var checkCount = (from c in db.HistoryDetails
+                                              where c.HistoryId == historyId
+                                              select c).Count();
+                            if (checkCount >= 10)
+                            {
+                                return Json("full", JsonRequestBehavior.AllowGet);
+                            }
+                            var dupProductId = db.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
+                            if (dupProductId == null)
+                            {
+                                var newHistoryDetail = new HistoryDetail();
+                                newHistoryDetail.History = dupHistory;
+                                newHistoryDetail.ProductId = pid;
+                                newHistoryDetail.MinPrice = dataList[i].MinPrice;
+                                newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
+                                db.HistoryDetails.Add(newHistoryDetail);
+
+                            }
+                        }
+                        db.SaveChanges();
+                    }
+                    else continue;
+                }
+
+                check = true;
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+            //return RedirectToAction("SearchProduct");
+        }
+
+        public ActionResult ProposeProductPrice(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var modelProduct = db.Products.Include(i => i.ProductAttributes).Single(s => s.Id == id);
+
+            if (modelProduct == null)
+            {
+                return HttpNotFound();
+            }
+
+            //bind drop down list
+            var market = from m in db.Markets
+                         orderby m.Name
+                         select m;
+            ViewBag.ddlMarket = new SelectList(market, "Id", "Name");
+            //ViewBag.searchKey = q;
+
+            return PartialView(modelProduct);
+        }
+
+        [HttpGet, ActionName("SaveUserPrice")]
+        public JsonResult SaveUserPrice(String userPriceJson)
+        {
+            var check = false;
+
+            // define epsilon
+            var ep = 0.1;
+
+            JavaScriptSerializer ser = new JavaScriptSerializer();
+            UserPrice parseJson = ser.Deserialize<UserPrice>(userPriceJson);
+            try
+            {
+                var pId = parseJson.ProductId;
+                var updatedPrice = parseJson.UpdatedPrice;
+
+                var minPrice = from p in db.ProductAttributes
+                               where p.ProductId == pId
+                               select p.MinPrice;
+
+                var maxPrice = from p in db.ProductAttributes
+                               where p.ProductId == pId
+                               select p.MinPrice;
+
+                var averagePrice = (minPrice.First() + maxPrice.First()) / 2;
+                var rangeFrom = minPrice.First() - ep * averagePrice;
+                var rangeTo = maxPrice.First() + ep * averagePrice;
+
+                if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
+                {
+                    var userPrice = new UserPrice();
+                    userPrice.Username = parseJson.Username;
+                    userPrice.MarketId = parseJson.MarketId;
+                    userPrice.ProductId = pId;
+                    userPrice.UpdatedPrice = updatedPrice;
+                    userPrice.LastUpdatedTime = DateTime.Now;
+                    db.UserPrices.Add(userPrice);
+                    db.SaveChanges();
+                }
+
+                check = true;
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(check, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult UploadProduct()
         {
             ViewBag.countInsert = TempData["InsertMessage"] as string;
@@ -63,7 +208,7 @@ namespace SmartB.UI.Controllers
         [HttpPost]
         public ActionResult UploadProduct(HttpPostedFileBase excelFile, int? page)
         {
-            
+
             if (excelFile != null)
             {
                 Guid guid = Guid.NewGuid();
@@ -80,7 +225,7 @@ namespace SmartB.UI.Controllers
                 string errorName = "";
                 string errorMarket = "";
                 string errorPrice = "";
-                int errorCount = 0; 
+                int errorCount = 0;
                 try
                 {
                     //sellProductCollection = excelHelper.ReadData((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice, out errorCount);
@@ -94,8 +239,45 @@ namespace SmartB.UI.Controllers
                     ViewBag.ExceptionMarket = errorMarket;
                     ViewBag.ExceptionPrice = errorPrice;
                     ViewBag.errorCount = errorCount;
-                    ViewBag.InCorrectSellProductsCount = sellProductErrorCollection.Count();
-                    ViewBag.CorrectSellProductsCount = sellProductCorrectCollection.Count();
+                    // ViewBag.InCorrectSellProductsCount = sellProductErrorCollection.Count();
+                    //  ViewBag.CorrectSellProductsCount = sellProductCorrectCollection.Count();
+                    List<string> errorNameLines = new List<string>();
+                    List<string> errorMarketNameLines = new List<string>();
+                    List<string> errorPriceLines = new List<string>();
+                    foreach (var product in sellProductErrorCollection)
+                    {
+                        var errorNameLine = "";
+                        var errorMarketNameLine = "";
+                        var errorPriceLine = "";
+                        if (product.Name.Length < 5 || product.Name.Length > 100)
+                        {
+                            errorNameLine += product.RowNumber;
+                        }
+                        if (product.MarketName.Length < 5 || product.MarketName.Length > 20)
+                        {
+                            errorMarketNameLine += product.RowNumber;
+
+                        }
+                        if (product.Price < 1 || product.Price > 10000)
+                        {
+                            errorPriceLine += product.RowNumber;
+                        }
+                        if (errorNameLine != product.Name && errorNameLine != "")
+                        {
+                            errorNameLines.Add(errorNameLine);
+                        }
+                        if (errorMarketNameLine != product.MarketName && errorMarketNameLine != "")
+                        {
+                            errorMarketNameLines.Add(errorMarketNameLine);
+                        }
+                        if (errorPriceLine != "")
+                        {
+                            errorPriceLines.Add(errorPriceLine);
+                        }
+                    }
+                    ViewBag.ErrorNameLines = errorNameLines;
+                    ViewBag.ErrorMarketNameLines = errorMarketNameLines;
+                    ViewBag.ErrorPriceLines = errorPriceLines;
                     TempData["CorrectProducts"] = sellProductCorrectCollection;
                     Session["CorrectProducts"] = sellProductCorrectCollection;
                     ViewBag.Test = "test";
@@ -109,11 +291,10 @@ namespace SmartB.UI.Controllers
                     ViewBag.errorCount = errorCount;
                 }
                 return View(model);
-            }            
+            }
             return View();
         }
 
-        [HttpPost]
         public ActionResult SaveProducts(ListSellProductModel model)
         {
             model.CorrectSellProducts = (List<SellProductModel>)Session["CorrectProducts"];
@@ -204,18 +385,20 @@ namespace SmartB.UI.Controllers
                     var addedProductAtt = db.ProductAttributes.Add(productAttribute);
                     db.SaveChanges(); // Save to database
                     // add Product Dictionary
-                    //if (product.Name.Split(';').Count() >= 2)
-                    //{
-                    if (dupProductDictionary == null)
+                    var dictionaries = product.Name.Split(';').ToList();
+                    foreach (string dictionary in dictionaries)
                     {
-                        var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                        if (dupProductDictionary == null && dictionary.ToString() != null)
                         {
-                            Name = product.Name,
-                            ProductId = addedProduct.Id
-                        };
-                        var addProductDic = db.Dictionaries.Add(ProductDic);
+                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                            {
+                                Name = dictionary,
+                                ProductId = addedProduct.Id
+                            };
+                            var addProductDic = db.Dictionaries.Add(ProductDic);
+                        }
                     }
-                    //}
+
                     db.SaveChanges(); // Save to database
                 }
                 else if (dupMarket == null & dupProduct != null) // Trùng Tên sản phẩm
@@ -300,18 +483,19 @@ namespace SmartB.UI.Controllers
                     }
                     countInsert++;
                     // add Product Dictionary
-                    //if (product.Name.Split(';').Count() >= 2)
-                    //{
-                    if (dupProductDictionary == null)
+                    var dictionaries = product.Name.Split(';').ToList();
+                    foreach (string dictionary in dictionaries)
                     {
-                        var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                        if (dupProductDictionary == null && dictionary.ToString() != null)
                         {
-                            Name = product.Name,
-                            ProductId = addedProduct.Id
-                        };
-                        var addProductDic = db.Dictionaries.Add(ProductDic);
+                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                            {
+                                Name = dictionary,
+                                ProductId = addedProduct.Id
+                            };
+                            var addProductDic = db.Dictionaries.Add(ProductDic);
+                        }
                     }
-                    //}
                     db.SaveChanges(); // Save to database
                 }
             }
@@ -320,156 +504,12 @@ namespace SmartB.UI.Controllers
             TempData["InsertMessage"] = "Có " + countInsert + " sản phẩm được lưu mới.";
             return RedirectToAction("UploadProduct");
         }
-        [HttpGet, ActionName("SaveCart")]
-        public JsonResult SaveCart(String totaldata)
-        {
-            var check = false;
-            JavaScriptSerializer ser = new JavaScriptSerializer();
-            List<CartHistory> dataList = ser.Deserialize<List<CartHistory>>(totaldata);
-            try
-            {                
-                for (int i = 0; i < dataList.Count; i++)
-                {
-                    if (i < 10)
-                    {
-                        var username = dataList[i].Username;
-                        var pid = dataList[i].ProductId;
-                        var now = DateTime.Now.Date;
-                        var dupHistory = db.Histories.Where(his => his.Username == username &&
-                            his.BuyTime == now).FirstOrDefault();
-
-                        
-
-                        if (dupHistory == null)
-                        {
-                            var newHitory = new History();
-                            newHitory.Username = username;
-                            newHitory.BuyTime = now;
-
-                            db.Histories.Add(newHitory);
-                            var newHistoryDetail = new HistoryDetail();
-                            newHistoryDetail.History = newHitory;
-                            newHistoryDetail.ProductId = pid;
-                            newHistoryDetail.MinPrice = dataList[i].MinPrice;
-                            newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
-                            db.HistoryDetails.Add(newHistoryDetail);
-
-                        }
-                        else
-                        {
-                            var historyId = (from h in db.Histories
-                                             where h.BuyTime == now && h.Username == username
-                                             select h.Id).First();
-                            var checkCount = (from c in db.HistoryDetails
-                                              where c.HistoryId == historyId
-                                              select c).Count();
-                            if (checkCount >= 10)
-                            {
-                                return Json("full", JsonRequestBehavior.AllowGet);
-                            }
-                            var dupProductId = db.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
-                            if (dupProductId == null)
-                            {
-                                var newHistoryDetail = new HistoryDetail();
-                                newHistoryDetail.History = dupHistory;
-                                newHistoryDetail.ProductId = pid;
-                                newHistoryDetail.MinPrice = dataList[i].MinPrice;
-                                newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
-                                db.HistoryDetails.Add(newHistoryDetail);
-
-                            }
-                        }
-                        db.SaveChanges();
-                    }
-                    else continue;
-                }
-
-                check = true;
-                return Json(check, JsonRequestBehavior.AllowGet);
-            }
-            catch
-            {
-                return Json(check, JsonRequestBehavior.AllowGet);
-            }
-            //return RedirectToAction("SearchProduct");
-        }
-
-        public ActionResult ProposeProductPrice(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var modelProduct = db.Products.Include(i => i.ProductAttributes).Single(s => s.Id == id);
-
-            if (modelProduct == null)
-            {
-                return HttpNotFound();
-            }
-
-            //bind drop down list
-            var market = from m in db.Markets
-                         orderby m.Name
-                         select m;
-            ViewBag.ddlMarket = new SelectList(market, "Id", "Name");
-            //ViewBag.searchKey = q;
-
-            return PartialView(modelProduct);
-        }
-
-
-        [HttpGet, ActionName("SaveUserPrice")]
-        public JsonResult SaveUserPrice(String userPriceJson)
-        {
-            var check = false;
-
-            // define epsilon
-            var ep = 0.1;
-
-            JavaScriptSerializer ser = new JavaScriptSerializer();
-            UserPrice parseJson = ser.Deserialize<UserPrice>(userPriceJson);
-            try
-            {
-                var pId = parseJson.ProductId;
-                var updatedPrice = parseJson.UpdatedPrice;
-
-                var minPrice = from p in db.ProductAttributes
-                               where p.ProductId == pId
-                               select p.MinPrice;
-
-                var maxPrice = from p in db.ProductAttributes
-                               where p.ProductId == pId
-                               select p.MinPrice;
-
-                var averagePrice = (minPrice.First() + maxPrice.First()) / 2;
-                var rangeFrom = minPrice.First() - ep * averagePrice;
-                var rangeTo = maxPrice.First() + ep * averagePrice;
-
-                if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
-                {
-                    var userPrice = new UserPrice();
-                    userPrice.Username = parseJson.Username;
-                    userPrice.MarketId = parseJson.MarketId;
-                    userPrice.ProductId = pId;
-                    userPrice.UpdatedPrice = updatedPrice;
-                    userPrice.LastUpdatedTime = DateTime.Now;
-                    db.UserPrices.Add(userPrice);
-                    db.SaveChanges();
-                }
-
-                check = true;
-                return Json(check, JsonRequestBehavior.AllowGet);
-            }
-            catch
-            {
-                return Json(check, JsonRequestBehavior.AllowGet);
-            }
-        }
-
 
         public JsonResult SaveProductError(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
         {
+            Result result = new Result();
             List<string> error = new List<string>();
+
             if (ProductName.Length < 5 || ProductName.Length > 100)
             {
                 error.Add("Tên sản phẩm phải từ 5 đến 100 ký tự");
@@ -482,25 +522,42 @@ namespace SmartB.UI.Controllers
             {
                 error.Add("Giá phải từ 1 đến 10000");
             }
-            var correctProducts = (List<SellProductModel>)Session["CorrectProducts"];
-
-            if (correctProducts.Any(x => x.Name == ProductName && x.MarketName == ProductMarketName))
-            {
-                error.Add("Sản phẩm đã có.");
-            }
-
             if (error.Count == 0)
             {
-                SellProductModel model = new SellProductModel();
-                model.Name = ProductName;
-                model.MarketName = ProductMarketName;
-                model.Price = ProductPrice;
-                model.Id = correctProducts.Count();
-                correctProducts.Add(model);
-                Session["CorrectProducts"] = correctProducts;
+                var correctProducts = (List<SellProductModel>)Session["CorrectProducts"];
+                var existedProduct = correctProducts.FirstOrDefault(x => x.Name == ProductName && x.MarketName == ProductMarketName);
+                if (existedProduct != null)
+                {
+                    error.Add("Sản phẩm đã có.");
+                    result.id = existedProduct.Id;
+                    result.updatedPrice = ProductPrice;
+                }
+                else
+                {
+                    SellProductModel model = new SellProductModel();
+                    model.Name = ProductName;
+                    model.MarketName = ProductMarketName;
+                    model.Price = ProductPrice;
+                    model.Id = correctProducts.Count();
+                    correctProducts.Add(model);
+                    Session["CorrectProducts"] = correctProducts;
+                }
             }
 
-            return Json(error);
+
+
+
+
+            result.error = error;
+
+            return Json(result);
+        }
+
+        public class Result
+        {
+            public List<string> error { get; set; }
+            public int id { get; set; }
+            public int updatedPrice { get; set; }
         }
 
         [HttpDelete]
