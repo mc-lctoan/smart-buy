@@ -1,6 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Lịch sử mua sắm";
+    ViewBag.Title = "BuyingHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.History>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
@@ -31,7 +33,7 @@
                 </td>
 
                 <td>
-                    <a href="@Url.Action("BuyingHistoryDetail", "Account", new { id = @historyID})">
+                    <a href="@Url.Action("BuyingHistoryDetail", "History", new { id = @historyID})">
                         <button>
                             <i class="icon-clipboard-2"></i>
                             Chi tiết
@@ -47,3 +49,4 @@
 
 <br />
 Trang: @Html.PagedListPager(Model, page=>Url.Action("BuyingHistory", new {page}), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+

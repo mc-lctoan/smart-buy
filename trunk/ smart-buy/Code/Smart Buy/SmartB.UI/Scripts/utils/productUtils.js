@@ -1,42 +1,46 @@
 ﻿function addCarttoSession(id, name, minPrice, maxPrice) {
     if (typeof (sessionStorage) != "undefined") {
-
         var exist = false;
         var cart = eval(sessionStorage.cart) || [];
-        for (var i = 0; i < cart.length; i++) {
-            if (cart[i].id == id) {
-                cart[i].quantity++;
-                exist = true;
-                cart[i].totalmin = Number(cart[i].totalmin) + Number(cart[i].minprice);
-                cart[i].totalmax = Number(cart[i].totalmax) + Number(cart[i].maxprice);
+        if (cart.length >= 20) {
+            var message = 'Giỏ của bạn không quá 20 sản phẩm.';
+            showNotifyDialog(message);            
+        }
+        else {            
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].id == id) {
+                    cart[i].quantity++;
+                    exist = true;
+                    cart[i].totalmin = Number(cart[i].totalmin) + Number(cart[i].minprice);
+                    cart[i].totalmax = Number(cart[i].totalmax) + Number(cart[i].maxprice);
+                }
+
+            }
+            if (!exist) {
+                cart.push({
+                    'id': id,
+                    'name': name,
+                    'minprice': minPrice,
+                    'maxprice': maxPrice,
+                    'quantity': 1,
+                    'totalmin': minPrice,
+                    'totalmax': maxPrice
+                });
+            }
+            sessionStorage.cart = JSON.stringify(cart);
+
+            sessionStorage.totalMinPrice = Number(0);
+            sessionStorage.totalMaxPrice = Number(0);
+            for (var i = 0; i < cart.length; i++) {
+                sessionStorage.totalMinPrice = Number(sessionStorage.totalMinPrice) + Number(cart[i].totalmin);
+                sessionStorage.totalMaxPrice = Number(sessionStorage.totalMaxPrice) + Number(cart[i].totalmax);
             }
 
-        }
-        if (!exist) {
-            cart.push({
-                'id': id,
-                'name': name,
-                'minprice': minPrice,
-                'maxprice': maxPrice,
-                'quantity': 1,
-                'totalmin': minPrice,
-                'totalmax': maxPrice
-            });
-        }
-        sessionStorage.cart = JSON.stringify(cart);
+            sessionStorage.items = Number(cart.length);
+            var ttp = sessionStorage.items;
 
-        sessionStorage.totalMinPrice = Number(0);
-        sessionStorage.totalMaxPrice = Number(0);
-        for (var i = 0; i < cart.length; i++) {
-            sessionStorage.totalMinPrice = Number(sessionStorage.totalMinPrice) + Number(cart[i].totalmin);
-            sessionStorage.totalMaxPrice = Number(sessionStorage.totalMaxPrice) + Number(cart[i].totalmax);
+            document.getElementById('totalProduct').innerHTML = "( " + ttp + " )";
         }
-       
-        sessionStorage.items = Number(cart.length);
-        var ttp = sessionStorage.items;
-
-        document.getElementById('totalProduct').innerHTML = "( " + ttp + " )";
-
     } else {
         alert("browser is not support storage!!!");
     }
@@ -197,7 +201,7 @@ function saveCart() {
         success: function (data) {
             if (data == true) {
                 clearCartInSession();
-                location.href = "/Account/BuyingHistory";
+                location.href = "../History/BuyingHistory";
 
             } else {
                 document.getElementById('saveCartStatus').innerHTML = "(*) Có lỗi xảy ra. Vui lòng thử lại sau";
@@ -205,26 +209,6 @@ function saveCart() {
         },
         error: function (e) {
             document.getElementById('saveCartStatus').innerHTML = "(*) " + e.message;
-        }
-    })
-}
-
-function deleteItemHistory(id) {
-    $.ajax({
-        type: 'GET',
-        url: 'DeleteItemHistory',
-        data: { 'historyId': id },
-        contentType: "application/json",
-        dataType: 'json',
-        success: function (data) {
-            if (data == true) {
-                location.reload();
-            } else {
-                alert("Có lỗi xảy ra. Vui lòng thử lại sau");
-            }
-        },
-        error: function (e) {
-            alert("Có lỗi xảy ra. Vui lòng thử lại sau");
         }
     })
 }
@@ -258,7 +242,7 @@ function saveUserPrice(productId) {
 
         $.ajax({
             type: 'GET',
-            url: '/Product/SaveUserPrice',
+            url: '../SaveUserPrice',
             data: { 'userPriceJson': userPriceJson },
             contentType: "application/json",
             dataType: 'json',
