@@ -327,49 +327,61 @@ namespace SmartB.UI.Controllers
             JavaScriptSerializer ser = new JavaScriptSerializer();
             List<CartHistory> dataList = ser.Deserialize<List<CartHistory>>(totaldata);
             try
-            {
+            {                
                 for (int i = 0; i < dataList.Count; i++)
                 {
-                    var username = dataList[i].Username;
-                    var pid = dataList[i].ProductId;
-                    var now = DateTime.Now.Date;
-                    var dupHistory = db.Histories.Where(his => his.Username == username &&
-                        his.BuyTime == now).FirstOrDefault();
-
-
-                    if (dupHistory == null)
+                    if (i < 10)
                     {
-                        var newHitory = new History();
-                        newHitory.Username = username;
-                        newHitory.BuyTime = now;
+                        var username = dataList[i].Username;
+                        var pid = dataList[i].ProductId;
+                        var now = DateTime.Now.Date;
+                        var dupHistory = db.Histories.Where(his => his.Username == username &&
+                            his.BuyTime == now).FirstOrDefault();
 
-                        db.Histories.Add(newHitory);
-                        var newHistoryDetail = new HistoryDetail();
-                        newHistoryDetail.History = newHitory;
-                        newHistoryDetail.ProductId = pid;
-                        newHistoryDetail.MinPrice = dataList[i].MinPrice;
-                        newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
-                        db.HistoryDetails.Add(newHistoryDetail);
+                        
 
-                    }
-                    else
-                    {
-                        var historyId = (from h in db.Histories
-                                         where h.BuyTime == now && h.Username == username
-                                         select h.Id).First();
-                        var dupProductId = db.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
-                        if (dupProductId == null)
+                        if (dupHistory == null)
                         {
+                            var newHitory = new History();
+                            newHitory.Username = username;
+                            newHitory.BuyTime = now;
+
+                            db.Histories.Add(newHitory);
                             var newHistoryDetail = new HistoryDetail();
-                            newHistoryDetail.History = dupHistory;
+                            newHistoryDetail.History = newHitory;
                             newHistoryDetail.ProductId = pid;
                             newHistoryDetail.MinPrice = dataList[i].MinPrice;
                             newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
                             db.HistoryDetails.Add(newHistoryDetail);
 
                         }
+                        else
+                        {
+                            var historyId = (from h in db.Histories
+                                             where h.BuyTime == now && h.Username == username
+                                             select h.Id).First();
+                            var checkCount = (from c in db.HistoryDetails
+                                              where c.HistoryId == historyId
+                                              select c).Count();
+                            if (checkCount >= 10)
+                            {
+                                return Json("full", JsonRequestBehavior.AllowGet);
+                            }
+                            var dupProductId = db.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
+                            if (dupProductId == null)
+                            {
+                                var newHistoryDetail = new HistoryDetail();
+                                newHistoryDetail.History = dupHistory;
+                                newHistoryDetail.ProductId = pid;
+                                newHistoryDetail.MinPrice = dataList[i].MinPrice;
+                                newHistoryDetail.MaxPrice = dataList[i].MaxPrice;
+                                db.HistoryDetails.Add(newHistoryDetail);
+
+                            }
+                        }
+                        db.SaveChanges();
                     }
-                    db.SaveChanges();
+                    else continue;
                 }
 
                 check = true;

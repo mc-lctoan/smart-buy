@@ -2,8 +2,8 @@
     if (typeof (sessionStorage) != "undefined") {
         var exist = false;
         var cart = eval(sessionStorage.cart) || [];
-        if (cart.length >= 20) {
-            var message = 'Giỏ của bạn không quá 20 sản phẩm.';
+        if (cart.length >= 10) {
+            var message = 'Giỏ của bạn không quá 10 sản phẩm.';
             showNotifyDialog(message);            
         }
         else {            
@@ -183,6 +183,7 @@ function removeCartItem(id) {
 function saveCart() {
     var cart = eval(sessionStorage.cart);
     var data = [];
+    
     for (var i = 0; i < cart.length; i++) {
         data[i] = {
             Username: 'Sergey Pimenov',
@@ -203,12 +204,22 @@ function saveCart() {
                 clearCartInSession();
                 location.href = "../History/BuyingHistory";
 
-            } else {
-                document.getElementById('saveCartStatus').innerHTML = "(*) Có lỗi xảy ra. Vui lòng thử lại sau";
+            }
+            else if (data == 'full') {
+                clearCartInSession();
+                showNotifyDialog("Giỏ hàng hôm nay đã đầy.");
+            }
+            else {
+
+                showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
+                var mesDialog = document.getElementById('mesDialog');
+                mesDialog.style.color = 'red';
             }
         },
-        error: function (e) {
-            document.getElementById('saveCartStatus').innerHTML = "(*) " + e.message;
+        error: function (e) {            
+            showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại. " + e.message);
+            var mesDialog = document.getElementById('mesDialog');
+            mesDialog.style.color = 'red';
         }
     })
 }
@@ -253,13 +264,13 @@ function saveUserPrice(productId) {
                     message = "Cảm ơn sự đóng góp của bạn. Chúng tôi sẽ xem xét.";
                     showNotifyDialog(message);
                 } else {
-                    message = "(*) Có lỗi xảy ra. Vui lòng thử lại sau.";
+                    message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
                     showNotifyDialog(message);
                 }
             },
             error: function (e) {
                 $.Dialog.close();
-                message = "(*) " + e.message;
+                message = "(*) Có lỗi xảy ra. Vui lòng thử lại. " + e.message;
                 showNotifyDialog(message);
             }
         });
@@ -271,7 +282,7 @@ function validateUserPrice() {
     var price = document.getElementById('txtUserPrice').value;
     var RE_PRICE = /^\d{1,5}$/;
 
-    if (RE_PRICE.test(price) == false || price == 0) {
+    if (RE_PRICE.test(price) == false || price == 0 || price > 10000) {
         document.getElementById('errorUserPrice').innerHTML = "Giá không phù hợp. Vui lòng nhập giá trị từ 1 đến 10000";
         return false;
     } else {
@@ -331,7 +342,7 @@ function showNotifyDialog(mes) {
             window.parent.location.href = window.parent.location.href;
         },
         onShow: function (_dialog) {
-            var content = '<div><span>' + mes + '</span></div><br />'
+            var content = '<div><span id=mesDialog>' + mes + '</span></div><br />'
         + '<div align="center"><button class="button primary" onclick="$.Dialog.close(); window.parent.location.href = window.parent.location.href;">Thoát</button></div> ';
             $.Dialog.content(content);
         }
