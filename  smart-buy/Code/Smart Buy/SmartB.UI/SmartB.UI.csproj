@@ -207,6 +207,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -731,6 +732,7 @@
     <Content Include="Views\Account\BuyingHistoryDetail.cshtml" />
     <Content Include="Views\Product\ProposeProductPrice.cshtml" />
     <Content Include="Views\Product\UploadProduct.cshtml" />
+    <Content Include="Views\Route\DefineRoute.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

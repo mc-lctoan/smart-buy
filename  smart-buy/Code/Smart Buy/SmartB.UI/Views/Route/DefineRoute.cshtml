@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "DefineRoute";
+}
+
+@section headScript
+{
+    <style>
+      #map-canvas {
+          height: 600px;
+          width: 800px;
+          margin: 0px;
+          padding: 0px;
+      }
+    </style>
+
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+
+    <script type="text/javascript">
+        var map, fromAddress, toAddress, fromLocation, toLocation, directionsDisplay, directionsService;
+        var data = { };
+
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(10.791658, 106.658163),
+                zoom: 12
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"),
+                mapOptions);
+            directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+            directionsDisplay.setMap(map);
+            directionsService = new google.maps.DirectionsService();
+
+            fromAddress = new google.maps.places.Autocomplete(document.getElementById('FromAddress'), { types: ['geocode'] });
+            toAddress = new google.maps.places.Autocomplete(document.getElementById('ToAddress'), { types: ['geocode'] });
+            
+            google.maps.event.addListener(fromAddress, 'place_changed', function () {
+                var place = fromAddress.getPlace();
+                fromLocation = place.geometry.location;
+            });
+            
+            google.maps.event.addListener(toAddress, 'place_changed', function () {
+                var place = toAddress.getPlace();
+                toLocation = place.geometry.location;
+            });
+        }
+
+        function calcRoute(start, end) {
+            var pStart = new google.maps.LatLng(start.lat(), start.lng());
+            var pEnd = new google.maps.LatLng(end.lat(), end.lng());
+            
+            var request = {
+                origin: pStart,
+                destination: pEnd,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function(result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                }
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function save_waypoints() {
+            var w = [], wp;
+            var rleg = directionsDisplay.directions.routes[0].legs[0];
+            data.start = { 'lat': rleg.start_location.lat(), 'lng': rleg.start_location.lng() };
+            data.end = { 'lat': rleg.end_location.lat(), 'lng': rleg.end_location.lng() };
+            wp = rleg.via_waypoints;
+            for (var i = 0; i < wp.length; i++) w[i] = [wp[i].lat(), wp[i].lng()];
+            data.waypoints = w;
+
+            var str = JSON.stringify(data);
+            return str;
+        }
+
+        function set_route(way) {
+            var wp = [];
+            for (var i = 0; i < way.waypoints.length; i++)
+                wp[i] = { 'location': new google.maps.LatLng(way.waypoints[i][0], way.waypoints[i][1]), 'stopover': false };
+
+            var request = {
+                origin: new google.maps.LatLng(way.start.lat, way.start.lng),
+                destination: new google.maps.LatLng(way.end.lat, way.end.lng),
+                waypoints: wp,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                }
+            });
+        }
+        
+        $(document).ready(function() {
+            $('#GetWay').click(function() {
+                calcRoute(fromLocation, toLocation);
+            }); // end click
+
+            $('#Json').click(function() {
+                $('#testData').val(save_waypoints);
+            }); // end click
+
+            $('#Again').click(function() {
+                var str = $('#testData').val();
+                var way = eval('(' + str + ')');
+                set_route(way);
+            }); // end click
+        }); // end ready
+    </script>
+}
+
+<h1>Map is here</h1>
+<label>From</label>
+<input type="text" id="FromAddress" placeholder="From" style="width: 400px"/>
+<label>To</label>
+<input type="text" id="ToAddress" placeholder="To" style="width: 400px"/>
+<input type="button" id="GetWay" value="Route"/>
+<input type="button" id="Json" value="View"/>
+<input type="button" id="Again" value="View Again"/>
+<br/>
+<textarea id="testData"></textarea>
+<br/>
+<div id="map-canvas"/>
