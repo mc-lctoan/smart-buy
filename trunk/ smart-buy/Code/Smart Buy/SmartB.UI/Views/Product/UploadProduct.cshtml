@@ -43,31 +43,31 @@
         var productMarketName = $("#ProductMarketName" + index).val();
         var productPrice = $("#ProductPrice" + index).val();
 
-        var checkName = false;
-        var checkMarketName = false;
-        var checkPrice = false;
+        //var checkName = false;
+        //var checkMarketName = false;
+        //var checkPrice = false;
 
-        if (productName.Length < 5 || productName.Length > 100) {
-            $("#productNameArlet").text("Tên sản phẩm phải từ 5 đến 100 ký tự.");
-            checkName = false;
-        } else {
-            $("#productNameArlet").text("");
-            checkName = true;
-        }
-        if (productMarketName.Length < 5 || productMarketName.Length > 20) {
-            $("#marketNameArlet").text("Tên chợ phải từ 5 đến 20 ký tự.");
-            checkMarketName = false;
-        } else {
-            $("#marketNameArlet").text("");
-            checkMarketName = true;
-        }
-        if (productPrice < 1 || productPrice > 10000) {
-            $("#priceArlet").text("Giá phải từ 1 đến 10000.");
-            checkPrice = false;
-        } else {
-            $("#priceArlet").text("");
-            checkPrice = true;
-        }
+        //if (productName.Length < 5 || productName.Length > 100) {
+        //    $("#productNameArlet").text("Tên sản phẩm phải từ 5 đến 100 ký tự.");
+        //    checkName = false;
+        //} else {
+        //    $("#productNameArlet").text("");
+        //    checkName = true;
+        //}
+        //if (productMarketName.Length < 5 || productMarketName.Length > 20) {
+        //    $("#marketNameArlet").text("Tên chợ phải từ 5 đến 20 ký tự.");
+        //    checkMarketName = false;
+        //} else {
+        //    $("#marketNameArlet").text("");
+        //    checkMarketName = true;
+        //}
+        //if (productPrice < 1 || productPrice > 10000) {
+        //    $("#priceArlet").text("Giá phải từ 1 đến 10000.");
+        //    checkPrice = false;
+        //} else {
+        //    $("#priceArlet").text("");
+        //    checkPrice = true;
+        //}
         //if (checkName == true && checkMarketName == true && checkPrice == true) {
             $.ajax({
                 type: "POST",
@@ -75,7 +75,7 @@
                 data: { ProductId: productId, ProductName: productName, ProductMarketName: productMarketName, ProductPrice: productPrice },
                 cache: true,
                 success: function (error) {
-                    if (error.length == 0) {
+                    if (error.error.length == 0) {
                         var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
                         var id = parseInt($('#ProductTable tr:last #STT').html());
                         $("#ErrorArea").html("");
@@ -87,12 +87,29 @@
                         $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                     }
                     else {
+                        console.log(error);
                         var errordisp = "";
-                        $.each(error, function (index, value) {
+                        $.each(error.error, function (index, value) {
                             errordisp += "<label style='color: red'>" + value + "</label>"
                         });
                         $("#ErrorArea").html(errordisp);
-                        
+                        if(error.error.toString() == "Sản phẩm đã có.")
+                        {
+                            var message = confirm("Sản phẩm đã có, bạn có muốn cập nhật sản phẩm này?")
+                            if(message == true)
+                            {
+                                if(error.id) {
+                                    $("#product_"+error.id).find("td").find("input")[2].value = error.updatedPrice;
+                                    $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                                    $("#ErrorArea").html("");
+                                }
+                                // $("#ProductTable").find("td").eq().
+                                return true;
+                            }else
+                            {
+                                return false;
+                            }
+                        }
                         return false;
                     }
                 }
@@ -138,6 +155,14 @@
                 }
             })
         })
+    }
+    function setTable(what){
+        if(document.getElementById(what).style.display=="none"){
+            document.getElementById(what).style.display="block";
+        }
+        else if(document.getElementById(what).style.display=="block"){
+            document.getElementById(what).style.display="none";
+        }
     }
 </script>
 <!--Css cho Pagging -->
@@ -222,7 +247,9 @@
       
         
                  <table class="table" id="ProductTable">
-                        <lable style="font-size: x-large; font-weight: bold;color:blue">Danh sách sản phẩm (@ViewBag.CorrectSellProductsCount sản phẩm)</lable>
+                        <lable style="font-size: x-large; font-weight: bold;color:blue">Danh sách sản phẩm 
+                            @*(@ViewBag.CorrectSellProductsCount sản phẩm)*@
+                        </lable>
                         <tr style="font-size: 14px;line-height: 14pt;padding: 8px;border-bottom: 1px #eaeaea solid; font-weight: bold">
                             <td style="padding: 8px;width:55px;">STT</td>
                             <td style="padding: 8px;width:187px;">Tên Sản Phẩm</td>
@@ -281,8 +308,27 @@
                  }
                   else if (Model != null && @ViewBag.errorCount >= 5)
                         {
-                         <table class="table">
-                        <lable style="font-size: x-large; font-weight: bold;color:blue">Danh sách sản phẩm bị lỗi</lable>
+                      <div id="ErrorLinesArea">
+                          <label style="color:red"> Tên sản phẩm phải từ 5 đến 100 ký tự</label>
+                          <lable><b style="font-weight:bold;color:blue">Dòng:</b> @for (int i = 0; i < @ViewBag.ErrorNameLines.Count; i++)
+                        {
+                                     @ViewBag.ErrorNameLines[i] <b>,</b>   
+                        }  </lable>
+                          <label style="color:red"> Tên chợ phải từ 5 đến 20 ký tự</label>
+                          <lable><b style="font-weight:bold;color:blue">Dòng:</b> @for (int i = 0; i < @ViewBag.ErrorMarketNameLines.Count; i++)
+                        {
+                                     @ViewBag.ErrorMarketNameLines[i] <b>,</b>    
+                        }  </lable>
+                          <label style="color:red"> Giá phải từ 1 đến 10000</label>
+                          <lable><b style="font-weight:bold;color:blue">Dòng:</b> @for (int i = 0; i < @ViewBag.ErrorPriceLines.Count; i++)
+                        {
+                                     @ViewBag.ErrorPriceLines[i] <b>,</b>    
+                        }  </lable>
+                      </div> <br />
+                <input href="#" onclick="setTable('tableProductError');return false" value="Ẩn/Hiện chi tiết" type="button" style="font-weight:bold"/>
+                <div id="tableProductError" style="display:none;">
+                    <lable style="font-size: x-large; font-weight: bold;color:blue">Danh sách sản phẩm bị lỗi</lable>
+                         <table class="table" >                        
                         <tr style="font-size: 14px;line-height: 14pt;padding: 8px;border-bottom: 1px #eaeaea solid; font-weight: bold">
                             <td style="padding: 8px;width:55px;">Số dòng</td>
                             <td style="padding: 8px;width:187px;">Tên Sản Phẩm</td>
@@ -330,8 +376,9 @@
                             </tr>
                         }
                     </table>
+                    </div>
                         }
-        }
+            }
    </div>
         <div class="frame" id="_pageError">
              <div id="ErrorArea">

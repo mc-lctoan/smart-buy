@@ -229,7 +229,7 @@ namespace SmartB.UI.UploadedExcelFiles
                             {
                                 if (error == false)
                                 {
-                                //    sellProductCorrect.Id = sellProductCorrectCollection.Count();
+                                    sellProductCorrect.Id = sellProductCorrectCollection.Count();
                                     sellProductCorrectCollection.Add(sellProductCorrect);
                                 }
                             }
