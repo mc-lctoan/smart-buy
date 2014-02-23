@@ -1,4 +1,7 @@
-﻿@{
+﻿@using SmartB.UI.Models.EntityFramework
+@model List<SmartB.UI.Models.EntityFramework.Market>
+
+@{
     ViewBag.Title = "DefineRoute";
 }
 
@@ -15,10 +18,15 @@
 
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RouteBoxer.js")"></script>
 
     <script type="text/javascript">
-        var map, fromAddress, toAddress, fromLocation, toLocation, directionsDisplay, directionsService;
+        var map, fromAddress, toAddress, fromLocation, toLocation, directionsDisplay, directionsService, boxes;
         var data = { };
+        var rboxer = new RouteBoxer();
+        var distance = 0.5; // km
+        var marketList = create_marketList();
+        var boxpolys = null;
 
         function initialize() {
             var mapOptions = {
@@ -57,10 +65,89 @@
             directionsService.route(request, function(result, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(result);
+                    
+                    // Box the overview path of the first route
+                    var path = result.routes[0].overview_path;
+                    boxes = rboxer.box(path, distance);
+
+                    //drawBoxes(boxes);
+                    search_market(boxes);
                 }
             });
         }
         google.maps.event.addDomListener(window, 'load', initialize);
+
+        // Draw the array of boxes as polylines on the map
+        function drawBoxes(boxes) {
+            boxpolys = new Array(boxes.length);
+            for (var i = 0; i < boxes.length; i++) {
+                boxpolys[i] = new google.maps.Rectangle({
+                    bounds: boxes[i],
+                    fillOpacity: 0,
+                    strokeOpacity: 1.0,
+                    strokeColor: '#000000',
+                    strokeWeight: 1,
+                    map: map
+                });
+            }
+        }
+
+        function create_marker(place) {
+            var marker = new google.maps.Marker({
+                position: place.position,
+                map: map,
+                title: place.title,
+                animation: google.maps.Animation.DROP
+            });
+        }
+
+        function is_inBound(boxes, location) {
+            for (var i = 0; i < boxes.length; i++) {
+                var bound = boxes[i];
+                if (bound.contains(location)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function create_marketList() {
+            var list = [];
+            var lat, lng, position;
+            @foreach (var market in Model)
+            {
+                if (market.Latitude != null && market.Longitude != null)
+                {
+                    <text>
+            lat = @market.Latitude;
+            lng = @market.Longitude;
+            position = new google.maps.LatLng(lat, lng);
+            var m = {
+                id: @market.Id,
+                position: position,
+                title: '@market.Name'
+                };
+            list.push(m);
+                    </text>
+                }
+            }
+            return list;
+        }
+
+        function search_market(boxes) {
+            for (var i = 0; i < marketList.length; i++) {
+                if (is_inBound(boxes, marketList[i].position)) {
+                    var tmp = $('#MarketId').val();
+                    if (tmp != "") {
+                        tmp += ',' + marketList[i].id;
+                    } else {
+                        tmp = marketList[i].id;
+                    }
+                    $('#MarketId').val(tmp);
+                    create_marker(marketList[i]);
+                }
+            }
+        }
 
         function save_waypoints() {
             var w = [], wp;
@@ -116,9 +203,13 @@
 <input type="text" id="FromAddress" placeholder="From" style="width: 400px"/>
 <label>To</label>
 <input type="text" id="ToAddress" placeholder="To" style="width: 400px"/>
+<label>Market Id</label>
+<input type="text" id="MarketId"/>
+
 <input type="button" id="GetWay" value="Route"/>
 <input type="button" id="Json" value="View"/>
 <input type="button" id="Again" value="View Again"/>
+
 <br/>
 <textarea id="testData"></textarea>
 <br/>
