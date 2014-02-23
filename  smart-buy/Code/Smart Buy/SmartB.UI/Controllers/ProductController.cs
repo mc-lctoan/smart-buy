@@ -228,10 +228,8 @@ namespace SmartB.UI.Controllers
                 int errorCount = 0;
                 try
                 {
-                    //sellProductCollection = excelHelper.ReadData((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice, out errorCount);
                     sellProductCorrectCollection = excelHelper.ReadDataCorrect((Server.MapPath(savedFileName)));
                     sellProductErrorCollection = excelHelper.ReadDataError((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice, out errorCount);
-                    //ViewBag.sellProductCollection = sellProductCollection;
                     ViewBag.sellProductCorrectCollection = sellProductCorrectCollection;
                     model.CorrectSellProducts = sellProductCorrectCollection;
                     model.InCorrectSellProducts = sellProductErrorCollection;
@@ -239,8 +237,6 @@ namespace SmartB.UI.Controllers
                     ViewBag.ExceptionMarket = errorMarket;
                     ViewBag.ExceptionPrice = errorPrice;
                     ViewBag.errorCount = errorCount;
-                    // ViewBag.InCorrectSellProductsCount = sellProductErrorCollection.Count();
-                    //  ViewBag.CorrectSellProductsCount = sellProductCorrectCollection.Count();
                     List<string> errorNameLines = new List<string>();
                     List<string> errorMarketNameLines = new List<string>();
                     List<string> errorPriceLines = new List<string>();
@@ -290,6 +286,38 @@ namespace SmartB.UI.Controllers
                     ViewBag.ExceptionPrice = errorPrice;
                     ViewBag.errorCount = errorCount;
                 }
+                //Compare items in Excel
+                List<SellProductModel> compareListProduct = sellProductCorrectCollection;
+                List<List<SellProductModel>> results = new List<List<SellProductModel>>();
+                for (int i = 0; i < compareListProduct.Count; i++)
+                {
+                    List<SellProductModel> result = new List<SellProductModel>();
+                    for (int j = i + 1; j < compareListProduct.Count; j++)
+                    {
+                        if (compareListProduct[i].MarketName == compareListProduct[j].MarketName)
+                        {
+                            var percentage =
+                                CompareStringHelper.CompareString(compareListProduct[i].Name.Split(';').First(), compareListProduct[j].Name.Split(';').First());
+                            if (percentage > 0.7 && percentage < 1)
+                            {
+                                if (result.Count() == 0)
+                                {
+                                    result.Add(compareListProduct[i]);
+                                }
+                                result.Add(compareListProduct[j]);
+                                compareListProduct.Remove(compareListProduct[j]);
+                            }
+                        }
+                    }
+                    if (result.Count() != 0)
+                    {
+                        compareListProduct.Remove(compareListProduct[i]);
+                        i = i - 1;
+                        results.Add(result);
+                    }
+                }
+                ViewBag.duplicateCorrectProduct = results;
+                ViewBag.duplicateCorrectProductCount = results.Count();
                 return View(model);
             }
             return View();
@@ -543,13 +571,7 @@ namespace SmartB.UI.Controllers
                     Session["CorrectProducts"] = correctProducts;
                 }
             }
-
-
-
-
-
             result.error = error;
-
             return Json(result);
         }
 

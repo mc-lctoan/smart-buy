@@ -236,25 +236,8 @@ namespace SmartB.UI.UploadedExcelFiles
                         }
                     }
                 }
-                //Compare items in Excel
-                List<string> results = new List<string>();
-                for (int i = 0; i < sellProductCorrectCollection.Count - 1; i++)
-                {
-                    var result = sellProductCorrectCollection[i].Name;
-                    for (int j = i + 1; j < sellProductCorrectCollection.Count; j++)
-                    {
-                        var percentage =
-                            CompareStringHelper.CompareString(sellProductCorrectCollection[i].Name, sellProductCorrectCollection[j].Name);
-                        if (percentage > 0.85 && percentage < 1)
-                        {
-                            result += ";" + sellProductCorrectCollection[j].Name;
-                        }
-                    }
-                    if (result != sellProductCorrectCollection[i].Name)
-                    {
-                        results.Add(result);
-                    }
-                }
+               
+                
                 return sellProductCorrectCollection;
             }
 
