@@ -48,14 +48,14 @@
             url: '@Url.Action("SaveProductError", "Product")',
             data: { ProductId: productId, ProductName: productName, ProductMarketName: productMarketName, ProductPrice: productPrice },
             cache: true,
-            success: function (error) {
-                if (error.error.length == 0) {
+            success: function (result) {
+                if (result.error.length == 0) {
                     var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
-                    var id = parseInt($('#ProductTable tr:last #STT').html());
+                    var id = result.id;
                     $("#ErrorArea").html("");
-                    $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + productName +
-                                             "'></input></td><td style='width:202px'><input value='" + productMarketName + "'>" +
-                                            "</input></td><td style='width:176px'><input value='" + productPrice + "'>" +
+                    $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
+                                             "'></input></td><td style='width:202px'><input readonly value='" + productMarketName + "'>" +
+                                            "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
                                             "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
                     $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                 }
@@ -87,18 +87,18 @@
             }
         });
     }
-    function deleteProduct(index){
-        var productId = $("#ProductId" + index).val();
+    function deleteProduct(id){
+        var productId = $("#ProductId" + id).val();
         var message = confirm("Bạn có muốn xóa sản phẩm này?")
         $.ajax({
             type: "DELETE",
             url: '@Url.Action("DeleteProduct", "Product")',
-                data: { id: index},
+            data: { id: id},
                 cache: true,
                 success: function (result) {
                     if(message == true)
                     {
-                        $("#product_"+index).remove();
+                        $("#product_"+id).remove();
                         return true;
                     }else 
                     {
@@ -136,22 +136,7 @@
             }
         }
 
-        function selectOnlyThis(id) {
-            //var row = n.parentNode.parentNode; 
-            //var cols = row.getElementsByTagName("td");
-            //var i = 0;
-            //for (var i = 0; i < ViewBag.duplicateCorrectProduct.count ; i++) {
-            //    document.getElementById("Check_" + i).checked = false;
-            //}
-            //document.getElementById(id).checked = true;
-            //while (i < cols.length -1) {
-            //    var val = cols[i].childNodes[0].nodeValue
-            //    if (val != null) {
-            //        alert(val);
-            //    }
-            //    i++;
-            //}
-        }
+       
 
         function Product(id, productName, productMarket, price, checked) {
             this.id = id;
@@ -200,15 +185,30 @@
                     productPrice = products[k].price;
                 }
             }
-            var finalProduct = new Product(0, productName, productMarket, productPrice, true);
-            var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
-            var id = parseInt($('#ProductTable tr:last #STT').html());
-            $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + productName +
-                                             "'></input></td><td style='width:202px'><input value='" + productMarket + "'>" +
-                                            "</input></td><td style='width:176px'><input value='" + productPrice + "'>" +
-                                            "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
-            $("#dupTable_"+i).remove();
+            if(productPrice == null)
+            {
+                alert("Vui lòng chọn giá của sản phẩm.")
+            } else {
+                var finalProduct = new Product(0, productName, productMarket, productPrice, true);
+                var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
+               var id = parseInt($('#ProductTable tr:last #STT').html());
+                
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateSession", "Product")',
+                    data: { ProductId: id, ProductName: productName, ProductMarketName: productMarket, ProductPrice: productPrice },
+                    cache: true,
+                    success: function (newId) {
+                        var id = newId;
+                        $("#ProductTable tr:last").after("<tr id='product_"+newId+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
+                                                 "'></input></td><td style='width:202px'><input readonly value='" + productMarket + "'>" +
+                                                "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
+                                                "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                        $("#dupTable_"+i).remove();
+                    }
+                });
             
+            }
         }
         function split(i) 
         {
@@ -231,6 +231,7 @@
                                           "</input></td><td style='width:176px'><input value='" + price + "'>" +
                                           "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
                     stt = stt + 1;
+                    id = id +1;
                 }
             }
             $("#dupTable_"+i).remove();
@@ -581,7 +582,7 @@
                                 <td>@item.MarketName</td>
                                 <td>@item.Price</td>
                                 <td>
-                                    <input type="radio" name="productPrice" onclick="selectOnlyThis(this.id)" id="Check_@i"/></td>
+                                    <input type="radio" name="productPrice"  id="Check_@i"/></td>
                             </tr>  
                         }
                     </table><br />
