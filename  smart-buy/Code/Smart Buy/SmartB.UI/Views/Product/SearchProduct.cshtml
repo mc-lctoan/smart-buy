@@ -85,3 +85,7 @@
     <div> Trang: @Html.PagedListPager(Model, page=>Url.Action("SearchProduct", new {currentFilter = ViewBag.CurrentFilter, page}), PagedListRenderOptions.OnlyShowFivePagesAtATime) </div>
 }
 
+else
+{
+    @Html.Action("ProductMostBuy")
+}
