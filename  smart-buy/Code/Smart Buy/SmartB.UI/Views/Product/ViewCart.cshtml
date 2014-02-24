@@ -43,3 +43,8 @@
     <i class="icon-box-add"></i>
     Lưu lại
 </button>
+
+@using (Html.BeginForm("SuggestRoute", "Route"))
+{
+    <input type="submit" value="Gợi ý" class="primary"/>
+}

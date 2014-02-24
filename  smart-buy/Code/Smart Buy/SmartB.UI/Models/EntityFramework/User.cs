@@ -24,6 +24,7 @@ namespace SmartB.UI.Models.EntityFramework
         public string Password { get; set; }
         public string Email { get; set; }
         public string DefinedRoute { get; set; }
+        public string MarketId { get; set; }
         public int RoleId { get; set; }
         public bool IsActive { get; set; }
     

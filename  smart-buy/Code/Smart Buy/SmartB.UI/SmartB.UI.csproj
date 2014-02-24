@@ -49,6 +49,9 @@
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList.Mvc">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -212,12 +215,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\SuggestRouteHelper.cs" />
     <Compile Include="Infrastructure\CustomMembershipProvider.cs" />
     <Compile Include="Infrastructure\CustomRoleProvider.cs" />
     <Compile Include="Infrastructure\JsonContentNegotiator.cs" />
     <Compile Include="Infrastructure\ParseService.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CartHistory.cs" />
+    <Compile Include="Models\DefineRouteModel.cs" />
     <Compile Include="Models\EntityFramework\Dictionary.cs">
       <DependentUpon>SmartBuy.tt</DependentUpon>
     </Compile>
@@ -501,6 +506,7 @@
     <Content Include="Areas\Admin\MoonCake\sample\p6.jpg" />
     <Content Include="Areas\Admin\MoonCake\sample\p7.jpg" />
     <Content Include="Areas\Admin\Scripts\getXPath.js" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -734,6 +740,7 @@
     <Content Include="Views\Product\ProposeProductPrice.cshtml" />
     <Content Include="Views\Product\UploadProduct.cshtml" />
     <Content Include="Views\Route\DefineRoute.cshtml" />
+    <Content Include="Views\Route\SuggestRoute.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

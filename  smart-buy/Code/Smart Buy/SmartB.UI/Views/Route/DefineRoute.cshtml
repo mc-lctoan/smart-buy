@@ -1,5 +1,4 @@
-﻿@using SmartB.UI.Models.EntityFramework
-@model List<SmartB.UI.Models.EntityFramework.Market>
+﻿@model List<SmartB.UI.Models.EntityFramework.Market>
 
 @{
     ViewBag.Title = "DefineRoute";
@@ -8,16 +7,17 @@
 @section headScript
 {
     <style>
-      #map-canvas {
-          height: 600px;
-          width: 800px;
-          margin: 0px;
-          padding: 0px;
-      }
+        #map-canvas
+        {
+            height: 600px;
+            width: 800px;
+            margin: 0px;
+            padding: 0px;
+        }
     </style>
 
     <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/RouteBoxer.js")"></script>
 
     <script type="text/javascript">
@@ -125,8 +125,8 @@
             var m = {
                 id: @market.Id,
                 position: position,
-                title: '@market.Name'
-                };
+                title: '@Html.Raw(HttpUtility.HtmlDecode(market.Name))'
+            };
             list.push(m);
                     </text>
                 }
@@ -185,8 +185,8 @@
                 calcRoute(fromLocation, toLocation);
             }); // end click
 
-            $('#Json').click(function() {
-                $('#testData').val(save_waypoints);
+            $('#SaveRoute').click(function() {
+                $('#JsonRoute').val(save_waypoints);
             }); // end click
 
             $('#Again').click(function() {
@@ -199,18 +199,25 @@
 }
 
 <h1>Map is here</h1>
+@if (TempData["message"] != null)
+{
+    <h3>Định nghĩa đường đi thành công!</h3>
+}
+@Html.ValidationSummary(false)
 <label>From</label>
-<input type="text" id="FromAddress" placeholder="From" style="width: 400px"/>
+<input type="text" id="FromAddress" placeholder="From" style="width: 400px" />
 <label>To</label>
-<input type="text" id="ToAddress" placeholder="To" style="width: 400px"/>
-<label>Market Id</label>
-<input type="text" id="MarketId"/>
-
-<input type="button" id="GetWay" value="Route"/>
-<input type="button" id="Json" value="View"/>
-<input type="button" id="Again" value="View Again"/>
-
-<br/>
-<textarea id="testData"></textarea>
-<br/>
-<div id="map-canvas"/>
+<input type="text" id="ToAddress" placeholder="To" style="width: 400px" />
+@using (Html.BeginForm("DefineRoute", "Route"))
+{
+    <label>Market Id</label>
+    <input type="text" id="MarketId" name="MarketId" />
+    <br />
+    <textarea id="JsonRoute" name="Route"></textarea>
+    <br/>
+    <input type="submit" id="SaveRoute" value="Save" class="primary"/>
+}
+<input type="button" id="GetWay" value="Tìm đường" />
+<input type="button" id="Again" value="View Again" />
+<br />
+<div id="map-canvas" />

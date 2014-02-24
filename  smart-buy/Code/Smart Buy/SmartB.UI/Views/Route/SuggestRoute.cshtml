@@ -1,0 +1,36 @@
+﻿@using SmartB.UI.Models.EntityFramework
+@model User
+
+@{
+    ViewBag.Title = "Gợi ý";
+    var result = TempData["RouteResult"] as List<KeyValuePair<Product, Market>>;
+    int counter = 0;
+}
+
+<h2>Gợi ý</h2>
+
+@if (result != null)
+{
+    <table class="table bordered hovered">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên sản phẩm</th>
+                <th>Tên chợ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pair in result)
+            {
+                counter++;
+                <tr>
+                    <td>@counter</td>
+                    <td>@pair.Key.Name</td>
+                    <td>@pair.Value.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div id="map-canvas" />

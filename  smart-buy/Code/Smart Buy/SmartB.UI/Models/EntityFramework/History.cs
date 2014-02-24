@@ -23,7 +23,7 @@ namespace SmartB.UI.Models.EntityFramework
         public string Username { get; set; }
         public System.DateTime BuyTime { get; set; }
     
-        public virtual User User { get; set; }
         public virtual ICollection<HistoryDetail> HistoryDetails { get; set; }
+        public virtual User User { get; set; }
     }
 }
