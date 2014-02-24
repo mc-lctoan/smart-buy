@@ -198,25 +198,25 @@ namespace SmartB.UI.Controllers
             }
         }
 
-        public ActionResult ProductMostBuy()
-        {
+        //public ActionResult ProductMostBuy()
+        //{
 
-            var productModel = (from p in db.Products
-                                from h in db.HistoryDetails
-                                where h.ProductId == p.Id && h.History.Username.Equals("Sergey Pimenov")
-                                group h by p into productMostBuyGroup
-                                select new ProductMostBuy
-                                {
-                                    Product = productMostBuyGroup.Key,
-                                    numberOfBuy = productMostBuyGroup.Count()
-                                }).Where(x => x.numberOfBuy >= 5).OrderByDescending(o => o.numberOfBuy).Take(5);
+        //    var productModel = (from p in db.Products
+        //                        from h in db.HistoryDetails
+        //                        where h.ProductId == p.Id && h.History.Username.Equals("Sergey Pimenov")
+        //                        group h by p into productMostBuyGroup
+        //                        select new ProductMostBuy
+        //                        {
+        //                            Product = productMostBuyGroup.Key,
+        //                            numberOfBuy = productMostBuyGroup.Count()
+        //                        }).Where(x => x.numberOfBuy >= 5).OrderByDescending(o => o.numberOfBuy).Take(5);
 
-            if (productModel.Count() > 0)
-            {
-                return PartialView(productModel);
-            }
-            else return PartialView();
-        }
+        //    if (productModel.Count() > 0)
+        //    {
+        //        return PartialView(productModel);
+        //    }
+        //    else return PartialView();
+        //}
 
         public ActionResult UploadProduct()
         {
@@ -573,7 +573,7 @@ namespace SmartB.UI.Controllers
             if (error.Count == 0)
             {
                 var correctProducts = (List<SellProductModel>)Session["CorrectProducts"];
-                var existedProduct = correctProducts.FirstOrDefault(x => x.Name == ProductName && x.MarketName == ProductMarketName);
+                var existedProduct = correctProducts.FirstOrDefault(x => x.Name.Split(';').First() == ProductName && x.MarketName == ProductMarketName);
                 if (existedProduct != null)
                 {
                     error.Add("Sản phẩm đã có.");
@@ -582,15 +582,19 @@ namespace SmartB.UI.Controllers
                 }
                 else
                 {
+                    var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
+                    int newId = largerId.Id + 1;
                     SellProductModel model = new SellProductModel();
                     model.Name = ProductName;
                     model.MarketName = ProductMarketName;
                     model.Price = ProductPrice;
-                    model.Id = correctProducts.Count();
+                    model.Id = newId;
                     correctProducts.Add(model);
                     Session["CorrectProducts"] = correctProducts;
+                    result.id = newId;
                 }
             }
+
             result.error = error;
             return Json(result);
         }
@@ -619,6 +623,22 @@ namespace SmartB.UI.Controllers
             Session["CorrectProducts"] = correctProducts;
             return Json(result);
 
+        }
+
+        public JsonResult UpdateSession(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
+        {
+
+            var correctProducts = (List<SellProductModel>)Session["CorrectProducts"];
+            var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
+            int newId = largerId.Id + 1;
+            SellProductModel model = new SellProductModel();
+            model.Name = ProductName;
+            model.MarketName = ProductMarketName;
+            model.Price = ProductPrice;
+            model.Id = largerId.Id + 1;
+            correctProducts.Add(model);
+            Session["CorrectProducts"] = correctProducts;
+            return Json(newId);
         }
     }
 }
