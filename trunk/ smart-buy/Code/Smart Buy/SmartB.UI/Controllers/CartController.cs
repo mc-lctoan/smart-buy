@@ -32,23 +32,30 @@ namespace SmartB.UI.Controllers
         [HttpGet, ActionName("AddToCart")]
         public JsonResult AddToCart(int productId)
         {
-            var check = false;
-            try
+            if (GetCart().Lines.Count() >= 10)
             {
-                ProductAttribute product = db.ProductAttributes
-                    .Where(p => p.ProductId == productId)
-                    .OrderByDescending(p => p.LastUpdatedTime).FirstOrDefault();
-
-                if (product != null)
-                {
-                    GetCart().AddItem(product, 1);
-                }
-                check = true;
-                return Json(check, JsonRequestBehavior.AllowGet);
+                return Json("full", JsonRequestBehavior.AllowGet);
             }
-            catch
+            else
             {
-                return Json(check, JsonRequestBehavior.AllowGet);
+                var check = false;
+                try
+                {
+                    ProductAttribute product = db.ProductAttributes
+                        .Where(p => p.ProductId == productId)
+                        .OrderByDescending(p => p.LastUpdatedTime).FirstOrDefault();
+
+                    if (product != null)
+                    {
+                        GetCart().AddItem(product, 1);
+                    }
+                    check = true;
+                    return Json(check, JsonRequestBehavior.AllowGet);
+                }
+                catch
+                {
+                    return Json(check, JsonRequestBehavior.AllowGet);
+                }
             }
         }
 
@@ -98,9 +105,9 @@ namespace SmartB.UI.Controllers
             }
         }
 
-        public ViewResult Summary()
+        public PartialViewResult Summary()
         {
-            return View(GetCart());
+            return PartialView(GetCart());
         }
 
         public ActionResult SaveCart()
@@ -141,6 +148,14 @@ namespace SmartB.UI.Controllers
                         var historyId = (from h in db.Histories
                                          where h.BuyTime == now && h.Username == username
                                          select h.Id).First();
+                        var checkCount = (from c in db.HistoryDetails
+                                          where c.HistoryId == historyId
+                                          select c).Count();
+                        if (checkCount >= 10)
+                        {
+                            break;
+                        }
+
                         var dupProductId = db.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
                         if (dupProductId == null)
                         {
