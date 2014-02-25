@@ -35,7 +35,7 @@
                         }
                     </td>
                     <td>
-                        <button onclick="addCarttoSession('@productId','@productName','@minPrice','@maxPrice')">
+                        <button onclick="addToCart('@productId')">
                             <i class="icon-plus-2 on-left"></i>
                             Thêm
                         </button>
@@ -54,10 +54,8 @@
                                     title: 'Đề xuất giá',
                                     content: '',
                                     padding: 10,
-                                    onShow: function (_dialog) {
-                                        // var btnSave = "<button class='primary' id='btnSaveUserPrice' onclick=\"saveUserPrice('@productId');$.Dialog.close();\"><i class='icon-box-add'></i> Lưu lại</button>";
+                                    onShow: function (_dialog) {                                        
                                     var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
-                                    //document.getElementById("iframeId").innerHTML = btnSave;
                                     $.Dialog.content(content);
                                     $.Metro.initInputs();
                                 }

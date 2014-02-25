@@ -27,6 +27,7 @@ namespace SmartB.UI.Controllers
                           where item.BuyTime >= minusThirty && item.BuyTime <= minusZero && item.Username.Equals("Sergey Pimenov")
                           select item;
             history = history.OrderByDescending(item => item.BuyTime);
+            
             return View(history.ToPagedList(pageNumber, pageSize));
         }
 
