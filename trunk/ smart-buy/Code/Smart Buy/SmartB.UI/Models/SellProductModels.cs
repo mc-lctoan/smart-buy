@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmartB.UI.Models.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,9 +21,18 @@ namespace SmartB.UI.Models
             , MinimumLength = 5)]
         public string MarketName { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập giá sản phẩm")]
-        [Range(0, 9999999, ErrorMessage = "Vui lòng nhập giá trị từ 1 đến 10000")]
+        [Range(1, 10000, ErrorMessage = "Vui lòng nhập giá trị từ 1 đến 10000")]
         [DisplayFormat(DataFormatString = "{0:0,000}")]
         public int Price { get; set; }
         public int RowNumber { get; set; }
+
+        public static SellProductModel MapToSellProductEntity(SellProduct sellProduct) {
+            SellProductModel model = new SellProductModel();
+            model.Id = sellProduct.Id;
+            model.MarketName = sellProduct.Market.Name;
+            model.Name = sellProduct.Product.Name;
+            model.Price = (int)sellProduct.SellPrice;
+            return model;
+        }
     }
 }

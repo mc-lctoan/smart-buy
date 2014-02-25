@@ -222,6 +222,7 @@ namespace SmartB.UI.Controllers
         {
             ViewBag.countInsert = TempData["InsertMessage"] as string;
             ViewBag.countUpdate = TempData["UpdateMessage"] as string;
+            ViewBag.dupSellProduct = TempData["DictionaryProduct"];
             return View();
         }
 
@@ -350,6 +351,7 @@ namespace SmartB.UI.Controllers
             //Trạng thái khi lưu xuống db
             int countUpdate = 0;
             int countInsert = 0;
+            List<List<SellProductModel>> dupSellProduct = new List<List<SellProductModel>>();
             foreach (var product in model.CorrectSellProducts)
             {
                 SmartBuyEntities db = new SmartBuyEntities();
@@ -360,198 +362,297 @@ namespace SmartB.UI.Controllers
                 var dupProduct = db.Products.Where(p => p.Name.Equals(productNameFirst)).FirstOrDefault();
                 var dupProductDictionary = db.Dictionaries.Where(p => p.Name.Equals(product.Name)).FirstOrDefault();
 
+                //Trung hoan toan
                 if (dupMarket != null & dupProduct != null)
                 {
-                    var sellProduct = db.SellProducts.Where(s => s.ProductId == dupProduct.Id && s.MarketId == dupMarket.Id).FirstOrDefault();
-                    // Check sellProduct có trùng không??
-                    if (sellProduct == null)
-                    {
-                        var sellProduct1 = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
-                        {
-                            Market = dupMarket,
-                            Product = dupProduct,
-                            SellPrice = product.Price,
-                            LastUpdatedTime = DateTime.Now
-                        };
-                        var addedSellProduct = db.SellProducts.Add(sellProduct1);
+                    TrungHoanToan(ref countUpdate, ref countInsert, product, db, dupMarket, dupProduct);
 
-                        countInsert++;
-                        db.SaveChanges(); // Save to database
-                    }
-                    else
-                    {
-                        if (sellProduct.SellPrice != product.Price)
-                        {
-                            sellProduct.SellPrice = product.Price;
-                            countUpdate++;
-                        }
-                        else
-                        {
-                            sellProduct.SellPrice = product.Price;
-                        }
-                    }
-                    // Cập nhật giá Min, Max ProductAttribute
-                    var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
-                    if (product.Price < dupProductAtt.MinPrice)
-                    {
-                        dupProductAtt.MinPrice = product.Price;
-                    }
-                    else if (product.Price > dupProductAtt.MaxPrice)
-                    {
-                        dupProductAtt.MaxPrice = product.Price;
-                    }
-                    db.SaveChanges(); // Save to database
-
-                }
-                else if (dupMarket != null & dupProduct == null) // Trùng Market
-                {
-                    var newProduct = new SmartB.UI.Models.EntityFramework.Product // add Product
-                    {
-                        Name = productNameFirst,
-                        IsActive = true,
-                    };
-                    var addedProduct = db.Products.Add(newProduct);
-                    var sellProduct = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
-                    {
-                        Market = dupMarket,
-                        Product = addedProduct,
-                        SellPrice = product.Price,
-                        LastUpdatedTime = DateTime.Now
-                    };
-                    var addedSellProduct = db.SellProducts.Add(sellProduct);
-                    countInsert++;
-                    db.SaveChanges(); // Save to database
-                    //add new product Attribute                       
-
-                    var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
-                    {
-                        ProductId = addedProduct.Id,
-                        MinPrice = product.Price,
-                        MaxPrice = product.Price,
-                        LastUpdatedTime = DateTime.Now,
-                    };
-                    var addedProductAtt = db.ProductAttributes.Add(productAttribute);
-                    db.SaveChanges(); // Save to database
-                    // add Product Dictionary
-                    var dictionaries = product.Name.Split(';').ToList();
-                    foreach (string dictionary in dictionaries)
-                    {
-                        if (dupProductDictionary == null && dictionary.ToString() != null)
-                        {
-                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
-                            {
-                                Name = dictionary,
-                                ProductId = addedProduct.Id
-                            };
-                            var addProductDic = db.Dictionaries.Add(ProductDic);
-                        }
-                    }
-
-                    db.SaveChanges(); // Save to database
                 }
                 else if (dupMarket == null & dupProduct != null) // Trùng Tên sản phẩm
                 {
-                    var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
-                    if (product.Price < dupProductAtt.MinPrice)
-                    {
-                        dupProductAtt.MinPrice = product.Price;
-                    }
-                    else if (product.Price > dupProductAtt.MaxPrice)
-                    {
-                        dupProductAtt.MaxPrice = product.Price;
-                    }
-                    var market = new Market
-                    {
-                        Name = product.MarketName,
-                        IsActive = true,
-                    };
-                    var newMarket = db.Markets.Add(market); //add market
-
-                    var sellProduct = new SmartB.UI.Models.EntityFramework.SellProduct
-                    {
-                        Market = newMarket,
-                        Product = dupProduct,
-                        SellPrice = product.Price,
-                        LastUpdatedTime = DateTime.Now
-                    };
-                    var addedSellProduct = db.SellProducts.Add(sellProduct); // Add SellProduct
-                    countInsert++;
-                    db.SaveChanges(); // Save to database
+                    countInsert = TrungTenSanPham(countInsert, product, db, dupProduct);
                 }
+                else if (dupMarket != null & dupProduct == null) // Trùng Market
+                {
+                    var results = TrungMarket(ref countInsert, product, db, productNameFirst, dupMarket, dupProductDictionary);
+                    if (results != null)
+                    {
+                        dupSellProduct.Add(results);
+                    }                    
+                }
+                
                 else  //Insert sellProduct mới
                 {
-                    var market = new Market
-                    {
-                        Name = product.MarketName,
-                        IsActive = true,
-                    };
-                    var newMarket = db.Markets.Add(market); //add market
-
-                    var newProduct = new SmartB.UI.Models.EntityFramework.Product
-                    {
-                        Name = productNameFirst,
-                        IsActive = true,
-                    };
-                    var addedProduct = db.Products.Add(newProduct); // add product
-
-                    var sellProduct = new SmartB.UI.Models.EntityFramework.SellProduct
-                    {
-                        Market = newMarket,
-                        Product = addedProduct,
-                        SellPrice = product.Price,
-                        LastUpdatedTime = DateTime.Now
-                    };
-                    var addedSellProduct = db.SellProducts.Add(sellProduct); // add sellProduct
-                    db.SaveChanges(); // Save to database
-                    //add product Attribute
-                    var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(addedProduct.Id)).FirstOrDefault();
-                    if (dupProductAtt == null) //không trùng productAtt thì thêm mới
-                    {
-                        var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
-                        {
-                            ProductId = addedProduct.Id,
-                            MinPrice = product.Price,
-                            MaxPrice = product.Price,
-                            LastUpdatedTime = DateTime.Now,
-                        };
-                        var addedProductAtt = db.ProductAttributes.Add(productAttribute);
-                        db.SaveChanges(); // Save to database
-                    }
-                    else
-                    {
-                        if (product.Price < dupProductAtt.MinPrice)
-                        {
-                            dupProductAtt.MinPrice = product.Price;
-                        }
-                        else if (product.Price > dupProductAtt.MaxPrice)
-                        {
-                            dupProductAtt.MaxPrice = product.Price;
-                        }
-                        db.SaveChanges(); // Save to database
-                    }
-                    countInsert++;
-                    // add Product Dictionary
-                    var dictionaries = product.Name.Split(';').ToList();
-                    foreach (string dictionary in dictionaries)
-                    {
-                        if (dupProductDictionary == null && dictionary.ToString() != null)
-                        {
-                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
-                            {
-                                Name = dictionary,
-                                ProductId = addedProduct.Id
-                            };
-                            var addProductDic = db.Dictionaries.Add(ProductDic);
-                        }
-                    }
-                    db.SaveChanges(); // Save to database
+                    countInsert = AddNewProduct(countInsert, product, db, productNameFirst, dupProductDictionary);
                 }
             }
-
+            if (dupSellProduct.Count() > 0)
+            {
+                TempData["DictionaryProduct"] = dupSellProduct;
+            }
+         //   Session["dupProducts"] = dupSellProduct;
             TempData["UpdateMessage"] = "Có " + countUpdate + " sản phẩm được cập nhật giá.";
             TempData["InsertMessage"] = "Có " + countInsert + " sản phẩm được lưu mới.";
             return RedirectToAction("UploadProduct");
         }
+
+        private int AddNewProduct(int countInsert, SellProductModel product, SmartBuyEntities db, string productNameFirst, Dictionary dupProductDictionary)
+        {
+            #region Comments
+            // Check excell với Dictionary
+            //List<SellProduct> newCorrectProduct = (List<SellProduct>)Session["CorrectProducts"];
+            //List<SellProduct> sellProductCompare = db.SellProducts.ToList();
+            //List<List<SellProduct>> results = new List<List<SellProduct>>();
+            //for (int i = 0; i < newCorrectProduct.Count; i++)
+            //{
+            //    List<SellProduct> result = new List<SellProduct>();
+            //    for (int j = i + 1; j < sellProductCompare.Count; j++)
+            //    {
+            //        // var sellProMarket = db.SellProducts.Where(m => m.Market.Equals(sellProductCompare[j].MarketId))
+            //        if (newCorrectProduct[i].Market.Name == sellProductCompare[j].Market.Name)
+            //        {
+            //            var percentage =
+            //                CompareStringHelper.CompareString(newCorrectProduct[i].Product.Name.Split(';').First(), sellProductCompare[j].Product.Name);
+            //            if (percentage > 0.7 && percentage < 1)
+            //            {
+            //                // var productSimilarDB = db.Products.Where(p => p.Dictionaries.Equals(dictionaryCompare[j]));
+            //                if (result.Count() == 0)
+            //                {
+            //                    result.Add(newCorrectProduct[i]);
+            //                }
+            //                result.Add(sellProductCompare[j]);
+            //                newCorrectProduct.Remove(newCorrectProduct[i]);
+            //            }
+            //        }
+            //    }
+            //    if (result.Count() != 0)
+            //    {
+            //        i = i - 1;
+            //        results.Add(result);
+            //    }
+            //} 
+            #endregion
+
+            var market = new Market
+            {
+                Name = product.MarketName,
+                IsActive = true,
+            };
+            var newMarket = db.Markets.Add(market); //add market
+
+            var newProduct = new SmartB.UI.Models.EntityFramework.Product
+            {
+                Name = productNameFirst,
+                IsActive = true,
+            };
+            var addedProduct = db.Products.Add(newProduct); // add product
+
+            var sellProduct = new SmartB.UI.Models.EntityFramework.SellProduct
+            {
+                Market = newMarket,
+                Product = addedProduct,
+                SellPrice = product.Price,
+                LastUpdatedTime = DateTime.Now
+            };
+            var addedSellProduct = db.SellProducts.Add(sellProduct); // add sellProduct
+            db.SaveChanges(); // Save to database
+            //add product Attribute
+            var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(addedProduct.Id)).FirstOrDefault();
+            if (dupProductAtt == null) //không trùng productAtt thì thêm mới
+            {
+                var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
+                {
+                    ProductId = addedProduct.Id,
+                    MinPrice = product.Price,
+                    MaxPrice = product.Price,
+                    LastUpdatedTime = DateTime.Now,
+                };
+                var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                db.SaveChanges(); // Save to database
+            }
+            else
+            {
+                if (product.Price < dupProductAtt.MinPrice)
+                {
+                    dupProductAtt.MinPrice = product.Price;
+                }
+                else if (product.Price > dupProductAtt.MaxPrice)
+                {
+                    dupProductAtt.MaxPrice = product.Price;
+                }
+                db.SaveChanges(); // Save to database
+            }
+            countInsert++;
+            // add Product Dictionary
+            var dictionaries = product.Name.Split(';').ToList();
+                foreach (string dictionary in dictionaries)
+                {
+                    if (dupProductDictionary == null && dictionary != "")
+                    {
+                        var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                        {
+                            Name = dictionary,
+                            ProductId = addedProduct.Id
+                        };
+                        var addProductDic = db.Dictionaries.Add(ProductDic);
+                    }
+                }
+                db.SaveChanges(); // Save to database
+                return countInsert;
+            
+        }
+
+        private static int TrungTenSanPham(int countInsert, SellProductModel product, SmartBuyEntities db, Product dupProduct)
+        {
+            var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
+            if (product.Price < dupProductAtt.MinPrice)
+            {
+                dupProductAtt.MinPrice = product.Price;
+            }
+            else if (product.Price > dupProductAtt.MaxPrice)
+            {
+                dupProductAtt.MaxPrice = product.Price;
+            }
+            var market = new Market
+            {
+                Name = product.MarketName,
+                IsActive = true,
+            };
+            var newMarket = db.Markets.Add(market); //add market
+
+            var sellProduct = new SmartB.UI.Models.EntityFramework.SellProduct
+            {
+                Market = newMarket,
+                Product = dupProduct,
+                SellPrice = product.Price,
+                LastUpdatedTime = DateTime.Now
+            };
+            var addedSellProduct = db.SellProducts.Add(sellProduct); // Add SellProduct
+            countInsert++;
+            db.SaveChanges(); // Save to database
+            return countInsert;
+        }
+
+        private static List<SellProductModel> TrungMarket(ref int countInsert, SellProductModel product, SmartBuyEntities db, string productNameFirst, Market dupMarket, Dictionary dupProductDictionary)
+        {
+            
+            //Kiem tra productName voi dictionary
+            List<SellProductModel> sellProducts = null;
+            var productId = CheckProductNameWithDictionary(productNameFirst, db.Dictionaries);
+            if (productId != 0)
+            {
+                var existedSellProduct = db.SellProducts.FirstOrDefault(x => x.ProductId == productId);
+                var existedSellProductModel = SellProductModel.MapToSellProductEntity(existedSellProduct);
+                sellProducts = new List<SellProductModel>();
+                sellProducts.Add(product);
+                sellProducts.Add(existedSellProductModel);
+            }
+            else
+            {
+                var newProduct = new SmartB.UI.Models.EntityFramework.Product // add Product
+                {
+                    Name = productNameFirst,
+                    IsActive = true,
+                };
+                var addedProduct = db.Products.Add(newProduct);
+                var sellProduct = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
+                {
+                    Market = dupMarket,
+                    Product = addedProduct,
+                    SellPrice = product.Price,
+                    LastUpdatedTime = DateTime.Now
+                };
+                var addedSellProduct = db.SellProducts.Add(sellProduct);
+                countInsert++;
+                db.SaveChanges(); // Save to database
+                //add new product Attribute                       
+
+                var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
+                {
+                    ProductId = addedProduct.Id,
+                    MinPrice = product.Price,
+                    MaxPrice = product.Price,
+                    LastUpdatedTime = DateTime.Now,
+                };
+                var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                db.SaveChanges(); // Save to database
+                // add Product Dictionary
+                var dictionaries = product.Name.Split(';').ToList();
+                    foreach (string dictionary in dictionaries)
+                    {
+                        if (dupProductDictionary == null && dictionary != "")
+                        {
+                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                            {
+                                Name = dictionary,
+                                ProductId = addedProduct.Id
+                            };
+                            var addProductDic = db.Dictionaries.Add(ProductDic);
+                        }
+                    }
+
+                    db.SaveChanges(); // Save to database
+                
+            }
+            return sellProducts;
+        }
+
+        private static int? CheckProductNameWithDictionary(string productNameFirst, DbSet<Dictionary> dictionaries)
+        {
+            foreach (var dictionary in dictionaries.ToList())
+            {
+                if (CompareStringHelper.CompareString(dictionary.Name, productNameFirst) > 0.85)
+                {
+                    return dictionary.ProductId;
+                }
+            }
+            return 0;
+        }
+
+        private static void TrungHoanToan(ref int countUpdate, ref int countInsert, SellProductModel product, SmartBuyEntities db, Market dupMarket, Product dupProduct)
+        {
+            var sellProduct = db.SellProducts.Where(s => s.ProductId == dupProduct.Id && s.MarketId == dupMarket.Id).FirstOrDefault();
+            // Check sellProduct có trùng không??
+            if (sellProduct == null)
+            {
+                var sellProduct1 = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
+                {
+                    Market = dupMarket,
+                    Product = dupProduct,
+                    SellPrice = product.Price,
+                    LastUpdatedTime = DateTime.Now
+                };
+                var addedSellProduct = db.SellProducts.Add(sellProduct1);
+
+                countInsert++;
+                db.SaveChanges(); // Save to database
+            }
+            else
+            {
+                if (sellProduct.SellPrice != product.Price)
+                {
+                    sellProduct.SellPrice = product.Price;
+                    countUpdate++;
+                }
+                else
+                {
+                    sellProduct.SellPrice = product.Price;
+                }
+            }
+            // Cập nhật giá Min, Max ProductAttribute
+            var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
+            if (product.Price < dupProductAtt.MinPrice)
+            {
+                dupProductAtt.MinPrice = product.Price;
+            }
+            else if (product.Price > dupProductAtt.MaxPrice)
+            {
+                dupProductAtt.MaxPrice = product.Price;
+            }
+            db.SaveChanges(); // Save to database
+        }
+
+
 
         public JsonResult SaveProductError(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
         {
@@ -637,6 +738,25 @@ namespace SmartB.UI.Controllers
             model.Price = ProductPrice;
             model.Id = largerId.Id + 1;
             correctProducts.Add(model);
+            Session["CorrectProducts"] = correctProducts;
+            return Json(newId);
+        }
+        public JsonResult MergeProduct(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
+        {
+            var correctProducts = (List<SellProductModel>)Session["CorrectProducts"];
+            var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
+            if (largerId == null)
+            {
+                largerId.Id = 0;
+            }
+            int newId = largerId.Id + 1;
+            SellProductModel model = new SellProductModel();
+            model.Name = ProductName;
+            model.MarketName = ProductMarketName;
+            model.Price = ProductPrice;
+            model.Id = largerId.Id + 1;
+            correctProducts.Add(model);
+            
             Session["CorrectProducts"] = correctProducts;
             return Json(newId);
         }
