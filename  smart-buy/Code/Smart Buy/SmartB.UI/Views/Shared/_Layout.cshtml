@@ -12,7 +12,7 @@
     <script src="@Url.Content("~/Scripts/utils/productUtils.js")"></script>
     @RenderSection("headScript", false)
 </head>
-<body class="metro" onload="start('itemCart')">
+<body class="metro">
     <nav class="navigation-bar dark">
         <nav class="navigation-bar-content">
             <a class="element" href="#">Smart Buy</a>
@@ -30,7 +30,7 @@
                     <ul>
                         <li class="title">Chức năng chính</li>
                         <li><a href="@Url.Action("SearchProduct", "Product")"><i class="icon-search"></i>Tìm kiếm</a></li>
-                        <li><a href="@Url.Action("ViewCart", "Cart")"><i class="icon-cart-2"></i>Giỏ hàng @*<span id="totalProduct"></span>*@</a></li>
+                        <li>@Html.Action("Summary", "Cart")</li>
                         <li><a href="@Url.Action("UploadProduct", "Product")"><i class="icon-product"></i>Upload Product</a></li>
 
                         <li class="title">Thông tin tài khoản</li>

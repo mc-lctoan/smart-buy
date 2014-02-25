@@ -361,7 +361,11 @@ function addToCart(id) {
 
             if (data == true) {
                 window.parent.location.href = window.parent.location.href;
-            } else {
+            } else if (data == 'full') {
+                message = "Giỏ của bạn không quá 10 sản phẩm.";
+                showNotifyDialog(message);
+            }
+            else {
                 message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
                 showNotifyDialog(message);
             }
