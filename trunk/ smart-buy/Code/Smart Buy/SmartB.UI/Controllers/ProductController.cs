@@ -198,25 +198,25 @@ namespace SmartB.UI.Controllers
             }
         }
 
-        //public ActionResult ProductMostBuy()
-        //{
+        public ActionResult ProductMostBuy()
+        {
 
-        //    var productModel = (from p in db.Products
-        //                        from h in db.HistoryDetails
-        //                        where h.ProductId == p.Id && h.History.Username.Equals("Sergey Pimenov")
-        //                        group h by p into productMostBuyGroup
-        //                        select new ProductMostBuy
-        //                        {
-        //                            Product = productMostBuyGroup.Key,
-        //                            numberOfBuy = productMostBuyGroup.Count()
-        //                        }).Where(x => x.numberOfBuy >= 5).OrderByDescending(o => o.numberOfBuy).Take(5);
+            var productModel = (from p in db.Products
+                                from h in db.HistoryDetails
+                                where h.ProductId == p.Id && h.History.Username.Equals("Sergey Pimenov")
+                                group h by p into productMostBuyGroup
+                                select new ProductMostBuy
+                                {
+                                    Product = productMostBuyGroup.Key,
+                                    numberOfBuy = productMostBuyGroup.Count()
+                                }).Where(x => x.numberOfBuy >= 5).OrderByDescending(o => o.numberOfBuy).Take(5);
 
-        //    if (productModel.Count() > 0)
-        //    {
-        //        return PartialView(productModel);
-        //    }
-        //    else return PartialView();
-        //}
+            if (productModel.Count() > 0)
+            {
+                return PartialView(productModel);
+            }
+            else return PartialView();
+        }
 
         public ActionResult UploadProduct()
         {
