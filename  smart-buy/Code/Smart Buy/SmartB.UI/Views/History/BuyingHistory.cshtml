@@ -48,5 +48,5 @@
 </table>
 
 <br />
-Trang: @Html.PagedListPager(Model, page=>Url.Action("BuyingHistory", new {page}), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+@Html.PagedListPager(Model, page=>Url.Action("BuyingHistory", new {page}), PagedListRenderOptions.OnlyShowFivePagesAtATime)
 

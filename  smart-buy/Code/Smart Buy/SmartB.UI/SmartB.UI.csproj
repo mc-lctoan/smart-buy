@@ -207,6 +207,7 @@
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
     <Compile Include="Areas\Admin\Models\ProductInfo.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -276,6 +277,7 @@
     </Compile>
     <Compile Include="Models\HistoryDetailViewModel.cs" />
     <Compile Include="Models\ListSellProductModel.cs" />
+    <Compile Include="Models\ProductMostBuy.cs" />
     <Compile Include="Models\SellProductModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UploadedExcelFiles\ExcelHelper.cs" />
@@ -734,13 +736,14 @@
     <Content Include="Views\Product\SearchProduct.cshtml" />
     <Content Include="Views\Product\ViewCart.cshtml" />
     <Content Include="Views\Account\AccountDetails.cshtml" />
-    <Content Include="Views\Account\BuyingHistory.cshtml" />
     <Content Include="Views\Account\DefineRoute.cshtml" />
-    <Content Include="Views\Account\BuyingHistoryDetail.cshtml" />
     <Content Include="Views\Product\ProposeProductPrice.cshtml" />
     <Content Include="Views\Product\UploadProduct.cshtml" />
     <Content Include="Views\Route\DefineRoute.cshtml" />
     <Content Include="Views\Route\SuggestRoute.cshtml" />
+    <Content Include="Views\History\BuyingHistory.cshtml" />
+    <Content Include="Views\History\BuyingHistoryDetail.cshtml" />
+    <Content Include="Views\Product\ProductMostBuy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
