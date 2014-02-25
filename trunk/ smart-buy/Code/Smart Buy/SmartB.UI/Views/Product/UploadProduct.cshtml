@@ -3,13 +3,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model SmartB.UI.Models.ListSellProductModel
-<script src="~/Scripts/jquery-1.8.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="~/Scripts/jquery.validate.js"></script>
-<script type="text/javascript" src="~/Scripts/jquery.widget.min.js"></script>
 
-<link rel="stylesheet" href="~/Content/metro-bootstrap.css">
-<script type="text/javascript" src="~/Scripts/metro-tab-control.js"></script>
-<script type="text/javascript" src="~/Scripts/metro.min.js"></script>
+@section headScript
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Metro/js/metro/metro-tab-control.js")"></script>
+}
 
 <script>
 

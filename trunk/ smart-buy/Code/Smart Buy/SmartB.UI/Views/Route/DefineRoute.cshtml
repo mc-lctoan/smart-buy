@@ -182,6 +182,8 @@
         
         $(document).ready(function() {
             $('#GetWay').click(function() {
+                $('#JsonRoute').val("");
+                $('#MarketId').val("");
                 calcRoute(fromLocation, toLocation);
             }); // end click
 
@@ -190,7 +192,7 @@
             }); // end click
 
             $('#Again').click(function() {
-                var str = $('#testData').val();
+                var str = $('#JsonRoute').val();
                 var way = eval('(' + str + ')');
                 set_route(way);
             }); // end click
@@ -199,7 +201,7 @@
 }
 
 <h1>Map is here</h1>
-@if (TempData["message"] != null)
+@if (TempData["DefineRoute"] != null)
 {
     <h3>Định nghĩa đường đi thành công!</h3>
 }
