@@ -47,7 +47,7 @@
                         }
                     </td>
                     <td>
-                        <button onclick="addCarttoSession('@productId','@productName','@minPrice','@maxPrice')">
+                        <button onclick="addToCart('@productId')">
                             <i class="icon-plus-2 on-left"></i>
                             Thêm
                         </button>
@@ -82,7 +82,7 @@
             }
         </tbody>
     </table>    
-    <div> Trang: @Html.PagedListPager(Model, page=>Url.Action("SearchProduct", new {currentFilter = ViewBag.CurrentFilter, page}), PagedListRenderOptions.OnlyShowFivePagesAtATime) </div>
+    <div> @Html.PagedListPager(Model, page=>Url.Action("SearchProduct", new {currentFilter = ViewBag.CurrentFilter, page}), PagedListRenderOptions.OnlyShowFivePagesAtATime) </div>
 }
 
 else
