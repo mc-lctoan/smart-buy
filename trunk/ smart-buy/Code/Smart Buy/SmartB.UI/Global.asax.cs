@@ -7,7 +7,9 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using FluentScheduler;
+using SmartB.UI.Binder;
 using SmartB.UI.Infrastructure;
+using SmartB.UI.Models;
 
 namespace SmartB.UI
 {
@@ -25,6 +27,8 @@ namespace SmartB.UI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            ModelBinders.Binders.Add(typeof(Cart), new CartModelBinder());
 
             Application["LogPath"] = Server.MapPath("~/Areas/Admin/LogFiles/");
             TaskManager.Initialize(new ParseService(Application["LogPath"].ToString()));
