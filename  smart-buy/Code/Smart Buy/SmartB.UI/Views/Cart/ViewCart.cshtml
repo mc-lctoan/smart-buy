@@ -6,54 +6,62 @@
 @model SmartB.UI.Models.CartViewModel
 
 <h2>Danh sách món hàng</h2>
-@if(Model != null){
-<table class="table bordered hovered" id="tableViewCart">
-    <thead>
-        <tr>
-            <th>STT</th>
-            <th>Tên sản phẩm</th>
-            <th>Đơn giá (nghìn đồng)</th>
-            <th>Số lượng</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{var i = 0;} 
-        @foreach(var line in Model.Cart.Lines) {   
-            i++;          
+@if (Model != null)
+{
+    <table class="table bordered hovered" id="tableViewCart">
+        <thead>
             <tr>
-                <td>@i</td>                
-                <td>@line.Product.Product.Name</td> 
-                <td>@line.Product.MinPrice - @line.Product.MaxPrice</td> 
-                <td> 
-                    <div class='input-control text size1'>
-                        <input type="text" style="text-align:center" value="@line.Quantity" id="quantityItem @line.Product.ProductId"  onblur="updateQuantityCart('@line.Product.ProductId')"/>
-                     </div>                 
-                    
-                </td> 
-                <td>
-                    <button onclick="removeFromCart('@line.Product.ProductId')">
-                        <i class='icon-cancel-2'></i>
-                        Xóa
-                    </button>
-                </td>
-            </tr> 
-        } 
-    </tbody> 
-    <tr> 
-        <td colspan="5" align="right">
-            Tổng tiền: @Math.Floor(@Model.Cart.ComputeTotalMin()) - @Math.Floor(@Model.Cart.ComputeTotalMax()) (nghìn đồng)
-        </td> 
-        
-    </tr>
-</table> 
+                <th>STT</th>
+                <th>Tên sản phẩm</th>
+                <th>Đơn giá (nghìn đồng)</th>
+                <th>Số lượng</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{var i = 0;}
+            @foreach (var line in Model.Cart.Lines)
+            {
+                i++;          
+                <tr>
+                    <td>@i</td>
+                    <td>@line.Product.Product.Name</td>
+                    <td>@line.Product.MinPrice - @line.Product.MaxPrice</td>
+                    <td>
+                        <div class='input-control text size1'>
+                            <input type="text" style="text-align:center" value="@line.Quantity" id="quantityItem @line.Product.ProductId"  onblur="updateQuantityCart('@line.Product.ProductId')"/>
+                        </div>
 
-@Html.ActionLink("Lưu lại", "SaveCart", null, new { @class = "button primary" })    
+                    </td>
+                    <td>
+                        <button onclick="removeFromCart('@line.Product.ProductId')">
+                            <i class='icon-cancel-2'></i>
+                            Xóa
+                        </button>
+                    </td>
+                </tr> 
+            }
+        </tbody>
+        <tr>
+            <td colspan="5" align="right">Tổng tiền: @Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax()) (nghìn đồng)
+            </td>
 
+        </tr>
+    </table> 
+
+    @Html.ActionLink("Lưu lại", "SaveCart", null, new { @class = "button primary" })
+
+    <br/>
+    <br/>
+
+    using (Html.BeginForm("SuggestRoute", "Route"))
+    {
+        <input type="submit" value="Gợi ý" class="primary"/>
+    }
 }
-else 
+else
 {
     <div>
-    <span style="color:red; font-style:italic; font-size:16px;">(*) Không có sản phẩm nào trong giỏ hàng.</span>
-</div>
+        <span style="color: red; font-style: italic; font-size: 16px;">(*) Không có sản phẩm nào trong giỏ hàng.</span>
+    </div>
 }

@@ -7,6 +7,22 @@
     int counter = 0;
 }
 
+@section headScript
+{
+    <style>
+        #map-canvas
+        {
+            height: 600px;
+            width: 800px;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+
+}
+
 <h2>Gợi ý</h2>
 
 @if (result != null)

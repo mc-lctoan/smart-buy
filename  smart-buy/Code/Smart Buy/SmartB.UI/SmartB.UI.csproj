@@ -206,7 +206,9 @@
     <Compile Include="Areas\Admin\Models\LogInfo.cs" />
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
     <Compile Include="Areas\Admin\Models\ProductInfo.cs" />
+    <Compile Include="Binder\CartModelBinder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />
@@ -222,7 +224,9 @@
     <Compile Include="Infrastructure\JsonContentNegotiator.cs" />
     <Compile Include="Infrastructure\ParseService.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartHistory.cs" />
+    <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\DefineRouteModel.cs" />
     <Compile Include="Models\EntityFramework\Dictionary.cs">
       <DependentUpon>SmartBuy.tt</DependentUpon>
@@ -744,6 +748,8 @@
     <Content Include="Views\History\BuyingHistory.cshtml" />
     <Content Include="Views\History\BuyingHistoryDetail.cshtml" />
     <Content Include="Views\Product\ProductMostBuy.cshtml" />
+    <Content Include="Views\Cart\Summary.cshtml" />
+    <Content Include="Views\Cart\ViewCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -54,14 +54,19 @@ namespace SmartB.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult SuggestRoute(string data)
+        public ActionResult SuggestRoute(Cart cart)
         {
+
             // TODO: Mock cart, change later
-            var cart = new List<int>
-                           {
-                               154, 155, 156,
-                               299, 300, 301
-                           };
+            //var cart = new List<int>
+            //               {
+            //                   154, 155, 156,
+            //                   299, 300, 301
+            //               };
+
+            var products = cart.Lines.Select(x => x.Product.Product);
+            List<int> listProductId = products.Select(x => x.Id).ToList();
+
             var user = context.Users.FirstOrDefault(x => x.Username == "Sergey Pimenov");
             if (user != null)
             {
@@ -72,7 +77,7 @@ namespace SmartB.UI.Controllers
                     marketIds.Add(Int32.Parse(id));
                 }
                 var route = new SuggestRouteHelper();
-                var result = route.Suggest(cart, marketIds);
+                var result = route.Suggest(listProductId, marketIds);
                 TempData["RouteResult"] = result;
             }
 
