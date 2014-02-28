@@ -339,8 +339,10 @@ namespace SmartB.UI.Controllers
                 }
                 ViewBag.duplicateCorrectProduct = results;
                 ViewBag.duplicateCorrectProductCount = results.Count();
+                Session["duplicateProducts"] = results;
                 return View(model);
             }
+            
             return View();
         }
 
@@ -378,9 +380,9 @@ namespace SmartB.UI.Controllers
                     if (results != null)
                     {
                         dupSellProduct.Add(results);
-                    }                    
+                    }
                 }
-                
+
                 else  //Insert sellProduct mới
                 {
                     countInsert = AddNewProduct(countInsert, product, db, productNameFirst, dupProductDictionary);
@@ -390,7 +392,7 @@ namespace SmartB.UI.Controllers
             {
                 TempData["DictionaryProduct"] = dupSellProduct;
             }
-         //   Session["dupProducts"] = dupSellProduct;
+            //   Session["dupProducts"] = dupSellProduct;
             TempData["UpdateMessage"] = "Có " + countUpdate + " sản phẩm được cập nhật giá.";
             TempData["InsertMessage"] = "Có " + countInsert + " sản phẩm được lưu mới.";
             return RedirectToAction("UploadProduct");
@@ -485,21 +487,21 @@ namespace SmartB.UI.Controllers
             countInsert++;
             // add Product Dictionary
             var dictionaries = product.Name.Split(';').ToList();
-                foreach (string dictionary in dictionaries)
+            foreach (string dictionary in dictionaries)
+            {
+                if (dupProductDictionary == null && dictionary != "")
                 {
-                    if (dupProductDictionary == null && dictionary != "")
+                    var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
                     {
-                        var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
-                        {
-                            Name = dictionary,
-                            ProductId = addedProduct.Id
-                        };
-                        var addProductDic = db.Dictionaries.Add(ProductDic);
-                    }
+                        Name = dictionary,
+                        ProductId = addedProduct.Id
+                    };
+                    var addProductDic = db.Dictionaries.Add(ProductDic);
                 }
-                db.SaveChanges(); // Save to database
-                return countInsert;
-            
+            }
+            db.SaveChanges(); // Save to database
+            return countInsert;
+
         }
 
         private static int TrungTenSanPham(int countInsert, SellProductModel product, SmartBuyEntities db, Product dupProduct)
@@ -535,7 +537,7 @@ namespace SmartB.UI.Controllers
 
         private static List<SellProductModel> TrungMarket(ref int countInsert, SellProductModel product, SmartBuyEntities db, string productNameFirst, Market dupMarket, Dictionary dupProductDictionary)
         {
-            
+
             //Kiem tra productName voi dictionary
             List<SellProductModel> sellProducts = null;
             var productId = CheckProductNameWithDictionary(productNameFirst, db.Dictionaries);
@@ -578,21 +580,21 @@ namespace SmartB.UI.Controllers
                 db.SaveChanges(); // Save to database
                 // add Product Dictionary
                 var dictionaries = product.Name.Split(';').ToList();
-                    foreach (string dictionary in dictionaries)
+                foreach (string dictionary in dictionaries)
+                {
+                    if (dupProductDictionary == null && dictionary != "")
                     {
-                        if (dupProductDictionary == null && dictionary != "")
+                        var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
                         {
-                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
-                            {
-                                Name = dictionary,
-                                ProductId = addedProduct.Id
-                            };
-                            var addProductDic = db.Dictionaries.Add(ProductDic);
-                        }
+                            Name = dictionary,
+                            ProductId = addedProduct.Id
+                        };
+                        var addProductDic = db.Dictionaries.Add(ProductDic);
                     }
+                }
 
-                    db.SaveChanges(); // Save to database
-                
+                db.SaveChanges(); // Save to database
+
             }
             return sellProducts;
         }
@@ -658,7 +660,13 @@ namespace SmartB.UI.Controllers
         {
             Result result = new Result();
             List<string> error = new List<string>();
-
+            var status = "";
+            int tableId = 0;
+            int tableCorrectId = 0;
+            var correctProductName = "";
+            var correctMarketName = "";
+            int correctProductPrice = 0;
+            int count = 0;
             if (ProductName.Length < 5 || ProductName.Length > 100)
             {
                 error.Add("Tên sản phẩm phải từ 5 đến 100 ký tự");
@@ -674,29 +682,123 @@ namespace SmartB.UI.Controllers
             if (error.Count == 0)
             {
                 var correctProducts = (List<SellProductModel>)Session["CorrectProducts"];
-                var existedProduct = correctProducts.FirstOrDefault(x => x.Name.Split(';').First() == ProductName && x.MarketName == ProductMarketName);
-                if (existedProduct != null)
+                var dupCorrectProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
+                var compareResult = false;
+                
+                // Compare with duplicate Products
+                for (int i = 0; i < dupCorrectProducts[i].Count; i++)
                 {
-                    error.Add("Sản phẩm đã có.");
-                    result.id = existedProduct.Id;
-                    result.updatedPrice = ProductPrice;
+                    for (int j = 0; j < dupCorrectProducts[j].Count; j++)
+                    {
+                        if (ProductMarketName == dupCorrectProducts[i][j].MarketName)
+                        {
+                            var percentage =
+                                CompareStringHelper.CompareString(ProductName.Split(';').First(), dupCorrectProducts[i][j].Name.Split(';').First());
+                            if (percentage > 0.7 && percentage < 1)
+                            {
+                                var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
+                                int newId = largerId.Id + 1;
+                                SellProductModel model = new SellProductModel();
+                                model.Name = ProductName;
+                                model.MarketName = ProductMarketName;
+                                model.Price = ProductPrice;
+                                model.Id = newId;
+                                dupCorrectProducts[i].Add(model);
+                                Session["duplicateProducts"] = dupCorrectProducts;
+                                result.id = newId;
+                                compareResult = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (compareResult == true)
+                    {
+                        tableId = i;
+                        status = "Duplicate Products List";
+                    }
                 }
-                else
+                
+                // Compare with Correct Products
+                if (compareResult == false)
                 {
-                    var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
-                    int newId = largerId.Id + 1;
-                    SellProductModel model = new SellProductModel();
-                    model.Name = ProductName;
-                    model.MarketName = ProductMarketName;
-                    model.Price = ProductPrice;
-                    model.Id = newId;
-                    correctProducts.Add(model);
-                    Session["CorrectProducts"] = correctProducts;
-                    result.id = newId;
+                    var compareCorrectResult = false;
+                    if (compareCorrectResult == false)
+                    {
+                        for (int k = 0; k < correctProducts.Count; k++)
+                        {
+                            List<SellProductModel> resultCompareError = new List<SellProductModel>();
+                            if (ProductMarketName == correctProducts[k].MarketName)
+                            {
+                                var percentage =
+                                        CompareStringHelper.CompareString(ProductName.Split(';').First(), correctProducts[k].Name.Split(';').First());
+                                if (percentage > 0.7 && percentage < 1)
+                                {
+                                    var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
+                                    int newId = largerId.Id + 1;
+                                    SellProductModel model = new SellProductModel();
+                                    model.Name = ProductName;
+                                    model.MarketName = ProductMarketName;
+                                    model.Price = ProductPrice;
+                                    model.Id = newId;
+                                    resultCompareError.Add(model);
+                                    resultCompareError.Add(correctProducts[k]);
+                                    result.id = newId;
+                                    compareCorrectResult = true;
+                                }
+                            }
+                            if (compareCorrectResult == true)
+                            {
+                                tableCorrectId = k;
+                                correctProductName = correctProducts[k].Name;
+                                correctMarketName = correctProducts[k].MarketName;
+                                correctProductPrice = correctProducts[k].Price;
+                                correctProducts.Remove(correctProducts[k]); // Remove product in Correct Products
+                                dupCorrectProducts.Add(resultCompareError);
+                                Session["duplicateProducts"] = dupCorrectProducts;
+                                count = dupCorrectProducts.Count;
+                                status = "Correct Products List";
+                                break;
+                            }
+                        }
+                        
+                    }
+                    
+                    if (compareCorrectResult == false)
+                    {
+                        // So sánh với Correct Products xem có bị trùng không
+                        var existedProduct = correctProducts.FirstOrDefault(x => x.Name.Split(';').First() == ProductName && x.MarketName == ProductMarketName);
+                        if (existedProduct != null)
+                        {
+                            error.Add("Sản phẩm đã có.");
+                            result.id = existedProduct.Id;
+                            result.updatedPrice = ProductPrice;
+                        }
+                        else
+                        {
+                            var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
+                            int newId = largerId.Id + 1;
+                            SellProductModel model = new SellProductModel();
+                            model.Name = ProductName;
+                            model.MarketName = ProductMarketName;
+                            model.Price = ProductPrice;
+                            model.Id = newId;
+                            correctProducts.Add(model);
+                            Session["CorrectProducts"] = correctProducts;
+                            result.id = newId;
+                        }
+                    }
                 }
-            }
 
+            }
+            result.status = status;
+            result.tableId = tableId;
+            result.tableCorrectId = tableCorrectId;
+            result.correctProductName = correctProductName;
+            result.correctMarketName = correctMarketName;
+            result.correctProductPrice = correctProductPrice;
+            result.count = count;
             result.error = error;
+            
             return Json(result);
         }
 
@@ -705,6 +807,13 @@ namespace SmartB.UI.Controllers
             public List<string> error { get; set; }
             public int id { get; set; }
             public int updatedPrice { get; set; }
+            public string status { get; set; }
+            public int tableId { get; set; }
+            public int tableCorrectId { get; set; }
+            public string correctProductName { get; set; }
+            public string correctMarketName { get; set; }
+            public int correctProductPrice { get; set; }
+            public int count { get; set; }
         }
 
         [HttpDelete]
@@ -756,7 +865,7 @@ namespace SmartB.UI.Controllers
             model.Price = ProductPrice;
             model.Id = largerId.Id + 1;
             correctProducts.Add(model);
-            
+
             Session["CorrectProducts"] = correctProducts;
             return Json(newId);
         }

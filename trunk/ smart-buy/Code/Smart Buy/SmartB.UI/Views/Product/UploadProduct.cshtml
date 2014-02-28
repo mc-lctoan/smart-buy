@@ -8,34 +8,44 @@
 {
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Metro/js/metro/metro-tab-control.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables.css")">
+    <script type="text/javascript" src="@Url.Content("~/Metro/js/jquery/jquery.dataTables.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables_themeroller.css")">
 }
 
-<script>
 
-    $(document).ready(function () {
-        $('table.table').each(function () {
-            var currentPage = 0;
-            var numPerPage = 10;
-            var $table = $(this);
-            $table.bind('repaginate', function () {
-                $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
-            });
-            $table.trigger('repaginate');
-            var numRows = $table.find('tbody tr').length;
-            var numPages = Math.ceil(numRows / numPerPage);
-            var $pager = $('<div class="pager" style="text-align:left"></div>');
-            for (var page = 0; page < numPages +1; page++) {
-                $('<span class="page-number "></span>').text(page + 1).bind('click', {
-                    newPage: page
-                }, function (event) {
-                    currentPage = event.data['newPage'];
-                    $table.trigger('repaginate');
-                    $(this).addClass('active').siblings().removeClass('active');
-                }).appendTo($pager).addClass('clickable');
-            }
-            $pager.insertAfter($table).find('span.page-number:first').addClass('active');
-        });
-    });
+<script>
+    var pb = $("#componennt_id").progressbar();
+    pb.progressbar('color', '#000');
+
+    $(document).ready( function () {
+        var table = $('#ProductTable').dataTable()
+    } );
+    //$(document).ready(function () {
+    //    $('table.table').each(function () {
+    //        var currentPage = 0;
+    //        var numPerPage = 15;
+    //        var $table = $(this);
+    //        $table.bind('repaginate', function () {
+    //            $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+    //        });
+    //        $table.trigger('repaginate');
+    //        var numRows = $table.find('tbody tr').length;
+    //        var numPages = Math.ceil(numRows / numPerPage);
+    //        var $pager = $('<div class="pager" style="text-align:left"></div>');
+    //        for (var page = 0; page < numPages; page++) {
+    //            $('<span class="page-number "></span>').text(page + 1).bind('click', {
+    //                newPage: page
+    //            }, function (event) {
+    //                currentPage = event.data['newPage'];
+    //                $table.trigger('repaginate');
+    //                $(this).addClass('active').siblings().removeClass('active');
+    //            }).appendTo($pager).addClass('clickable');
+    //        }
+    //        $pager.insertAfter($table).find('span.page-number:first').addClass('active');
+    //    });
+    //});
+   
     function saveProduct(index, maxCorrect) {
         var productId = $("#ProductId" + index).val();
         var productName = $("#ProductName" + index).val();
@@ -52,26 +62,69 @@
                     var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
                     var id = result.id;
                     $("#ErrorArea").html("");
-                    $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
-                                             "'></input></td><td style='width:202px'><input readonly value='" + productMarketName + "'>" +
-                                            "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
-                                            "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                    if(result.status.toString() == "Duplicate Products List")
+                    {
+                        $("#table_"+result.tableId).find("tr:last").after("<tr><td><input type='checkbox' checked/></td> " +
+                                                                              "<td>"+productName+"</td> " +
+                                                                              "<td>"+ productMarketName+"</td>" +
+                                                                              "<td>"+ productPrice+"</td>" +
+                                                                              "<td><input type='radio' name='productPrice_"+result.tableId+"'  id='Check_"+result.tableId+"'/> "+
+                                                                           "</tr>")
+                    }
+                    if(result.status.toString() == "Correct Products List")
+                    {
+                        var dupTableCount = result.count -2;
+                        idDupTable = result.count -1;
+                        $("#dupTable_"+dupTableCount).after("<br /> "+
+                                                        "<div  style='border-style:dotted;border-width:2px' id='dupTable_"+idDupTable +"' > " +
+                                                        "<table id='table_"+idDupTable+"'> " +
+                                                                "<tr id='header_"+idDupTable+"' style='font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold'> "+
+                                                                   "<td></td> " +
+                                                                   "<td style='padding: 8px; width: 187px;'>Tên Sản Phẩm</td>"+
+                                                                   "<td style='padding: 8px; width: 202px;'>Tên Chợ</td> "+
+                                                                   "<td style='padding: 8px; width: 176px;'>Giá (Ngàn đồng)</td> "+
+                                                                   "<td>Chọn giá</td> " +
+                                                                "</tr> "+
+                                                       
+                                                                "<tr><td><input type='checkbox' checked /></td> " +
+                                                                                 "<td>"+productName+"</td> " +
+                                                                                 "<td>"+ productMarketName+"</td>" +
+                                                                                 "<td>"+ productPrice+"</td>" +
+                                                                                 "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
+                                                                "</tr> "+
+                                                                "<tr><td><input type='checkbox' /></td> " +
+                                                                                "<td>"+result.correctProductName+"</td> " +
+                                                                                "<td>"+result.correctMarketName+"</td>" +
+                                                                                "<td>"+result.correctProductPrice+"</td>" +
+                                                                                "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
+                                                               "</tr> "+
+                                                           "</table>"+
+                                                                "<br /> "+
+                                                               "<input type='button' value='Gộp' onclick='mergeProduct("+idDupTable+")' class='primary' style='margin-left: 525px;' id='combine_"+idDupTable+"' /> "+
+                                                               "<input type='button' value='Tách'  onclick='split("+idDupTable+")' id='split_"+idDupTable+"' />"+
+                                                               "</div> ");
+
+                        $("#ProductTable tr#product_"+result.tableCorrectId).remove();
+                    }
+                    //$("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
+                    //                         "'></input></td><td style='width:202px'><input readonly value='" + productMarketName + "'>" +
+                    //                        "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
+                    //                        "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
                     $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                 }
                 else {
-                    console.log(error);
                     var errordisp = "";
-                    $.each(error.error, function (index, value) {
+                    $.each(result.error, function (index, value) {
                         errordisp += "<label style='color: red'>" + value + "</label>"
                     });
                     $("#ErrorArea").html(errordisp);
-                    if(error.error.toString() == "Sản phẩm đã có.")
+                    if(result.error.toString() == "Sản phẩm đã có.")
                     {
                         var message = confirm("Sản phẩm đã có, bạn có muốn cập nhật sản phẩm này?")
                         if(message == true)
                         {
-                            if(error.id) {
-                                $("#product_"+error.id).find("td").find("input")[2].value = error.updatedPrice;
+                            if(result.id) {
+                                $("#product_"+result.id).find("td").find("input")[2].value = result.updatedPrice;
                                 $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                                 $("#ErrorArea").html("");
                             }
@@ -154,11 +207,24 @@
         for(var j = 0; j < listTr.length; j++) {
             if(listTr[j].id != 'header_'+i) {
                 var cells = listTr[j].cells;
-                var checkbox = cells[0].childNodes[1].checked;
+                for (var l = 0; l < 2; l++) {
+                    var checkbox = cells[0].childNodes[l].checked;
+                    if(checkbox == true || checkbox == false)
+                    {
+                        break;
+                    }
+                }
+                
                 var name = cells[1].innerHTML;
                 var market = cells[2].innerHTML;
                 var price = cells[3].innerHTML;
-                var checked = cells[4].childNodes[1].checked;
+                for (var m  = 0; m < 2; m++) {
+                    var checked = cells[4].childNodes[m].checked;
+                    if(checked == true|| checked == false)
+                    {
+                        break;
+                    }
+                }
                 if(checkbox == true){
                     var product = new Product(j,checkbox,name,market,price,checked);
                     products.push(product);
@@ -213,7 +279,6 @@
                 var finalProduct = new Product(0, productName, productMarket, productPrice, true);
                     
                 var id = parseInt($('#ProductTable tr:last #STT').html());
-                var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("UpdateSession", "Product")',
@@ -221,6 +286,7 @@
                         cache: true,
                         success: function (newId) {
                             var id = newId;
+                            var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
                             $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
                                                      "'></input></td><td style='width:202px'><input readonly value='" + productMarket + "'>" +
                                                     "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
@@ -278,11 +344,24 @@
             for(var j = 0; j < listTr.length; ++j) {
                 if(listTr[j].id != 'header_'+i) {
                     var cells = listTr[j].cells;
-                    var checkbox = cells[0].childNodes[1].checked;
+                    //var checkbox = cells[0].childNodes[1].checked;
+                    for (var l = 0; l < 2; l++) {
+                        var checkbox = cells[0].childNodes[l].checked;
+                        if(checkbox == true || checkbox == false)
+                        {
+                            break;
+                        }
+                    }
                     var name = cells[1].innerHTML;
                     var market = cells[2].innerHTML;
                     var price = cells[3].innerHTML;
-                    var checked = cells[4].childNodes[1].checked;
+                    for (var m  = 0; m < 2; m++) {
+                        var checked = cells[4].childNodes[m].checked;
+                        if(checked == true|| checked == false)
+                        {
+                            break;
+                        }
+                    }
                     if(checkbox == true){
                         var product = new Product(j,checkbox,name,market,price,checked);
                         products.push(product);
@@ -344,77 +423,112 @@
         var duplicateTable = $("#table_"+i);
         var listTr = duplicateTable.find("tr");
         var products = [];
-       
-        for(var j = 0; j < listTr.length; ++j) {
+        for(var j = 0; j < listTr.length; j++) {
             if(listTr[j].id != 'header_'+i) {
                 var cells = listTr[j].cells;
-                var name = cells[0].innerHTML;
-                var market = cells[1].innerHTML;
-                var price = cells[2].innerHTML;
-                var checked = cells[3].childNodes[1].checked;
-                var product = new Product(j, name, market, price, checked);
-                products.push(product);
+                var checkbox = cells[0].childNodes[1].checked;
+                var name = cells[1].innerHTML;
+                var market = cells[2].innerHTML;
+                var price = cells[3].innerHTML;
+                var checked = cells[4].childNodes[1].checked;
+                if(checkbox == true){
+                    var product = new Product(j,checkbox,name,market,price,checked);
+                    products.push(product);
+                }
             }
         }
-        var productName = "";
-        var productMarket = "";
-        var productPrice;
-        var nonstop = true;
-        for(var n = 0; n < products.length && nonstop; n++) {
-            //  if(products[n].checked) {
-            var temp = products[0];
-            products[0] = products[n+1];
-            products[n+1] = temp;
-            nonstop = false;
-            //  }
-        }
-        for(var k = 0; k < products.length; k++) {
-            if (k != products.length) {
-                productName += products[k].productName + ";"
-
-            } else {
-                productName += products[k].productName;
-            }
-            productMarket = products[k].productMarket;
-            if (products[k].checked) {
-                productPrice = products[k].price;
-            }
-        }
-        if(productPrice == null)
+        if(products.length < 2)
         {
-            alert("Vui lòng chọn giá của sản phẩm.")
-        } else {
-            var finalProduct = new Product(0, productName, productMarket, productPrice, true);
-            var stt = parseInt($('#dupSellProductTable tr:last #STT1').html()) + 1;
-            if (stt.toString() == "NaN")
-            {
-                stt = 1;
+            alert("Vui lòng chọn ít nhất 2 sản phẩm.")
+        } else
+        {
+            var testChecked = false;
+            for (var c = 0; c < products.length; c++) {
+                if(products[c].checked == false)
+                {
+                    testChecked = false;
+                } else 
+                {
+                    testChecked = true;
+                    break;
+                }
             }
-            var id = parseInt($('#dupSellProductTable tr:last #STT1').html());
+            if(testChecked == false)
+            {
+                alert("Vui lòng chọn giá của sản phẩm đã chọn.")
+            } else {
+                var productName = "";
+                var productMarket = "";
+                var productPrice;
+                var nonstop = true;
+                for(var n = 0; n < products.length && nonstop; n++) {
+                    if(products[n].checked) {
+                        var temp = products[0];
+                        products[0] = products[n];
+                        products[n] = temp;
+                        nonstop = false;
+                    }
+                }
+                for(var k = 0; k < products.length; k++) {
+                    if (k != products.length) {
+                        productName += products[k].productName + ";"
+
+                    } else {
+                        productName += products[k].productName;
+                    }
+                    productMarket = products[k].productMarket;
+                    if (products[k].checked) {
+                        productPrice = products[k].price;
+                    }
+                }
                 
-                 @*$.ajax({
-            type: "POST",
-            url: '@Url.Action("MergeProduct", "Product")',
-                data: { ProductName: productName},
-                cache: true,
-                success: function (){ *@
+                var finalProduct = new Product(0, productName, productMarket, productPrice, true);
+                    
+                var id = parseInt($('#dupSellProductTable tr:last #STT').html());
+                var stt = parseInt($('#dupSellProductTable tr:last #STT1').html()) + 1;
+                if (stt.toString() == "NaN")
+                {
+                    stt = 1;
+                }
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("MergeProduct", "Product")',
+                    url: '@Url.Action("UpdateSession", "Product")',
                     data: { ProductId: id, ProductName: productName, ProductMarketName: productMarket, ProductPrice: productPrice },
                     cache: true,
                     success: function (newId) {
                         var id = newId;
-                        $("#dupSellProductTable tr:last").after("<tr id='product_"+newId+"' style='display: table-row;'><td id='STT1'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
+                        $("#dupSellProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
                                                  "'></input></td><td style='width:202px'><input readonly value='" + productMarket + "'>" +
                                                 "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
                                                 "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
-                        $("#dupTable_"+i).remove();
+                        // var testChecked = false;
+                        for (var h = 0; h < products.length; h++) {
+                                
+                            if(h >0){
+                                    
+                                if(products[h].id != 1){
+                                    $("#dupTable_"+i).find("tr")[products[h].id -h].remove();
+                                } 
+                                else
+                                {
+                                    $("#dupTable_"+i).find("tr")[products[h].id ].remove();
+                                }
+                            } 
+                            else
+                            {
+                                $("#dupTable_"+i).find("tr")[products[h].id].remove();
+                            }
+                            if($("#dupTable_"+i).find("tr")[1] == null)
+                            {
+                                $("#dupTable_"+i).remove();
+                            }
+                        }
+                            
+                            
                     }
                 });
-                
-            
             }
+        }
         }
 
         function split1(i) 
@@ -422,30 +536,76 @@
             var duplicateTable = $("#table_"+i);
             var listTr = duplicateTable.find("tr");
             var products = [];
-            var stt = parseInt($('#dupSellProductTable tr:last #STT1').html()) + 1;
-            if (stt.toString() == "NaN")
-            {
-                stt = 1;
-            }
-            var id = parseInt($('#dupSellProductTable tr:last #STT1').html());
+            
+            
             for(var j = 0; j < listTr.length; ++j) {
                 if(listTr[j].id != 'header_'+i) {
                     var cells = listTr[j].cells;
-                    var name = cells[0].innerHTML;
-                    var market = cells[1].innerHTML;
-                    var price = cells[2].innerHTML;
-                    var checked = cells[3].childNodes[1].checked;
-                    var product = new Product(j, name, market, price, checked);
-                    products.push(product);
-                    $("##ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT1'>" + stt + "</td><td style='width:187px'><input value='" + name +
-                                           "'></input></td><td style='width:202px'><input value='" + market + "'>" +
-                                          "</input></td><td style='width:176px'><input value='" + price + "'>" +
-                                          "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
-                    stt = stt + 1;
-                    id = id +1;
+                    var checkbox = cells[0].childNodes[1].checked;
+                    var name = cells[1].innerHTML;
+                    var market = cells[2].innerHTML;
+                    var price = cells[3].innerHTML;
+                    var checked = cells[4].childNodes[1].checked;
+                    if(checkbox == true){
+                        var product = new Product(j,checkbox,name,market,price,checked);
+                        products.push(product);
+                    }
                 }
             }
-            $("#dupTable_"+i).remove();
+            if(products.length < 1)
+            {
+                alert("Vui lòng chọn ít nhất 1 sản phẩm để tách.")
+            } 
+            else {
+                var id = parseInt($('#dupSellProductTable tr:last #STT').html());
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateSession", "Product")',
+                    data: { ProductId: id, ProductName: name, ProductMarketName: market, ProductPrice: price },
+                    cache: true,
+                    success: function (newId) {
+                        var id = newId;
+                        for (var k = 0; k < products.length; k++) {
+                            var name = products[k].productName;
+                            var market = products[k].productMarket;
+                            var price = products[k].price;
+                            var stt = parseInt($('#dupSellProductTable tr:last #STT1').html()) + 1;
+                            if (stt.toString() == "NaN")
+                            {
+                                stt = 1;
+                            }
+
+                            $("#dupSellProductTable tr:last").after("<tr id='product_"+newId+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + name +
+                                                   "'></input></td><td style='width:202px'><input value='" + market + "'>" +
+                                                  "</input></td><td style='width:176px'><input value='" + price + "'>" +
+                                                  "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+newId+")'></input><td></tr>")
+                   
+                            if(k >0)
+                            {
+                                if(products[k].id != 1){
+                                  
+                                    $("#dupTable_"+i).find("tr")[products[k].id -k].remove();
+                                } 
+                                else
+                                {
+                                    $("#dupTable_"+i).find("tr")[products[k].id].remove();
+                                }
+                            } 
+                            else
+                            {
+                                $("#dupTable_"+i).find("tr")[products[k].id].remove();
+                            }
+                        
+                            if($("#dupTable_"+i).find("tr")[1] == null)
+                            {
+                                $("#dupTable_"+i).remove();
+                            }
+                        
+                        }
+                    }
+                });
+            }
         }
     
         function splitAll(i)
@@ -492,6 +652,7 @@
             background-color: #c00;
         }
 </style>
+
 <h2 style="font-size: x-large; font-weight: bold" class="strong">Thêm Sản Phẩm</h2>
 
 <form action="/Product/UploadProduct" enctype="multipart/form-data" method="post">
@@ -584,20 +745,26 @@
 
                 if (Model != null && @ViewBag.errorCount < 5 && @ViewBag.ExceptionName != "External table is not in the expected format.")
                 {
-                <table class="table" id="ProductTable">
                     <lable style="font-size: x-large; font-weight: bold; color: blue">Danh sách sản phẩm 
                             @*(@ViewBag.CorrectSellProductsCount sản phẩm)*@
                         </lable>
-                    <tr style="font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold">
+               
+                <table class="table" id="ProductTable">
+                    
+                    <thead>
+                    <tr style="font-size: 14px;  font-weight: bold">
+                        <td style="display: none"></td>
                         <td style="padding: 8px; width: 55px;">STT</td>
                         <td style="padding: 8px; width: 187px;">Tên Sản Phẩm</td>
                         <td style="padding: 8px; width: 202px;">Tên Chợ</td>
                         <td style="padding: 8px; width: 176px;">Giá (Ngàn đồng)</td>
                         <td></td>
                     </tr>
-
+                    </thead>
+                    <tbody>
                     @for (int i = 0; i < Model.CorrectSellProducts.Count; i++)
                     {
+                        
                         <tr id="product_@i">
                             <td style="display: none">@Html.DisplayTextFor(model => model.CorrectSellProducts[i].Id)</td>
                             <td style="padding: 8px; width: 55px;" id="STT">@(i + 1)</td>
@@ -647,8 +814,9 @@
                             <td>
                                 <input type="button" value="X" style="color:red;font-weight:bold" onclick="deleteProduct(@i)"></input></td>
                         </tr>
+                            
                     }
-
+                     </tbody>
                 </table> 
                 
                    
@@ -857,13 +1025,16 @@
                 }
             }
         </div>
-        <div class="frame" id="_page_3">
+        <div class="frame" id="_page_3" >
+            <input type="button" value="Gộp tất cả" onclick="mergeAll()" class="primary" style="height: 30px;width: 100px;"/>
+            <input type="button" value="Tách tất cả" onclick="splitAll()" class="bg-green" style="color:#ffffff !important;height: 30px;width: 100px"/>
+            <br /><br />
             @if (@ViewBag.duplicateCorrectProduct != null)
             {
                 for (int i = 0; i < @ViewBag.duplicateCorrectProduct.Count; i++)
                 {
-                <div  style="border-style:dotted;border-width:2px" id="dupTable_@i">
-                    <table id="table_@i">
+                <div  style="border-style:dotted;border-width:2px" id="dupTable_@i" >
+                    <table id="table_@i" >
                         <tr id="header_@i" style="font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold">
                             <td></td>
                             <td style="padding: 8px; width: 187px;">Tên Sản Phẩm</td>
@@ -871,29 +1042,14 @@
                             <td style="padding: 8px; width: 176px;">Giá (Ngàn đồng)</td>
                             <td>Chọn giá</td>
                         </tr>
-                        @* @foreach (var item in @ViewBag.duplicateCorrectProduct[i])
-                        {
-                            <tr>
-                                <td><input type="checkbox"/></td>
-                                <td>@item.Name</td>
-                                <td>@item.MarketName</td>
-                                <td>@item.Price</td>
-                                @if (@item.first = true)
-                                {
-                                <td><input type="radio" name=""  id="Check_@i" checked/></td>
-                                } else 
-                                {
-                                    <td><input type="radio" name="productPrice"  id="Check_@i" /></td>
-                                }
-                            </tr>  
-                        }*@
+                        
                         @for (int j = 0; j < @ViewBag.duplicateCorrectProduct[i].Count; j++)
                         {
                             <tr>
                                 @if (j == 0)
                                 {
                                     <td>
-                                        <input type="checkbox" checked /></td>
+                                        <input type="checkbox" checked id="checkbox"/></td>
                                     <td>@ViewBag.duplicateCorrectProduct[i][j].Name</td>
                                     <td>@ViewBag.duplicateCorrectProduct[i][j].MarketName</td>
                                     <td>@ViewBag.duplicateCorrectProduct[i][j].Price</td>
@@ -903,7 +1059,7 @@
                                 else
                                 {
                                     <td>
-                                        <input type="checkbox" /></td>
+                                        <input type="checkbox" id="checkbox"/></td>
                                     <td>@ViewBag.duplicateCorrectProduct[i][j].Name</td>
                                     <td>@ViewBag.duplicateCorrectProduct[i][j].MarketName</td>
                                     <td>@ViewBag.duplicateCorrectProduct[i][j].Price</td>
@@ -944,14 +1100,13 @@
                         }
                     </table>
                     <br />
-                    <input type="button" value="Gộp" onclick="mergeProduct1(@i)" class="primary" style="margin-left: 525px;" />
-                    <input type="button" value="Tách"  onclick="split1(@i)" />
+                    <input type="button" value="Gộp" onclick="mergeProduct1(@i)" class="primary" style="margin-left: 525px;" id="combine_@i"/>
+                    <input type="button" value="Tách"  onclick="split1(@i)" id="split_@i" />
                 </div>
                 <br />
                 }
             }
-            <input type="button" value="Gộp tất cả" onclick="mergeAll()" />
-            <input type="button" value="Tách tất cả" onclick="splitAll()" />
+            
         </div>
     </div>
 </div>
