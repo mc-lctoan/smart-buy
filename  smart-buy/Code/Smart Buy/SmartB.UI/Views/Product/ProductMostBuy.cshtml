@@ -2,8 +2,8 @@
 
 @if (Model != null)
 {
-    <h2>Sản phẩm ưa thích</h2>
-    <table class="table bordered hovered">
+    <h4>Sản phẩm ưa thích</h4>
+    <table class="table table-bordered table-hover">
         <thead>
             <tr>
                 <th>Tên sản phẩm</th>
@@ -35,14 +35,18 @@
                         }
                     </td>
                     <td>
-                        <button onclick="addToCart('@productId')">
-                            <i class="icon-plus-2 on-left"></i>
-                            Thêm
-                        </button>
-                        <button class="editDialog">
-                            <i class="icon-dollar-2 on-left"></i>
-                            Đề xuất giá                                
-                        </button>
+                        <div class="metro">
+                            <button class="success" onclick="addToCart('@productId')">
+                                <i class="icon-plus-2 on-left"></i>
+                                Thêm
+                            </button>
+
+                            <button class="editDialog inverse">
+                                <i class="icon-dollar on-left"></i>
+                                Đề xuất giá                                
+                            </button>
+                        </div>
+
                         <script>
 
                             $(".editDialog").on("click", function (e) { // e.preventDefault(); use this or return false
@@ -54,14 +58,14 @@
                                     title: 'Đề xuất giá',
                                     content: '',
                                     padding: 10,
-                                    onShow: function (_dialog) {                                        
-                                    var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
-                                    $.Dialog.content(content);
-                                    $.Metro.initInputs();
-                                }
+                                    onShow: function (_dialog) {
+                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                        $.Dialog.content(content);
+                                        $.Metro.initInputs();
+                                    }
+                                });
+                                return true;
                             });
-                            return true;
-                        });
 
 
                         </script>
