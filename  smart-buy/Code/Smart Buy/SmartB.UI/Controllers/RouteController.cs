@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -49,24 +50,51 @@ namespace SmartB.UI.Controllers
 
         public ActionResult SuggestRoute(Cart cart)
         {
-            var products = cart.Lines.Select(x => x.Product.Product);
-            List<int> listProductId = products.Select(x => x.Id).ToList();
+            var model = new List<SuggestRouteModel>();
+
+            var cartProducts = cart.Lines.Select(x => x.Product.Product).ToList();
 
             var user = context.Users.FirstOrDefault(x => x.Username == "Sergey Pimenov");
             if (user != null)
             {
+                // TODO: haven't defined? Redirect to define route, show error
+                // Get route
+                ViewBag.Route = user.DefinedRoute;
+
+                // Get nearby markets id
                 string[] ids = user.MarketId.Split(',');
-                var marketIds = new List<int>();
+
+                // Construct a market list
+                var markets = new List<Market>();
                 foreach (string id in ids)
                 {
-                    marketIds.Add(Int32.Parse(id));
+                    int tmp = Int32.Parse(id);
+                    var market = context.Markets.FirstOrDefault(x => x.Id == tmp);
+                    if (market != null)
+                    {
+                        markets.Add(market);
+                    }
                 }
-                var route = new SuggestRouteHelper();
-                var result = route.Suggest(listProductId, marketIds);
-                TempData["RouteResult"] = result;
+
+                // Construct a product list
+                var products = new List<Product>();
+                foreach (var product in cartProducts)
+                {
+                    var tmp = context.Products
+                        .Include(x => x.SellProducts)
+                        .Include(x => x.ProductAttributes)
+                        .FirstOrDefault(x => x.Id == product.Id);
+                    if (tmp != null)
+                    {
+                        products.Add(tmp);
+                    }
+                }
+
+                var route = new SuggestRouteHelper(products, markets);
+                model = route.Suggest();
             }
 
-            return View();
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)
