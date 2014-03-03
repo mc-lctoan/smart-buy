@@ -47,23 +47,8 @@ namespace SmartB.UI.Controllers
             return View(markets);
         }
 
-        public ActionResult SuggestRoute()
-        {
-            var user = context.Users.FirstOrDefault(x => x.Username == "Sergey Pimenov");
-            return View(user);
-        }
-
-        [HttpPost]
         public ActionResult SuggestRoute(Cart cart)
         {
-
-            // TODO: Mock cart, change later
-            //var cart = new List<int>
-            //               {
-            //                   154, 155, 156,
-            //                   299, 300, 301
-            //               };
-
             var products = cart.Lines.Select(x => x.Product.Product);
             List<int> listProductId = products.Select(x => x.Id).ToList();
 
@@ -81,7 +66,7 @@ namespace SmartB.UI.Controllers
                 TempData["RouteResult"] = result;
             }
 
-            return RedirectToAction("SuggestRoute");
+            return View();
         }
 
         protected override void Dispose(bool disposing)

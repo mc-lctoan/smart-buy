@@ -2,20 +2,11 @@
 
 @{
     ViewBag.Title = "DefineRoute";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
-@section headScript
+@section head
 {
-    <style>
-        #map-canvas
-        {
-            height: 600px;
-            width: 800px;
-            margin: 0px;
-            padding: 0px;
-        }
-    </style>
-
     <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/RouteBoxer.js")"></script>
@@ -189,6 +180,7 @@
 
             $('#SaveRoute').click(function() {
                 $('#JsonRoute').val(save_waypoints);
+                $('#MapForm').submit();
             }); // end click
 
             $('#Again').click(function() {
@@ -200,26 +192,86 @@
     </script>
 }
 
-<h1>Map is here</h1>
-@if (TempData["DefineRoute"] != null)
-{
-    <h3>Định nghĩa đường đi thành công!</h3>
-}
-@Html.ValidationSummary(false)
-<label>From</label>
-<input type="text" id="FromAddress" placeholder="From" style="width: 400px" />
-<label>To</label>
-<input type="text" id="ToAddress" placeholder="To" style="width: 400px" />
-@using (Html.BeginForm("DefineRoute", "Route"))
-{
-    <label>Market Id</label>
-    <input type="text" id="MarketId" name="MarketId" />
+<div id="top-image" class="top-image1">
+    <div class="container">
+        <div id="top-image-caption">
+            <h2>Định nghĩa đường đi</h2>
+        </div>
+    </div>
+</div>
+
+<div id="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="span8">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">Trang chủ</a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li>
+                        <a href="#">Tài khoản</a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li>
+                        <p>Định nghĩa đường đi</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="span4">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="container">
+        @if (TempData["DefineRoute"] != null)
+        {
+            <div class="message-box ok-message-box clearfix">
+                <div class="message-icon-box">
+                    <i class="icon-ok"></i>
+                </div>
+
+                <div class="message-container">
+                    <h3>Định nghĩa đường đi thành công!</h3>
+                </div>
+            </div>
+        }
+        @Html.ValidationSummary(false)
+
+        <label for="FromAddress">Nơi đi</label>
+        <input type="text" id="FromAddress" placeholder="Địa chỉ đi" style="width: 400px" />
+        <label for="ToAddress">Nơi đến</label>
+        <input type="text" id="ToAddress" placeholder="Địa chỉ đến" style="width: 400px" />
+        @using (Html.BeginForm("DefineRoute", "Route", FormMethod.Post, new { id = "MapForm" }))
+        {
+            <input type="hidden" id="MarketId" name="MarketId" />
+            <input type="hidden" id="JsonRoute" name="Route" />
+@*<textarea id="JsonRoute" name="Route"></textarea>*@
+            <div class="stylish-button">
+                <a id="GetWay">
+                    <i class="icon-map-marker"></i>
+                    Tìm đường
+                </a>
+            </div>
+            <div class="stylish-button">
+                <a id="SaveRoute">
+                    <i class="icon-save"></i>
+                    Lưu lại
+                </a>
+            </div>
+        }
+
+
+        <br />
+
+        <h4>Bản đồ khu vực</h4>
+        <div class="google-map fadeDown">
+            <div id="map-canvas" />
+        </div>
+    </div>
     <br />
-    <textarea id="JsonRoute" name="Route"></textarea>
-    <br/>
-    <input type="submit" id="SaveRoute" value="Save" class="primary"/>
-}
-<input type="button" id="GetWay" value="Tìm đường" />
-<input type="button" id="Again" value="View Again" />
-<br />
-<div id="map-canvas" />
+    <br />
+</div>
