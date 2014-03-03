@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.ProductAttribute>
+﻿@model PagedList.IPagedList<SmartB.UI.Areas.Admin.Models.ProductInfo>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "SearchProduct";
@@ -83,10 +83,10 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Product.Name)
+                            <td>@Html.DisplayFor(modelItem => item.Name)
                                 @{
                         var productId = item.ProductId;
-                        var productName = item.Product.Name;
+                        var productName = item.Name;
                                 }
 
                             </td>
