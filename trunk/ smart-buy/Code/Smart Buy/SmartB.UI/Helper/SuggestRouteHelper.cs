@@ -2,34 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
 
 namespace SmartB.UI.Helper
 {
     public class SuggestRouteHelper
     {
+        public List<Product> AllProducts { get; set; }
+        public List<Product> CanBuyProducts { get; set; }
+        public List<Product> CannotBuyProducts { get; set; }
+        public List<Market> Markets { get; set; }
+
+        /// <summary>
+        /// Construct the algorithm
+        /// </summary>
+        /// <param name="allProducts">Each product must include its sell price and product attribute</param>
+        /// <param name="markets">Nearby markets</param>
+        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets)
+        {
+            AllProducts = allProducts.Distinct().ToList();
+            Markets = markets;
+            CannotBuyProducts = CannotBuy();
+            CanBuyProducts = AllProducts.Except(CannotBuyProducts).ToList();
+        }
+
         /// <summary>
         /// Can we buy all products with given markets?
         /// </summary>
-        /// <param name="productIds">List of products id</param>
-        /// <param name="marketIds">List of markets id</param>
-        /// <returns>List of products id which cannot buy</returns>
-        private List<int> CannotBuy(List<int> productIds, List<int> marketIds)
+        /// <returns>List of products which cannot buy</returns>
+        private List<Product> CannotBuy()
         {
-            var result = new List<int>();
+            var result = new List<Product>();
             using (var context = new SmartBuyEntities())
             {
                 // Check each product
-                foreach (int productId in productIds)
+                foreach (var product in AllProducts)
                 {
                     bool found = false;
 
                     // In each market
-                    foreach (int marketId in marketIds)
+                    foreach (var market in Markets)
                     {
                         var sell = context.SellProducts
                             .OrderByDescending(x => x.LastUpdatedTime)
-                            .FirstOrDefault(x => x.ProductId == productId && x.MarketId == marketId);
+                            .FirstOrDefault(x => x.ProductId == product.Id && x.MarketId == market.Id);
                         if (sell != null)
                         {
                             found = true;
@@ -40,7 +57,7 @@ namespace SmartB.UI.Helper
                     // Cannot buy?
                     if (!found)
                     {
-                        result.Add(productId);
+                        result.Add(product);
                     }
                 }
             }
@@ -51,13 +68,11 @@ namespace SmartB.UI.Helper
         /// Create price matrix.
         /// If a market doesn't sell a product, its value is maximum.
         /// </summary>
-        /// <param name="productIds">List of products id</param>
-        /// <param name="marketIds">List of markets id</param>
         /// <returns>Matrix</returns>
-        private int[,] CreateMatrix(List<int> productIds, List<int> marketIds)
+        private int[,] CreateMatrix()
         {
-            int row = productIds.Count;
-            int col = marketIds.Count;
+            int row = CanBuyProducts.Count;
+            int col = Markets.Count;
             var matrix = new int[row,col];
 
             // Initialize matrix
@@ -72,13 +87,13 @@ namespace SmartB.UI.Helper
             using (var context = new SmartBuyEntities())
             {
                 // With each product
-                for (int i = 0; i < productIds.Count; i++)
+                for (int i = 0; i < CanBuyProducts.Count; i++)
                 {
                     // In each market
-                    for (int j = 0; j < marketIds.Count; j++)
+                    for (int j = 0; j < Markets.Count; j++)
                     {
-                        int pid = productIds[i];
-                        int mid = marketIds[j];
+                        int pid = CanBuyProducts[i].Id;
+                        int mid = Markets[j].Id;
 
                         var sell = context.SellProducts
                             .OrderByDescending(x => x.LastUpdatedTime)
@@ -97,23 +112,12 @@ namespace SmartB.UI.Helper
         /// <summary>
         /// Suggest the best way to buy
         /// </summary>
-        /// <param name="productIds">List of product id</param>
-        /// <param name="marketIds">List of market id</param>
-        /// <returns>
-        /// List of key-value pair, where:
-        /// Key is product id.
-        /// Value is market id.
-        /// Meaning: buy that product at that market
-        /// </returns>
-        public List<KeyValuePair<Product, Market>> Suggest(List<int> productIds, List<int> marketIds)
+        /// <returns>Data represents the suggestion</returns>
+        public List<SuggestRouteModel> Suggest()
         {
-            productIds = productIds.Distinct().ToList();
-            List<int> cannotBuy = CannotBuy(productIds, marketIds);
-            List<int> newProductIds = productIds.Except(cannotBuy).ToList();
-
-            int[,] matrix = CreateMatrix(newProductIds, marketIds);
-            int m = newProductIds.Count;
-            int n = marketIds.Count;
+            int[,] matrix = CreateMatrix();
+            int m = CanBuyProducts.Count;
+            int n = Markets.Count;
             var total = new int[m,n];
             var traceY = new int[m,n];
 
@@ -184,28 +188,60 @@ namespace SmartB.UI.Helper
                 col = traceY[row, col];
                 row--;
             }
-            return ConvertList(resultOrder, newProductIds, marketIds);
+            return GenerateResult(resultOrder);
         }
 
-        private List<KeyValuePair<Product, Market>> ConvertList(IEnumerable<KeyValuePair<int, int>> orders, List<int> productIds, List<int> marketIds)
+        /// <summary>
+        /// Generate result data
+        /// </summary>
+        /// <param name="orders">The order of products and markets</param>
+        /// <returns>Suggestion data</returns>
+        private List<SuggestRouteModel> GenerateResult(IEnumerable<KeyValuePair<int, int>> orders)
         {
-            var result = new List<KeyValuePair<Product, Market>>();
+            var models = new List<SuggestRouteModel>();
 
-            using (var context = new SmartBuyEntities())
+            // Products can be bought
+            foreach (var pair in orders)
             {
-                foreach (var pair in orders)
-                {
-                    int pid = productIds[pair.Key];
-                    int mid = marketIds[pair.Value];
+                Product product = CanBuyProducts[pair.Key];
+                Market market = Markets[pair.Value];
 
-                    Product product = context.Products.FirstOrDefault(x => x.Id == pid);
-                    Market market = context.Markets.FirstOrDefault(x => x.Id == mid);
-                    var tmp = new KeyValuePair<Product, Market>(product, market);
-                    result.Add(tmp);
+                var tmp = new SuggestRouteModel();
+                tmp.MarketName = market.Name;
+                tmp.Latitude = market.Latitude;
+                tmp.Longitude = market.Longitude;
+                tmp.ProductName = product.Name;
+                var sell = product.SellProducts
+                    .Where(x => x.MarketId == market.Id)
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .FirstOrDefault();
+                if (sell != null)
+                {
+                    tmp.Price = sell.SellPrice.Value;
                 }
+                models.Add(tmp);
             }
 
-            return result;
+            // Product cannot be bought
+            foreach (var product in CannotBuyProducts)
+            {
+                var tmp = new SuggestRouteModel();
+                tmp.ProductName = product.Name;
+                tmp.MarketName = "";
+
+                // Get reference data
+                var attribute = product.ProductAttributes
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .FirstOrDefault();
+                if (attribute != null)
+                {
+                    tmp.MinPrice = attribute.MinPrice.Value;
+                    tmp.MaxPrice = attribute.MinPrice.Value;
+                }
+                models.Add(tmp);
+            }
+
+            return models;
         }
     }
 }

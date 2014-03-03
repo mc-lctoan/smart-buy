@@ -1,27 +1,82 @@
-﻿@using SmartB.UI.Models.EntityFramework
-@model User
+﻿@model IEnumerable<SmartB.UI.Models.SuggestRouteModel>
 
 @{
     ViewBag.Title = "Gợi ý";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
-    var result = TempData["RouteResult"] as List<KeyValuePair<Product, Market>>;
     int counter = 0;
 }
 
 @section head
 {
-    <style>
-        #map-canvas
-        {
-            height: 600px;
-            width: 800px;
-            margin: 0px;
-            padding: 0px;
-        }
-    </style>
     <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false"></script>
 
+    <script type="text/javascript">
+        var map, directionsService, directionsDisplay;
+        var str = '@Html.Raw(HttpUtility.HtmlDecode(ViewBag.Route))';
+        var data = eval('(' + str + ')');
+
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(10.791658, 106.658163),
+                zoom: 12
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"),
+                mapOptions);
+            directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay.setMap(map);
+            directionsService = new google.maps.DirectionsService();
+
+            var wp = get_waypoints();
+            set_route(data, wp);
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function create_marker(place) {
+            var marker = new google.maps.Marker({
+                position: place.position,
+                map: map,
+                title: place.title,
+                animation: google.maps.Animation.DROP
+            });
+        }
+
+        function set_route(data, wp) {
+            var request = {
+                origin: new google.maps.LatLng(data.start.lat, data.start.lng),
+                destination: new google.maps.LatLng(data.end.lat, data.end.lng),
+                waypoints: wp,
+                travelMode: google.maps.TravelMode.DRIVING,
+                optimizeWaypoints: true
+            };
+            directionsService.route(request, function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                }
+            });
+        }
+
+        function get_waypoints() {
+            var wp = [];
+            var point;
+            @foreach (var item in Model)
+            {
+                if (item.MarketName != "")
+                {
+                    <text>
+                        point = { 'location': new google.maps.LatLng(@item.Latitude, @item.Longitude), 'stopover': false };
+            wp.push(point);
+            var place = {
+                position: new google.maps.LatLng(@item.Latitude, @item.Longitude),
+                title: '@Html.Raw(HttpUtility.HtmlDecode(item.MarketName))'
+            };
+            create_marker(place);
+                    </text>
+                }
+            }
+            return wp;
+        }
+    </script>
 }
 
 <div id="top-image" class="top-image1">
@@ -60,7 +115,7 @@
 <div class="main-content">
     <div class="container fadeDown">
 
-        @if (result != null)
+        @if (Model.Count() > 0)
         {
             <table class="table table-bordered table-hover">
                 <thead>
@@ -68,22 +123,44 @@
                         <th>STT</th>
                         <th>Tên sản phẩm</th>
                         <th>Tên chợ</th>
+                        <th>Giá bán</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var pair in result)
+                    @foreach (var item in Model)
                     {
                         counter++;
                         <tr>
                             <td>@counter</td>
-                            <td>@pair.Key.Name</td>
-                            <td>@pair.Value.Name</td>
+                            <td>@item.ProductName</td>
+                            <td>
+                                @if (item.MarketName != "")
+                                {
+                                    <span>@item.MarketName</span>
+                                }
+                                else
+                                {
+                                    <span>Không tìm thấy</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.MarketName != "")
+                                {
+                                    <span>@item.Price</span>
+                                }
+                                else
+                                {
+                                    <span>@item.MinPrice - @item.MaxPrice</span>
+                                }
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
         }
 
-        <div id="map-canvas" />
+        <div class="google-map fadeDown">
+            <div id="map-canvas" />
+        </div>
     </div>
 </div>
