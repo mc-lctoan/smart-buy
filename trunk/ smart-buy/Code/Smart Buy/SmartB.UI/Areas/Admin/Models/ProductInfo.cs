@@ -7,6 +7,7 @@ namespace SmartB.UI.Areas.Admin.Models
 {
     public class ProductInfo
     {
+        public int ProductId { get; set; }
         public string Name { get; set; }
         public int MinPrice { get; set; }
         public int MaxPrice { get; set; }
