@@ -366,15 +366,15 @@
                     cache: true,
                     success: function (result) {
                        
-                            var id = result.id;
-                            var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
-                            //var name = products[k].productName;
-                            //var market = products[k].productMarket;
-                            //var price = products[k].price;
-                            $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + result.correctProductName +
-                                                          "'></input></td><td style='width:202px'><input value='" + result.correctMarketName + "'>" +
-                                                         "</input></td><td style='width:176px'><input value='" + result.correctProductPrice + "'>" +
-                                                         "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                        var id = result.id;
+                        var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
+                        //var name = products[k].productName;
+                        //var market = products[k].productMarket;
+                        //var price = products[k].price;
+                        $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + result.correctProductName +
+                                                      "'></input></td><td style='width:202px'><input value='" + result.correctMarketName + "'>" +
+                                                     "</input></td><td style='width:176px'><input value='" + result.correctProductPrice + "'>" +
+                                                     "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
                        
                     }
                 });
@@ -458,14 +458,14 @@
                 var productMarket = "";
                 var productPrice;
                 var nonstop = true;
-                for(var n = 0; n < products.length && nonstop; n++) {
-                    if(products[n].checked) {
-                        var temp = products[0];
-                        products[0] = products[n];
-                        products[n] = temp;
-                        nonstop = false;
-                    }
-                }
+                //for(var n = 0; n < products.length && nonstop; n++) {
+                //    if(products[n].checked) {
+                //        var temp = products[n];
+                //        products[n] = products[0];
+                //        products[0] = temp;
+                //        nonstop = false;
+                //    }
+                //}
                 for(var k = 0; k < products.length; k++) {
                     if (k != products.length) {
                         productName += products[k].productName + ";"
@@ -488,8 +488,8 @@
                     url: '@Url.Action("UpdateSession", "Product")',
                     data: { ProductId: id, ProductName: productName, ProductMarketName: productMarket, ProductPrice: productPrice },
                     cache: true,
-                    success: function (newId) {
-                        var id = newId;
+                    success: function (result) {
+                        var id = result.id;
                         var stt = parseInt($('#dupSellProductTable tr:last #STT').html()) + 1;
                         if(stt.toString() == "NaN")
                         {
@@ -526,6 +526,7 @@
                             $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
                             $("#split_"+i).click()
                         }
+                        $("#MessageArea").html("");
                     }
                 });
                 
@@ -577,58 +578,55 @@
         } 
         else {
             var id = parseInt($('#dupSellProductTable tr:last #STT').html());
-
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("UpdateSession", "Product")',
-                data: { ProductId: id, ProductName: name, ProductMarketName: market, ProductPrice: price },
-                cache: true,
-                success: function (newId) {
-                    var id = newId;
-                    for (var k = 0; k < products.length; k++) {
-                        var name = products[k].productName;
-                        var market = products[k].productMarket;
-                        var price = products[k].price;
+            for (var k = 0; k < products.length; k++) 
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateSession", "Product")',
+                    data: { ProductId: id, ProductName: products[k].productName, ProductMarketName: products[k].productMarket, ProductPrice: products[k].price },
+                    cache: true,
+                    success: function (result) {
+                       
+                        var id = result.id;
                         var stt = parseInt($('#dupSellProductTable tr:last #STT').html()) + 1;
                         if(stt.toString() == "NaN")
                         {
                             stt = 1;
                         }
-                        $("#dupSellProductTable tr:last").after("<tr id='product_"+newId+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + name +
-                                               "'></input></td><td style='width:202px'><input value='" + market + "'>" +
-                                              "</input></td><td style='width:176px'><input value='" + price + "'>" +
-                                              "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+newId+")'></input><td></tr>")
-                   
-                        if(k >0)
-                        {
-                            if(products[k].id != 1){
-                                  
-                                $("#dupTable_"+i).find("tr")[products[k].id -k].remove();
-                            } 
-                            else
-                            {
-                                $("#dupTable_"+i).find("tr")[products[k].id].remove();
-                            }
-                        } 
-                        else
-                        {
-                            $("#dupTable_"+i).find("tr")[products[k].id].remove();
-                        }
-                        
-                        if($("#dupTable_"+i).find("tr")[1] == null)
-                        {
-                            $("#dupTable_"+i).remove();
-                        }
-                        
+                        //var name = products[k].productName;
+                        //var market = products[k].productMarket;
+                        //var price = products[k].price;
+                        $("#dupSellProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + result.correctProductName +
+                                                      "'></input></td><td style='width:202px'><input value='" + result.correctMarketName + "'>" +
+                                                     "</input></td><td style='width:176px'><input value='" + result.correctProductPrice + "'>" +
+                                                     "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                       
                     }
-                    //if(listTr.length = 2)
-                    //{
-                    //    $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
-                    //  //  split(i);
-                    //}
+                });
+                
+                if(k >0)
+                {
+                    if(products[k].id != 1){
+                                  
+                        $("#dupTable_"+i).find("tr")[products[k].id -k].remove();
+                    } 
+                    else
+                    {
+                        $("#dupTable_"+i).find("tr")[products[k].id].remove();
+                    }
+                } 
+                else
+                {
+                    $("#dupTable_"+i).find("tr")[products[k].id].remove();
                 }
-            });
+                        
+                if($("#dupTable_"+i).find("tr")[1] == null)
+                {
+                    $("#dupTable_"+i).remove();
+                }
+            }
         }
+        $("#MessageArea").html("");
     }
     
     function splitAll(i)
@@ -638,7 +636,7 @@
         $('input[value="Tách"]').click()
                 
     }
-        
+   
 </script>
 
 <h2 style="font-size: x-large; font-weight: bold" class="strong">Thêm Sản Phẩm</h2>
@@ -660,38 +658,48 @@
             {
                 if (@ViewBag.dupSellProduct != null)
                 {
+                    
                     if (@ViewBag.countInsert != null || @ViewBag.countUpdate != null)
                     {
                         if (@ViewBag.countInsert.ToString() != "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() != "Có 0 sản phẩm được cập nhật giá.")
                         {
+                            <div id="MessageArea">
                 <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countUpdate </label>
                 <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countInsert</label>
                 <label style="color: blue; font-weight: bold; font-size: larger">
                     Có <b>@ViewBag.dupSellProduct.Count </b>sản phẩm bị trùng 
                 </label>
+                                </div>
                         }
                         else if (@ViewBag.countInsert.ToString() == "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() != "Có 0 sản phẩm được cập nhật giá.")
                         { 
+                            <div id="MessageArea">
                 <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countUpdate </label>
                 <label style="color: blue; font-weight: bold; font-size: larger">
                     Có <b>@ViewBag.dupSellProduct.Count </b>sản phẩm bị trùng 
                 </label>
+                                </div>
                         }
                         else if (@ViewBag.countInsert.ToString() != "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() == "Có 0 sản phẩm được cập nhật giá.")
                         {
+                            <div id="MessageArea">
                 <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countInsert</label>
                 <label style="color: blue; font-weight: bold; font-size: larger">
                     Có <b>@ViewBag.dupSellProduct.Count </b>sản phẩm bị trùng 
                 </label>
+                                </div>
                         }
                         else if (@ViewBag.countInsert.ToString() == "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() == "Có 0 sản phẩm được cập nhật giá.")
                         {
+                            <div id="MessageArea">
                 <label style="color: blue; font-weight: bold; font-size: larger">Không có sản phẩm được lưu mới hoặc cập nhật giá </label>
                 <label style="color: blue; font-weight: bold; font-size: larger">
                     Có <b>@ViewBag.dupSellProduct.Count </b>sản phẩm bị trùng 
                 </label>
+                                 </div>
                         }
                     }
+                
                 }
                 else
                     if (@ViewBag.countInsert != null || @ViewBag.countUpdate != null)
@@ -841,7 +849,9 @@
                     </tr>
 
                 </table> 
-                <input class="primary" type="button" name="Lưu lại" value="Lưu lại" id="saveDupProduct" />
+                
+                <input class="primary" type="button" name="Lưu lại" value="Lưu lại" onclick="location.href='@Url.Action("SaveDupProducts", "Product")'"  />
+                               
                 <input class="bg-gray fg-white" value="Hủy" type="button" onclick='window.location = "/Product/UploadProduct"' />
                 }
                 else if (Model != null && @ViewBag.errorCount >= 5)
