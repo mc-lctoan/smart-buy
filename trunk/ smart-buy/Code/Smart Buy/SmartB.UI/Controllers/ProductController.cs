@@ -11,6 +11,7 @@ using System.Web.Script.Serialization;
 using SmartB.UI.Areas.Admin.Helper;
 using PagedList;
 using System.Net;
+using SmartB.UI.Areas.Admin.Models;
 
 namespace SmartB.UI.Controllers
 {
@@ -38,14 +39,43 @@ namespace SmartB.UI.Controllers
             ViewBag.CurrentFilter = q;
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            var products = from p in db.ProductAttributes
-                           where p.Product.Name.Contains(q)
-                           group p by p.ProductId into grp
-                           select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault();
 
-            products = products.OrderBy(p => p.Product.Name);
+            var dictionaries = db.Dictionaries.Include(i => i.Product).Where(p => p.Name.Contains(q)).ToList();
 
-            return View(products.ToPagedList(pageNumber, pageSize));
+            var result = new List<ProductInfo>();
+            foreach (Dictionary dictionary in dictionaries)
+            {
+                List<int?> minPrice = dictionary.Product.ProductAttributes
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MinPrice)
+                    .ToList();
+                List<int?> maxPrice = dictionary.Product.ProductAttributes
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MaxPrice)
+                    .ToList();
+                var productName = db.Products.Where(p => p.Id == dictionary.ProductId).Select(p => p.Name).FirstOrDefault();
+                if (!result.Any(p => p.Name == productName))
+                {
+                    var info = new ProductInfo
+                    {
+                        ProductId = dictionary.ProductId.GetValueOrDefault(),
+                        Name = productName,
+                        MinPrice = minPrice[0].Value,
+                        MaxPrice = maxPrice[0].Value
+                    };
+                    result.Add(info);
+                }
+                
+            }
+
+            //var products = from p in db.Products
+            //               where p.ProductId == productID
+            //               group p by p.ProductId into grp
+            //               select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault();
+
+            //products = products.OrderBy(p => p.Product.Name);
+            
+            return View(result.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult ViewCart()
