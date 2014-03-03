@@ -437,7 +437,7 @@ a.rss-icon:hover { background-color: #F79638 !important; }
     -ms-transition: all 0.4s ease;
 }
 
-.stylish-button a, .stylish-button input {
+.stylish-button a, .stylish-button input, .stylish-button button {
     display: block;
     padding: 0 17px;
     font-size: 13px;
@@ -455,11 +455,11 @@ a.rss-icon:hover { background-color: #F79638 !important; }
     -ms-transition: all 0.4s ease;
 }
 
-.stylish-button input {
+.stylish-button input, .stylish-button button {
     height: 33px;
 }
 
-.stylish-button:hover a, .stylish-button:hover input {
+.stylish-button:hover a, .stylish-button:hover input, .stylish-button:hover button {
     background-color: rgba(0, 0, 0, 0.2);
     text-decoration: none;
     color: #fff;

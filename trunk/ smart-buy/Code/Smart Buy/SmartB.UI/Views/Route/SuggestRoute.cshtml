@@ -3,11 +3,12 @@
 
 @{
     ViewBag.Title = "Gợi ý";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
     var result = TempData["RouteResult"] as List<KeyValuePair<Product, Market>>;
     int counter = 0;
 }
 
-@section headScript
+@section head
 {
     <style>
         #map-canvas
@@ -19,34 +20,70 @@
         }
     </style>
     <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
 
 }
 
-<h2>Gợi ý</h2>
+<div id="top-image" class="top-image1">
+    <div class="container">
+        <div id="top-image-caption">
+            <h2>Gợi ý cách mua</h2>
+        </div>
+    </div>
+</div>
 
-@if (result != null)
-{
-    <table class="table bordered hovered">
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Tên sản phẩm</th>
-                <th>Tên chợ</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var pair in result)
-            {
-                counter++;
-                <tr>
-                    <td>@counter</td>
-                    <td>@pair.Key.Name</td>
-                    <td>@pair.Value.Name</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<div id="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="span8">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ViewCart", "Cart")">Thông tin giỏ hàng</a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li>
+                        <p>Gợi ý cách mua</p>
+                    </li>
+                </ul>
+            </div>
 
-<div id="map-canvas" />
+            <div class="span4">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="container fadeDown">
+
+        @if (result != null)
+        {
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Tên chợ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pair in result)
+                    {
+                        counter++;
+                        <tr>
+                            <td>@counter</td>
+                            <td>@pair.Key.Name</td>
+                            <td>@pair.Value.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <div id="map-canvas" />
+    </div>
+</div>
