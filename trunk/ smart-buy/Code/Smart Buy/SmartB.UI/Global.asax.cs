@@ -28,6 +28,8 @@ namespace SmartB.UI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
 
+            AdminConfig.Register(Server);
+
             ModelBinders.Binders.Add(typeof(Cart), new CartModelBinder());
 
             Application["LogPath"] = Server.MapPath("~/Areas/Admin/LogFiles/");
