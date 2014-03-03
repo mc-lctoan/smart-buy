@@ -4,6 +4,7 @@
     ViewBag.Title = "Gợi ý";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
     int counter = 0;
+    var markets = Model.Select(x => new { x.MarketName, x.Latitude, x.Longitude}).Distinct();
 }
 
 @section head
@@ -32,15 +33,6 @@
         }
         google.maps.event.addDomListener(window, 'load', initialize);
 
-        function create_marker(place) {
-            var marker = new google.maps.Marker({
-                position: place.position,
-                map: map,
-                title: place.title,
-                animation: google.maps.Animation.DROP
-            });
-        }
-
         function set_route(data, wp) {
             var request = {
                 origin: new google.maps.LatLng(data.start.lat, data.start.lng),
@@ -59,18 +51,13 @@
         function get_waypoints() {
             var wp = [];
             var point;
-            @foreach (var item in Model)
+            @foreach (var item in markets)
             {
                 if (item.MarketName != "")
                 {
                     <text>
-                        point = { 'location': new google.maps.LatLng(@item.Latitude, @item.Longitude), 'stopover': false };
-            wp.push(point);
-            var place = {
-                position: new google.maps.LatLng(@item.Latitude, @item.Longitude),
-                title: '@Html.Raw(HttpUtility.HtmlDecode(item.MarketName))'
-            };
-            create_marker(place);
+                        point = { 'location': new google.maps.LatLng(@item.Latitude, @item.Longitude), 'stopover': true };
+                        wp.push(point);
                     </text>
                 }
             }
