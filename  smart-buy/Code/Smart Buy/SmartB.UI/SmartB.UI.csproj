@@ -190,6 +190,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AdminConfig.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -288,6 +289,7 @@
     <Compile Include="UploadedExcelFiles\ExcelUtilitiesException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\AdminConfig.xml" />
     <Content Include="Areas\Admin\MoonCake\assets\css\error.min.css" />
     <Content Include="Areas\Admin\MoonCake\assets\css\fonts\icomoon\fonts\icomoon.svg" />
     <Content Include="Areas\Admin\MoonCake\assets\css\fonts\icomoon\style.css" />
