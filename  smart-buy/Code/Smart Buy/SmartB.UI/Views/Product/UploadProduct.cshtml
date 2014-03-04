@@ -641,7 +641,18 @@
         $('input[value="Tách"]').click()
                 
     }
-   
+    function saveFile()
+    {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("exportTxt", "Product")',
+            data: { },
+            cache: true,
+            success: function (message) {
+                alert(message);
+            }
+        });
+    }
 </script>
 
 <h2 style="font-size: x-large; font-weight: bold" class="strong">Thêm Sản Phẩm</h2>
@@ -1029,6 +1040,7 @@
             }
         </div>
         <div class="frame" id="_page_3">
+            <input type="button" value="Lưu file" onclick="saveFile()" style="float: right" class="primary" />
             <input type="button" value="Gộp tất cả" onclick="mergeAll()" class="primary" style="height: 30px; width: 100px;" />
             <input type="button" value="Tách tất cả" onclick="splitAll()" class="bg-green" style="color: #ffffff !important; height: 30px; width: 100px" />
             <br />

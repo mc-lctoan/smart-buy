@@ -13,6 +13,7 @@ using PagedList;
 using System.Net;
 using SmartB.UI.Areas.Admin.Models;
 using System.IO;
+using System.Reflection;
 
 namespace SmartB.UI.Controllers
 {
@@ -301,7 +302,7 @@ namespace SmartB.UI.Controllers
                         {
                             errorNameLine += product.RowNumber;
                         }
-                        if (product.MarketName.Length < 5 || product.MarketName.Length > 20)
+                        if (product.MarketName.Length < 5 || product.MarketName.Length > 100)
                         {
                             errorMarketNameLine += product.RowNumber;
 
@@ -865,9 +866,9 @@ namespace SmartB.UI.Controllers
             {
                 error.Add("Tên sản phẩm phải từ 5 đến 100 ký tự");
             }
-            if (ProductMarketName.Length < 5 || ProductMarketName.Length > 20)
+            if (ProductMarketName.Length < 5 || ProductMarketName.Length > 100)
             {
-                error.Add("Tên chợ phải từ 5 đến 20 ký tự");
+                error.Add("Tên chợ phải từ 5 đến 100 ký tự");
             }
             if (ProductPrice < 1 || ProductPrice > 10000)
             {
@@ -1106,21 +1107,39 @@ namespace SmartB.UI.Controllers
                 model.Id = 0;
                 correctProductsCollection.Add(model);
                 Session["CorrectProducts"] = correctProductsCollection;
-                var dupCorrectProducts = (List<SellProductModel>)Session["duplicateProducts"];
+
+                var dupCorrectProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
                 string[] productNames = ProductName.Split(';');
-                foreach (var productName in productNames)
+                for (int h = 0; h < productNames.Count(); h++)
                 {
-                    if (productNames.ToString() != "")
+                    var status = false;
+                    if (productNames[h].ToString() != "")
                     {
-                        for (int i = 0; i < dupCorrectProducts.Count; i++)
+                        for (int i = 0; i < dupCorrectProducts.Count - 1; i++)
                         {
-                            for (int j = 0; j < dupCorrectProducts.Count; j++)
+                            if (status == true)
                             {
-                                if (productNames.ToString() == dupCorrectProducts[j].Name)
+                                break;
+                            }
+                            for (int j = 0; j < dupCorrectProducts[j].Count; j++)
+                            {
+                                var nameDupProduct = dupCorrectProducts[i][j].Name;
+                                if (productNames[h].ToString() == nameDupProduct.ToString())
                                 {
-                                    dupCorrectProducts.Remove(dupCorrectProducts[j]);
-                                    Session["duplicateProducts"] = dupCorrectProducts;
+                                    dupCorrectProducts[i].Remove(dupCorrectProducts[i][j]);
+                                    //if (dupCorrectProducts[i].Count == 0)
+                                    //{
+                                    //    dupCorrectProducts.Remove(dupCorrectProducts[i]);
+                                    //}
+                                    status = true;
+                                    break;
                                 }
+                                Session["duplicateProducts"] = dupCorrectProducts;
+                            }
+
+                            if (dupCorrectProducts[i].Count == 0)
+                            {
+                                dupCorrectProducts.Remove(dupCorrectProducts[i]);
                             }
                         }
                     }
@@ -1152,24 +1171,37 @@ namespace SmartB.UI.Controllers
             return Json(newId);
         }
 
-        public List<SellProductModel> exportTxt()
+        public JsonResult exportTxt()
         {
-            FileStream fileStream = new FileStream(@"~/UploadedExcelFiles/", FileMode.Create);
-            TextWriter sw = new StreamWriter(@"~/UploadedExcelFiles/");
-            var correctDupProducts = (List<SellProductModel>)Session["duplicateProducts"];
+            var assemblyPath = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
+            var directoryPath = Path.GetDirectoryName(assemblyPath);
+            var text = Path.GetDirectoryName(directoryPath);
+            var filePath = Path.Combine(text, "UploadedExcelFiles\\ProductName.txt");
 
-            for (int i = 0; i < correctDupProducts.Count; i++)
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
             {
-                //        sw.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[2].Value.ToString());
-                for (int j = 0; j < correctDupProducts.Count; j++)
+                fileStream.Close();
+                
+                TextWriter sw = new StreamWriter(text + "\\UploadedExcelFiles\\ProductName.txt");
+                var correctDupProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
+                
+
+                for (int i = 0; i < correctDupProducts.Count; i++)
                 {
-
+                    var productName = "";
+                    //        sw.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[2].Value.ToString());
+                    for (int j = 0; j < correctDupProducts[j].Count; j++)
+                    {
+                        
+                        productName += correctDupProducts[i][j].Name + ";";
+                    }
+                    sw.WriteLine(productName + "\t");
                 }
+                sw.Close();
             }
-            sw.Close();
-
-            //  MessageBox.Show("Data Successfully Exported");
-            return null;
+            var message = "Lưu file thành công";
+              //Message.Show("Data Successfully Exported");
+            return Json(message);
         }
     }
 }
