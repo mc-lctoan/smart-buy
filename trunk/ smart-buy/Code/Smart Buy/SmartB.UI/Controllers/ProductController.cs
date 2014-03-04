@@ -12,6 +12,7 @@ using SmartB.UI.Areas.Admin.Helper;
 using PagedList;
 using System.Net;
 using SmartB.UI.Areas.Admin.Models;
+using System.IO;
 
 namespace SmartB.UI.Controllers
 {
@@ -65,7 +66,7 @@ namespace SmartB.UI.Controllers
                     };
                     result.Add(info);
                 }
-                
+
             }
 
             //var products = from p in db.Products
@@ -74,7 +75,7 @@ namespace SmartB.UI.Controllers
             //               select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault();
 
             //products = products.OrderBy(p => p.Product.Name);
-            
+
             return View(result.ToPagedList(pageNumber, pageSize));
         }
 
@@ -423,7 +424,7 @@ namespace SmartB.UI.Controllers
                 TempData["DictionaryProduct"] = dupSellProduct;
             }
             Session.Remove("CorrectProducts");
-            //   Session["CorrectProducts"] = dupSellProduct;
+            //   Session["duplicateProducts"] = dupSellProduct;
             TempData["UpdateMessage"] = "Có " + countUpdate + " sản phẩm được cập nhật giá.";
             TempData["InsertMessage"] = "Có " + countInsert + " sản phẩm được lưu mới.";
             return RedirectToAction("UploadProduct");
@@ -1052,6 +1053,44 @@ namespace SmartB.UI.Controllers
                 model.Id = largerId.Id + 1;
                 correctProducts.Add(model);
                 Session["CorrectProducts"] = correctProducts;
+
+                var dupCorrectProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
+                string[] productNames = ProductName.Split(';');
+                for (int h = 0; h < productNames.Count(); h++)
+                {
+                    var status = false;
+                    if (productNames[h].ToString() != "")
+                    {
+                        for (int i = 0; i < dupCorrectProducts.Count -1; i++)
+                        {
+                            if (status == true)
+                            {
+                                break;
+                            }
+                            for (int j = 0; j < dupCorrectProducts[j].Count; j++)
+                            {
+                                var nameDupProduct = dupCorrectProducts[i][j].Name;
+                                if (productNames[h].ToString() == nameDupProduct.ToString())
+                                {
+                                    dupCorrectProducts[i].Remove(dupCorrectProducts[i][j]);
+                                    //if (dupCorrectProducts[i].Count == 0)
+                                    //{
+                                    //    dupCorrectProducts.Remove(dupCorrectProducts[i]);
+                                    //}
+                                    status = true;
+                                    break;
+                                }
+                                Session["duplicateProducts"] = dupCorrectProducts;
+                            }
+                            
+                            if (dupCorrectProducts[i].Count == 0)
+                            {
+                                dupCorrectProducts.Remove(dupCorrectProducts[i]);
+                            }
+                        }
+                    }
+                }
+
                 result.id = largerId.Id + 1;
                 result.correctProductName = ProductName;
                 result.correctMarketName = ProductMarketName;
@@ -1067,6 +1106,25 @@ namespace SmartB.UI.Controllers
                 model.Id = 0;
                 correctProductsCollection.Add(model);
                 Session["CorrectProducts"] = correctProductsCollection;
+                var dupCorrectProducts = (List<SellProductModel>)Session["duplicateProducts"];
+                string[] productNames = ProductName.Split(';');
+                foreach (var productName in productNames)
+                {
+                    if (productNames.ToString() != "")
+                    {
+                        for (int i = 0; i < dupCorrectProducts.Count; i++)
+                        {
+                            for (int j = 0; j < dupCorrectProducts.Count; j++)
+                            {
+                                if (productNames.ToString() == dupCorrectProducts[j].Name)
+                                {
+                                    dupCorrectProducts.Remove(dupCorrectProducts[j]);
+                                    Session["duplicateProducts"] = dupCorrectProducts;
+                                }
+                            }
+                        }
+                    }
+                }
                 result.id = 0;
                 result.correctProductName = ProductName;
                 result.correctMarketName = ProductMarketName;
@@ -1092,6 +1150,26 @@ namespace SmartB.UI.Controllers
 
             Session["CorrectProducts"] = correctProducts;
             return Json(newId);
+        }
+
+        public List<SellProductModel> exportTxt()
+        {
+            FileStream fileStream = new FileStream(@"~/UploadedExcelFiles/", FileMode.Create);
+            TextWriter sw = new StreamWriter(@"~/UploadedExcelFiles/");
+            var correctDupProducts = (List<SellProductModel>)Session["duplicateProducts"];
+
+            for (int i = 0; i < correctDupProducts.Count; i++)
+            {
+                //        sw.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[2].Value.ToString());
+                for (int j = 0; j < correctDupProducts.Count; j++)
+                {
+
+                }
+            }
+            sw.Close();
+
+            //  MessageBox.Show("Data Successfully Exported");
+            return null;
         }
     }
 }

@@ -345,7 +345,8 @@
                     var product = new Product(j,checkbox,name,market,price,checked);
                     products.push(product);
                 }
-                else if(checkbox == true){
+                else 
+                    if(checkbox == true){
                     var product = new Product(j,checkbox,name,market,price,checked);
                     products.push(product);
                 }
@@ -378,28 +379,32 @@
                        
                     }
                 });
-                
                 if(k >0)
                 {
-                    if(products[k].id != 1){
+                    //if(products[k].id != 1 ){
                                   
-                        $("#dupTable_"+i).find("tr")[products[k].id -k].remove();
-                    } 
-                    else
-                    {
-                        $("#dupTable_"+i).find("tr")[products[k].id].remove();
-                    }
+                    //    $("#dupTable_"+i).find("tr")[products[k].id -k].remove();
+                    //} 
+                    //else
+                    //{
+                        $("#dupTable_"+i).find("tr")[products[k].id - k].remove();
+                    //}
                 } 
                 else
                 {
                     $("#dupTable_"+i).find("tr")[products[k].id].remove();
                 }
-                        
-                if($("#dupTable_"+i).find("tr")[1] == null)
-                {
-                    $("#dupTable_"+i).remove();
-                }
             }
+        }
+        if($("#dupTable_"+i).find("tr")[1] != null && $("#dupTable_"+i).find("tr")[2] == null)
+        {
+            $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
+            split(i);
+        }
+                    
+        if($("#dupTable_"+i).find("tr")[1] == null)
+        {
+            $("#dupTable_"+i).remove();
         }
     }
     function mergeProduct1(i) {
@@ -778,7 +783,7 @@
                                         <p style="color: Red">@Html.ValidationMessageFor(model => model.CorrectSellProducts[i].Name)</p>
                                     </span>
                                 }
-                                @if (@Model.CorrectSellProducts[i].MarketName.Length < 5 || @Model.CorrectSellProducts[i].MarketName.Length > 20)
+                                @if (@Model.CorrectSellProducts[i].MarketName.Length < 5 || @Model.CorrectSellProducts[i].MarketName.Length > 100)
                                 {
                                     <td style="color: red; width: 202px">@Html.TextBoxFor(model => model.CorrectSellProducts[i].MarketName, new { style = "color: red;font-weight:bold; width: 155px" })</td>       
                                     <span>
@@ -904,7 +909,7 @@
                                         <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
                                     </span>
                                 }
-                                @if (@Model.InCorrectSellProducts[i].MarketName.Length < 5 || @Model.InCorrectSellProducts[i].MarketName.Length > 20)
+                                @if (@Model.InCorrectSellProducts[i].MarketName.Length < 5 || @Model.InCorrectSellProducts[i].MarketName.Length > 100)
                                 {
                                     <td style="color: red; width: 202px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { style = "color: red;font-weight:bold; width: 155px", @readonly = "readonly" })</td>       
                                     <span>
@@ -991,7 +996,7 @@
                                     <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
                                 </span>
                             }
-                            @if (@Model.InCorrectSellProducts[i].MarketName.Length < 5 || @Model.InCorrectSellProducts[i].MarketName.Length > 20)
+                            @if (@Model.InCorrectSellProducts[i].MarketName.Length < 5 || @Model.InCorrectSellProducts[i].MarketName.Length > 100)
                             {
                                 <td style="color: red; width: 202px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { style = "color: red;font-weight:bold; width: 155px", id = "ProductMarketName" + i })</td>       
                                 <span class="help-block" id="marketNameAlert" style="color: Red"></span>
