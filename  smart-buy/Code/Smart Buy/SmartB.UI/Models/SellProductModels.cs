@@ -15,9 +15,9 @@ namespace SmartB.UI.Models
         [StringLength(100, ErrorMessage = "Tên sản phẩm phải từ 5 đến 20 ký tự."
             , MinimumLength = 5)]
         public string Name { get; set; }
-        [MaxLength(20)]
+        [MaxLength(100)]
         [Required(ErrorMessage = "Vui lòng nhập tên chợ")]
-        [StringLength(20, ErrorMessage = "Tên chợ phải từ 5 đến 20 ký tự."
+        [StringLength(100, ErrorMessage = "Tên chợ phải từ 5 đến 100 ký tự."
             , MinimumLength = 5)]
         public string MarketName { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập giá sản phẩm")]
