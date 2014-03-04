@@ -27,15 +27,6 @@ namespace SmartB.UI.Models
         public string UserName { get; set; }
     }
 
-    public class RegisterExternalLoginModel
-    {
-        [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
-
-        public string ExternalLoginData { get; set; }
-    }
-
     public class LocalPasswordModel
     {
         [Required]
@@ -72,26 +63,27 @@ namespace SmartB.UI.Models
 
     public class RegisterModel
     {
-        [Required]
-        [Display(Name = "User name")]
+        [Required(ErrorMessage = "Chưa điền tên đăng nhập.")]
+        [Display(Name = "Tên đăng nhập")]
         public string UserName { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Chưa điền mật khẩu.")]
+        [StringLength(100, ErrorMessage = "{0} phải ít nhất {2} ký tự.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Xác nhận mật khẩu")]
+        [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp.")]
         public string ConfirmPassword { get; set; }
-    }
 
-    public class ExternalLogin
-    {
-        public string Provider { get; set; }
-        public string ProviderDisplayName { get; set; }
-        public string ProviderUserId { get; set; }
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Địa chỉ email")]
+        [RegularExpression(@"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+            ErrorMessage = "Địa chỉ email không hợp lệ.")]
+        public string Email { get; set; }
+
+        public int RoleId { get; set; }
     }
 }

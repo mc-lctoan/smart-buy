@@ -85,13 +85,12 @@
                         </li>
 
                         <li id="fourth-nav-pill" class="dropdown">
-                            <a href="#">
-                                <div class="nav-icon"><i class="li_settings"></i></div>
-                                <div class="nav-text">Tài khoản</div>
-                            </a>
-
                             @if (User.Identity.IsAuthenticated)
                             {
+                                <a href="#">
+                                    <div class="nav-icon"><i class="li_settings"></i></div>
+                                    <div class="nav-text">@User.Identity.Name</div>
+                                </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li role="menuitem"></li>
                                     <li role="menuitem"><a href="@Url.Action("AccountDetails", "Account")">Sửa thông tin cá nhân</a></li>
@@ -102,10 +101,14 @@
                             }
                             else
                             {
+                                <a href="#">
+                                    <div class="nav-icon"><i class="li_settings"></i></div>
+                                    <div class="nav-text">Tài khoản</div>
+                                </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li role="menuitem"></li>
-                                    <li role="menuitem"><a href="#">Đăng ký</a></li>
-                                    <li role="menuitem"><a href="#">Đăng nhập</a></li>
+                                    <li role="menuitem"><a href="@Url.Action("Register", "Account")">Đăng ký</a></li>
+                                    <li role="menuitem"><a href="@Url.Action("Login", "Account")">Đăng nhập</a></li>
                                 </ul>
                             }
                         </li>
@@ -144,8 +147,8 @@
                             }
                             else
                             {
-                                <li role="menuitem"><a href="#">Đăng ký</a></li>
-                                <li role="menuitem"><a href="#">Đăng nhập</a></li>
+                                <li role="menuitem"><a href="@Url.Action("Register", "Account")">Đăng ký</a></li>
+                                <li role="menuitem"><a href="@Url.Action("Login", "Account")">Đăng nhập</a></li>
                             }
                         </ul>
                     </div>
@@ -266,5 +269,7 @@
     <script type="text/javascript" src="@Url.Content("~/Template/Stylish/scripts/main.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Template/Stylish/scripts/custom.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Template/Stylish/scripts/plugins.js")"></script>
+
+    @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -30,7 +30,7 @@
             <div class="span8">
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Trang chủ</a>
+                        <a href="@Url.Action("Index", "Home")">Trang chủ</a>
                         <span class="divider">/</span>
                     </li>
                     <li>
@@ -49,9 +49,10 @@
     <div class="container fadeDown">
         @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search" }))
         {
+            <h4>Tìm kiếm sản phẩm</h4>
             <div class="metro">
                 <div class="input-control text size5">
-                    @Html.TextBox("q", ViewBag.CurrentFilter as string, new { type = "text", placeholder = "Tên sản phẩm" })
+                    @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
                     <button type="submit" class="btn-search"></button>
                 </div>
             </div>

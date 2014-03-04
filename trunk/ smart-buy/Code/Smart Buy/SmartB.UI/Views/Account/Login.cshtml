@@ -1,50 +1,74 @@
 ﻿@model SmartB.UI.Models.LoginModel
 
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-</hgroup>
-
-<section id="loginForm">
-<h2>Use a local account to log in.</h2>
-@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>Log in Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-                @Html.ValidationMessageFor(m => m.Password)
-            </li>
-            <li>
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-            </li>
-        </ol>
-        <input type="submit" value="Log in" />
-    </fieldset>
-    <p>
-        @Html.ActionLink("Register", "Register") if you don't have an account.
-    </p>
-}
-</section>
-
-<section class="social" id="socialLoginForm">
-    <h2>Use another service to log in.</h2>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-</section>
-
-@section Scripts {
+@section head
+{
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<div id="top-image" class="top-image1">
+    <div class="container">
+        <div id="top-image-caption">
+            <h2>Thông tin giỏ hàng</h2>
+        </div>
+    </div>
+</div>
+
+<div id="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="span8">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li>
+                        <p>Đăng nhập</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="span4">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="container fadeDown">
+        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <fieldset>
+                <legend>Log in Form</legend>
+                <ol>
+                    <li>
+                        @Html.LabelFor(m => m.UserName)
+                        @Html.TextBoxFor(m => m.UserName)
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password)
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </li>
+                    <li>
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                    </li>
+                </ol>
+                <input type="submit" value="Log in" />
+            </fieldset>
+            <p>
+                @Html.ActionLink("Register", "Register", "Account") if you don't have an account.
+            </p>
+        }
+    </div>
+</div>

@@ -1,37 +1,102 @@
 ﻿@model SmartB.UI.Models.RegisterModel
+
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Đăng ký";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Create a new account.</h2>
-</hgroup>
-
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
-
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </li>
-        </ol>
-        <input type="submit" value="Register" />
-    </fieldset>
-}
-
-@section Scripts {
+@section head
+{
     @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Metro -->
+    <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
+    <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
+    <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/Error.css")"/>
 }
+
+<div id="top-image" class="top-image1">
+    <div class="container">
+        <div id="top-image-caption">
+            <h2>Đăng ký tài khoản</h2>
+        </div>
+    </div>
+</div>
+
+<div id="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="span8">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li>
+                        <p>Đăng ký</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="span4">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="container fadeDown">
+        <div class="span4">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <fieldset>
+                    <legend>Đăng ký tài khoản</legend>
+                    <ol>
+                        <li>
+                            @Html.LabelFor(m => m.UserName)
+                            <div class="metro">
+                                <div class="input-control text size5">
+                                    @Html.TextBoxFor(m => m.UserName)
+                                    <button class="btn-clear"></button>
+                                </div>
+                            </div>
+                            <p>@Html.ValidationMessageFor(m => m.UserName)</p>
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.Password)
+                            <div class="metro">
+                                <div class="input-control password size5">
+                                    @Html.PasswordFor(m => m.Password)
+                                    <button class="btn-reveal"></button>
+                                </div>
+                            </div>
+                            <p>@Html.ValidationMessageFor(m => m.Password)</p>
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.ConfirmPassword)
+                            <div class="metro">
+                                <div class="input-control password size5">
+                                    @Html.PasswordFor(m => m.ConfirmPassword)
+                                    <button class="btn-reveal"></button>
+                                </div>
+                            </div>
+                            <p>@Html.ValidationMessageFor(m => m.ConfirmPassword)</p>
+                        </li>
+                    </ol>
+                    <div class="metro">
+                        <button type="submit" class="primary pull-right">
+                            <i class="icon-checkmark"></i>
+                            Đăng ký
+                        </button>
+                    </div>
+                </fieldset>
+            }
+        </div>
+        <div class="span8"></div>
+    </div>
+</div>
