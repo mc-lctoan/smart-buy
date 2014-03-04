@@ -1,7 +1,7 @@
 ﻿@model SmartB.UI.Models.CartViewModel
 
 @{
-    ViewBag.Title = "ViewCart";
+    ViewBag.Title = "Giỏ hàng";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
@@ -30,7 +30,7 @@
             <div class="span8">
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Trang chủ</a>
+                        <a href="@Url.Action("Index", "Home")">Trang chủ</a>
                         <span class="divider">/</span>
                     </li>
                     <li>
@@ -98,12 +98,15 @@
                     Lưu lại
                 </a>
             </div>
+                    if (User.Identity.IsAuthenticated)
+                    {
             <div class="stylish-button" style="background-color: #FFCC00">
                 <a href="@Url.Action("SuggestRoute", "Route")">
                     <i class="icon-lightbulb"></i>
                     Gợi ý
                 </a>
             </div>
+                    }
         }
         else
         {

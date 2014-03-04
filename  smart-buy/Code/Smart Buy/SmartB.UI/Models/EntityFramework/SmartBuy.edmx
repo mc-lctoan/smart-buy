@@ -391,7 +391,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserPrice" EntitySet="UserPrices" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Dictionary">
           <Key>
             <PropertyRef Name="Id" />

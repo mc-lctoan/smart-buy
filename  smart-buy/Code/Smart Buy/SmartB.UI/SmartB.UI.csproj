@@ -219,7 +219,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\AccountHelper.cs" />
     <Compile Include="Helper\SuggestRouteHelper.cs" />
+    <Compile Include="Infrastructure\ConstantManager.cs" />
     <Compile Include="Infrastructure\CustomMembershipProvider.cs" />
     <Compile Include="Infrastructure\CustomRoleProvider.cs" />
     <Compile Include="Infrastructure\JsonContentNegotiator.cs" />
@@ -515,6 +517,7 @@
     <Content Include="Areas\Admin\MoonCake\sample\p6.jpg" />
     <Content Include="Areas\Admin\MoonCake\sample\p7.jpg" />
     <Content Include="Areas\Admin\Scripts\getXPath.js" />
+    <Content Include="Content\Error.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -943,7 +946,6 @@
     <Content Include="Views\Product\SearchProduct.cshtml" />
     <Content Include="Views\Product\ViewCart.cshtml" />
     <Content Include="Views\Account\AccountDetails.cshtml" />
-    <Content Include="Views\Account\DefineRoute.cshtml" />
     <Content Include="Views\Product\ProposeProductPrice.cshtml" />
     <Content Include="Views\Product\UploadProduct.cshtml" />
     <Content Include="Views\Route\DefineRoute.cshtml" />

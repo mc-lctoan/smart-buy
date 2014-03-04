@@ -1,52 +1,98 @@
-﻿@{
+﻿@model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.History>
+@using PagedList.Mvc;
+
+@{
     ViewBag.Title = "BuyingHistory";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
-@model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.History>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@section head
+{
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+    
+    <!-- Metro -->
+    <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
+    <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
+    <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
+}
 
+<div id="top-image" class="top-image1">
+    <div class="container">
+        <div id="top-image-caption">
+            <h2>Lịch sử mua sắm</h2>
+        </div>
+    </div>
+</div>
 
-<h2>Lịch sử mua sắm 30 ngày gần nhất</h2>
-<table class="table bordered hovered">
-    <thead>
-        <tr>            
-            <th>Ngày mua</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-       
-        @foreach (var item in Model)
-        {
+<div id="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="span8">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li>
+                        <p>Tài khoản</p>
+                        <span class="divider">/</span>
+                    </li>
+                    <li>
+                        <p>Lịch sử mua sắm</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="span4">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="container fadeDown">
+        <h2>Lịch sử mua sắm 30 ngày gần nhất</h2>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Ngày mua</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
             
-            <tr>                
-                <td>
-                    @{
-            var historyID = item.Id;
-            var buyTime = item.BuyTime;
-            string buytimeFormat = String.Format("{0:dd/MM/yyyy}", buyTime);
+                    <tr>
+                        <td>
+                            @{
+                                var historyID = item.Id;
+                                var buyTime = item.BuyTime;
+                                string buytimeFormat = String.Format("{0:dd/MM/yyyy}", buyTime);
             
-                    }
-                    @buytimeFormat
-                </td>
+                            }
+                            @buytimeFormat
+                        </td>
 
-                <td>
-                    <a href="@Url.Action("BuyingHistoryDetail", "History", new { id = @historyID})">
-                        <button>
-                            <i class="icon-clipboard-2"></i>
-                            Chi tiết
-                        </button>
-                    </a>
-                    
-                </td>
-            </tr>
-        }
+                        <td>
+                            <a href="@Url.Action("BuyingHistoryDetail", "History", new { id = @historyID })">
+                                <button>
+                                    <i class="icon-clipboard-2"></i>
+                                    Chi tiết
+                                </button>
+                            </a>
 
-    </tbody>
-</table>
+                        </td>
+                    </tr>
+                }
 
-<br />
-@Html.PagedListPager(Model, page=>Url.Action("BuyingHistory", new {page}), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-
+            </tbody>
+        </table>
+        <div class="metro">
+            <div class="pagination">
+                @Html.PagedListPager(Model, page => Url.Action("BuyingHistory", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+            </div>
+        </div>
+    </div>
+</div>

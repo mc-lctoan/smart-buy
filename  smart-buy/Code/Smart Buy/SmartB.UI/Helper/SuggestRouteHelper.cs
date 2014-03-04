@@ -14,6 +14,8 @@ namespace SmartB.UI.Helper
         public List<Product> CannotBuyProducts { get; set; }
         public List<Market> Markets { get; set; }
 
+        private const int LargeNumber = 10000;
+
         /// <summary>
         /// Construct the algorithm
         /// </summary>
@@ -115,6 +117,11 @@ namespace SmartB.UI.Helper
         /// <returns>Data represents the suggestion</returns>
         public List<SuggestRouteModel> Suggest()
         {
+            if (CanBuyProducts.Count == 0)
+            {
+                return GenerateResult(new List<KeyValuePair<int, int>>());
+            }
+
             int[,] matrix = CreateMatrix();
             int m = CanBuyProducts.Count;
             int n = Markets.Count;
@@ -126,7 +133,7 @@ namespace SmartB.UI.Helper
             {
                 for (int j = 0; j < n; j++)
                 {
-                    total[i, j] = 100000;
+                    total[i, j] = LargeNumber;
                     traceY[i, j] = -1;
                 }
             }

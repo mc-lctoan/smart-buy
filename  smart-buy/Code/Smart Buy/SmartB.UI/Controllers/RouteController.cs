@@ -30,8 +30,7 @@ namespace SmartB.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                // TODO: Fix username for testing. Must use current login username later.
-                var user = context.Users.FirstOrDefault(x => x.Username == "Sergey Pimenov");
+                var user = context.Users.FirstOrDefault(x => x.Username == User.Identity.Name);
                 if (user != null)
                 {
                     user.DefinedRoute = model.Route;
@@ -48,13 +47,14 @@ namespace SmartB.UI.Controllers
             return View(markets);
         }
 
+        [Authorize]
         public ActionResult SuggestRoute(Cart cart)
         {
             var model = new List<SuggestRouteModel>();
 
             var cartProducts = cart.Lines.Select(x => x.Product.Product).ToList();
 
-            var user = context.Users.FirstOrDefault(x => x.Username == "Sergey Pimenov");
+            var user = context.Users.FirstOrDefault(x => x.Username == User.Identity.Name);
             if (user != null)
             {
                 // TODO: haven't defined? Redirect to define route, show error
