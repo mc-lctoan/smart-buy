@@ -13,7 +13,7 @@
     <script src="@Url.Content("~/Metro/js/metro/metro.min.js")"></script>
     <script src="@Url.Content("~/Metro/js/prettify/prettify.js")"></script>
     <script src="@Url.Content("~/Metro/js/metro/metro-loader.js")"></script>
-    
+    <script src="@Url.Content("~/Scripts/utils/productUtils.js")"></script>
 </head>
 <body class="metro">
     <nav class="navigation-bar dark">
@@ -38,6 +38,7 @@
                         <li class="title">Phần quản lý</li>
                         <li><a href="#"><i class="icon-cart-2"></i>Quản lý chợ</a></li>
                         <li><a href="#"><i class="icon-cube"></i>Quản lý sản phẩm</a></li>
+                        <li><a href="@Url.Action("ManageUserPrice", "UserPrice")"><i class="icon-cart"></i>Quản lý giá đề xuất</a></li>
                         <li><a href="#"><i class="icon-box-add"></i>Quản lý parser</a></li>
                         <li><a href="#"><i class="icon-user"></i>Quản lý tài khoản</a></li>
                         <li><a href="@Url.Action("LogOff", "Account")"><i class="icon-switch"></i>Thoát</a></li>

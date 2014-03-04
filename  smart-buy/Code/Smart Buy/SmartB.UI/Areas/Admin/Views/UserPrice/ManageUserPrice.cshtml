@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "ManageUserPrice";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.UserPrice>
+
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<script>
+    function updateUserPrice(id, productId, price, lastUpdatedTime) {
+        $.ajax({
+            type: 'GET',
+            url: '../UserPrice/UpdateUserPrice',
+            data: { 'id': id, 'productId': productId, 'price': price, 'lastUpdatedTime': lastUpdatedTime },
+            contentType: "application/json",
+            dataType: 'json',
+
+            success: function (data) {
+
+                if (data == true) {
+                    message = "Cập nhật thành công.";
+                    showNotifyDialog(message);
+                } else {
+                    message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
+                    showNotifyDialog(message);
+                }
+            },
+            error: function (e) {
+                $.Dialog.close();
+                message = "(*) Có lỗi xảy ra. Vui lòng thử lại " + e.message;
+                showNotifyDialog(message);
+            }
+        });
+    }
+</script>
+
+
+
+
+@{
+    DateTime today = DateTime.Today.Date;
+    string todayFormat = String.Format("{0:dd/MM/yyyy}", today);
+}
+
+<h2>Giá người dùng đề xuất trong ngày @todayFormat</h2>
+<div class="span11">
+    <table class="table bordered hovered">
+        <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Giá hiện tại</th>
+                <th>Giá đề xuất</th>
+                <th>Địa điểm</th>
+                <th>Người đề xuất</th>
+                <th>Thời điểm đề xuất</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                var userPriceId = item.Id;
+                var updatedTime = item.LastUpdatedTime;
+                string updatedTimeFormat = String.Format("{0:HH:mm:ss}", updatedTime);
+                SmartB.UI.Models.EntityFramework.SmartBuyEntities db = new SmartB.UI.Models.EntityFramework.SmartBuyEntities();
+                var productId = item.Product.Id;
+                SmartB.UI.Models.EntityFramework.ProductAttribute proAtt = (from p in db.ProductAttributes
+                                                                            where p.ProductId == productId
+                                                                            group p by p.ProductId into grp
+                                                                            select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
+            
+                <tr>
+                    <td>
+                        @item.Product.Name
+                    </td>
+                    <td>
+                        @proAtt.MinPrice - @proAtt.MaxPrice
+                    </td>
+                    <td>
+                        @item.UpdatedPrice
+                    </td>
+                    <td>
+                        @item.Market.Name
+                    </td>
+                    <td>
+                        @item.Username
+                    </td>
+                    <td>
+                        @updatedTimeFormat
+                    </td>
+                    <td>
+                        <button class="primary" id="btnSaveUserPrice" onclick="updateUserPrice('@item.Id','@productId','@item.UpdatedPrice', '@updatedTime')">
+                            <i class="icon-box-add"></i>
+                            Lưu lại
+                        </button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <br />
+    @Html.PagedListPager(Model, page => Url.Action("ManageUserPrice", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+</div>
