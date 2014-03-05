@@ -18,29 +18,59 @@ namespace SmartB.UI.Controllers
         public List<ProductInfo> Search(string keyword)
         {
             // TODO: may change to full text search
-            var products = context.Products
-                .Include(x => x.ProductAttributes)
-                .Where(x => x.Name.Contains(keyword))
-                .ToList();
+            //var products = context.Products
+            //    .Include(x => x.ProductAttributes)
+            //    .Where(x => x.Name.Contains(keyword))
+            //    .ToList();
+            //var result = new List<ProductInfo>();
+            //foreach (Product product in products)
+            //{
+            //    List<int?> minPrice = product.ProductAttributes
+            //        .OrderByDescending(x => x.LastUpdatedTime)
+            //        .Select(x => x.MinPrice)
+            //        .ToList();
+            //    List<int?> maxPrice = product.ProductAttributes
+            //        .OrderByDescending(x => x.LastUpdatedTime)
+            //        .Select(x => x.MaxPrice)
+            //        .ToList();
+            //    var info = new ProductInfo
+            //                   {
+            //                       Name = product.Name,
+            //                       MinPrice = minPrice[0].Value,
+            //                       MaxPrice = maxPrice[0].Value
+            //                   };
+            //    result.Add(info);
+            //}
+
+            //search product by dictionary
+            var dictionaries = context.Dictionaries.Include(i => i.Product).Where(p => p.Name.Contains(keyword)).ToList();
+
             var result = new List<ProductInfo>();
-            foreach (Product product in products)
+            foreach (Dictionary dictionary in dictionaries)
             {
-                List<int?> minPrice = product.ProductAttributes
+                List<int?> minPrice = dictionary.Product.ProductAttributes
                     .OrderByDescending(x => x.LastUpdatedTime)
                     .Select(x => x.MinPrice)
                     .ToList();
-                List<int?> maxPrice = product.ProductAttributes
+                List<int?> maxPrice = dictionary.Product.ProductAttributes
                     .OrderByDescending(x => x.LastUpdatedTime)
                     .Select(x => x.MaxPrice)
                     .ToList();
-                var info = new ProductInfo
-                               {
-                                   Name = product.Name,
-                                   MinPrice = minPrice[0].Value,
-                                   MaxPrice = maxPrice[0].Value
-                               };
-                result.Add(info);
+                var productName = context.Products.Where(p => p.Id == dictionary.ProductId).Select(p => p.Name).FirstOrDefault();
+                if (!result.Any(p => p.Name == productName))
+                {
+                    var info = new ProductInfo
+                    {
+                        ProductId = dictionary.ProductId.GetValueOrDefault(),
+                        Name = productName,
+                        MinPrice = minPrice[0].Value,
+                        MaxPrice = maxPrice[0].Value
+                    };
+                    result.Add(info);
+                }
+
             }
+
             return result;
         }
 
