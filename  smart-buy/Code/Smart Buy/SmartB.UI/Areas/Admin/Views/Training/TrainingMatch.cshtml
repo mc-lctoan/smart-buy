@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "Xử lý sản phẩm trùng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<script>
+    function mergeProduct(i, productId) {
+       
+        var duplicateTable = $("#table_"+i);
+        var listTr = duplicateTable.find("tr");
+        var trFor = document.getElementsByClassName('trFor_'+i);
+        var dictionaries = [];
+        for(var j = 0; j < listTr.length; j++) {
+            if(listTr[j].id != 'header_'+i) {
+                var cells = listTr[j].cells;
+                for (var l = 0; l < 2; l++) {
+                    var checkbox = cells[0].childNodes[l].checked;
+                    if(checkbox == true || checkbox == false)
+                    {
+                        break;
+                    }
+                }
+                
+                var name = cells[1].innerHTML;                
+                
+                if(checkbox == true){
+                    var dictionary = new Dictionary(productId, name);
+                    dictionaries.push(dictionary);
+                }
+            }
+        }
+        if(dictionaries.length < 2)
+        {
+            alert("Vui lòng chọn ít nhất 2 sản phẩm.");
+        } else {
+            var productName = "";
+            for(var k = 0; k < dictionaries.length; k++) {
+                if (k != dictionaries.length) {
+                    productName += dictionaries[k].Name + ";"
+
+                } else {
+                    productName += dictionaries[k].Name;
+                }
+                
+            }
+
+
+
+            var productJson = JSON.stringify(dictionaries);
+            $.ajax({
+                type: 'GET',
+                url: 'MergeProductTraining',
+                data: { 'productJson': productJson, 'productName': productName },
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        var mes = "Gộp thành công";
+                        showNotifyDialog(mes);
+                        if (trFor.length = 2) {
+                            $("#dupTable_" + i).find("tr").find("input:checkbox");
+                            $("#split_" + i).click();
+                        }                        
+                        
+                    }
+                    else {
+
+                        showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
+                        var mesDialog = document.getElementById('mesDialog');
+                        mesDialog.style.color = 'red';
+                    }
+                },
+                error: function (e) {
+                    showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại. " + e.message);
+                    var mesDialog = document.getElementById('mesDialog');
+                    mesDialog.style.color = 'red';
+                }
+            });
+        }
+        
+    }
+
+    function split(i) {
+        var duplicateTable = $("#table_" + i);
+        var listTr = duplicateTable.find("tr");
+        var trFor = document.getElementsByClassName('trFor_' + i);
+        var products = [];
+
+        for (var j = 0; j < listTr.length; ++j) {
+            if (listTr[j].id != 'header_' + i) {
+                var cells = listTr[j].cells;
+                for (var l = 0; l < 2; l++) {
+                    var checkbox = cells[0].childNodes[l].checked;
+                    if (checkbox == true || checkbox == false) {
+                        break;
+                    }
+                }
+                var name = cells[1].innerHTML;
+
+                if (trFor.length < 3) {
+                    var product = new Product(name);
+                    products.push(product);
+                }
+                if (listTr.length < 4) {
+                    var product = new Product(name);
+                    products.push(product);
+                }
+                else
+                    if (checkbox == true) {
+                        var product = new Product(name);
+                        products.push(product);
+                    }
+            }
+        }
+        if (products.length < 1) {
+            alert("Vui lòng chọn ít nhất 1 sản phẩm để tách.")
+        }
+        else {
+            var productJson = JSON.stringify(products);
+            var productName = "";
+            for (var k = 0; k < products.length; k++) {
+                if (k != products.length) {
+                    productName += products[k].Name + ";"
+
+                } else {
+                    productName += products[k].Name;
+                }
+
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: 'SplitProductTraining',
+                data: { 'productJson': productJson, 'productName': productName },
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (data) {
+                    if (data == true) {
+                        var mes = "Tách thành công";
+                        showNotifyDialog(mes);
+                    }
+                    else {
+
+                        showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
+                        var mesDialog = document.getElementById('mesDialog');
+                        mesDialog.style.color = 'red';
+                    }
+                }
+            });
+        }
+    }
+
+
+    function Dictionary(productId, Name){
+        this.productId = productId;            
+        this.Name = Name;
+    }
+
+    function Product(Name){
+        this.Name = Name;
+    }
+
+</script>
+
+<h2>Xử lý sản phẩm trùng</h2>
+<div class="span4">
+
+
+    @if (@ViewBag.dupDictionary != null)
+    {
+        for (int i = 0; i < @ViewBag.dupDictionary.Count; i++)
+        {
+            int productId = 0;
+        <div  style="border-style:dotted;border-width:2px" id="dupTable_@i">
+            <table id="table_@i" >
+                <tr id="header_@i" style="font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold">
+                    <td></td>
+                    <td style="padding: 8px; width: 300px;">Tên Sản Phẩm</td>
+                </tr>
+                @for (int j = 0; j < @ViewBag.dupDictionary[i].Count; j++)
+                {
+                    productId = @ViewBag.dupDictionary[i][j].ProductId;
+                    <tr class="trFor_@i">
+                        @if (j == 0)
+                        {
+                            <td width="10%" align="center">
+                                <input type="checkbox" checked id="checkbox" /></td>
+                            <td>@ViewBag.dupDictionary[i][j].Name</td>                                  
+                            
+                        }
+                        else
+                        {
+                            <td width="10%" align="center">
+                                <input type="checkbox" id="checkbox" /></td>
+                            <td>@ViewBag.dupDictionary[i][j].Name</td>                                    
+                            
+                        }
+                    </tr>  
+                }
+
+                @if (productId != 0)
+                {
+                    SmartB.UI.Models.EntityFramework.SmartBuyEntities db = new SmartB.UI.Models.EntityFramework.SmartBuyEntities();
+                    var productInDB = db.Products.Where(p => p.Id == productId).FirstOrDefault();                    
+                
+                    <tr>
+                        <td width="10%" align="center">
+                            <input type="checkbox" id="checkbox" /></td>
+                        <td>@productInDB.Name</td>
+                    </tr>
+                }
+
+            </table>
+            <br />
+            <button class="primary" id="combine_@i" onclick="mergeProduct('@i')">
+                Gộp
+            </button>
+            <button id="split_@i" onclick="split('@i')">
+                Tách
+            </button>
+        </div>
+        <br />
+        }
+    }
+</div>
