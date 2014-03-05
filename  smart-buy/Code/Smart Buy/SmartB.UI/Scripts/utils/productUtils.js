@@ -262,7 +262,8 @@ function saveUserPrice(productId) {
 
                 if (data == true) {
                     message = "Cảm ơn sự đóng góp của bạn. Chúng tôi sẽ xem xét.";
-                    showNotifyDialog(message);
+                    document.getElementById("pppStatus").innerHTML = message;
+                    //showNotifyDialog(message);
                 } else {
                     message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
                     showNotifyDialog(message);
@@ -362,7 +363,7 @@ function addToCart(id) {
             if (data == true) {
                 //window.parent.location.href = window.parent.location.href;
             } else if (data == 'full') {
-                message = "Giỏ của bạn không quá 10 sản phẩm.";
+                message = "Giỏ của bạn không quá 20 sản phẩm.";
                 showNotifyDialog(message);
             }
             else {

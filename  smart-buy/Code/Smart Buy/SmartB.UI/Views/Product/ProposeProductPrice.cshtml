@@ -29,15 +29,13 @@
 <div class="input-control text">
     @Html.DropDownList("ddlMarket", null, String.Empty, new { @onchange = "validateMarket()" })
     <span id="errorMarket" style="color: red; font-style: italic;"></span>
-</div>
-
-<div>
-    <span id="pppStatus" style="color: red; font-style: italic; font-size: 16px;"></span>
-</div>
-    
+</div>    
 <button class="primary" id="btnSaveUserPrice" onclick="saveUserPrice('@productId')">
     <i class="icon-box-add"></i>
     Lưu lại
 </button>
-        
+ <br />
+<div>
+    <span id="pppStatus" style="color:blue; font-size: 16px;"></span>
+</div>      
 </body>

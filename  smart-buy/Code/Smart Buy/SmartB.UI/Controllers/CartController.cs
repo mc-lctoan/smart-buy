@@ -32,7 +32,7 @@ namespace SmartB.UI.Controllers
         [HttpGet, ActionName("AddToCart")]
         public JsonResult AddToCart(int productId)
         {
-            if (GetCart().Lines.Count() >= 10)
+            if (GetCart().Lines.Count() >= 20)
             {
                 return Json("full", JsonRequestBehavior.AllowGet);
             }
@@ -148,13 +148,13 @@ namespace SmartB.UI.Controllers
                         var historyId = (from h in db.Histories
                                          where h.BuyTime == now && h.Username == username
                                          select h.Id).First();
-                        var checkCount = (from c in db.HistoryDetails
-                                          where c.HistoryId == historyId
-                                          select c).Count();
-                        if (checkCount >= 10)
-                        {
-                            break;
-                        }
+                        //var checkCount = (from c in db.HistoryDetails
+                        //                  where c.HistoryId == historyId
+                        //                  select c).Count();
+                        //if (checkCount >= 10)
+                        //{
+                        //    break;
+                        //}
 
                         var dupProductId = db.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
                         if (dupProductId == null)
