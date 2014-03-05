@@ -54,54 +54,108 @@
                     if(result.status.toString() == "Correct Products List")
                     {
                         alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
-                        var dupTableCount = result.count -2;
-                        idDupTable = result.count -1;
-                        $("#dupTable_"+dupTableCount).after("<br /> "+
-                                                        "<div id='dupTable_"+idDupTable +"' > " +
-                                                          "<div class='row-fluid'> "+
-                                                           "<div class='span12 widget'>"+
-                                                             "<div class='widget-header'>"+
-                                                               "<span class='title'>Nhóm sản phẩm trùng</span>"+
-                                                             "</div>"+
-                                                             "<div class='widget-content table-container'>"+
-                                                               "<table id='table_"+idDupTable+"'  class='table table-striped'>" +
-                                                                 "<thead>"+
-                                                                      "<tr id='header_"+idDupTable+"'> "+
-                                                                       "<th></th> " +
-                                                                       "<th>Tên Sản Phẩm</th>"+
-                                                                       "<th>Tên Chợ</th> "+
-                                                                       "<th>Giá</th> "+
-                                                                       "<th>Chọn giá</th> " +
-                                                                      "</tr> "+
-                                                                 "</thead>"+
-                                                                 "<tr><td><input type='checkbox' checked /></td> " +
-                                                                                 "<td>"+productName+"</td> " +
-                                                                                 "<td>"+ productMarketName+"</td>" +
-                                                                                 "<td>"+ productPrice+"</td>" +
-                                                                                 "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
-                                                                 "</tr> "+
-                                                                 "<tr><td><input type='checkbox' /></td> " +
-                                                                                "<td>"+result.correctProductName+"</td> " +
-                                                                                "<td>"+result.correctMarketName+"</td>" +
-                                                                                "<td>"+result.correctProductPrice+"</td>" +
-                                                                                "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
-                                                                "</tr> "+
-                                                              "</table>"+
-                                                              "<div class='dt_footer'>"+
-                                                                "<div class='row-fluid'>"+
-                                                                  " <div class='pull-right'>"+
-                                                               "<input type='button' value='Gộp' onclick='mergeProduct("+idDupTable+")' class='primary' id='combine_"+idDupTable+"' /> "+
-                                                               "<input type='button' value='Tách'  onclick='split("+idDupTable+")' id='split_"+idDupTable+"' />"+
-                                                                    "</div> "+
-                                                                 "</div> "+
+                        if(result.count == 1) // chưa có sp trùng
+                        {
+                            var dupTableCount = result.count -1;
+                            idDupTable = result.count ;
+                            $("#tableEmpty").after("<br /> "+
+                                                            "<div id='dupTable_"+idDupTable +"' > " +
+                                                              "<div class='row-fluid'> "+
+                                                               "<div class='span12 widget'>"+
+                                                                 "<div class='widget-header'>"+
+                                                                   "<span class='title'>Nhóm sản phẩm trùng</span>"+
+                                                                 "</div>"+
+                                                                 "<div class='widget-content table-container'>"+
+                                                                   "<table id='table_"+idDupTable+"'  class='table table-striped'>" +
+                                                                     "<thead>"+
+                                                                          "<tr id='header_"+idDupTable+"'> "+
+                                                                           "<th></th> " +
+                                                                           "<th>Tên Sản Phẩm</th>"+
+                                                                           "<th>Tên Chợ</th> "+
+                                                                           "<th>Giá</th> "+
+                                                                           "<th>Chọn giá</th> " +
+                                                                          "</tr> "+
+                                                                     "</thead>"+
+                                                                     "<tr><td><input type='checkbox' checked /></td> " +
+                                                                                     "<td>"+productName+"</td> " +
+                                                                                     "<td>"+ productMarketName+"</td>" +
+                                                                                     "<td>"+ productPrice+"</td>" +
+                                                                                     "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
+                                                                     "</tr> "+
+                                                                     "<tr><td><input type='checkbox' /></td> " +
+                                                                                    "<td>"+result.correctProductName+"</td> " +
+                                                                                    "<td>"+result.correctMarketName+"</td>" +
+                                                                                    "<td>"+result.correctProductPrice+"</td>" +
+                                                                                    "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
+                                                                    "</tr> "+
+                                                                  "</table>"+
+                                                                  "<div class='dt_footer'>"+
+                                                                    "<div class='row-fluid'>"+
+                                                                      " <div class='pull-right'>"+
+                                                                   "<input type='button' value='Gộp' onclick='mergeProduct("+idDupTable+")' class='primary' id='combine_"+idDupTable+"' /> "+
+                                                                   "<input type='button' value='Tách'  onclick='split("+idDupTable+")' id='split_"+idDupTable+"' />"+
+                                                                        "</div> "+
+                                                                     "</div> "+
+                                                                   "</div> "+
+                                                                "</div> "+
                                                                "</div> "+
-                                                            "</div> "+
-                                                           "</div> "+
-                                                          "</div> "+
-                                                        "</div>");
+                                                              "</div> "+
+                                                            "</div>");
 
-                        $("#ProductTable tr#product_"+result.tableCorrectId).remove();
-                        $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                            $("#ProductTable tr#product_"+result.tableCorrectId).remove();
+                            $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                        } 
+                        else
+                        {
+                            var dupTableCount = result.count -2;
+                            idDupTable = result.count -1;
+                            $("#dupTable_"+dupTableCount).after("<br /> "+
+                                                            "<div id='dupTable_"+idDupTable +"' > " +
+                                                              "<div class='row-fluid'> "+
+                                                               "<div class='span12 widget'>"+
+                                                                 "<div class='widget-header'>"+
+                                                                   "<span class='title'>Nhóm sản phẩm trùng</span>"+
+                                                                 "</div>"+
+                                                                 "<div class='widget-content table-container'>"+
+                                                                   "<table id='table_"+idDupTable+"'  class='table table-striped'>" +
+                                                                     "<thead>"+
+                                                                          "<tr id='header_"+idDupTable+"'> "+
+                                                                           "<th></th> " +
+                                                                           "<th>Tên Sản Phẩm</th>"+
+                                                                           "<th>Tên Chợ</th> "+
+                                                                           "<th>Giá</th> "+
+                                                                           "<th>Chọn giá</th> " +
+                                                                          "</tr> "+
+                                                                     "</thead>"+
+                                                                     "<tr><td><input type='checkbox' checked /></td> " +
+                                                                                     "<td>"+productName+"</td> " +
+                                                                                     "<td>"+ productMarketName+"</td>" +
+                                                                                     "<td>"+ productPrice+"</td>" +
+                                                                                     "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
+                                                                     "</tr> "+
+                                                                     "<tr><td><input type='checkbox' /></td> " +
+                                                                                    "<td>"+result.correctProductName+"</td> " +
+                                                                                    "<td>"+result.correctMarketName+"</td>" +
+                                                                                    "<td>"+result.correctProductPrice+"</td>" +
+                                                                                    "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
+                                                                    "</tr> "+
+                                                                  "</table>"+
+                                                                  "<div class='dt_footer'>"+
+                                                                    "<div class='row-fluid'>"+
+                                                                      " <div class='pull-right'>"+
+                                                                   "<input type='button' value='Gộp' onclick='mergeProduct("+idDupTable+")' class='primary' id='combine_"+idDupTable+"' /> "+
+                                                                   "<input type='button' value='Tách'  onclick='split("+idDupTable+")' id='split_"+idDupTable+"' />"+
+                                                                        "</div> "+
+                                                                     "</div> "+
+                                                                   "</div> "+
+                                                                "</div> "+
+                                                               "</div> "+
+                                                              "</div> "+
+                                                            "</div>");
+
+                            $("#ProductTable tr#product_"+result.tableCorrectId).remove();
+                            $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                        }
                     } else if(result.status.toString() != "Duplicate Products List" && result.status.toString() != "Correct Products List")
                     {
                         $("#ProductTable tr:last").after("<tr id='product_"+id+"'>"+
@@ -1113,8 +1167,10 @@
                 <input type="button" value="Gộp tất cả" onclick="mergeAll()" class="primary" style="height: 30px; width: 100px;" />
                 <input type="button" value="Tách tất cả" onclick="splitAll()" class="bg-green" style="color: #ffffff !important; height: 30px; width: 100px" />
                 <br />
-                <label style="color: red; float: right">*Đơn vị tính ngàn đồng</label><br />
+                <div id="tableEmpty">
+                    <label style="color: red; float: right">*Đơn vị tính ngàn đồng</label><br />
                 <br />
+                </div>
                 @if (Model != null)
                 {
                     if (Model.duplicateCorrectProduct != null)
