@@ -425,7 +425,8 @@ namespace SmartB.UI.Controllers
                 TempData["DictionaryProduct"] = dupSellProduct;
             }
             Session.Remove("CorrectProducts");
-            //   Session["duplicateProducts"] = dupSellProduct;
+            Session.Remove("duplicateProducts");
+            Session["duplicateProducts"] = dupSellProduct;
             TempData["UpdateMessage"] = "Có " + countUpdate + " sản phẩm được cập nhật giá.";
             TempData["InsertMessage"] = "Có " + countInsert + " sản phẩm được lưu mới.";
             return RedirectToAction("UploadProduct");
@@ -1108,20 +1109,20 @@ namespace SmartB.UI.Controllers
                 correctProductsCollection.Add(model);
                 Session["CorrectProducts"] = correctProductsCollection;
 
-                var dupCorrectProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
+                var dupCorrectProducts = (List<List<SellProductModel>>)Session["duplicateProductsDB"];
                 string[] productNames = ProductName.Split(';');
                 for (int h = 0; h < productNames.Count(); h++)
                 {
                     var status = false;
                     if (productNames[h].ToString() != "")
                     {
-                        for (int i = 0; i < dupCorrectProducts.Count - 1; i++)
+                        for (int i = 0; i < dupCorrectProducts.Count; i++)
                         {
                             if (status == true)
                             {
                                 break;
                             }
-                            for (int j = 0; j < dupCorrectProducts[j].Count; j++)
+                            for (int j = 0; j < dupCorrectProducts[i].Count; j++)
                             {
                                 var nameDupProduct = dupCorrectProducts[i][j].Name;
                                 if (productNames[h].ToString() == nameDupProduct.ToString())
@@ -1134,7 +1135,7 @@ namespace SmartB.UI.Controllers
                                     status = true;
                                     break;
                                 }
-                                Session["duplicateProducts"] = dupCorrectProducts;
+                                Session["duplicateProductsDB"] = dupCorrectProducts;
                             }
 
                             if (dupCorrectProducts[i].Count == 0)
