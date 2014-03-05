@@ -19,6 +19,7 @@ namespace SmartB.UI.Models.EntityFramework
             this.ParseInfoes = new HashSet<ParseInfo>();
             this.SellProducts = new HashSet<SellProduct>();
             this.UserPrices = new HashSet<UserPrice>();
+            this.MarketDistances = new HashSet<MarketDistance>();
         }
     
         public int Id { get; set; }
@@ -31,5 +32,6 @@ namespace SmartB.UI.Models.EntityFramework
         public virtual ICollection<ParseInfo> ParseInfoes { get; set; }
         public virtual ICollection<SellProduct> SellProducts { get; set; }
         public virtual ICollection<UserPrice> UserPrices { get; set; }
+        public virtual ICollection<MarketDistance> MarketDistances { get; set; }
     }
 }

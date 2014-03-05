@@ -1,0 +1,99 @@
+﻿@model SmartB.UI.Models.EntityFramework.Market
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
+}
+
+@section headScript
+{
+    <style>
+        #map-canvas {
+            width: inherit;
+            height: 600px;
+        }
+    </style>
+
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+    
+    <script type="text/javascript">
+        var map, marketAddress;
+        
+        function initialize() {
+            var center = new google.maps.LatLng(10.791658, 106.658163);
+            var mapOptions = {
+                zoom: 15
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"),
+                mapOptions);
+            
+            @if (Model != null)
+            {
+                <text>
+                    center = new google.maps.LatLng(@Model.Latitude, @Model.Longitude);
+                </text>
+            }
+
+            map.setCenter(center);
+
+            marketAddress = new google.maps.places.Autocomplete(document.getElementById('Address'), { types: ['geocode'] });
+
+            google.maps.event.addListener(marketAddress, 'place_changed', function () {
+                var place = marketAddress.getPlace();
+                var lat = place.geometry.location.lat();
+                var lng = place.geometry.location.lng();
+
+                $('#Latitude').val(lat);
+                $('#Longitude').val(lng);
+
+                var marker = new google.maps.Marker({
+                    position: place.geometry.location,
+                    map: map,
+                    animation: google.maps.Animation.DROP
+                });
+                
+                map.setCenter(new google.maps.LatLng(lat, lng));
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+}
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget">
+            <div class="widget-header">
+                <span class="title">Tạo chợ mới</span>
+            </div>
+            <div class="widget-content form-container">
+                @using (Html.BeginForm("Create", "Market", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.HiddenFor(x => x.Latitude, new { id = "Latitude" })
+                    @Html.HiddenFor(x => x.Longitude, new { id = "Longitude" })
+                    <div class="control-group">
+                        <label class="control-label" for="Name">Tên chợ</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(x => x.Name, new { id = "Name", @class = "span12" })
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="Address">Địa chỉ</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(x => x.Address, new { id = "Address", @class = "span12" })
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-primary" value="Tạo chợ mới"/>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div id="map-canvas"></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

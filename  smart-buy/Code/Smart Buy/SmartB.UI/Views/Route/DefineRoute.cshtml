@@ -12,7 +12,9 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/RouteBoxer.js")"></script>
 
     <script type="text/javascript">
-        var map, fromAddress, toAddress, fromLocation, toLocation, directionsDisplay, directionsService, boxes;
+        var map, fromAddress, toAddress, fromLocation, toLocation, 
+            directionsDisplay, directionsService, boxes;
+        var nearbyMarkets = [];
         var data = { };
         var rboxer = new RouteBoxer();
         var distance = 0.5; // km
@@ -26,6 +28,7 @@
             };
             map = new google.maps.Map(document.getElementById("map-canvas"),
                 mapOptions);
+            
             directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
             directionsDisplay.setMap(map);
             directionsService = new google.maps.DirectionsService();
@@ -62,7 +65,7 @@
                     boxes = rboxer.box(path, distance);
 
                     //drawBoxes(boxes);
-                    search_market(boxes);
+                    nearbyMarkets = search_market(boxes);
                 }
             });
         }
@@ -126,18 +129,26 @@
         }
 
         function search_market(boxes) {
+            var m = [];
             for (var i = 0; i < marketList.length; i++) {
                 if (is_inBound(boxes, marketList[i].position)) {
-                    var tmp = $('#MarketId').val();
-                    if (tmp != "") {
-                        tmp += ',' + marketList[i].id;
-                    } else {
-                        tmp = marketList[i].id;
-                    }
-                    $('#MarketId').val(tmp);
+                    m.push(marketList[i]);
                     create_marker(marketList[i]);
                 }
             }
+            return m;
+        }
+
+        function set_market_textbox(markets) {
+            var str = "";
+            for (var i = 0; i < markets.length; i++) {
+                if (str != "") {
+                    str += ',' + markets[i].id;
+                } else {
+                    str = markets[i].id;
+                }
+            }
+            $('#MarketId').val(str);
         }
 
         function save_waypoints() {
@@ -180,6 +191,7 @@
 
             $('#SaveRoute').click(function() {
                 $('#JsonRoute').val(save_waypoints);
+                set_market_textbox(nearbyMarkets);
                 $('#MapForm').submit();
             }); // end click
 
@@ -247,7 +259,7 @@
         <input type="text" id="ToAddress" placeholder="Địa chỉ đến" style="width: 400px" />
         @using (Html.BeginForm("DefineRoute", "Route", FormMethod.Post, new { id = "MapForm" }))
         {
-            <input type="hidden" id="MarketId" name="MarketId" />
+            <input type="hidden" id="MarketId" name="MarketId" /> 
             <input type="hidden" id="JsonRoute" name="Route" />
             <div class="stylish-button">
                 <a id="GetWay">

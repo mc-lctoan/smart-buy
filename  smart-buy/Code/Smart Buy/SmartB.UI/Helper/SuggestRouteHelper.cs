@@ -9,22 +9,41 @@ namespace SmartB.UI.Helper
 {
     public class SuggestRouteHelper
     {
+        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets)
+        {
+            AllProducts = allProducts;
+            Markets = markets;
+            CannotBuyProducts = CannotBuy();
+            CanBuyProducts = AllProducts.Except(CannotBuyProducts).ToList();
+        }
+
         public List<Product> AllProducts { get; set; }
         public List<Product> CanBuyProducts { get; set; }
         public List<Product> CannotBuyProducts { get; set; }
         public List<Market> Markets { get; set; }
 
+        public KeyValuePair<double, double> Start { get; set; }
+        public KeyValuePair<double, double> End { get; set; }
+
         private const int LargeNumber = 10000;
+
+        // TODO: Put in configuration file later
+        private const double Fuel = 0.625;
 
         /// <summary>
         /// Construct the algorithm
         /// </summary>
         /// <param name="allProducts">Each product must include its sell price and product attribute</param>
         /// <param name="markets">Nearby markets</param>
-        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets)
+        /// <param name="start">Starting point</param>
+        /// <param name="end">Ending point</param>
+        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets,
+            KeyValuePair<double, double> start, KeyValuePair<double, double> end)
         {
             AllProducts = allProducts.Distinct().ToList();
             Markets = markets;
+            Start = start;
+            End = end;
             CannotBuyProducts = CannotBuy();
             CanBuyProducts = AllProducts.Except(CannotBuyProducts).ToList();
         }
@@ -75,7 +94,7 @@ namespace SmartB.UI.Helper
         {
             int row = CanBuyProducts.Count;
             int col = Markets.Count;
-            var matrix = new int[row,col];
+            var matrix = new int[row, col];
 
             // Initialize matrix
             for (int i = 0; i < row; i++)
@@ -112,6 +131,72 @@ namespace SmartB.UI.Helper
         }
 
         /// <summary>
+        /// Create moving cost matrix
+        /// </summary>
+        /// <returns>It costs matrix[i,j] to move from market[i] to market[j]</returns>
+        private int[,] CreateDistanceMatrix()
+        {
+            int row = Markets.Count;
+            int col = row;
+            var matrix = new int[row, col];
+
+            using (var context = new SmartBuyEntities())
+            {
+                for (int i = 0; i < Markets.Count - 1; i++)
+                {
+                    matrix[i, i] = 0;
+
+                    for (int j = i + 1; j < Markets.Count; j++)
+                    {
+                        int fromId = Markets[i].Id;
+                        int toId = Markets[j].Id;
+                        var mDis = context.MarketDistances
+                            .FirstOrDefault(x => x.FromMarket == fromId && x.ToMarket == toId);
+                        if (mDis != null)
+                        {
+                            var tmp = mDis.Distance*Fuel;
+                            var price = Math.Round(tmp.Value);
+
+                            matrix[i, j] = matrix[j, i] = (int) price;
+                        }
+                        else
+                        {
+                            matrix[i, j] = matrix[j, i] = LargeNumber;
+                        }
+                    }
+                }
+                matrix[Markets.Count - 1, Markets.Count - 1] = 0;
+            }
+
+            return matrix;
+        }
+
+        /// <summary>
+        /// Calculate the cost to move from one point to each nearby market
+        /// </summary>
+        /// <param name="point">
+        /// Key: latitude,
+        /// Value: longitude
+        /// </param>
+        /// <returns>Array of cost</returns>
+        private int[] DistanceToAllMarkets(KeyValuePair<double, double> point)
+        {
+            var result = new int[Markets.Count];
+            var math = new MathHelper();
+
+            for (int i = 0; i < Markets.Count; i++)
+            {
+                var lat = Double.Parse(Markets[i].Latitude);
+                var lng = Double.Parse(Markets[i].Longitude);
+                var distance = math.CalculateDistance(point.Key, point.Value, lat, lng);
+                var price = Math.Round(distance * Fuel);
+                result[i] = (int) price;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Suggest the best way to buy
         /// </summary>
         /// <returns>Data represents the suggestion</returns>
@@ -123,10 +208,14 @@ namespace SmartB.UI.Helper
             }
 
             int[,] matrix = CreateMatrix();
+            int[,] distance = CreateDistanceMatrix();
+            //int[] costFromStart = DistanceToAllMarkets(Start);
+            //int[] costToEnd = DistanceToAllMarkets(End);
+
             int m = CanBuyProducts.Count;
             int n = Markets.Count;
-            var total = new int[m,n];
-            var traceY = new int[m,n];
+            var total = new int[m, n];
+            var traceY = new int[m, n];
 
             // Initialize array
             for (int i = 0; i < m; i++)
@@ -153,19 +242,13 @@ namespace SmartB.UI.Helper
                     for (int k = 0; k < n; k++)
                     {
                         // Can buy?
-                        if (total[i, j] > total[i - 1, k] + matrix[i, j])
+                        if (total[i, j] > total[i - 1, k] + matrix[i, j] + distance[k, j])
                         {
                             // Buy
-                            total[i, j] = total[i - 1, k] + matrix[i, j];
+                            total[i, j] = total[i - 1, k] + matrix[i, j] + distance[k, j];
 
                             // Save to trace
                             traceY[i, j] = k;
-
-                            // TODO: Penalty
-                            if (k != j)
-                            {
-                                total[i, j] += 3;
-                            }
                         }
                     }
                 }
