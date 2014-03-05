@@ -19,18 +19,34 @@
 
     <!-- Uniform Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/uniform/css/uniform.default.css")" />
+    
+    @*<!-- Plugin Stylsheets first to ease overrides -->
+
+    <!-- iButton -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/ibutton/jquery.ibutton.css")" media="screen" />
+
+    <!-- Circular Stat -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/circular-stat/circular-stat.css")" />
+
+    <!-- Fullcalendar -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/fullcalendar/fullcalendar.css")" media="screen" />
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/fullcalendar/fullcalendar.print.css")" media="print" />
+
+    <!-- End Plugin Stylesheets -->*@
 
     <!-- Main Layout Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/assets/css/fonts/icomoon/style.css")" media="screen" />
     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/assets/css/mooncake.min.css")" media="screen" />
     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/assets/css/plugins/plugins.min.css")" media="screen" />
+    
+    @RenderSection("headScript", false)
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
-    <title>@ViewBag.Title</title>
+    <title>@ViewBag.Title | Smart Buy</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
@@ -122,10 +138,10 @@
                                     <li>
                                         <span title="Table">
                                             <i class="icon-table"></i>
-                                            <span class="nav-title">Table</span>
+                                            <span class="nav-title">Dữ liệu</span>
                                         </span>
                                         <ul class="inner-nav">
-                                            <li><a href="tables.html"><i class="icol-style"></i>Static Tables</a></li>
+                                            <li><a href="@Url.Action("UploadProduct", "Import")"><i class="icol-doc-excel-table"></i>Nhập từ Excel</a></li>
                                             <li><a href="responsive_tables.html"><i class="icol-hammer-screwdriver"></i>Responsive Tables</a></li>
                                             <li><a href="data_tables.html"><i class="icol-table"></i>Data Tables</a></li>
                                             <li><a href="detail_view.html"><i class="icol-eye"></i>Detail View Table</a></li>
@@ -244,6 +260,36 @@
     <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/jui/jquery-ui.custom.min.js")"></script>
     <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/jui/timepicker/jquery-ui-timepicker.min.js")"></script>
     <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/jui/jquery.ui.touch-punch.min.js")"></script>
+    
+    @*<!-- Plugin Scripts -->
+
+    <!-- Flot -->
+    <!--[if lt IE 9]>
+    <script src="assets/js/libs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/flot/jquery.flot.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/flot/plugins/jquery.flot.tooltip.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/flot/plugins/jquery.flot.pie.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/flot/plugins/jquery.flot.resize.min.js")"></script>
+
+    <!-- Circular Stat -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/circular-stat/circular-stat.min.js")"></script>
+
+    <!-- SparkLine -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/sparkline/jquery.sparkline.min.js")"></script>
+
+    <!-- iButton -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/ibutton/jquery.ibutton.js")"></script>
+
+    <!-- Full Calendar -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/fullcalendar/fullcalendar.min.js")"></script>
+
+    <!-- DataTables -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/jquery.dataTables.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/TableTools/js/TableTools.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/dataTables.bootstrap.js")"></script>*@
+    
+    @RenderSection("footScript", false)
 </body>
 
 </html>

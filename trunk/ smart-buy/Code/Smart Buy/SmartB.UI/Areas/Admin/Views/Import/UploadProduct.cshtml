@@ -1,0 +1,1217 @@
+﻿@using PagedList.Mvc
+@model SmartB.UI.Models.ListSellProductModel
+
+@{
+    ViewBag.Title = "Nhập từ Excel";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
+}
+
+@section headScript
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+}
+
+@section footScript
+{
+    <!-- File Input -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/bootstrap-fileinput.min.js")"></script>
+    
+    <!-- DataTables -->
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/jquery.dataTables.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/TableTools/js/TableTools.min.js")"></script>
+    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/dataTables.bootstrap.js")"></script>
+}
+
+<script>   
+    function saveProduct(index, maxCorrect) {
+        var productId = $("#ProductId" + index).val();
+        var productName = $("#ProductName" + index).val();
+        var productMarketName = $("#ProductMarketName" + index).val();
+        var productPrice = $("#ProductPrice" + index).val();
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SaveProductError", "Import")',
+            data: { ProductId: productId, ProductName: productName, ProductMarketName: productMarketName, ProductPrice: productPrice },
+            cache: true,
+            success: function (result) {
+                if (result.error.length == 0) {
+                    var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
+                    var id = result.id;
+                    $("#ErrorArea").html("");
+                    if(result.status.toString() == "Duplicate Products List")
+                    {
+                        alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
+                        $("#table_"+result.tableId).find("tr:last").after("<tr><td><input type='checkbox' checked/></td> " +
+                                                                              "<td>"+productName+"</td> " +
+                                                                              "<td>"+ productMarketName+"</td>" +
+                                                                              "<td>"+ productPrice+"</td>" +
+                                                                              "<td style='float:left;margin-left:30%'> "+
+                                                                              "<input type='radio' name='productPrice_"+result.tableId+"'  id='Check_"+result.tableId+"'/> "+
+                                                                           "</tr>")
+                        $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                    }
+                    if(result.status.toString() == "Correct Products List")
+                    {
+                        alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
+                        var dupTableCount = result.count -2;
+                        idDupTable = result.count -1;
+                        $("#dupTable_"+dupTableCount).after("<br /> "+
+                                                        "<div  style='border-style:dotted;border-width:2px' id='dupTable_"+idDupTable +"' > " +
+                                                        "<table id='table_"+idDupTable+"'> " +
+                                                                "<tr id='header_"+idDupTable+"' style='font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold'> "+
+                                                                   "<td></td> " +
+                                                                   "<td style='padding: 8px; width: 300px;'>Tên Sản Phẩm</td>"+
+                                                                   "<td style='padding: 8px; width: 200px;'>Tên Chợ</td> "+
+                                                                   "<td style='padding: 8px; width: 100px;'>Giá</td> "+
+                                                                   "<td style='padding: 8px; width: 100px;'>Chọn giá</td> " +
+                                                                "</tr> "+
+                                                       
+                                                                "<tr><td><input type='checkbox' checked /></td> " +
+                                                                                 "<td>"+productName+"</td> " +
+                                                                                 "<td>"+ productMarketName+"</td>" +
+                                                                                 "<td>"+ productPrice+"</td>" +
+                                                                                 "<td style='float:left;margin-left:30%'><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
+                                                                "</tr> "+
+                                                                "<tr><td><input type='checkbox' /></td> " +
+                                                                                "<td>"+result.correctProductName+"</td> " +
+                                                                                "<td>"+result.correctMarketName+"</td>" +
+                                                                                "<td>"+result.correctProductPrice+"</td>" +
+                                                                                "<td style='float:left;margin-left:30%'><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
+                                                               "</tr> "+
+                                                           "</table>"+
+                                                                "<br /> "+
+                                                               "<input type='button' value='Gộp' onclick='mergeProduct("+idDupTable+")' class='primary' style='margin-left: 525px;' id='combine_"+idDupTable+"' /> "+
+                                                               "<input type='button' value='Tách'  onclick='split("+idDupTable+")' id='split_"+idDupTable+"' />"+
+                                                               "</div> ");
+
+                        $("#ProductTable tr#product_"+result.tableCorrectId).remove();
+                        $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                    } else if(result.status.toString() != "Duplicate Products List" && result.status.toString() != "Correct Products List")
+                    {
+                        $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
+                                                 "'></input></td><td style='width:202px'><input readonly value='" + productMarketName + "'>" +
+                                                "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
+                                                "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                        $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                    }
+                }
+                else {
+                    var errordisp = "";
+                    $.each(result.error, function (index, value) {
+                        errordisp += "<label style='color: red'>" + value + "</label>"
+                    });
+                    $("#ErrorArea").html(errordisp);
+                    if(result.error.toString() == "Sản phẩm đã có.")
+                    {
+                        var message = confirm("Sản phẩm đã có, bạn có muốn cập nhật sản phẩm này?")
+                        if(message == true)
+                        {
+                            if(result.id) {
+                                $("#product_"+result.id).find("td").find("input")[2].value = result.updatedPrice;
+                                $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                                $("#ErrorArea").html("");
+                            }
+                            return true;
+                        }else
+                        {
+                            return false;
+                        }
+                    }
+                    return false;
+                }
+            }
+        });
+    }
+    function deleteProduct(id){
+        var productId = $("#ProductId" + id).val();
+        var message = confirm("Bạn có muốn xóa sản phẩm này?")
+        $.ajax({
+            type: "DELETE",
+            url: '@Url.Action("DeleteProduct", "Import")',
+            data: { id: id},
+            cache: true,
+            success: function (result) {
+                if(message == true)
+                {
+                    $("#product_"+id).remove();
+                    return true;
+                }else 
+                {
+                    return false;
+                }
+                    
+            }
+        });
+
+    }
+    function saveCorrectProduct(products) {
+
+        $('#ProductTable tr').each(function (index) {
+            console.log(index);
+            $(this).find('td').each(function (i) {
+                //do your stuff, you can use $(this) to get current cell
+                if (index > 0) {
+                    if (i == 0) {
+                        console.log($(this).text());
+                    }
+                    var td = $(this);
+                    if (td.find('input')) {
+                        console.log(td.find('input').val());
+                    }
+                }
+            })
+        })
+    }
+    function setTable(what){
+        if(document.getElementById(what).style.display=="none"){
+            document.getElementById(what).style.display="block";
+        }
+        else if(document.getElementById(what).style.display=="block"){
+            document.getElementById(what).style.display="none";
+        }
+    }
+
+       
+
+    function Product(id,checkbox ,productName, productMarket, price, checked) {
+        this.id = id;
+        this.checkbox = checkbox;
+        this.productName = productName;
+        this.productMarket = productMarket;
+        this.price = price;
+        this.checked = checked;
+    }
+
+    function mergeProduct(i) {
+       
+        var duplicateTable = $("#table_"+i);
+        var listTr = duplicateTable.find("tr");
+        var products = [];
+        for(var j = 0; j < listTr.length; j++) {
+            if(listTr[j].id != 'header_'+i) {
+                var cells = listTr[j].cells;
+                for (var l = 0; l < 2; l++) {
+                    var checkbox = cells[0].childNodes[l].checked;
+                    if(checkbox == true || checkbox == false)
+                    {
+                        break;
+                    }
+                }
+                
+                var name = cells[1].innerHTML;
+                var market = cells[2].innerHTML;
+                var price = cells[3].innerHTML;
+                for (var m  = 0; m < 2; m++) {
+                    var checked = cells[4].childNodes[m].checked;
+                    if(checked == true|| checked == false)
+                    {
+                        break;
+                    }
+                }
+                if(checkbox == true){
+                    var product = new Product(j,checkbox,name,market,price,checked);
+                    products.push(product);
+                }
+            }
+        }
+        if(products.length < 2)
+        {
+            alert("Vui lòng chọn ít nhất 2 sản phẩm.");
+        } else
+        {
+            var testChecked = false;
+            for (var c = 0; c < products.length; c++) {
+                if(products[c].checked == false)
+                {
+                    testChecked = false;
+                } else 
+                {
+                    testChecked = true;
+                    break;
+                }
+            }
+            if(testChecked == false)
+            {
+                alert("Vui lòng chọn giá của sản phẩm đã chọn.");
+            } else {
+                var productName = "";
+                var productMarket = "";
+                var productPrice;
+                var nonstop = true;
+                for(var n = 0; n < products.length && nonstop; n++) {
+                    if(products[n].checked) {
+                        var temp = products[0];
+                        products[0] = products[n];
+                        products[n] = temp;
+                        nonstop = false;
+                    }
+                }
+                for(var k = 0; k < products.length; k++) {
+                    if (k != products.length) {
+                        productName += products[k].productName + ";";
+
+                    } else {
+                        productName += products[k].productName;
+                    }
+                    productMarket = products[k].productMarket;
+                    if (products[k].checked) {
+                        productPrice = products[k].price;
+                    }
+                }
+                
+                var finalProduct = new Product(0, productName, productMarket, productPrice, true);
+                    
+                var id = parseInt($('#ProductTable tr:last #STT').html());
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateSession", "Import")',
+                    data: { ProductId: id, ProductName: productName, ProductMarketName: productMarket, ProductPrice: productPrice },
+                    cache: true,
+                    success: function (newId) {
+                        var id = newId;
+                        var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
+                        $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
+                                                 "'></input></td><td style='width:202px'><input readonly value='" + productMarket + "'>" +
+                                                "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
+                                                "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                        // var testChecked = false;
+                        for (var h = 0; h < products.length; h++) {
+                                
+                            if(h >0){
+                                    
+                                if(products[h].id != 1){
+                                    $("#dupTable_"+i).find("tr")[products[h].id -h].remove();
+                                } 
+                                else
+                                {
+                                    $("#dupTable_"+i).find("tr")[products[h].id ].remove();
+                                }
+                            } 
+                            else
+                            {
+                                $("#dupTable_"+i).find("tr")[products[h].id].remove();
+                            }
+                            if($("#dupTable_"+i).find("tr")[1] == null)
+                            {
+                                $("#dupTable_"+i).remove();
+                            }
+                        }
+                        if(listTr.length = 2)
+                        {
+                            $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
+                            $("#split_"+i).click()
+                        }
+                    }
+                });
+                
+            }
+        }
+        
+    }
+    
+    function mergeAll(i)
+    {
+        $("#_page_3").find("table").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
+        
+        $('input[value="Gộp"]').click()
+    }
+    function split(i) 
+    {
+        var duplicateTable = $("#table_"+i);
+        var listTr = duplicateTable.find("tr");
+        var products = [];
+            
+        for(var j = 0; j < listTr.length; ++j) {
+            if(listTr[j].id != 'header_'+i) {
+                var cells = listTr[j].cells;
+                //var checkbox = cells[0].childNodes[1].checked;
+                for (var l = 0; l < 2; l++) {
+                    var checkbox = cells[0].childNodes[l].checked;
+                    if(checkbox == true || checkbox == false)
+                    {
+                        break;
+                    }
+                }
+                var name = cells[1].innerHTML;
+                var market = cells[2].innerHTML;
+                var price = cells[3].innerHTML;
+                for (var m  = 0; m < 2; m++) {
+                    var checked = cells[4].childNodes[m].checked;
+                    if(checked == true|| checked == false)
+                    {
+                        break;
+                    }
+                }
+                if(listTr.length < 4)
+                {
+                    var product = new Product(j,checkbox,name,market,price,checked);
+                    products.push(product);
+                }
+                else 
+                    if(checkbox == true){
+                        var product = new Product(j,checkbox,name,market,price,checked);
+                        products.push(product);
+                    }
+            }
+        }
+        if(products.length < 1)
+        {
+            alert("Vui lòng chọn ít nhất 1 sản phẩm để tách.");
+        } 
+        else {
+            var id = parseInt($('#ProductTable tr:last #STT').html());
+            for (var k = 0; k < products.length; k++) 
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateSession", "Import")',
+                    data: { ProductId: id, ProductName: products[k].productName, ProductMarketName: products[k].productMarket, ProductPrice: products[k].price },
+                    cache: true,
+                    success: function (result) {
+                       
+                        var id = result.id;
+                        var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
+                        //var name = products[k].productName;
+                        //var market = products[k].productMarket;
+                        //var price = products[k].price;
+                        $("#ProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + result.correctProductName +
+                                                      "'></input></td><td style='width:202px'><input value='" + result.correctMarketName + "'>" +
+                                                     "</input></td><td style='width:176px'><input value='" + result.correctProductPrice + "'>" +
+                                                     "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                       
+                    }
+                });
+                if(k >0)
+                {
+                    //if(products[k].id != 1 ){
+                                  
+                    //    $("#dupTable_"+i).find("tr")[products[k].id -k].remove();
+                    //} 
+                    //else
+                    //{
+                    $("#dupTable_"+i).find("tr")[products[k].id - k].remove();
+                    //}
+                } 
+                else
+                {
+                    $("#dupTable_"+i).find("tr")[products[k].id].remove();
+                }
+            }
+        }
+        if($("#dupTable_"+i).find("tr")[1] != null && $("#dupTable_"+i).find("tr")[2] == null)
+        {
+            $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
+            split(i);
+        }
+                    
+        if($("#dupTable_"+i).find("tr")[1] == null)
+        {
+            $("#dupTable_"+i).remove();
+        }
+    }
+    function mergeProduct1(i) {
+       
+        var duplicateTable = $("#table_"+i);
+        var listTr = duplicateTable.find("tr");
+        var products = [];
+        for(var j = 0; j < listTr.length; j++) {
+            if(listTr[j].id != 'header_'+i) {
+                var cells = listTr[j].cells;
+                for (var l = 0; l < 2; l++) {
+                    var checkbox = cells[0].childNodes[l].checked;
+                    if(checkbox == true || checkbox == false)
+                    {
+                        break;
+                    }
+                }
+                
+                var name = cells[1].innerHTML;
+                var market = cells[2].innerHTML;
+                var price = cells[3].innerHTML;
+                for (var m  = 0; m < 2; m++) {
+                    var checked = cells[4].childNodes[m].checked;
+                    if(checked == true|| checked == false)
+                    {
+                        break;
+                    }
+                }
+                if(checkbox == true){
+                    var product = new Product(j,checkbox,name,market,price,checked);
+                    products.push(product);
+                }
+            }
+        }
+        if(products.length < 2)
+        {
+            alert("Vui lòng chọn ít nhất 2 sản phẩm.")
+        } else
+        {
+            var testChecked = false;
+            for (var c = 0; c < products.length; c++) {
+                if(products[c].checked == false)
+                {
+                    testChecked = false;
+                } else 
+                {
+                    testChecked = true;
+                    break;
+                }
+            }
+            if(testChecked == false)
+            {
+                alert("Vui lòng chọn giá của sản phẩm đã chọn.")
+            } else {
+                var productName = "";
+                var productMarket = "";
+                var productPrice;
+                var nonstop = true;
+                //for(var n = 0; n < products.length && nonstop; n++) {
+                //    if(products[n].checked) {
+                //        var temp = products[n];
+                //        products[n] = products[0];
+                //        products[0] = temp;
+                //        nonstop = false;
+                //    }
+                //}
+                for(var k = 0; k < products.length; k++) {
+                    if (k != products.length) {
+                        productName += products[k].productName + ";"
+
+                    } else {
+                        productName += products[k].productName;
+                    }
+                    productMarket = products[k].productMarket;
+                    if (products[k].checked) {
+                        productPrice = products[k].price;
+                    }
+                }
+                
+                var finalProduct = new Product(0,checkbox, productName, productMarket, productPrice, true);
+                    
+                var id = parseInt($('#dupSellProductTable tr:last #STT').html());
+                
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateSession", "Import")',
+                    data: { ProductId: id, ProductName: productName, ProductMarketName: productMarket, ProductPrice: productPrice },
+                    cache: true,
+                    success: function (result) {
+                        var id = result.id;
+                        var stt = parseInt($('#dupSellProductTable tr:last #STT').html()) + 1;
+                        if(stt.toString() == "NaN")
+                        {
+                            stt = 1;
+                        }
+                        $("#dupSellProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input readonly value='" + productName +
+                                                 "'></input></td><td style='width:202px'><input readonly value='" + productMarket + "'>" +
+                                                "</input></td><td style='width:176px'><input readonly value='" + productPrice + "'>" +
+                                                "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                        // var testChecked = false;
+                        for (var h = 0; h < products.length; h++) {
+                                
+                            if(h >0){
+                                    
+                                if(products[h].id != 1){
+                                    $("#dupTable_"+i).find("tr")[products[h].id -h].remove();
+                                } 
+                                else
+                                {
+                                    $("#dupTable_"+i).find("tr")[products[h].id ].remove();
+                                }
+                            } 
+                            else
+                            {
+                                $("#dupTable_"+i).find("tr")[products[h].id].remove();
+                            }
+                            if($("#dupTable_"+i).find("tr")[1] == null)
+                            {
+                                $("#dupTable_"+i).remove();
+                            }
+                        }
+                        if(listTr.length = 2)
+                        {
+                            $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
+                            $("#split_"+i).click()
+                        }
+                        $("#MessageArea").html("");
+                    }
+                });
+                
+            }
+        }
+        
+    }
+    function split1(i) 
+    {
+        var duplicateTable = $("#table_"+i);
+        var listTr = duplicateTable.find("tr");
+        var products = [];
+            
+        for(var j = 0; j < listTr.length; ++j) {
+            if(listTr[j].id != 'header_'+i) {
+                var cells = listTr[j].cells;
+                //var checkbox = cells[0].childNodes[1].checked;
+                for (var l = 0; l < 2; l++) {
+                    var checkbox = cells[0].childNodes[l].checked;
+                    if(checkbox == true || checkbox == false)
+                    {
+                        break;
+                    }
+                }
+                var name = cells[1].innerHTML;
+                var market = cells[2].innerHTML;
+                var price = cells[3].innerHTML;
+                for (var m  = 0; m < 2; m++) {
+                    var checked = cells[4].childNodes[m].checked;
+                    if(checked == true|| checked == false)
+                    {
+                        break;
+                    }
+                }
+                if(listTr.length < 4)
+                {
+                    var product = new Product(j,checkbox,name,market,price,checked);
+                    products.push(product);
+                }
+                else if(checkbox == true){
+                    var product = new Product(j,checkbox,name,market,price,checked);
+                    products.push(product);
+                }
+            }
+        }
+        if(products.length < 1)
+        {
+            alert("Vui lòng chọn ít nhất 1 sản phẩm để tách.")
+        } 
+        else {
+            var id = parseInt($('#dupSellProductTable tr:last #STT').html());
+            for (var k = 0; k < products.length; k++) 
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateSession", "Import")',
+                    data: { ProductId: id, ProductName: products[k].productName, ProductMarketName: products[k].productMarket, ProductPrice: products[k].price },
+                    cache: true,
+                    success: function (result) {
+                       
+                        var id = result.id;
+                        var stt = parseInt($('#dupSellProductTable tr:last #STT').html()) + 1;
+                        if(stt.toString() == "NaN")
+                        {
+                            stt = 1;
+                        }
+                        //var name = products[k].productName;
+                        //var market = products[k].productMarket;
+                        //var price = products[k].price;
+                        $("#dupSellProductTable tr:last").after("<tr id='product_"+id+"' style='display: table-row;'><td id='STT'>" + stt + "</td><td style='width:187px'><input value='" + result.correctProductName +
+                                                      "'></input></td><td style='width:202px'><input value='" + result.correctMarketName + "'>" +
+                                                     "</input></td><td style='width:176px'><input value='" + result.correctProductPrice + "'>" +
+                                                     "</input></td><td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input><td></tr>")
+                       
+                    }
+                });
+                
+                if(k >0)
+                {
+                    if(products[k].id != 1){
+                                  
+                        $("#dupTable_"+i).find("tr")[products[k].id -k].remove();
+                    } 
+                    else
+                    {
+                        $("#dupTable_"+i).find("tr")[products[k].id].remove();
+                    }
+                } 
+                else
+                {
+                    $("#dupTable_"+i).find("tr")[products[k].id].remove();
+                }
+                        
+                if($("#dupTable_"+i).find("tr")[1] == null)
+                {
+                    $("#dupTable_"+i).remove();
+                }
+            }
+        }
+        $("#MessageArea").html("");
+    }
+    
+    function splitAll(i)
+    {
+        $("#_page_3").find("table").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
+        
+        $('input[value="Tách"]').click()
+                
+    }
+    function saveFile()
+    {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("exportTxt", "Import")',
+            data: { },
+            cache: true,
+            success: function (message) {
+                alert(message);
+            }
+        });
+    }
+</script>
+
+<h2 style="font-size: x-large; font-weight: bold" class="strong">Thêm Sản Phẩm</h2>
+
+<form action="@Url.Action("UploadProduct", "Import")" enctype="multipart/form-data" method="post">
+    <div class="control-group">
+        <label class="control-label" for="excelFile">Chọn file excel</label>
+        <div class="controls">
+            <input type="file" id="excelFile" name="excelFile" data-provide="fileinput" />
+        </div>
+    </div>
+    <input type="submit" value="Tải lên!" class="btn btn-primary" />
+</form>
+
+<div id="dashboard-demo" class="tabbable analytics-tab paper-stack">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#" data-target="#live" data-toggle="tab">
+                <i class="icon-history"></i>
+                Danh sách sản phẩm
+            </a>
+        </li>
+        <li>
+            <a href="#" data-target="#math" data-toggle="tab">
+                <i class="icon-graph"></i>
+                Sản phẩm lỗi
+            </a>
+        </li>
+        <li>
+            <a href="#" data-target="#fb" data-toggle="tab">
+                <i class="icon-facebook"></i>
+                Sản phẩm trùng
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="live" class="tab-pane active">
+            <div class="analytics-tab-header clearfix">
+                Header 1
+            </div>
+            <div class="analytics-tab-content">
+                @using (Html.BeginForm("SaveProducts", "Import"))
+                {
+                    if (@ViewBag.dupSellProduct != null)
+                    {
+
+                        if (@ViewBag.countInsert != null || @ViewBag.countUpdate != null)
+                        {
+                            if (@ViewBag.countInsert.ToString() != "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() != "Có 0 sản phẩm được cập nhật giá.")
+                            {
+                    <div id="MessageArea">
+                        <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countUpdate </label>
+                        <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countInsert</label>
+                        <label style="color: blue; font-weight: bold; font-size: larger">
+                            Có <b>@ViewBag.dupSellProduct.Count </b>sản phẩm bị trùng 
+                        </label>
+                    </div>
+                            }
+                            else if (@ViewBag.countInsert.ToString() == "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() != "Có 0 sản phẩm được cập nhật giá.")
+                            { 
+                    <div id="MessageArea">
+                        <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countUpdate </label>
+                        <label style="color: blue; font-weight: bold; font-size: larger">
+                            Có <b>@ViewBag.dupSellProduct.Count </b>sản phẩm bị trùng 
+                        </label>
+                    </div>
+                            }
+                            else if (@ViewBag.countInsert.ToString() != "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() == "Có 0 sản phẩm được cập nhật giá.")
+                            {
+                    <div id="MessageArea">
+                        <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countInsert</label>
+                        <label style="color: blue; font-weight: bold; font-size: larger">
+                            Có <b>@ViewBag.dupSellProduct.Count </b>sản phẩm bị trùng 
+                        </label>
+                    </div>
+                            }
+                            else if (@ViewBag.countInsert.ToString() == "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() == "Có 0 sản phẩm được cập nhật giá.")
+                            {
+                    <div id="MessageArea">
+                        <label style="color: blue; font-weight: bold; font-size: larger">Không có sản phẩm được lưu mới hoặc cập nhật giá </label>
+                        <label style="color: blue; font-weight: bold; font-size: larger">
+                            Có <b>@ViewBag.dupSellProduct.Count </b>sản phẩm bị trùng 
+                        </label>
+                    </div>
+                            }
+                        }
+
+                    }
+                    else
+                        if (ViewBag.countInsert != null || @ViewBag.countUpdate != null)
+                        {
+                            if (ViewBag.countInsert.ToString() != "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() != "Có 0 sản phẩm được cập nhật giá.")
+                            {
+                    <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countUpdate </label>
+                    <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countInsert</label>
+                            }
+                            else if (ViewBag.countInsert.ToString() == "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() != "Có 0 sản phẩm được cập nhật giá.")
+                            { 
+                    <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countUpdate </label>
+                            }
+                            else if (ViewBag.countInsert.ToString() != "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() == "Có 0 sản phẩm được cập nhật giá.")
+                            {
+                    <label style="color: blue; font-weight: bold; font-size: larger">@ViewBag.countInsert</label>
+                            }
+                            else if (ViewBag.countInsert.ToString() == "Có 0 sản phẩm được lưu mới." & @ViewBag.countUpdate.ToString() == "Có 0 sản phẩm được cập nhật giá.")
+                            {
+                    <label style="color: blue; font-weight: bold; font-size: larger">Không có sản phẩm được lưu mới hoặc cập nhật giá </label>
+                            }
+                        }
+                    if (ViewBag.errorCount >= 5)
+                    {
+                    <label style="color: red; font-weight: bold; font-size: larger">
+                        <text>File có quá nhiều lỗi.</text>
+                        <br />
+                        <text>Vui lòng chỉnh sửa lại đúng thông tin.</text>
+                    </label>
+                    }
+                    if (ViewBag.ExceptionName == "External table is not in the expected format.")
+                    {
+                    <label style="color: red; font-weight: bold; font-size: larger">
+                        <text>File không đúng định dạng.</text>
+                        <br />
+                        <text>Vui lòng chọn định dạng file Excel.</text>
+                    </label>
+                    }
+
+                    if (Model != null && ViewBag.errorCount < 5 && ViewBag.ExceptionName != "External table is not in the expected format.")
+                    {
+                    
+                    <div class="row-fluid">
+                        <div class="span12 widget">
+                            <div class="widget-header">
+                                <span class="title">Danh sách sản phẩm</span>
+                            </div>
+                            <div class="widget-content table-container">
+                                <table class="table table-striped dataTable" id="ProductTable">
+                                    <thead>
+                                        <tr>
+                                            <td style="display: none"></td>
+                                            <th>STT</th>
+                                            <th>Tên Sản Phẩm</th>
+                                            <th>Tên Chợ</th>
+                                            <th>Giá (Ngàn đồng)</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.PagedCorrectProducts.Count; i++)
+                                        {
+                        
+                                            <tr id="product_@i">
+                                                <td style="display: none">
+                                                    @Model.CorrectSellProducts[i].Id
+                                                </td>
+                                                <td id="STT">@(i + 1)</td>
+
+                                                <td>
+                                                    @Model.CorrectSellProducts[i].Name
+                                                </td>
+
+                                                <td>
+                                                    @Model.CorrectSellProducts[i].MarketName
+                                                </td>
+
+                                                <td>
+                                                    @Model.CorrectSellProducts[i].Price
+                                                </td>
+                                                <td>
+                                                    <input type="button" value="X" style="color:red;font-weight:bold" onclick="deleteProduct(@i)" />
+                                                </td>
+                                            </tr>
+                            
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="dt_footer">
+                                    <div class="row-fluid">
+                                        <div class="pagination pagination-right">
+                                            @Html.PagedListPager(Model.PagedCorrectProducts, page => Url.Action("PagedData", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime))
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                   
+                    <br />
+                                        if (@ViewBag.ExceptionName != "External table is not in the expected format.")
+                                        {
+                    <input class="primary" type="submit" name="Lưu lại" value="Lưu lại" />
+                    <input class="bg-gray fg-white" value="Hủy" type="button" onclick='window.location = "@Url.Action("UploadProduct", "Import")    "' />
+                                        }
+                    }
+                    //View sản phẩm trùng với DB              
+                    if (ViewBag.dupSellProduct != null)
+                    {
+                    <table class="table" id="dupSellProductTable">
+                        <lable style="font-size: x-large; font-weight: bold; color: blue">Danh sách sản phẩm 
+                        </lable>
+                        <tr style="font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold">
+                            <td style="padding: 8px; width: 55px;">STT</td>
+                            <td style="padding: 8px; width: 187px;">Tên Sản Phẩm</td>
+                            <td style="padding: 8px; width: 202px;">Tên Chợ</td>
+                            <td style="padding: 8px; width: 176px;">Giá (Ngàn đồng)</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="display: none"></td>
+                            <td style="padding: 8px; width: 55px;" id="STT1"></td>
+
+                            <td style="width: 187px"></td>
+
+                            <td style="width: 202px"></td>
+
+                            <td style="width: 176px"></td>
+
+                        </tr>
+
+                    </table> 
+                
+                    <input class="primary" type="button" name="Lưu lại" value="Lưu lại" onclick="location.href='@Url.Action("SaveDupProducts", "Import")    '"  />
+                               
+                    <input class="bg-gray fg-white" value="Hủy" type="button" onclick='window.location = "@Url.Action("UploadProduct", "Import")    "' />
+                    }
+                    else if (Model != null && ViewBag.errorCount >= 5)
+                    {
+                    <div id="ErrorLinesArea">
+                        <label style="color: red">Tên sản phẩm phải từ 5 đến 100 ký tự</label>
+                        <lable><b style="font-weight:bold;color:blue">Dòng:</b> @for (int i = 0; i < @ViewBag.ErrorNameLines.Count; i++)
+                                                                                {
+                                     @ViewBag.ErrorNameLines[i] <b>,</b>   
+                                                                                }  </lable>
+                        <label style="color: red">Tên chợ phải từ 5 đến 20 ký tự</label>
+                        <lable><b style="font-weight:bold;color:blue">Dòng:</b> @for (int i = 0; i < @ViewBag.ErrorMarketNameLines.Count; i++)
+                                                                                {
+                                     @ViewBag.ErrorMarketNameLines[i] <b>,</b>    
+                                                                                }  </lable>
+                        <label style="color: red">Giá phải từ 1 đến 10000</label>
+                        <lable><b style="font-weight:bold;color:blue">Dòng:</b> @for (int i = 0; i < @ViewBag.ErrorPriceLines.Count; i++)
+                                                                                {
+                                     @ViewBag.ErrorPriceLines[i] <b>,</b>    
+                                                                                }  </lable>
+                    </div> <br />
+                    <input href="#" onclick="setTable('tableProductError');return false" value="Ẩn/Hiện chi tiết" type="button" style="font-weight: bold" />
+                                                                                // Table nhiều hơn 5 lỗi            
+                    <div id="tableProductError" style="display: none;">
+                        <lable style="font-size: x-large; font-weight: bold; color: blue">Danh sách sản phẩm bị lỗi</lable>
+                        <table class="table">
+                            <tr style="font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold">
+                                <td style="padding: 8px; width: 55px;">Số dòng</td>
+                                <td style="padding: 8px; width: 187px;">Tên Sản Phẩm</td>
+                                <td style="padding: 8px; width: 202px;">Tên Chợ</td>
+                                <td style="padding: 8px; width: 176px;">Giá (Ngàn đồng)</td>
+                            </tr>
+
+                            @for (int i = 0; i < Model.InCorrectSellProducts.Count; i++)
+                            {
+                                <tr>
+                                    @Html.HiddenFor(model => model.InCorrectSellProducts[i].Id)
+                                    <td style="padding: 8px; width: 100px;">@Model.InCorrectSellProducts[i].RowNumber</td>
+                                    @if (@Model.InCorrectSellProducts[i].Name.Length < 5 || @Model.InCorrectSellProducts[i].Name.Length > 100)
+                                    {
+                                        <td style="color: red; width: 187px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { style = "color: red;font-weight:bold; width: 155px", @readonly = "readonly" })</td>
+                                        <span>
+                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <td style="width: 187px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { disabled = "disabled", @readonly = "readonly" })</td>
+                                        <span>
+                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
+                                        </span>
+                                    }
+                                    @if (@Model.InCorrectSellProducts[i].MarketName.Length < 5 || @Model.InCorrectSellProducts[i].MarketName.Length > 100)
+                                    {
+                                        <td style="color: red; width: 202px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { style = "color: red;font-weight:bold; width: 155px", @readonly = "readonly" })</td>       
+                                        <span>
+                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].MarketName)</p>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <td style="width: 202px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { disabled = "disabled", @readonly = "readonly" })</td> 
+                                        <span>
+                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].MarketName)</p>
+                                        </span>
+                                       
+                                    }
+                                    @if (@Model.InCorrectSellProducts[i].Price < 1 || @Model.InCorrectSellProducts[i].Price > 10000)
+                                    {
+                                        <td style="color: red; width: 176px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { style = "color: red;font-weight:bold; width: 155px", @readonly = "readonly" })</td>
+                                        <span>
+                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Price)</p>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <td style="width: 176px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { disabled = "disabled", @readonly = "readonly" })</td>
+                                        <span>
+                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Price)</p>
+                                        </span>
+                                    }
+
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                    }
+                }
+            </div>
+        </div>
+        <div id="math" class="tab-pane">
+            <div class="analytics-tab-header clearfix">
+                Header 2
+            </div>
+            <div class="analytics-tab-content">
+                @if (Model != null && @ViewBag.errorCount < 5 && @ViewBag.ExceptionName != "External table is not in the expected format.")
+                {
+                    if (@ViewBag.errorCount > 0)
+                    {
+                    <div id="ErrorArea">
+                        @if (@ViewBag.ExceptionName == "Tên sản phẩm phải từ 5 đến 100 ký tự")
+                        {
+                            <label style="color: red">@ViewBag.ExceptionName</label>
+                        }
+                        @if (@ViewBag.ExceptionMarket == "Tên chợ phải từ 5 đến 20 ký tự")
+                        {
+                            <label style="color: red">@ViewBag.ExceptionMarket</label>
+                        }
+                        @if (@ViewBag.ExceptionPrice == "Giá phải từ 1 đến 10000")
+                        {
+                            <label style="color: red">@ViewBag.ExceptionPrice</label>
+                        }
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12 widget">
+                            <div class="widget-header">
+                                <span class="title">Sản phẩm lỗi</span>
+                            </div>
+                            <div class="widget-content table-container">
+                                <table class="table table-striped" id="ErrorProduct">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên Sản Phẩm</th>
+                                            <th>Tên Chợ</th>
+                                            <th>Giá (Ngàn đồng)</th>
+                                        </tr>
+                                    </thead>
+                                    @for (int i = 0; i < Model.InCorrectSellProducts.Count; i++)
+                                    {
+                                        <tr id="@("ErrorProductTD" + i)">
+                                            @Html.HiddenFor(model => model.InCorrectSellProducts[i].Id, new { id = "ProductId" + i })
+                                            <td>@(i + 1)</td>
+                                            @if (@Model.InCorrectSellProducts[i].Name.Length < 5 || @Model.InCorrectSellProducts[i].Name.Length > 100)
+                                            {
+                                                <td>
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i })
+                                                    <span class="help-block" id="productNameAlert" style="color: Red"></span>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i })
+                                                    <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
+                                                </td>
+                                            }
+                                            @if (Model.InCorrectSellProducts[i].MarketName.Length < 5 || @Model.InCorrectSellProducts[i].MarketName.Length > 100)
+                                            {
+                                                <td>
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i })
+                                                    <span class="help-block" id="marketNameAlert"></span>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i })
+                                                    <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].MarketName)</p>
+                                                </td> 
+                                            }
+                                            @if (Model.InCorrectSellProducts[i].Price < 1 || @Model.InCorrectSellProducts[i].Price > 10000)
+                                            {
+                                                <td>
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i })
+                                                    <span class="help-block" id="priceAlert"></span>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i })
+                                                    <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Price)</p>
+                                                </td>
+                                            }
+                                            <td class="primary">
+                                                <input class="primary" type="button" value="Lưu" onclick="saveProduct(@i,@Model.CorrectSellProducts.Count)"></input>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                }
+            </div>
+        </div>
+        <div id="fb" class="tab-pane">
+            <div class="analytics-tab-header clearfix">
+                Header 3
+            </div>
+            <div class="analytics-tab-content">
+                <input type="button" value="Lưu file" onclick="saveFile()" style="float: right" class="primary" />
+                <input type="button" value="Gộp tất cả" onclick="mergeAll()" class="primary" style="height: 30px; width: 100px;" />
+                <input type="button" value="Tách tất cả" onclick="splitAll()" class="bg-green" style="color: #ffffff !important; height: 30px; width: 100px" />
+                <br />
+                <label style="color: red; float: right">*Đơn vị tính ngàn đồng</label><br />
+                <br />
+                @if (ViewBag.duplicateCorrectProduct != null)
+                {
+                    for (int i = 0; i < ViewBag.duplicateCorrectProduct.Count; i++)
+                    {
+                    <div id="dupTable_@i" >
+                        <div class="row-fluid">
+                            <div class="span12 widget">
+                                <div class="widget-header">
+                                    <span class="title">Nhóm sản phẩm trùng</span>
+                                </div>
+                                <div class="widget-content table-container">
+                                    <table id="table_@i" class="table table-striped">
+                                        <thead>
+                                            <tr id="header_@i">
+                                                <th></th>
+                                                <th>Tên Sản Phẩm</th>
+                                                <th>Tên Chợ</th>
+                                                <th>Giá</th>
+                                                <th>Chọn giá</th>
+                                            </tr>
+                                        </thead>
+
+                                        @for (int j = 0; j < ViewBag.duplicateCorrectProduct[i].Count; j++)
+                                        {
+                                            <tr>
+                                                @if (j == 0)
+                                                {
+                                                    <td>
+                                                        <input type="checkbox" checked />
+                                                    </td>
+                                                    <td>@ViewBag.duplicateCorrectProduct[i][j].Name</td>
+                                                    <td>@ViewBag.duplicateCorrectProduct[i][j].MarketName</td>
+                                                    <td>@ViewBag.duplicateCorrectProduct[i][j].Price</td>
+                                                    <td>
+                                                        <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <input type="checkbox" />
+                                                    </td>
+                                                    <td>@ViewBag.duplicateCorrectProduct[i][j].Name</td>
+                                                    <td>@ViewBag.duplicateCorrectProduct[i][j].MarketName</td>
+                                                    <td>@ViewBag.duplicateCorrectProduct[i][j].Price</td>
+                                                    <td>
+                                                        <input type="radio" name="productPrice_@i" id="Check_@i" />
+                                                    </td>
+                                                }
+                                            </tr>  
+                                        }
+                                    </table>
+                                    <div class="dt_footer">
+                                        <div class="row-fluid">
+                                            <div class="pull-right">
+                                                <input type="button" value="Gộp" onclick="mergeProduct(@i)" id="combine_@i" />
+                                                <input type="button" value="Tách" onclick="split(@i)" id="split_@i" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    }
+                }
+                @if (ViewBag.dupSellProduct != null)
+                {
+                    for (int i = 0; i < ViewBag.dupSellProduct.Count; i++)
+                    {
+                    <div id="dupTable_@i">
+                        <div class="row-fluid">
+                            <div class="span12 widget">
+                                <div class="widget-header">
+                                    <span class="title">Nhóm sản phẩm trùng</span>
+                                </div>
+                                <div class="widget-content table-container">
+                                    <table id="table_@i" class="table table-striped">
+                                        <thead>
+                                            <tr id="header_@i">
+                                                <th></th>
+                                                <th>Tên Sản Phẩm</th>
+                                                <th>Tên Chợ</th>
+                                                <th>Giá</th>
+                                                <th>Chọn giá</th>
+                                            </tr>
+                                        </thead>
+
+                                        @for (int j = 0; j < ViewBag.dupSellProduct[i].Count; j++)
+                                        {
+                                            <tr>
+                                                @if (j == 0)
+                                                {
+                                                    <td>
+                                                        <input type="checkbox" checked />
+                                                    </td>
+                                                    <td>@ViewBag.dupSellProduct[i][j].Name</td>
+                                                    <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
+                                                    <td>@ViewBag.dupSellProduct[i][j].Price</td>
+                                                    <td>
+                                                        <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <input type="checkbox" id="checkbox" />
+                                                    </td>
+                                                    <td>@ViewBag.dupSellProduct[i][j].Name</td>
+                                                    <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
+                                                    <td>@ViewBag.dupSellProduct[i][j].Price</td>
+                                                    <td>
+                                                        <input type="radio" name="productPrice_@i"  id="Check_@i" />
+                                                    </td>
+                                                }
+                                            </tr>  
+                                        }
+                                    </table>
+                                    <div class="dt_footer">
+                                        <div class="row-fluid">
+                                            <div class="pull-right">
+                                                <input type="button" value="Gộp" onclick="mergeProduct1(@i)" class="primary" id="combine_@i" />
+                                                <input type="button" value="Tách"  onclick="split1(@i)" id="split_@i" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

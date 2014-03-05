@@ -5,18 +5,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3758b0045a884389ac23ae39e66515e1" Name="Diagram1">
-        <EntityTypeShape EntityType="SmartBuyModel.Dictionary" Width="1.5" PointX="3" PointY="17.625" />
-        <EntityTypeShape EntityType="SmartBuyModel.History" Width="1.5" PointX="0.75" PointY="5.25" />
-        <EntityTypeShape EntityType="SmartBuyModel.HistoryDetail" Width="1.5" PointX="3" PointY="5" />
-        <EntityTypeShape EntityType="SmartBuyModel.LogFile" Width="1.5" PointX="3.75" PointY="2.25" />
-        <EntityTypeShape EntityType="SmartBuyModel.Market" Width="1.5" PointX="0.75" PointY="14.875" />
-        <EntityTypeShape EntityType="SmartBuyModel.ParseInfo" Width="1.5" PointX="3" PointY="24" />
-        <EntityTypeShape EntityType="SmartBuyModel.Product" Width="1.5" PointX="0.75" PointY="9" />
-        <EntityTypeShape EntityType="SmartBuyModel.ProductAttribute" Width="1.5" PointX="3" PointY="20.125" />
-        <EntityTypeShape EntityType="SmartBuyModel.Role" Width="1.5" PointX="1.5" PointY="12.375" />
-        <EntityTypeShape EntityType="SmartBuyModel.SellProduct" Width="1.5" PointX="3" PointY="9" />
-        <EntityTypeShape EntityType="SmartBuyModel.UserPrice" Width="1.5" PointX="6" PointY="8.875" />
+        <EntityTypeShape EntityType="SmartBuyModel.Dictionary" Width="1.5" PointX="3" PointY="7.625" />
+        <EntityTypeShape EntityType="SmartBuyModel.History" Width="1.5" PointX="3.75" PointY="17" />
+        <EntityTypeShape EntityType="SmartBuyModel.HistoryDetail" Width="1.5" PointX="6" PointY="8.75" />
+        <EntityTypeShape EntityType="SmartBuyModel.LogFile" Width="1.5" PointX="0.75" PointY="1.875" />
+        <EntityTypeShape EntityType="SmartBuyModel.Market" Width="1.5" PointX="3.75" PointY="3.5" />
+        <EntityTypeShape EntityType="SmartBuyModel.ParseInfo" Width="1.5" PointX="6" PointY="0.75" />
+        <EntityTypeShape EntityType="SmartBuyModel.Product" Width="1.5" PointX="0.75" PointY="8.625" />
+        <EntityTypeShape EntityType="SmartBuyModel.ProductAttribute" Width="1.5" PointX="3" PointY="13.25" />
+        <EntityTypeShape EntityType="SmartBuyModel.Role" Width="1.5" PointX="1.5" PointY="21.125" />
+        <EntityTypeShape EntityType="SmartBuyModel.SellProduct" Width="1.5" PointX="6" PointY="4.75" />
+        <EntityTypeShape EntityType="SmartBuyModel.User" Width="1.5" PointX="1.5" PointY="16.5" />
+        <EntityTypeShape EntityType="SmartBuyModel.UserPrice" Width="1.5" PointX="6" PointY="12.5" />
         <AssociationConnector Association="SmartBuyModel.FK_Dictionary_Product" />
+        <AssociationConnector Association="SmartBuyModel.FK_History_User" />
         <AssociationConnector Association="SmartBuyModel.FK_HistoryDetail_History" />
         <AssociationConnector Association="SmartBuyModel.FK_HistoryDetail_Product" />
         <AssociationConnector Association="SmartBuyModel.FK_ParseInfo_Market" />
@@ -25,11 +27,9 @@
         <AssociationConnector Association="SmartBuyModel.FK_ProductAttribute_Product" />
         <AssociationConnector Association="SmartBuyModel.FK_SellProduct_Product" />
         <AssociationConnector Association="SmartBuyModel.FK_UserPrice_Product" />
-        <EntityTypeShape EntityType="SmartBuyModel.User" Width="1.5" PointX="1.5" PointY="0.75" />
-        <AssociationConnector Association="SmartBuyModel.FK_History_User" />
         <AssociationConnector Association="SmartBuyModel.FK_User_Role" />
         <AssociationConnector Association="SmartBuyModel.FK_UserPrice_User" />
-        </Diagram>
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

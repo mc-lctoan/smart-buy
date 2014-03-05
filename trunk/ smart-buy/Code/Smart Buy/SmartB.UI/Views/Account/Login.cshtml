@@ -8,6 +8,13 @@
 @section head
 {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- Metro -->
+    <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
+    <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
+    <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/Error.css")"/>
 }
 
 <div id="top-image" class="top-image1">
@@ -41,34 +48,54 @@
 
 <div class="main-content">
     <div class="container fadeDown">
-        @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
-        {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
+        <div class="span4">
+            @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
 
-            <fieldset>
-                <legend>Log in Form</legend>
-                <ol>
-                    <li>
-                        @Html.LabelFor(m => m.UserName)
-                        @Html.TextBoxFor(m => m.UserName)
-                        @Html.ValidationMessageFor(m => m.UserName)
-                    </li>
-                    <li>
-                        @Html.LabelFor(m => m.Password)
-                        @Html.PasswordFor(m => m.Password)
-                        @Html.ValidationMessageFor(m => m.Password)
-                    </li>
-                    <li>
-                        @Html.CheckBoxFor(m => m.RememberMe)
-                        @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
-                    </li>
-                </ol>
-                <input type="submit" value="Log in" />
-            </fieldset>
-            <p>
-                @Html.ActionLink("Register", "Register", "Account") if you don't have an account.
-            </p>
-        }
+                <fieldset>
+                    <legend>Đăng nhập</legend>
+                    <ul class="unstyled">
+                        <li>
+                            @Html.LabelFor(m => m.UserName)
+                            <div class="metro">
+                                <div class="input-control text size5">
+                                    @Html.TextBoxFor(m => m.UserName)
+                                    <button class="btn-clear"></button>
+                                </div>
+                            </div>
+                            <p>@Html.ValidationMessageFor(m => m.UserName)</p>
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.Password)
+                            <div class="metro">
+                                <div class="input-control password size5">
+                                    @Html.PasswordFor(m => m.Password)
+                                    <button class="btn-reveal"></button>
+                                </div>
+                            </div>
+                            <p>@Html.ValidationMessageFor(m => m.Password)</p>
+                        </li>
+                        <li>
+                            <div class="input-control checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    <span class="check"></span>
+                                    Ghi nhớ
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="metro">
+                        <button type="submit" class="primary pull-right">
+                            <i class="icon-checkmark"></i>
+                            Đăng nhập
+                        </button>
+                    </div>
+                </fieldset>
+            }
+        </div>
+        <div class="span8"></div>
     </div>
 </div>
