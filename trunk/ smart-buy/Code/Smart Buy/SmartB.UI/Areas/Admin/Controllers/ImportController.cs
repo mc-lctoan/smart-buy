@@ -52,13 +52,12 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 {
                     sellProductCorrectCollection = excelHelper.ReadDataCorrect((Server.MapPath(savedFileName)));
                     sellProductErrorCollection = excelHelper.ReadDataError((Server.MapPath(savedFileName)), out errorName, out errorMarket, out errorPrice, out errorCount);
-                    ViewBag.sellProductCorrectCollection = sellProductCorrectCollection;
                     model.CorrectSellProducts = sellProductCorrectCollection;
                     model.InCorrectSellProducts = sellProductErrorCollection;
-                    ViewBag.ExceptionName = errorName;
-                    ViewBag.ExceptionMarket = errorMarket;
-                    ViewBag.ExceptionPrice = errorPrice;
-                    ViewBag.errorCount = errorCount;
+                    model.ExceptionName = errorName;
+                    model.ExceptionMarket = errorMarket;
+                    model.ExceptionPrice = errorPrice;
+                    model.ErrorCount = errorCount;
                     List<string> errorNameLines = new List<string>();
                     List<string> errorMarketNameLines = new List<string>();
                     List<string> errorPriceLines = new List<string>();
@@ -93,20 +92,19 @@ namespace SmartB.UI.Areas.Admin.Controllers
                             errorPriceLines.Add(errorPriceLine);
                         }
                     }
-                    ViewBag.ErrorNameLines = errorNameLines;
-                    ViewBag.ErrorMarketNameLines = errorMarketNameLines;
-                    ViewBag.ErrorPriceLines = errorPriceLines;
+                    model.ErrorNameLines = errorNameLines;
+                    model.ErrorMarketNameLines = errorMarketNameLines;
+                    model.ErrorPriceLines = errorPriceLines;
                     TempData["CorrectProducts"] = sellProductCorrectCollection;
                     Session["CorrectProducts"] = sellProductCorrectCollection;
-                    ViewBag.Test = "test";
                 }
                 catch (Exception exception)
                 {
-                    ViewBag.Exception = exception.Message;
-                    ViewBag.ExceptionName = exception.Message;
-                    ViewBag.ExceptionMarket = exception.Message;
-                    ViewBag.ExceptionPrice = errorPrice;
-                    ViewBag.errorCount = errorCount;
+                    model.Exception = exception.Message;
+                    model.ExceptionName = exception.Message;
+                    model.ExceptionMarket = exception.Message;
+                    model.ExceptionPrice = errorPrice;
+                    model.ErrorCount = errorCount;
                 }
                 //Compare items in Excel
                 List<SellProductModel> compareListProduct = sellProductCorrectCollection;
@@ -138,8 +136,8 @@ namespace SmartB.UI.Areas.Admin.Controllers
                         results.Add(result);
                     }
                 }
-                ViewBag.duplicateCorrectProduct = results;
-                ViewBag.duplicateCorrectProductCount = results.Count();
+                model.duplicateCorrectProduct = results;
+                model.duplicateCorrectProductCount = results.Count();
                 Session["duplicateProducts"] = results;
 
                 model.PagedCorrectProducts = model.CorrectSellProducts.OrderBy(x => x.Name).ToPagedList(1, PageSize);
@@ -151,11 +149,11 @@ namespace SmartB.UI.Areas.Admin.Controllers
             return View();
         }
 
-        public JsonResult PagedData(int page = 1)
+        public ActionResult PagedData(int page)
         {
             var model = (ListSellProductModel)Session["excel"];
             model.PagedCorrectProducts = model.CorrectSellProducts.OrderBy(x => x.Name).ToPagedList(page, PageSize);
-            return Json(model.PagedCorrectProducts);
+            return View("UploadProduct", model);
         }
 
         public ActionResult SaveProducts(ListSellProductModel model)
