@@ -119,19 +119,18 @@ namespace SmartB.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                var username = "Sergey Pimenov";
                 var now = DateTime.Now.Date;
                 foreach (var line in GetCart().Lines)
                 {
                     var pid = line.Product.ProductId;
 
-                    var dupHistory = db.Histories.Where(his => his.Username == username &&
-                        his.BuyTime == now).FirstOrDefault();
+                    var dupHistory = db.Histories.FirstOrDefault(his => his.Username == User.Identity.Name &&
+                                                                        his.BuyTime == now);
 
                     if (dupHistory == null)
                     {
                         var newHitory = new History();
-                        newHitory.Username = username;
+                        newHitory.Username = User.Identity.Name;
                         newHitory.BuyTime = now;
 
                         db.Histories.Add(newHitory);
@@ -146,7 +145,7 @@ namespace SmartB.UI.Controllers
                     else
                     {
                         var historyId = (from h in db.Histories
-                                         where h.BuyTime == now && h.Username == username
+                                         where h.BuyTime == now && h.Username == User.Identity.Name
                                          select h.Id).First();
                         //var checkCount = (from c in db.HistoryDetails
                         //                  where c.HistoryId == historyId
@@ -156,7 +155,7 @@ namespace SmartB.UI.Controllers
                         //    break;
                         //}
 
-                        var dupProductId = db.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
+                        var dupProductId = db.HistoryDetails.FirstOrDefault(p => p.ProductId == pid && p.HistoryId == historyId);
                         if (dupProductId == null)
                         {
                             var newHistoryDetail = new HistoryDetail();

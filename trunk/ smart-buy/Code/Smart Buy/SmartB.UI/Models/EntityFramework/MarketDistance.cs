@@ -12,15 +12,12 @@ namespace SmartB.UI.Models.EntityFramework
     using System;
     using System.Collections.Generic;
     
-    public partial class SellProduct
+    public partial class MarketDistance
     {
-        public int Id { get; set; }
-        public Nullable<int> MarketId { get; set; }
-        public Nullable<int> ProductId { get; set; }
-        public Nullable<int> SellPrice { get; set; }
-        public System.DateTime LastUpdatedTime { get; set; }
+        public int FromMarket { get; set; }
+        public int ToMarket { get; set; }
+        public Nullable<double> Distance { get; set; }
     
-        public virtual Product Product { get; set; }
         public virtual Market Market { get; set; }
     }
 }

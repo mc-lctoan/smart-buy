@@ -200,10 +200,14 @@
     <Compile Include="Areas\Admin\Controllers\AuthenticationController.cs" />
     <Compile Include="Areas\Admin\Controllers\ImportController.cs" />
     <Compile Include="Areas\Admin\Controllers\LogFileController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MarketController.cs" />
     <Compile Include="Areas\Admin\Controllers\ParserController.cs" />
     <Compile Include="Areas\Admin\Controllers\SystemController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TrainingController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserPriceController.cs" />
     <Compile Include="Areas\Admin\Helper\CompareStringHelper.cs" />
     <Compile Include="Areas\Admin\Helper\LogFileHelper.cs" />
+    <Compile Include="Areas\Admin\Helper\MarketHelper.cs" />
     <Compile Include="Areas\Admin\Helper\ParseHelper.cs" />
     <Compile Include="Areas\Admin\Models\LogInfo.cs" />
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
@@ -221,6 +225,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\AccountHelper.cs" />
+    <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Helper\SuggestRouteHelper.cs" />
     <Compile Include="Infrastructure\ConstantManager.cs" />
     <Compile Include="Infrastructure\CustomMembershipProvider.cs" />
@@ -232,6 +237,7 @@
     <Compile Include="Models\CartHistory.cs" />
     <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\DefineRouteModel.cs" />
+    <Compile Include="Models\DictionaryModel.cs" />
     <Compile Include="Models\EntityFramework\Dictionary.cs">
       <DependentUpon>SmartBuy.tt</DependentUpon>
     </Compile>
@@ -245,6 +251,9 @@
       <DependentUpon>SmartBuy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EntityFramework\Market.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\MarketDistance.cs">
       <DependentUpon>SmartBuy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EntityFramework\ParseInfo.cs">
@@ -701,6 +710,10 @@
     <Content Include="Areas\Admin\Views\System\Statistics.cshtml" />
     <Content Include="Areas\Admin\Views\Authentication\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Import\UploadProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\UserPrice\ManageUserPrice.cshtml" />
+    <Content Include="Areas\Admin\Views\Training\TrainingMatch.cshtml" />
+    <Content Include="Areas\Admin\Views\Market\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Market\Create.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />

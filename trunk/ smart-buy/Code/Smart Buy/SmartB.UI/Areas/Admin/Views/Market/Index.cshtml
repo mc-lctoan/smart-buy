@@ -1,0 +1,54 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.Market>
+
+@{
+    ViewBag.Title = "Quản lý chợ";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
+    int end = Model.PageNumber * Model.PageSize;
+    int start = end - Model.PageSize;
+}
+
+<div class="row-fluid">
+    <div class="span12 widget">
+        @if (TempData["create"] != null)
+        {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Chợ mới đã được thêm vào hệ thống.
+            </div>
+        }
+        <div class="widget-header">
+            <span class="title">Danh sách các chợ</span>
+        </div>
+        <div class="widget-content table-container">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên chợ</th>
+                        <th>Địa chỉ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var market in Model)
+                    {
+                        <tr>
+                            <td>@(start + 1)</td>
+                            <td>@market.Name</td>
+                            <td>@market.Address</td>
+                        </tr>
+                        start++;
+                    }
+                </tbody>
+            </table>
+            <div class="dt_footer">
+                <div class="row-fluid">
+                    <div class="pagination pagination-right">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
