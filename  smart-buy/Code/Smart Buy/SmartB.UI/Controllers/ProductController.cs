@@ -1062,13 +1062,13 @@ namespace SmartB.UI.Controllers
                     var status = false;
                     if (productNames[h].ToString() != "")
                     {
-                        for (int i = 0; i < dupCorrectProducts.Count -1; i++)
+                        for (int i = 0; i < dupCorrectProducts.Count; i++)
                         {
                             if (status == true)
                             {
                                 break;
                             }
-                            for (int j = 0; j < dupCorrectProducts[j].Count; j++)
+                            for (int j = 0; j < dupCorrectProducts[i].Count; j++)
                             {
                                 var nameDupProduct = dupCorrectProducts[i][j].Name;
                                 if (productNames[h].ToString() == nameDupProduct.ToString())
@@ -1190,7 +1190,7 @@ namespace SmartB.UI.Controllers
                 {
                     var productName = "";
                     //        sw.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[2].Value.ToString());
-                    for (int j = 0; j < correctDupProducts[j].Count; j++)
+                    for (int j = 0; j < correctDupProducts[i].Count; j++)
                     {
                         
                         productName += correctDupProducts[i][j].Name + ";";
