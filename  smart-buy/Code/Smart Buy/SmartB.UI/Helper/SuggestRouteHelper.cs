@@ -164,7 +164,7 @@ namespace SmartB.UI.Helper
                             // TODO: Penalty
                             if (k != j)
                             {
-                                total[i, j] += 20;
+                                total[i, j] += 3;
                             }
                         }
                     }

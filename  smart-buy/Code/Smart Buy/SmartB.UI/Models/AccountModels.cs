@@ -48,11 +48,11 @@ namespace SmartB.UI.Models
 
     public class LoginModel
     {
-        [Required]
+        [Required(ErrorMessage = "Phải điền tên đăng nhập.")]
         [Display(Name = "User name")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Phải điền mật khẩu.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

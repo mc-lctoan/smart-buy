@@ -24,7 +24,7 @@ namespace SmartB.UI.Controllers
             DateTime minusThirty = DateTime.Today.AddDays(-30);
             DateTime minusZero = DateTime.Today.AddDays(0);
             var history = from item in db.Histories
-                          where item.BuyTime >= minusThirty && item.BuyTime <= minusZero && item.Username.Equals("Sergey Pimenov")
+                          where item.BuyTime >= minusThirty && item.BuyTime <= minusZero && item.Username.Equals(User.Identity.Name)
                           select item;
             history = history.OrderByDescending(item => item.BuyTime);
             
@@ -33,7 +33,6 @@ namespace SmartB.UI.Controllers
 
         public ActionResult BuyingHistoryDetail(int? id)
         {
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -42,7 +41,7 @@ namespace SmartB.UI.Controllers
             var modelProduct = from p in db.ProductAttributes
                                group p by p.ProductId into grp
                                select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault();
-            //modelProduct.
+            
             var hdvModel = new HistoryDetailViewModel
             {
                 History = modelHistory,

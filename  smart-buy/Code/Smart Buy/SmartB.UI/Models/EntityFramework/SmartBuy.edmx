@@ -167,7 +167,7 @@
           <Property Name="Password" Type="varchar" Nullable="false" MaxLength="20" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="DefinedRoute" Type="nvarchar" MaxLength="300" />
-          <Property Name="MarketId" Type="nvarchar" MaxLength="20" />
+          <Property Name="MarketId" Type="nvarchar" MaxLength="200" />
           <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
@@ -341,10 +341,15 @@
           <EntitySet Name="ProductAttributes" EntityType="SmartBuyModel.ProductAttribute" />
           <EntitySet Name="Roles" EntityType="SmartBuyModel.Role" />
           <EntitySet Name="SellProducts" EntityType="SmartBuyModel.SellProduct" />
+          <EntitySet Name="Users" EntityType="SmartBuyModel.User" />
           <EntitySet Name="UserPrices" EntityType="SmartBuyModel.UserPrice" />
           <AssociationSet Name="FK_Dictionary_Product" Association="SmartBuyModel.FK_Dictionary_Product">
             <End Role="Product" EntitySet="Products" />
             <End Role="Dictionary" EntitySet="Dictionaries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_History_User" Association="SmartBuyModel.FK_History_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="History" EntitySet="Histories" />
           </AssociationSet>
           <AssociationSet Name="FK_HistoryDetail_History" Association="SmartBuyModel.FK_HistoryDetail_History">
             <End Role="History" EntitySet="Histories" />
@@ -378,11 +383,6 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="UserPrice" EntitySet="UserPrices" />
           </AssociationSet>
-          <EntitySet Name="Users" EntityType="SmartBuyModel.User" />
-          <AssociationSet Name="FK_History_User" Association="SmartBuyModel.FK_History_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="History" EntitySet="Histories" />
-          </AssociationSet>
           <AssociationSet Name="FK_User_Role" Association="SmartBuyModel.FK_User_Role">
             <End Role="Role" EntitySet="Roles" />
             <End Role="User" EntitySet="Users" />
@@ -391,7 +391,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserPrice" EntitySet="UserPrices" />
           </AssociationSet>
-          </EntityContainer>
+        </EntityContainer>
         <EntityType Name="Dictionary">
           <Key>
             <PropertyRef Name="Id" />
@@ -408,8 +408,8 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="BuyTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="HistoryDetails" Relationship="SmartBuyModel.FK_HistoryDetail_History" FromRole="History" ToRole="HistoryDetail" />
           <NavigationProperty Name="User" Relationship="SmartBuyModel.FK_History_User" FromRole="History" ToRole="User" />
+          <NavigationProperty Name="HistoryDetails" Relationship="SmartBuyModel.FK_HistoryDetail_History" FromRole="History" ToRole="HistoryDetail" />
         </EntityType>
         <EntityType Name="HistoryDetail">
           <Key>
@@ -502,6 +502,21 @@
           <NavigationProperty Name="Market" Relationship="SmartBuyModel.FK_SellProduct_Market" FromRole="SellProduct" ToRole="Market" />
           <NavigationProperty Name="Product" Relationship="SmartBuyModel.FK_SellProduct_Product" FromRole="SellProduct" ToRole="Product" />
         </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Email" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DefinedRoute" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MarketId" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="RoleId" Nullable="false" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <NavigationProperty Name="Histories" Relationship="SmartBuyModel.FK_History_User" FromRole="User" ToRole="History" />
+          <NavigationProperty Name="Role" Relationship="SmartBuyModel.FK_User_Role" FromRole="User" ToRole="Role" />
+          <NavigationProperty Name="UserPrices" Relationship="SmartBuyModel.FK_UserPrice_User" FromRole="User" ToRole="UserPrice" />
+        </EntityType>
         <EntityType Name="UserPrice">
           <Key>
             <PropertyRef Name="Id" />
@@ -525,6 +540,18 @@
             </Principal>
             <Dependent Role="Dictionary">
               <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_History_User">
+          <End Type="SmartBuyModel.User" Role="User" Multiplicity="1" />
+          <End Type="SmartBuyModel.History" Role="History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -621,33 +648,6 @@
             </Principal>
             <Dependent Role="UserPrice">
               <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="Username" />
-          </Key>
-          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Password" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Email" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DefinedRoute" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="MarketId" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="RoleId" Nullable="false" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <NavigationProperty Name="Histories" Relationship="SmartBuyModel.FK_History_User" FromRole="User" ToRole="History" />
-          <NavigationProperty Name="Role" Relationship="SmartBuyModel.FK_User_Role" FromRole="User" ToRole="Role" />
-          <NavigationProperty Name="UserPrices" Relationship="SmartBuyModel.FK_UserPrice_User" FromRole="User" ToRole="UserPrice" />
-        </EntityType>
-        <Association Name="FK_History_User">
-          <End Type="SmartBuyModel.User" Role="User" Multiplicity="1" />
-          <End Type="SmartBuyModel.History" Role="History" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Username" />
-            </Principal>
-            <Dependent Role="History">
-              <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -783,18 +783,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserPrices">
-            <EntityTypeMapping TypeName="SmartBuyModel.UserPrice">
-              <MappingFragment StoreEntitySet="UserPrice">
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="UpdatedPrice" ColumnName="UpdatedPrice" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="MarketId" ColumnName="MarketId" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SmartBuyModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -805,6 +793,18 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPrices">
+            <EntityTypeMapping TypeName="SmartBuyModel.UserPrice">
+              <MappingFragment StoreEntitySet="UserPrice">
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="UpdatedPrice" ColumnName="UpdatedPrice" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="MarketId" ColumnName="MarketId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

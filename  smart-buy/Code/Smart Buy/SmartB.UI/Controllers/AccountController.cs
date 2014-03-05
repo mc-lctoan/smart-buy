@@ -47,7 +47,7 @@ namespace SmartB.UI.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "Thông tin đăng nhập không hợp lệ.");
             return View(model);
         }
 
@@ -153,16 +153,16 @@ namespace SmartB.UI.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return "Tài khoản đã tồn tại. Vui lòng chọn tên khác.";
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+                    return "Địa chỉ email đã tồn tại. Vui lòng chọn địa chỉ khác.";
 
                 case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
+                    return "Mật khẩu không hợp lệ. Vui lòng chọn mật khẩu khác.";
 
                 case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
+                    return "Địa chỉ email không hợp lệ. Vui lòng chọn địa chỉ khác.";
 
                 case MembershipCreateStatus.InvalidAnswer:
                     return "The password retrieval answer provided is invalid. Please check the value and try again.";

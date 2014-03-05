@@ -4,12 +4,12 @@
 }
 
 .field-validation-error {
-    color: #e80c4d;
+    color: #e80c4d !important;
     font-weight: bold;
 }
 
-.validation-summary-errors {
-    color: #e80c4d;
+.validation-summary-errors ul li {
+    color: #e80c4d !important;
     font-weight: bold;
     font-size: 1.1em;
 }
