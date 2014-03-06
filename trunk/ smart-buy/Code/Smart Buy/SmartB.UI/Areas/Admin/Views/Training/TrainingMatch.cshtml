@@ -3,15 +3,36 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
 }
 
-@section headScript{
+@section headScript
+{
     <script type="text/javascript" src="@Url.Content("~/Scripts/utils/productUtils.js")"></script>
-
 
     <!-- Metro -->
     <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
     <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
     <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
 }
+
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Dữ liệu
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                <a href="@Url.Action("TrainingMatch", "Training")">Xử lý sản phẩm trùng</a>
+            </li>
+        </ul>
+
+        <h1 id="main-heading">Xử lý sản phẩm trùng
+            <span>Dạy cho máy việc phân biệt các sản phẩm có khả năng trùng nhau</span>
+        </h1>
+    </div>
+}
+
 
 @section footScript
 {
@@ -69,7 +90,7 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data == true) {
-                        
+
                         if (trFor.length == 2) {
                             $("#dupTable_" + i).find("tr").find("input:checkbox");
                             $("#split_" + i).click();
@@ -176,8 +197,6 @@
 
 </script>
 
-<h3>Xử lý sản phẩm trùng</h3>
-
 @if (ViewBag.dupDictionary != null)
 {
     for (int i = 0; i < ViewBag.dupDictionary.Count; i++)
@@ -188,9 +207,21 @@
             <div class="span8 widget">
                 <div class="widget-header">
                     <span class="title">Nhóm sản phẩm trùng</span>
+                    <div class="toolbar">
+                        <div class="btn-group">
+                            <button class="btn" id="combine_@i" onclick="mergeProduct('@i')">
+                                <i class="icol-arrow-join"></i>
+                                Gộp
+                            </button>
+                            <button class="btn" id="split_@i" onclick="split('@i')">
+                                <i class="icol-arrow-divide"></i>
+                                Tách
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="widget-content table-container">
-                    <table id="table_@i" class="table table-striped">
+                    <table id="table_@i" class="table table-striped table-bordered">
                         <thead>
                             <tr id="header_@i">
                                 <th></th>
@@ -204,14 +235,14 @@
                             <tr class="trFor_@i">
                                 @if (j == 0)
                                 {
-                                    <td width="10%">
+                                    <td>
                                         <input type="checkbox" checked /></td>
                                     <td>@ViewBag.dupDictionary[i][j].Name</td>                                  
                             
                                 }
                                 else
                                 {
-                                    <td width="10%">
+                                    <td>
                                         <input type="checkbox" /></td>
                                     <td>@ViewBag.dupDictionary[i][j].Name</td>                                    
                             
@@ -223,24 +254,12 @@
                         {
                 
                             <tr>
-                                <td width="10%">
+                                <td>
                                     <input type="checkbox" /></td>
-                                <td style="color: red">@ViewBag.dupProduct[i][j].Name</td>
+                                <td>@ViewBag.dupProduct[i][j].Name</td>
                             </tr>
                         }
                     </table>
-                    <div class="dt_footer">
-                        <div class="row-fluid">
-                            <div class="pull-right">
-                                <button class="primary" id="combine_@i" onclick="mergeProduct('@i')">
-                                    Gộp
-                                </button>
-                                <button id="split_@i" onclick="split('@i')">
-                                    Tách
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

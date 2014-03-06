@@ -126,7 +126,7 @@
                     }
                 </tbody>
             </table>    
-            <div>@Html.PagedListPager(Model, page => Url.Action("SearchProduct", new { currentFilter = ViewBag.CurrentFilter, page }), PagedListRenderOptions.OnlyShowFivePagesAtATime) </div>
+            @Html.PagedListPager(Model, page => Url.Action("SearchProduct", new { currentFilter = ViewBag.CurrentFilter, page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
         }
 
         else

@@ -90,11 +90,11 @@ namespace SmartB.UI.Helper
         /// If a market doesn't sell a product, its value is maximum.
         /// </summary>
         /// <returns>Matrix</returns>
-        private int[,] CreateMatrix()
+        private double[,] CreateMatrix()
         {
             int row = CanBuyProducts.Count;
             int col = Markets.Count;
-            var matrix = new int[row, col];
+            var matrix = new double[row, col];
 
             // Initialize matrix
             for (int i = 0; i < row; i++)
@@ -134,11 +134,11 @@ namespace SmartB.UI.Helper
         /// Create moving cost matrix
         /// </summary>
         /// <returns>It costs matrix[i,j] to move from market[i] to market[j]</returns>
-        private int[,] CreateDistanceMatrix()
+        private double[,] CreateDistanceMatrix()
         {
             int row = Markets.Count;
             int col = row;
-            var matrix = new int[row, col];
+            var matrix = new double[row, col];
 
             using (var context = new SmartBuyEntities())
             {
@@ -154,10 +154,7 @@ namespace SmartB.UI.Helper
                             .FirstOrDefault(x => x.FromMarket == fromId && x.ToMarket == toId);
                         if (mDis != null)
                         {
-                            var tmp = mDis.Distance*Fuel;
-                            var price = Math.Round(tmp.Value);
-
-                            matrix[i, j] = matrix[j, i] = (int) price;
+                            matrix[i, j] = matrix[j, i] = mDis.Distance.Value*Fuel;
                         }
                         else
                         {
@@ -207,14 +204,14 @@ namespace SmartB.UI.Helper
                 return GenerateResult(new List<KeyValuePair<int, int>>());
             }
 
-            int[,] matrix = CreateMatrix();
-            int[,] distance = CreateDistanceMatrix();
+            double[,] matrix = CreateMatrix();
+            double[,] distance = CreateDistanceMatrix();
             //int[] costFromStart = DistanceToAllMarkets(Start);
             //int[] costToEnd = DistanceToAllMarkets(End);
 
             int m = CanBuyProducts.Count;
             int n = Markets.Count;
-            var total = new int[m, n];
+            var total = new double[m, n];
             var traceY = new int[m, n];
 
             // Initialize array
@@ -254,7 +251,7 @@ namespace SmartB.UI.Helper
                 }
             }
 
-            var min = 100000;
+            double min = 100000;
             int col = -1;
 
             // Access the last row to find min value

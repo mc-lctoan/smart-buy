@@ -5,6 +5,27 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
 }
 
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Quản lý chợ
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                <a href="@Url.Action("Create", "Market")">Tạo chợ mới</a>
+            </li>
+        </ul>
+
+        <h1 id="main-heading">
+            Tạo chợ mới
+            <span>Tạo một chợ mới cho hệ thống</span>
+        </h1>
+    </div>
+}
+
 @section headScript
 {
     <style>
