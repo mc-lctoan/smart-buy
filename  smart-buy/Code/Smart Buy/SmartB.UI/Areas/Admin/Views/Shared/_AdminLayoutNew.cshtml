@@ -131,14 +131,27 @@
                                     <li class="active">
                                         <span title="General">
                                             <i class="icon-home"></i>
-                                            <span class="nav-title">General</span>
+                                            <span class="nav-title">Trang chủ</span>
                                         </span>
                                         <ul class="inner-nav">
-                                            <li class="active"><a href="dashboard.html"><i class="icol-dashboard"></i>Dashboard</a></li>
-                                            <li><a href="calendar.html"><i class="icol-calendar-2"></i>Calendar</a></li>
-                                            <li><a href="icons.html"><i class="icol-lifebuoy"></i>Icons</a></li>
-                                            <li><a href="grids.html"><i class="icol-grid"></i>Grids</a></li>
-                                            <li><a href="typography.html"><i class="icol-font"></i>Typography</a></li>
+                                            <li class="active">
+                                                <a href="@Url.Action("Statistics", "System")">
+                                                    <i class="icol-chart-curve"></i>
+                                                    Thông tin hệ thống
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <i class="icol-cog"></i>
+                                                    Cấu hình hệ thống
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Index", "LogFile")">
+                                                    <i class="icol-page-white-text"></i>
+                                                    Quản lý log file
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li>
@@ -149,8 +162,6 @@
                                         <ul class="inner-nav">
                                             <li><a href="@Url.Action("UploadProduct", "Import")"><i class="icol-doc-excel-table"></i>Nhập từ Excel</a></li>
                                             <li><a href="@Url.Action("TrainingMatch", "Training")"><i class="icol-application-double"></i>Xử lý dữ liệu trùng</a></li>
-                                            <li><a href="data_tables.html"><i class="icol-table"></i>Data Tables</a></li>
-                                            <li><a href="detail_view.html"><i class="icol-eye"></i>Detail View Table</a></li>
                                         </ul>
                                     </li>
                                     <li>
@@ -161,58 +172,16 @@
                                         <ul class="inner-nav">
                                             <li>
                                                 <a href="@Url.Action("Index", "Market")">
-                                                    <i class="icol-chart-curve"></i>
+                                                    <i class="icol-application-view-columns"></i>
                                                     Danh sách các chợ
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="@Url.Action("Create", "Market")">
-                                                    <i class="icol-chart-pie"></i>
+                                                    <i class="icol-application-add"></i>
                                                     Tạo chợ mới
                                                 </a>
                                             </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span title="Form">
-                                            <i class="icon-list"></i>
-                                            <span class="nav-title">Form</span>
-                                        </span>
-                                        <ul class="inner-nav">
-                                            <li><a href="form_layouts.html"><i class="icol-layout-select"></i>Form Layouts</a></li>
-                                            <li><a href="form_elements.html"><i class="icol-ui-text-field-password"></i>Form Elements</a></li>
-                                            <li><a href="form_wizard.html"><i class="icol-wand"></i>Form Wizard</a></li>
-                                            <li><a href="form_validation.html"><i class="icol-accept"></i>Form Validation</a></li>
-                                            <li><a href="wysiwyg.html"><i class="icol-pencil"></i>WYSIWYG</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span title="Elements">
-                                            <i class="icon-cogs"></i>
-                                            <span class="nav-title">Elements</span>
-                                        </span>
-                                        <ul class="inner-nav">
-                                            <li><a href="ui_bootstrap.html"><i class="icol-ui-tab-content"></i>Bootstrap Elements</a></li>
-                                            <li><a href="ui_components.html"><i class="icol-pipette"></i>Other Elements</a></li>
-                                            <li><a href="alerts.html"><i class="icol-error"></i>Alerts and Notifications</a></li>
-                                            <li><a href="boxes.html"><i class="icol-cog"></i>Widget Boxes</a></li>
-                                            <li><a href="buttons.html"><i class="icol-joystick"></i>Buttons</a></li>
-                                            <li><a href="file_uploader.html"><i class="icol-computer"></i>File Uploader</a></li>
-                                            <li><a href="file_manager.html"><i class="icol-databases"></i>File Manager</a>
-                                            </li>
-                                        </ul>
-                                        <span title="Extra">
-                                            <i class="icon-gift"></i>
-                                            <span class="nav-title">Extra</span>
-                                        </span>
-                                        <ul class="inner-nav">
-                                            <li><a href="profile.html"><i class="icol-user"></i>Profile Page</a></li>
-                                            <li><a href="mail.html"><i class="icol-email"></i>Mail Page</a></li>
-                                            <li><a href="widgets.html"><i class="icol-ruby"></i>Custom Widgets</a></li>
-                                            <li><a href="gallery.html"><i class="icol-images"></i>Image Gallery</a>
-                                            </li>
-                                            <li><a href="contacts.html"><i class="icol-vcard"></i>Contact List</a></li>
-                                            <li><a href="404.html"><i class="icol-error"></i>Error Page (404)</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -222,21 +191,7 @@
                         <div id="sidebar-separator"></div>
 
                         <section id="main" class="clearfix">
-                            <div id="main-header" class="page-header">
-                                <ul class="breadcrumb">
-                                    <li>
-                                        <i class="icon-home"></i>MoonCake
-                                        <span class="divider">&raquo;</span>
-                                    </li>
-                                    <li>
-                                        <a href="#">Dashboard</a>
-                                    </li>
-                                </ul>
-
-                                <h1 id="main-heading">Dashboard <span>This is the place where everything started</span>
-                                </h1>
-                            </div>
-
+                            @RenderSection("mainHeader", true)
                             <div id="main-content">
                                 @RenderBody()
                             </div>
@@ -254,8 +209,6 @@
         </footer>
 
     </div>
-
-
 
     <!-- Template Script -->
     <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/js/template.js")"></script>

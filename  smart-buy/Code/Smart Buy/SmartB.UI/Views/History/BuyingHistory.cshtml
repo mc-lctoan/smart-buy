@@ -9,11 +9,6 @@
 @section head
 {
     <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
-    
-    <!-- Metro -->
-    <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
-    <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
-    <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
 }
 
 <div id="top-image" class="top-image1">
@@ -77,10 +72,7 @@
 
                         <td>
                             <a href="@Url.Action("BuyingHistoryDetail", "History", new { id = @historyID })">
-                                <button>
-                                    <i class="icon-clipboard-2"></i>
-                                    Chi tiết
-                                </button>
+                                Chi tiết
                             </a>
 
                         </td>
@@ -89,10 +81,6 @@
 
             </tbody>
         </table>
-        <div class="metro">
-            <div class="pagination">
-                @Html.PagedListPager(Model, page => Url.Action("BuyingHistory", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-            </div>
-        </div>
+        @Html.PagedListPager(Model, page => Url.Action("BuyingHistory", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
     </div>
 </div>

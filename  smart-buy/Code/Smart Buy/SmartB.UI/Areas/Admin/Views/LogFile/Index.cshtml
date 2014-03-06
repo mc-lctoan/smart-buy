@@ -2,13 +2,33 @@
 
 @{
     ViewBag.Title = "Smart Buy | Quản lý log files";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
 }
 
-<h2>Quản lý log files</h2>
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Trang chủ
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "LogFile")">Quản lý log file</a>
+            </li>
+        </ul>
+
+        <h1 id="main-heading">
+            Quản lý log file
+            <span>File ghi lại dữ liệu sau mỗi lần chạy parser</span>
+        </h1>
+    </div>
+}
+
 @if (Model != null && Model.Count > 0)
 {
-    <table class="table bordered hovered">
+    <table class="table table-bordered table-hovered">
         <thead>
             <tr>
                 <th>No.</th>

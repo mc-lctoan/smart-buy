@@ -3,4 +3,25 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
 }
 
-<h2>System Controller</h2>
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Trang chủ
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                <a href="@Url.Action("Statistics", "System")">Thông tin hệ thống</a>
+            </li>
+        </ul>
+
+        <h1 id="main-heading">
+            Thông tin hệ thống
+            <span>Thông tin các thành phần tham gia hệ thống</span>
+        </h1>
+    </div>
+}
+
+<h2>Cập nhật sau...</h2>

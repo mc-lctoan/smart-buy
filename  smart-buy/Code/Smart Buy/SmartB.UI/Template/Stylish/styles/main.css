@@ -44,7 +44,7 @@ a:focus
     border-radius: 0;
 }
 
-a {
+a:not(.pagination li a) {
     color: #fff;
 }
 
