@@ -3,6 +3,22 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
 }
 
+@section headScript{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/utils/productUtils.js")"></script>
+
+
+    <!-- Metro -->
+    <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
+    <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
+    <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
+}
+
+@section footScript
+{
+    <!-- File Input -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/bootstrap/css/bootstrap.min.css")" media="screen" />
+}
+
 <script>
     function mergeProduct(i, productId) {
 
@@ -53,13 +69,13 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data == true) {
-                        var mes = "Gộp thành công";
-                        showNotifyDialog(mes);
-                        if (trFor.length = 2) {
+                        
+                        if (trFor.length == 2) {
                             $("#dupTable_" + i).find("tr").find("input:checkbox");
                             $("#split_" + i).click();
                         }
-
+                        var mes = "Gộp thành công";
+                        showNotifyDialog(mes);
                     }
                     else {
 
@@ -160,7 +176,7 @@
 
 </script>
 
-<h2>Xử lý sản phẩm trùng</h2>
+<h3>Xử lý sản phẩm trùng</h3>
 
 @if (ViewBag.dupDictionary != null)
 {
@@ -188,14 +204,14 @@
                             <tr class="trFor_@i">
                                 @if (j == 0)
                                 {
-                                    <td>
+                                    <td width="10%">
                                         <input type="checkbox" checked /></td>
                                     <td>@ViewBag.dupDictionary[i][j].Name</td>                                  
                             
                                 }
                                 else
                                 {
-                                    <td>
+                                    <td width="10%">
                                         <input type="checkbox" /></td>
                                     <td>@ViewBag.dupDictionary[i][j].Name</td>                                    
                             
@@ -203,15 +219,13 @@
                             </tr>  
                         }
 
-                        @if (productId != 0)
+                        @for (int j = 0; j < @ViewBag.dupProduct[i].Count; j++)
                         {
-                            SmartB.UI.Models.EntityFramework.SmartBuyEntities db = new SmartB.UI.Models.EntityFramework.SmartBuyEntities();
-                            var productInDB = db.Products.FirstOrDefault(p => p.Id == productId);                    
                 
                             <tr>
-                                <td>
+                                <td width="10%">
                                     <input type="checkbox" /></td>
-                                <td>@productInDB.Name</td>
+                                <td style="color: red">@ViewBag.dupProduct[i][j].Name</td>
                             </tr>
                         }
                     </table>
