@@ -19,7 +19,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
         //
         // GET: /Admin/Import/
         private const int PageSize = 10;
-
+        private SmartBuyEntities db = new SmartBuyEntities();
         public ActionResult UploadProduct()
         {
             ViewBag.countInsert = TempData["InsertMessage"] as string;
@@ -139,8 +139,10 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 model.duplicateCorrectProduct = results;
                 model.duplicateCorrectProductCount = results.Count();
                 Session["duplicateProducts"] = results;
-
-                model.PagedCorrectProducts = model.CorrectSellProducts.OrderBy(x => x.Name).ToPagedList(1, PageSize);
+                if (model.CorrectSellProducts != null)
+                {
+                    model.PagedCorrectProducts = model.CorrectSellProducts.OrderBy(x => x.Name).ToPagedList(1, PageSize);
+                }
                 Session["excel"] = model;
 
                 return View(model);
@@ -636,6 +638,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             List<string> error = new List<string>();
             var status = "";
             int tableId = 0;
+            var nameDupProduct = "";
             int tableCorrectId = 0;
             var correctProductName = "";
             var correctMarketName = "";
@@ -662,6 +665,12 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 // Compare with duplicate Products
                 for (int i = 0; i < dupCorrectProducts.Count; i++)
                 {
+                    if (compareResult == true)
+                    {
+                        tableId = i;
+                        status = "Duplicate Products List";
+                        break;
+                    }
                     for (int j = 0; j < dupCorrectProducts[j].Count; j++)
                     {
                         if (ProductMarketName == dupCorrectProducts[i][j].MarketName)
@@ -680,17 +689,13 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 dupCorrectProducts[i].Add(model);
                                 Session["duplicateProducts"] = dupCorrectProducts;
                                 result.id = newId;
+                                nameDupProduct = dupCorrectProducts[i][j].Name;
                                 compareResult = true;
                                 break;
                             }
                         }
                     }
-                    if (compareResult == true)
-                    {
-                        tableId = i;
-                        status = "Duplicate Products List";
-                        break;
-                    }
+                    
                 }
 
                 // Compare with Correct Products
@@ -727,6 +732,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 correctProductName = correctProducts[k].Name;
                                 correctMarketName = correctProducts[k].MarketName;
                                 correctProductPrice = correctProducts[k].Price;
+                                nameDupProduct = correctProducts[k].Name;
                                 correctProducts.Remove(correctProducts[k]); // Remove product in Correct Products
                                 dupCorrectProducts.Add(resultCompareError);
                                 Session["duplicateProducts"] = dupCorrectProducts;
@@ -776,6 +782,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             }
             result.status = status;
             result.tableId = tableId;
+            result.nameDupProduct = nameDupProduct;
             result.tableCorrectId = tableCorrectId;
             result.correctProductName = correctProductName;
             result.correctMarketName = correctMarketName;
@@ -794,6 +801,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             public string status { get; set; }
             public int tableId { get; set; }
             public int tableCorrectId { get; set; }
+            public string nameDupProduct { get; set; }
             public string correctProductName { get; set; }
             public string correctMarketName { get; set; }
             public int correctProductPrice { get; set; }
