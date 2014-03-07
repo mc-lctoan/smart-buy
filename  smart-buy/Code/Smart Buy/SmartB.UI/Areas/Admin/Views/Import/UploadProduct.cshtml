@@ -39,6 +39,11 @@
 }
 
 <script>   
+    $(document).ready(function () {
+        //  var countProduct = $('#ProductTable tr').length;
+        var count = $('#ProductTable tr').children().length;
+    });
+
     function saveProduct(index, maxCorrect) {
         var productId = $("#ProductId" + index).val();
         var productName = $("#ProductName" + index).val();
@@ -58,12 +63,15 @@
                     if(result.status.toString() == "Duplicate Products List")
                     {
                         alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
-                        $("#table_"+result.tableId).find("tr:last").after("<tr><td><input type='checkbox' checked/></td> " +
-                                                                              "<td>"+productName+"</td> " +
-                                                                              "<td>"+ productMarketName+"</td>" +
-                                                                              "<td>"+ productPrice+"</td>" +
-                                                                              "<td style='float:left;margin-left:30%'> "+
-                                                                              "<input type='radio' name='productPrice_"+result.tableId+"'  id='Check_"+result.tableId+"'/> "+
+                        $('tr:has(td:contains("'+result.nameDupProduct+'"))').parent('tbody').find("tr:last").after("<tr><td style='width:5%'>"+
+                                                                                  "<input type='checkbox'/>"+
+                                                                              "</td> " +
+                                                                              "<td style='width:40%'>"+productName+"</td> " +
+                                                                              "<td style='width:35%'>"+ productMarketName+"</td>" +
+                                                                              "<td style='width:10%'>"+ productPrice+"</td>" +
+                                                                              "<td style='width:10%'> "+
+                                                                              "<input  type='radio' name='productPrice_"+result.tableId+"' id='Check_"+result.tableId+"'/> "+
+                                                                              "</td>"+
                                                                            "</tr>")
                         $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                     }
@@ -72,48 +80,54 @@
                         alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
                         if(result.count == 1) // chưa có sp trùng
                         {
-                            var dupTableCount = result.count -1;
+                            var dupTableCount = (result.count -1);
                             idDupTable = result.count ;
                             $("#tableEmpty").after("<br /> "+
-                                                            "<div id='dupTable_"+idDupTable +"' > " +
+                                                            "<div id='dupTable_"+dupTableCount +"' > " +
                                                               "<div class='row-fluid'> "+
                                                                "<div class='span12 widget'>"+
                                                                  "<div class='widget-header'>"+
                                                                    "<span class='title'>Nhóm sản phẩm trùng</span>"+
+                                                                   "<div class='toolbar'>"+
+                                                                     "<div class='btn-group'>"+
+                                                                       "<button class='btn' id='combine_"+dupTableCount+"' onclick='mergeProduct("+dupTableCount+")'>"+
+                                                                       "<i class='icol-arrow-join'></i>Gộp</button>"+
+                                                                       "<button class='btn' id='split_"+dupTableCount+"' onclick='split("+dupTableCount+")'>"+
+                                                                       "<i class='icol-arrow-divide'></i>Tách</button>"+
+                                                                       "</div>"+
+                                                                     "</div>"+
+                                                                   "</div>"+
                                                                  "</div>"+
                                                                  "<div class='widget-content table-container'>"+
-                                                                   "<table id='table_"+idDupTable+"'  class='table table-striped'>" +
+                                                                   "<table id='table_"+dupTableCount+"'  class='table table-bordered table-striped table-checkable'>" +
                                                                      "<thead>"+
-                                                                          "<tr id='header_"+idDupTable+"'> "+
-                                                                           "<th></th> " +
-                                                                           "<th>Tên Sản Phẩm</th>"+
-                                                                           "<th>Tên Chợ</th> "+
-                                                                           "<th>Giá</th> "+
-                                                                           "<th>Chọn giá</th> " +
+                                                                          "<tr id='header_"+dupTableCount+"'> "+
+                                                                           "<th class='checkbox-column' id='checkboxAllTable_"+dupTableCount+"'  style='width:5%'>"+
+                                                                             "<input type='checkbox' class='uniform' onclick='checkboxAllTable("+dupTableCount+")' />"+
+                                                                           "</th> " +
+                                                                           "<th style='width:40%'>Tên Sản Phẩm</th>"+
+                                                                           "<th style='width:35%'>Tên Chợ</th> "+
+                                                                           "<th style='width:10%'>Giá</th> "+
+                                                                           "<th style='width:10%'>Chọn giá</th> " +
                                                                           "</tr> "+
                                                                      "</thead>"+
-                                                                     "<tr><td><input type='checkbox' checked /></td> " +
-                                                                                     "<td>"+productName+"</td> " +
-                                                                                     "<td>"+ productMarketName+"</td>" +
-                                                                                     "<td>"+ productPrice+"</td>" +
-                                                                                     "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
+                                                                     "<tr class='checked'>"+
+                                                                        "<td class='checked' id='checkbox_0' onclick='checkboxChecked(0)'  style='width:5%'>"+
+                                                                           "<input type='checkbox' checked='checked' id='checkbox' />"+
+                                                                        "</td> " +
+                                                                                     "<td  style='width:40%'>"+productName+"</td> " +
+                                                                                     "<td  style='width:35%'>"+ productMarketName+"</td>" +
+                                                                                     "<td style='width:10%>"+ productPrice+"</td>" +
+                                                                                     "<td style='width:10%><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"' checked='checked'/>" +
                                                                      "</tr> "+
-                                                                     "<tr><td><input type='checkbox' /></td> " +
-                                                                                    "<td>"+result.correctProductName+"</td> " +
-                                                                                    "<td>"+result.correctMarketName+"</td>" +
-                                                                                    "<td>"+result.correctProductPrice+"</td>" +
-                                                                                    "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
+                                                                     "<tr><td id='checkbox_1' onclick='checkboxChecked(1)' style='width:5%'><input type='checkbox' id='checkbox'/></td> " +
+                                                                                    "<td style='width:40%'>"+result.correctProductName+"</td> " +
+                                                                                    "<td style='width:35%'>"+result.correctMarketName+"</td>" +
+                                                                                    "<td style='width:10%>"+result.correctProductPrice+"</td>" +
+                                                                                    "<td style='width:10%><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"'/>"+ 
                                                                     "</tr> "+
                                                                   "</table>"+
-                                                                  "<div class='dt_footer'>"+
-                                                                    "<div class='row-fluid'>"+
-                                                                      " <div class='pull-right'>"+
-                                                                   "<input type='button' value='Gộp' onclick='mergeProduct("+idDupTable+")' class='primary' id='combine_"+idDupTable+"' /> "+
-                                                                   "<input type='button' value='Tách'  onclick='split("+idDupTable+")' id='split_"+idDupTable+"' />"+
-                                                                        "</div> "+
-                                                                     "</div> "+
-                                                                   "</div> "+
-                                                                "</div> "+
+                                                                 "</div> "+
                                                                "</div> "+
                                                               "</div> "+
                                                             "</div>");
@@ -169,7 +183,8 @@
                                                               "</div> "+
                                                             "</div>");
 
-                            $("#ProductTable tr#product_"+result.tableCorrectId).remove();
+                         //   $("#ProductTable tr#product_"+result.tableCorrectId).remove();
+                            $('#ProductTable tr:has(td:contains("'+result.nameDupProduct+'"))').remove();
                             $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                         }
                     } else if(result.status.toString() != "Duplicate Products List" && result.status.toString() != "Correct Products List")
@@ -179,7 +194,8 @@
                                                             "<td>"+productName+"</td>"+
                                                             "<td>"+ productMarketName +"</td>"+
                                                             "<td>" + productPrice +"</td>"+
-                                                            "<td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input></td>"+
+                                                            "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<i class='icol-cross'></i>Xóa</button></td>"+
                                                          "</tr>")
                         $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                     }
@@ -364,7 +380,8 @@
                                                             "<td>"+productName+"</td>"+
                                                             "<td>"+ productMarket +"</td>"+
                                                             "<td>" + productPrice +"</td>"+
-                                                            "<td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input></td>"+
+                                                            "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<i class='icol-cross'></i>Xóa</button></td>"+
                                                          "</tr>")
                         for (var h = 0; h < products.length; h++) {
                                 
@@ -400,12 +417,7 @@
         
     }
     
-    function mergeAll(i)
-    {
-        $("#fb").find("table").find("input:checkbox").attr( 'checked', $( this ).is( 'checked' ) ? 'checked' : '' );
-        
-        $('input[value="Gộp"]').click()
-    }
+   
     function split(i) 
     {
         var duplicateTable = $("#table_"+i);
@@ -467,7 +479,8 @@
                                                             "<td>"+ result.correctProductName+"</td>"+
                                                             "<td>"+ result.correctMarketName +"</td>"+
                                                             "<td>" + result.correctProductPrice +"</td>"+
-                                                            "<td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input></td>"+
+                                                            "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<i class='icol-cross'></i>Xóa</button></td>"+
                                                          "</tr>")
                     }
                 });
@@ -508,7 +521,7 @@
             if(listTr[j].id != 'header_'+i) {
                 var cells = listTr[j].cells;
                 for (var l = 0; l < 2; l++) {
-                    var checkbox = cells[0].childNodes[l].checked;
+                    var checkbox = cells[0].childNodes[l].childNodes[0].childNodes[0].checked;
                     if(checkbox == true || checkbox == false)
                     {
                         break;
@@ -519,7 +532,7 @@
                 var market = cells[2].innerHTML;
                 var price = cells[3].innerHTML;
                 for (var m  = 0; m < 2; m++) {
-                    var checked = cells[4].childNodes[m].checked;
+                    var checked = cells[4].childNodes[m].childNodes[0].childNodes[0].checked;
                     if(checked == true|| checked == false)
                     {
                         break;
@@ -597,8 +610,9 @@
                                                                      "<td><input readonly value='" + productName +"'></input></td>"+
                                                                      "<td><input readonly value='" + productMarket + "'>" +"</input></td>"+
                                                                      "<td><input readonly value='" + productPrice + "'>" +"</input></td>"+
-                                                                     "<td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input></td>"+
-                                                                 "</tr>")
+                                                                     "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                                     "<i class='icol-cross'></i>Xóa</button></td>"+
+                                                                "</tr>")
                         // var testChecked = false;
                         for (var h = 0; h < products.length; h++) {
                                 
@@ -645,7 +659,7 @@
                 var cells = listTr[j].cells;
                 //var checkbox = cells[0].childNodes[1].checked;
                 for (var l = 0; l < 2; l++) {
-                    var checkbox = cells[0].childNodes[l].checked;
+                    var checkbox = cells[0].childNodes[l].childNodes[0].childNodes[0].checked;
                     if(checkbox == true || checkbox == false)
                     {
                         break;
@@ -655,7 +669,7 @@
                 var market = cells[2].innerHTML;
                 var price = cells[3].innerHTML;
                 for (var m  = 0; m < 2; m++) {
-                    var checked = cells[4].childNodes[m].checked;
+                    var checked = cells[4].childNodes[m].childNodes[0].childNodes[0].checked;
                     if(checked == true|| checked == false)
                     {
                         break;
@@ -698,8 +712,9 @@
                                                                      "<td><input readonly value='" + result.correctProductName+"'></input></td>"+
                                                                      "<td><input readonly value='" +  result.correctMarketName+ "'>" +"</input></td>"+
                                                                      "<td><input readonly value='" + result.correctProductPrice+ "'>" +"</input></td>"+
-                                                                     "<td><input type='button' value='X' style='color:red;font-weight:bold' onclick='deleteProduct("+id+")'></input></td>"+
-                                                                 "</tr>")
+                                                                     "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<i class='icol-cross'></i>Xóa</button></td>"+
+                                                         "</tr>")
                     }
                 });
                 
@@ -727,12 +742,26 @@
         }
         $("#MessageArea").html("");
     }
-    
+
+    function mergeAll(i)
+    {
+        var countTable = $("#fb").find("table").size();
+        for (var i = 0; i < countTable; i++) 
+        {
+            $("#fb").find("#dupTable_"+i).find("input:checkbox")[0].click();
+            $("#fb").find("#dupTable_"+i).find("#combine_"+i).click();
+        }
+        //$('input[value="Gộp"]').click()
+    }
+
     function splitAll(i)
     {
-        $("#fb").find("table").find("input:checkbox").attr( 'checked', $( this ).is( 'checked' ) ? 'checked' : '' );
-        
-        $('input[value="Tách"]').click();
+        var countTable = $("#fb").find("table").size();
+        for (var i = 0; i < countTable; i++) 
+        {
+            $("#fb").find("#dupTable_"+i).find("input:checkbox")[0].click();
+            $("#fb").find("#dupTable_"+i).find("#split_"+i).click();
+        }
                 
     }
     function saveFile()
@@ -746,6 +775,32 @@
                 alert(message);
             }
         });
+    }
+    function checkboxChecked(j)
+    {
+        if($("#checkbox_"+j).find("input:checkbox")[0].checked == false)
+        {
+            $("#checkbox_"+j).parent('tr').removeClass("checked");
+            $("#checkbox_"+j).find("input:checkbox").removeAttr('checked');
+        }
+        else if($("#checkbox_"+j).find("input:checkbox")[0].checked == true)
+        {
+            $("#checkbox_"+j).parent('tr').attr("class", "checked");
+            $("#checkbox_"+j).find("input:checkbox").attr('checked');
+        }
+    }
+    function checkboxAllTable(i)
+    {
+        if($("#checkboxAllTable_"+i).find("input:checkbox")[0].checked == true)
+        {
+            $("#table_"+i).find("tbody").find("input:checkbox").attr('checked', $( this ).is( '' ) ? 'checked' : '' );
+            $("#table_"+i).find("tbody").find("tr").attr("class", "checked");
+        }
+        else
+        {
+            $("#table_"+i).find("tbody").find("input:checkbox").removeAttr('checked');
+            $("#table_"+i).find("tbody").find("tr").removeClass('checked');
+        }
     }
 </script>
 
@@ -904,7 +959,7 @@
                                             <th>STT</th>
                                             <th>Tên Sản Phẩm</th>
                                             <th>Tên Chợ</th>
-                                            <th>Giá (Ngàn đồng)</th>
+                                            <th>Giá (Nghìn đồng)</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -964,7 +1019,7 @@
                                             <th>STT</th>
                                             <th>Tên Sản Phẩm</th>
                                             <th>Tên Chợ</th>
-                                            <th>Giá (Ngàn đồng)</th>
+                                            <th>Giá (Nghìn đồng)</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -1021,7 +1076,7 @@
                                 <td style="padding: 8px; width: 55px;">Số dòng</td>
                                 <td style="padding: 8px; width: 187px;">Tên Sản Phẩm</td>
                                 <td style="padding: 8px; width: 202px;">Tên Chợ</td>
-                                <td style="padding: 8px; width: 176px;">Giá (Ngàn đồng)</td>
+                                <td style="padding: 8px; width: 176px;">Giá (Nghìn đồng)</td>
                             </tr>
 
                             @for (int i = 0; i < @Model.InCorrectSellProducts.Count; i++)
@@ -1121,7 +1176,7 @@
                                             <th>STT</th>
                                             <th>Tên Sản Phẩm</th>
                                             <th>Tên Chợ</th>
-                                            <th>Giá (Ngàn đồng)</th>
+                                            <th>Giá (Nghìn đồng)</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -1203,11 +1258,11 @@
         <div id="fb" class="tab-pane">
             <div class="analytics-tab-header clearfix">
                 <strong>Các sản phẩm có khả năng trùng nhau trong file excel.
-                    <span class="text-info">Đơn vị tính: ngàn đồng</span>
+                    <span class="text-info">Đơn vị tính: nghìn đồng</span>
                 </strong>
             </div>
             <div class="analytics-tab-content">
-                <div class="btn-toolbar">
+                <div class="btn-toolbar" id="tableEmpty">
                     <div class="pull-right">
                         <div class="btn-group">
                             <button type="button" class="btn" onclick="mergeAll()">
@@ -1253,44 +1308,48 @@
                                     <table id="table_@i" class="table table-bordered table-striped table-checkable">
                                         <thead>
                                             <tr id="header_@i">
-                                                <th class="checkbox-column">
-                                                    <input type="checkbox" class="uniform" />
+                                                <th class="checkbox-column" id="checkboxAllTable_@i" style="width:5%">
+                                                    <input type="checkbox" class="uniform" onclick="checkboxAllTable(@i)" />
                                                 </th>
-                                                <th>Tên Sản Phẩm</th>
-                                                <th>Tên Chợ</th>
-                                                <th>Giá</th>
-                                                <th>Chọn giá</th>
+                                                <th style="width:40%">Tên Sản Phẩm</th>
+                                                <th style="width:35%">Tên Chợ</th>
+                                                <th style="width:10%">Giá</th>
+                                                <th style="width:10%">Chọn giá</th>
                                             </tr>
                                         </thead>
 
                                         @for (int j = 0; j < Model.duplicateCorrectProduct[i].Count; j++)
                                         {
+
+                                            if (j == 0)
+                                            {
+                                            <tr class="checked">
+                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                    <input type="checkbox" checked="checked" id="checkbox" />
+                                                </td>
+                                                <td>@Model.duplicateCorrectProduct[i][j].Name</td>
+                                                <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
+                                                <td>@Model.duplicateCorrectProduct[i][j].Price</td>
+                                                <td>
+                                                    <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
+                                                </td>
+                                            </tr>
+                                            }
+                                            else
+                                            {
                                             <tr>
-                                                @if (j == 0)
-                                                {
-                                                    <td class="checkbox-column">
-                                                        <input type="checkbox" checked="checked" class="uniform" />
-                                                    </td>
-                                                    <td>@Model.duplicateCorrectProduct[i][j].Name</td>
-                                                    <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
-                                                    <td>@Model.duplicateCorrectProduct[i][j].Price</td>
-                                                    <td>
-                                                        <input class="uniform" type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
-                                                    </td>
-                                                }
-                                                else
-                                                {
-                                                    <td class="checkbox-column">
-                                                        <input class="uniform" type="checkbox" />
-                                                    </td>
-                                                    <td>@Model.duplicateCorrectProduct[i][j].Name</td>
-                                                    <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
-                                                    <td>@Model.duplicateCorrectProduct[i][j].Price</td>
-                                                    <td>
-                                                        <input class="uniform" type="radio" name="productPrice_@i" id="Check_@i" />
-                                                    </td>
-                                                }
-                                            </tr>  
+                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                    <input type="checkbox" id="checkbox" />
+                                                </td>
+                                                <td>@Model.duplicateCorrectProduct[i][j].Name</td>
+                                                <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
+                                                <td>@Model.duplicateCorrectProduct[i][j].Price</td>
+                                                <td>
+                                                    <input type="radio" name="productPrice_@i"  id="Check_@i" />
+                                                </td>
+                                            </tr>
+                                            }
+
                                         }
                                     </table>
                                 </div>
@@ -1338,32 +1397,37 @@
 
                                         @for (int j = 0; j < ViewBag.dupSellProduct[i].Count; j++)
                                         {
+
+                                            if (j == 0)
+                                            {
                                             <tr>
-                                                @if (j == 0)
-                                                {
-                                                    <td class="checkbox-column">
-                                                        <input class="uniform" type="checkbox" checked />
-                                                    </td>
-                                                    <td>@ViewBag.dupSellProduct[i][j].Name</td>
-                                                    <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
-                                                    <td>@ViewBag.dupSellProduct[i][j].Price</td>
-                                                    <td>
-                                                        <input class="uniform" type="radio" name="productPrice_@i" id="Check_@i" checked="checked"/>
-                                                    </td>
-                                                }
-                                                else
-                                                {
-                                                    <td class="checkbox-column">
-                                                        <input class="uniform" type="checkbox" id="checkbox" />
-                                                    </td>
-                                                    <td>@ViewBag.dupSellProduct[i][j].Name</td>
-                                                    <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
-                                                    <td>@ViewBag.dupSellProduct[i][j].Price</td>
-                                                    <td>
-                                                        <input class="uniform" type="radio" name="productPrice_@i" id="Check_@i" />
-                                                    </td>
-                                                }
-                                            </tr>  
+                                                <td class="checkbox-column">
+                                                    <input class="uniform" type="checkbox" checked />
+                                                </td>
+                                                <td>@ViewBag.dupSellProduct[i][j].Name</td>
+                                                <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
+                                                <td>@ViewBag.dupSellProduct[i][j].Price</td>
+                                                <td>
+                                                    <input class="uniform" type="radio" name="productPrice_@i" id="Check_@i" checked="checked"/>
+                                                </td>
+                                                <
+                                            </tr>
+                                            }
+                                            else
+                                            {
+                                            <tr>
+                                                <td class="checkbox-column">
+                                                    <input class="uniform" type="checkbox" id="checkbox" />
+                                                </td>
+                                                <td>@ViewBag.dupSellProduct[i][j].Name</td>
+                                                <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
+                                                <td>@ViewBag.dupSellProduct[i][j].Price</td>
+                                                <td>
+                                                    <input class="uniform" type="radio" name="productPrice_@i" id="Check_@i" />
+                                                </td>
+                                            </tr>
+                                            }
+
                                         }
                                     </table>
                                 </div>
