@@ -47,9 +47,15 @@ namespace SmartB.UI.Areas.Admin.Controllers
             document.Save(path, new UTF8Encoding());
 
             TempData["link"] = parseLink;
-            return RedirectToAction("Index");
+            return RedirectToAction("CreateParser");
         }
 
+        public ActionResult CreateParser()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public RedirectToRouteResult CreateParser(ParserCreator model)
         {
             ParseInfo parser = new ParseInfo

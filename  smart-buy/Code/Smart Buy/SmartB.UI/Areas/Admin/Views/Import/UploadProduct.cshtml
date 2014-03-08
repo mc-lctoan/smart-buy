@@ -1170,7 +1170,7 @@
                                 <span class="title">Sản phẩm lỗi</span>
                             </div>
                             <div class="widget-content table-container">
-                                <table class="table table-bordered table-striped" id="ErrorProduct">
+                                <table class="table table-bordered table-striped table-flipscroll" id="ErrorProduct">
                                     <thead>
                                         <tr>
                                             <th>STT</th>
@@ -1226,7 +1226,7 @@
                                                 <td>
                                                     <div class="control-group error">
                                                         <div class="controls">
-                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i })
+                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i, @class = "input-mini" })
                                                             <span class="help-block" id="priceAlert"></span>
                                                         </div>
                                                     </div>
@@ -1235,7 +1235,7 @@
                                             else
                                             {
                                                 <td>
-                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i })
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i, @class = "input-mini" })
                                                     <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Price)</p>
                                                 </td>
                                             }
