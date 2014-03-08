@@ -19,6 +19,9 @@
 
     <!-- Uniform Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/uniform/css/uniform.default.css")" />
+    
+    <!-- Wizard Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/wizard/wizard.css")" />
 
     @*<!-- Plugin Stylsheets first to ease overrides -->
 
@@ -166,7 +169,7 @@
                                     </li>
                                     <li>
                                         <span title="Market">
-                                            <i class="icon-graph"></i>
+                                            <i class="icon-bag"></i>
                                             <span class="nav-title">Quản lý chợ</span>
                                         </span>
                                         <ul class="inner-nav">
@@ -180,6 +183,26 @@
                                                 <a href="@Url.Action("Create", "Market")">
                                                     <i class="icol-application-add"></i>
                                                     Tạo chợ mới
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span title="Parser">
+                                            <i class="icon-download-2"></i>
+                                            <span class="nav-title">Parser</span>
+                                        </span>
+                                        <ul class="inner-nav">
+                                            <li>
+                                                <a href="@Url.Action("Index", "Parser")">
+                                                    <i class="icol-application-view-columns"></i>
+                                                    Danh sách các parser
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("CreateParser", "Parser")">
+                                                    <i class="icol-application-add"></i>
+                                                    Tạo parser
                                                 </a>
                                             </li>
                                         </ul>

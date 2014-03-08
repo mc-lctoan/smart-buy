@@ -692,7 +692,7 @@
       <DependentUpon>SmartBuy.edmx</DependentUpon>
       <LastGenOutput>SmartBuy.cs</LastGenOutput>
     </Content>
-    <Content Include="Areas\Admin\Views\Parser\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Parser\CreateParser.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Metro\css\less\docs.less" />
     <Content Include="Metro\fonts\iconFont.eot" />
@@ -714,6 +714,7 @@
     <Content Include="Areas\Admin\Views\Training\TrainingMatch.cshtml" />
     <Content Include="Areas\Admin\Views\Market\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Market\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Parser\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />

@@ -9,41 +9,20 @@ namespace SmartB.UI.Helper
 {
     public class SuggestRouteHelper
     {
-        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets)
-        {
-            AllProducts = allProducts;
-            Markets = markets;
-            CannotBuyProducts = CannotBuy();
-            CanBuyProducts = AllProducts.Except(CannotBuyProducts).ToList();
-        }
-
         public List<Product> AllProducts { get; set; }
         public List<Product> CanBuyProducts { get; set; }
         public List<Product> CannotBuyProducts { get; set; }
         public List<Market> Markets { get; set; }
-
-        public KeyValuePair<double, double> Start { get; set; }
-        public KeyValuePair<double, double> End { get; set; }
 
         private const int LargeNumber = 10000;
 
         // TODO: Put in configuration file later
         private const double Fuel = 0.625;
 
-        /// <summary>
-        /// Construct the algorithm
-        /// </summary>
-        /// <param name="allProducts">Each product must include its sell price and product attribute</param>
-        /// <param name="markets">Nearby markets</param>
-        /// <param name="start">Starting point</param>
-        /// <param name="end">Ending point</param>
-        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets,
-            KeyValuePair<double, double> start, KeyValuePair<double, double> end)
+        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets)
         {
-            AllProducts = allProducts.Distinct().ToList();
+            AllProducts = allProducts;
             Markets = markets;
-            Start = start;
-            End = end;
             CannotBuyProducts = CannotBuy();
             CanBuyProducts = AllProducts.Except(CannotBuyProducts).ToList();
         }
@@ -169,31 +148,6 @@ namespace SmartB.UI.Helper
         }
 
         /// <summary>
-        /// Calculate the cost to move from one point to each nearby market
-        /// </summary>
-        /// <param name="point">
-        /// Key: latitude,
-        /// Value: longitude
-        /// </param>
-        /// <returns>Array of cost</returns>
-        private int[] DistanceToAllMarkets(KeyValuePair<double, double> point)
-        {
-            var result = new int[Markets.Count];
-            var math = new MathHelper();
-
-            for (int i = 0; i < Markets.Count; i++)
-            {
-                var lat = Double.Parse(Markets[i].Latitude);
-                var lng = Double.Parse(Markets[i].Longitude);
-                var distance = math.CalculateDistance(point.Key, point.Value, lat, lng);
-                var price = Math.Round(distance * Fuel);
-                result[i] = (int) price;
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Suggest the best way to buy
         /// </summary>
         /// <returns>Data represents the suggestion</returns>
@@ -206,9 +160,7 @@ namespace SmartB.UI.Helper
 
             double[,] matrix = CreateMatrix();
             double[,] distance = CreateDistanceMatrix();
-            //int[] costFromStart = DistanceToAllMarkets(Start);
-            //int[] costToEnd = DistanceToAllMarkets(End);
-
+            
             int m = CanBuyProducts.Count;
             int n = Markets.Count;
             var total = new double[m, n];
