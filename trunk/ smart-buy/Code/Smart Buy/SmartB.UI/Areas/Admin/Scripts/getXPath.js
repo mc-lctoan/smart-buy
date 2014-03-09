@@ -1,4 +1,78 @@
-﻿var tmp = document.getElementById("webDiv");
+﻿var displayType, currentStep;
+var $tile = $('#xpathTile');
+var $productName = $('#xpathProductName');
+var $price = $('#xpathPrice');
+
+$('#ParserForm').wizard({
+    nextButtonLabel: "Sau &raquo;",
+    prevButtonLabel: "&laquo; Trước",
+    submitButtonLabel: "Tạo parser",
+    onStepLeave: validateStep,
+    onStepShown: showStep
+});
+
+$('form#ParserForm button[class="btn btn-primary pull-right"]').click(function (event) {
+    event.stopImmediatePropagation();
+    location.href = "/Admin/Parser";
+});
+
+function validateStep(wzr, fset) {
+    currentStep = getStep(wzr._activeStepId);
+    if (typeof fset != "undefined") {
+        switch (fset.dataset["name"]) {
+            case "type":
+                displayType = $('input[type="radio"]:checked', fset).val();
+                return true;
+            case "divInfo":
+                if (displayType == "grid" && $tile.val() == "") {
+                    alert("Phải chọn khung thông tin");
+                    return false;
+                }
+                return true;
+            case "productName":
+                if ($productName.val() == "") {
+                    alert("Phải chọn tên sản phẩm");
+                    return false;
+                }
+                return true;
+            case "productPrice":
+                if ($price.val() == "") {
+                    alert("Phải chọn giá sản phẩm");
+                    return false;
+                }
+                return true;
+            case "paging":
+                return true;
+            default:
+                return true;
+        }
+    }
+    return true;
+}
+
+function showStep(wzr) {
+    var step = getStep(wzr._activeStepId);
+    if (displayType == "table" && step == "1") {
+        if (currentStep < step) {
+            step++;
+            wzr.nextStep();
+        } else {
+            step--;
+            wzr.prevStep();
+        }
+    }
+    currentStep = step;
+}
+
+function getStep(str) {
+    if (str == null) {
+        return 0;
+    }
+    var last = str.length - 1;
+    return Number(str[last]);
+}
+
+var tmp = document.getElementById("webDiv");
 var myFrameDoc;
 tmp.onload = init;
 var webDiv = null;
@@ -10,7 +84,7 @@ function init() {
         myFrameDoc = webDiv.document;
         webDiv = webDiv.document.body;
     }
-    //tmp.width = webDiv.scrollWidth;
+    
     if (webDiv != null) {
         webDiv.onclick = getXPath;
         var divChild = webDiv.childNodes;
@@ -99,20 +173,23 @@ function getPath(clickedNode, root) {
 }
 
 function setTextBoxXpathValue(expression) {
-    if (document.getElementById("rad_productName").checked) {
-        document.getElementById("xpathProductName").value = expression;
-    } else if (document.getElementById("rad_price").checked) {
-        document.getElementById("xpathPrice").value = expression;
-    } else if (document.getElementById("rad_tile").checked) {
-        document.getElementById("xpathTile").value = expression;
+    if (currentStep == 2) {
+        //document.getElementById("xpathProductName").value = expression;
+        $productName.val(expression);
+    } else if (currentStep == 3) {
+        //document.getElementById("xpathPrice").value = expression;
+        $price.val(expression);
+    } else if (currentStep == 1) {
+        //document.getElementById("xpathTile").value = expression;
+        $tile.val(expression);
     }
 }
 
 function getXPath(event) {
     event.preventDefault();
-    if (document.getElementById("rad_tabularView").checked) {
+    if (displayType == "table") {
         getTabularPath(event);
-    } else if (document.getElementById("rad_gridView").checked) {
+    } else if (displayType == "grid") {
         getGridPath(event);
     }
 }
@@ -153,7 +230,8 @@ function getTabularPath(event) {
 function getGridPath(event) {
     var target = event.target;
     var result = "";
-    if (document.getElementById("rad_tile").checked) {
+    //document.getElementById("rad_tile").checked
+    if (currentStep == 1) {
         tile = target;
         result += "//" + target.tagName.toLowerCase() + "[@class='" + target.className + "']";
         setTextBoxXpathValue(result);
@@ -161,7 +239,7 @@ function getGridPath(event) {
         return;
     }
 
-    if (tile == null) {
+    if ($tile.val() == "") {
         alert("Phải chọn khung thông tin trước!");
         return;
     }

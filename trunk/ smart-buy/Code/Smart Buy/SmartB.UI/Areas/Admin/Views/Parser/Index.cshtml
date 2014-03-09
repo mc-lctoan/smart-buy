@@ -3,4 +3,24 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
 }
 
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Parser
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                <a href="@Url.Action("CreateParser", "Parser")">Tạo parser</a>
+            </li>
+        </ul>
+
+        <h1 id="main-heading">Tạo parser
+            <span>Tạo một parser mới cho hệ thống</span>
+        </h1>
+    </div>
+}
+
 <h2>Index</h2>

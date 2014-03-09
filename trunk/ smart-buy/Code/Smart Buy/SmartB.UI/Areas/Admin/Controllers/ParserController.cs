@@ -61,7 +61,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             ParseInfo parser = new ParseInfo
                                    {
                                        // TODO: fix market for testing
-                                       MarketId = 1,
+                                       MarketId = 31,
                                        ParseLink = model.ParseLink,
                                        ProductNameXpath = model.ProductNameXpath,
                                        PriceXpath = model.PriceXpath,

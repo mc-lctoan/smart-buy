@@ -16,12 +16,6 @@
             $('#rad_tabularView').click(function () {
                 $('#gridItemCheck').hide('slow');
             }); // end click
-
-            $('#ParserForm').wizard({
-                nextButtonLabel: "Sau &raquo;",
-                prevButtonLabel: "&laquo; Trước",
-                submitButtonLabel: "Tạo parser"
-            });
         }); // end ready
     </script>
 }
@@ -51,7 +45,7 @@
     <!-- Wizard -->
     <script src="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/wizard/wizard.min.js")"></script>
     <script src="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/wizard/jquery.form.min.js")"></script>
-    
+
     <script src="@Url.Content("~/Areas/Admin/Scripts/getXPath.js")"></script>
 }
 
@@ -77,78 +71,83 @@
     </div>
 </div>
 
-<div class="row-fluid">
-    <div class="span12 widget">
-        <div class="widget-header">
-            <span class="title">
-                <i class="icol-wand"></i>
-                Các bước tạo parser
-            </span>
-        </div>
-        <div class="widget-content form-container">
-            @using (Html.BeginForm("CreateParser", "Parser", FormMethod.Post, new { @class = "form-horizontal", id = "ParserForm" }))
-            {
-                <input type="hidden" name="ParseLink" value="@TempData["link"]"/>
-                <fieldset class="wizard-step">
-                    <legend class="wizard-label">
-                        <i class="icon-book"></i>Loại Parser
-                    </legend>
-                    <div class="control-group">
-                        <label class="control-label">Kiểu trình bày <span class="required">*</span></label>
-                        <div class="controls">
-                            <label class="radio">
-                                <input type="radio" name="viewType" id="rad_tabularView" checked="checked" />
-                                Dạng bảng
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="viewType" id="rad_gridView" />
-                                Dạng lưới
-                            </label>
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset class="wizard-step">
-                    <legend class="wizard-label"><i class="icon-book"></i>Khung thông tin</legend>
-                    <div class="control-group">
-                        <label class="control-label">Xpath tới khung thông tin</label>
-                        <div class="controls">
-                            <input type="text" id="xpathTile" />
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset class="wizard-step">
-                    <legend class="wizard-label"><i class="icon-book"></i>Tên sản phẩm</legend>
-                    <div class="control-group">
-                        <label class="control-label">Xpath tới tên sản phẩm</label>
-                        <div class="controls">
-                            @Html.TextBoxFor(x => x.ProductNameXpath, new { id = "xpathProductName" })
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset class="wizard-step">
-                    <legend class="wizard-label"><i class="icon-book"></i>Giá sản phẩm</legend>
-                    <div class="control-group">
-                        <label class="control-label">Xpath tới giá sản phẩm</label>
-                        <div class="controls">
-                            @Html.TextBoxFor(x => x.PriceXpath, new { id = "xpathPrice" })
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset class="wizard-step">
-                    <legend class="wizard-label"><i class="icon-book"></i>Phân trang</legend>
-                    Phân trang
-                </fieldset>
-                <fieldset class="wizard-step">
-                    <legend class="wizard-label"><i class="icon-ok"></i>Kết thúc</legend>
-                    Bạn chắc chắn muốn tạo parser với cấu hình đã chọn?
-                </fieldset>
-                @*<input class="primary" type="submit" value="Tạo parser" />*@
-            }
-        </div>
-    </div>
-</div>
-
 @if (TempData["link"] != null)
 {
-    <iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="800" height="600"></iframe>
+    <div class="row-fluid">
+        <div class="span12 widget">
+            <div class="widget-header">
+                <span class="title">
+                    <i class="icol-wand"></i>
+                    Các bước tạo parser
+                </span>
+            </div>
+            <div class="widget-content form-container">
+                @using (Html.BeginForm("CreateParser", "Parser", FormMethod.Post, new { @class = "form-horizontal", id = "ParserForm" }))
+                {
+                    <input type="hidden" name="ParseLink" value="@TempData["link"]"/>
+                    <fieldset class="wizard-step" data-name="type" data-step-id="0">
+                        <legend class="wizard-label">
+                            <i class="icon-book"></i>Loại Parser
+                        </legend>
+                        <div class="control-group">
+                            <label class="control-label">Kiểu trình bày <span class="required">*</span></label>
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" value="table" name="viewType" id="rad_tabularView" checked="checked" />
+                                    Dạng bảng
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" value="grid" name="viewType" id="rad_gridView" />
+                                    Dạng lưới
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="wizard-step" data-name="divInfo" data-step-id="1">
+                        <legend class="wizard-label"><i class="icon-book"></i>Khung thông tin</legend>
+                        <div class="control-group">
+                            <label class="control-label">Xpath tới khung thông tin</label>
+                            <div class="controls">
+                                <input type="text" id="xpathTile" />
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="wizard-step" data-name="productName" data-step-id="2">
+                        <legend class="wizard-label"><i class="icon-book"></i>Tên sản phẩm</legend>
+                        <div class="control-group">
+                            <label class="control-label">Xpath tới tên sản phẩm</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(x => x.ProductNameXpath, new { id = "xpathProductName" })
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="wizard-step" data-name="productPrice" data-step-id="3">
+                        <legend class="wizard-label"><i class="icon-book"></i>Giá sản phẩm</legend>
+                        <div class="control-group">
+                            <label class="control-label">Xpath tới giá sản phẩm</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(x => x.PriceXpath, new { id = "xpathPrice" })
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="wizard-step" data-name="paging" data-step-id="4">
+                        <legend class="wizard-label"><i class="icon-book"></i>Phân trang</legend>
+                        Phân trang
+                    </fieldset>
+                    <fieldset class="wizard-step" data-name="finish" data-step-id="5">
+                        <legend class="wizard-label"><i class="icon-ok"></i>Kết thúc</legend>
+                        Bạn chắc chắn muốn tạo parser với cấu hình đã chọn?
+                    </fieldset>
+@*<input class="primary" type="submit" value="Tạo parser" />*@
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row-fluid">
+        <div class="span12 widget">
+            <iframe id="webDiv" src="@Url.Content("~/Areas/Admin/SavedPages/tmp.html")" width="800" height="600"></iframe>
+        </div>
+    </div>
 }
