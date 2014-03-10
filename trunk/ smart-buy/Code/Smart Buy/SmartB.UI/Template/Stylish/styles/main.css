@@ -381,7 +381,7 @@ iframe {
 #logo {
     width: 200px;
     height: 120px;
-    background: #ffffff;
+    /*background: #ffffff;*/
     float: left;
 }
 
