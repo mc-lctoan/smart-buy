@@ -1,0 +1,69 @@
+﻿@font-face {
+font-family: 'Steelfish';
+src: url('../Fonts/uosm_steelfish_rg4.eot');
+src: url('../Fonts/uosm_steelfish_rg4.eot?#iefix') format('embedded-opentype'),
+url('../Fonts/uosm_steelfish_rg4.ttf') format('truetype'),
+url('../Fonts/uosm_steelfish_rg4.woff') format('woff'),
+url('../Fonts/uosm_steelfish_rg4.svg#steelfish_rgregular') format('svg');
+}
+
+.btn-large
+{
+    background-color: #FE9D00;
+    border-color: #F37800;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 4px;
+    color: white;
+    cursor: pointer;
+    font-family: Steelfish;
+    font-size: 28px;
+    margin: 9px;
+    padding: 5px;
+    text-align: center;
+    width: 230px;
+}
+
+.btn-normal
+{
+      background-color: #FE9D00;
+    border-color: #F37800;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 4px;
+    color: white;
+    cursor: pointer;
+    font-family: Steelfish;
+    font-size: 20px;
+    margin: 9px;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.btn-red
+{
+    background-color: #343434;
+    border-color: #262626;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 4px;
+    color: white;
+    cursor: pointer;
+    font-family: Steelfish;
+    font-size: 20px;
+    margin: 9px;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+.btn-delete
+{
+    color: white;
+    background-color: red;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    height: 20px;
+    width: 20px;
+    display: none;
+}
