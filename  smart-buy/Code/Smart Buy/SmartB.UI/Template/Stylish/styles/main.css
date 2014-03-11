@@ -867,7 +867,7 @@ iframe {
 }
 
 .rev-slider-wrapper .orange-big {
-    font-size: 100px;
+    font-size: 75px;
     color: #F87912;
 }
 
@@ -878,6 +878,10 @@ iframe {
 
 .rev-slider-wrapper .green-big {
     font-size: 75px;
+    color: #91C240;
+}
+.rev-slider-wrapper .green-medium {
+    font-size: 48px;
     color: #91C240;
 }
 
@@ -1461,3 +1465,81 @@ textarea.stylish-textarea {
     margin: 0;
 }
 
+.SortTool li
+    {
+        cursor: pointer;
+        float: left;
+        font: italic 16px/24px georgia,serif;
+        opacity: 0.6;
+        padding: 7px 30px;
+    }
+
+.SortTool li:hover
+        {
+            background-color: rgba(228, 230, 225, 0.75);
+            opacity: 1;
+        }
+
+.Tools {
+    box-shadow: 2px 2px 2px #CCCCCC;
+    height: 40px;
+    position: absolute;
+    width: 80%;
+    
+}
+.ProductDetail
+{
+    margin-top: 120px;
+    width:100%;
+    -moz-box-shadow: 0px -5px 5px #ccc;
+    -webkit-box-shadow: 0px -5px 5px #ccc;
+    filter: progid:DXImageTransform.Microsoft.Shadow(color=#e6e6e6,direction=40);
+    box-shadow: 0px -5px 5px #ccc;
+}
+
+.Title
+{
+    height: 34px;
+    background-color: #FF9900;
+    color: white;
+    padding-top: 4px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 0px;
+    margin-top: 1px;
+}
+
+.Title img
+    {
+        position: relative;
+        top: 2px;
+    }
+.clr
+{
+    clear: both;
+}
+#Contain
+{
+    width: 80%;
+    background-color: white;
+    background-repeat: repeat-y;
+    margin: 20px auto;
+    -moz-box-shadow: 0px 5px 15px #ccc;
+    -webkit-box-shadow: 0px 5px 15px #ccc;
+    box-shadow: 0px 5px 15px #ccc;
+    filter: progid:DXImageTransform.Microsoft.Shadow(color=#e6e6e6,direction=160);
+    z-index: 3;
+}
+.arrowFilter-left {
+    background: url("../images/arrowFilter.png") no-repeat scroll -40px 0px transparent;
+    display: inline-block;
+    height: 20px;
+    margin-left: 5px;
+    position: relative;
+    top: 3px;
+    width: 20px;
+}
+.ProductNameDetail {
+color: #9DD52A;
+font-size: 20pt;
+}

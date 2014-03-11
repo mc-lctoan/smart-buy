@@ -14,17 +14,19 @@
     <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
     <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
     <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+
 }
 
-<div id="top-image" class="top-image1">
+@*<div id="top-image" class="top-image1">
     <div class="container">
         <div id="top-image-caption">
             <h2>Thông tin giỏ hàng</h2>
         </div>
     </div>
-</div>
+</div>*@
 
-<div id="breadcrumbs">
+@*<div id="breadcrumbs">
     <div class="container">
         <div class="row">
             <div class="span8">
@@ -43,20 +45,36 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
+<div id="Contain">
+<div class="ProductDetail" >
+   <div class="Tools">
+        <div class="Left">
+            <ul class="SortTool">
+                <li style="padding: 8px 30px; cursor: auto;  background-color: #3399FF; color: white !important;">
+                    <a style="color:white" href="@Url.Action("Index", "Home")"> Trang chủ</a>
+                @*<span class="arrowFilter-left"></span>*@
+                </li>
+                <li style="padding: 8px 30px; cursor: auto;">Chi tiết giỏ hàng
+                </li>
+            </ul>
+        </div>
+        <div class="clr"></div>
+    </div>
 
-<div class="main-content">
-    <div class="container fadeDown">
+<div class="main-content" style="padding: 60px 20px 20px; min-height: 600px;">
+    <div >
         @if (Model != null)
         {
+            <div style="font-weight:bold;text-align:right">*Đơn vị tính Nghìn đồng.</div>
             <table class="table table-bordered table-hover" id="tableViewCart">
                 <thead>
                     <tr>
-                        <th>STT</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Đơn giá (nghìn đồng)</th>
-                        <th>Số lượng</th>
-                        <th>Thao tác</th>
+                        <th style="width:5%">STT</th>
+                        <th style="width:60%">Tên sản phẩm</th>
+                        <th style="width:15%">Đơn giá</th>
+                        <th style="width:10%">Số lượng</th>
+                        <th style="width:10%"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,7 +96,7 @@
                             <td>
                                 <div class="metro">
                                     <button onclick="removeFromCart('@line.Product.ProductId')">
-                                        <i class='icon-cancel-2'></i>
+                                        <i class=icon-cancel-2></i>
                                         Xóa
                                     </button>
                                 </div>
@@ -87,8 +105,8 @@
                     }
                 </tbody>
                 <tr>
-                    <td colspan="5" align="right">Tổng tiền: @Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax()) (nghìn đồng)
-                    </td>
+                    <th colspan="5" align="right" style="text-align:right">Tổng tiền: @Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax()) (nghìn đồng)
+                    </th>
 
                 </tr>
             </table>
@@ -116,3 +134,5 @@
         }
     </div>
 </div>
+</div>
+    </div>
