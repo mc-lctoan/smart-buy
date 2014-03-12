@@ -1539,6 +1539,15 @@ textarea.stylish-textarea {
     top: 3px;
     width: 20px;
 }
+body
+{
+    background-color: white;
+    color: #595959;
+    background-image: url(../../../Images/paper.png);
+    background-position: center;
+    background-attachment: fixed;
+    font-family: "Segoe UI", "Lucida Grande","Lucida","Arial";
+}
 .ProductNameDetail {
 color: #9DD52A;
 font-size: 20pt;

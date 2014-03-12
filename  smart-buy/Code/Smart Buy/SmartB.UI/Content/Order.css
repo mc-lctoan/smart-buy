@@ -67,3 +67,50 @@ url('../Fonts/uosm_steelfish_rg4.svg#steelfish_rgregular') format('svg');
     width: 20px;
     display: none;
 }
+
+/*Order**********************************
+    ***********************************/
+#order-summary
+{
+    position: fixed;
+    bottom: 30px;
+    right: 10px;
+     background-image: url("../../../Images/bglines.png");
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 0 2px 0 #333333;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    height: 60px;
+    line-height: 27px;
+    padding-left: 20px;
+    text-shadow: 0 1px rgba(0, 0, 255, 0.298);
+    width: 250px;
+}
+#btn-checkout
+{
+     background-color: transparent;
+    background-image: url("../../../Images/shopping_cart_accept.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: medium none;
+    color: transparent;
+    height: 80px;
+    width: 80px;
+    cursor: pointer;
+}
+#btn-checkout:hover
+{
+    position: relative;
+    top: -5px;
+}
+#btn-checkout:active
+{
+    position: relative;
+    top: 0px;
+}
+.hint-order
+{
+    font-size: 14px;
+    padding: 10px;
+}

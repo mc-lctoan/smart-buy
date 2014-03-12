@@ -181,7 +181,15 @@
             </div>
         </div>
     </div>
-
+     <!-- Order -->
+    <div id="order-summary">
+        <form action="@Url.Action("ViewCart", "Cart")" method="post" style="float:left">
+            <input type="hidden" id="data-order" name="orderStr" />
+            <input title="Xem chi tiết đơn hàng" type="submit" id="btn-checkout" class="Left" />
+        </form>
+        <div id="order-infor" style="float:left">Tổng: <span id="order-total">0</span><br /> (nghìn đồng)</div>
+    </div>
+  
     <footer>
         <div id="inner-footer">
             <div class="container">

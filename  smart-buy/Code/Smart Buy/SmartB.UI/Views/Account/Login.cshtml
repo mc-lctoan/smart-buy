@@ -47,7 +47,7 @@
                         <span class="lbl-input" style="width: 32%">Mật khẩu
                                 <span class="lbl-require" style="display: normal">[*]</span>
                         </span>
-                        <span>@Html.PasswordFor(model => model.UserName, new { @class = "text-box", @placeholder = "Mật khẩu", @maxlength = 36, style="width:65%" })
+                        <span>@Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Mật khẩu", @maxlength = 36, style="width:65%" })
                         </span>
                         <span class="text-warning">@Html.ValidationMessageFor(m => m.Password)</span>
                     </div>
