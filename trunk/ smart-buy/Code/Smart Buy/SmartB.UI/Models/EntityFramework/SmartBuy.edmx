@@ -136,6 +136,7 @@
           <Property Name="ParseLink" Type="nvarchar" Nullable="false" MaxLength="500" />
           <Property Name="ProductNameXpath" Type="nvarchar" MaxLength="300" />
           <Property Name="PriceXpath" Type="nvarchar" MaxLength="300" />
+          <Property Name="PagingXpath" Type="nvarchar" MaxLength="300" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
@@ -361,7 +362,6 @@
           <EntitySet Name="Histories" EntityType="SmartBuyModel.History" />
           <EntitySet Name="HistoryDetails" EntityType="SmartBuyModel.HistoryDetail" />
           <EntitySet Name="LogFiles" EntityType="SmartBuyModel.LogFile" />
-          <EntitySet Name="ParseInfoes" EntityType="SmartBuyModel.ParseInfo" />
           <EntitySet Name="Products" EntityType="SmartBuyModel.Product" />
           <EntitySet Name="ProductAttributes" EntityType="SmartBuyModel.ProductAttribute" />
           <EntitySet Name="Roles" EntityType="SmartBuyModel.Role" />
@@ -405,10 +405,6 @@
             <End Role="UserPrice" EntitySet="UserPrices" />
           </AssociationSet>
           <EntitySet Name="Markets" EntityType="SmartBuyModel.Market" />
-          <AssociationSet Name="FK_ParseInfo_Market" Association="SmartBuyModel.FK_ParseInfo_Market">
-            <End Role="Market" EntitySet="Markets" />
-            <End Role="ParseInfo" EntitySet="ParseInfoes" />
-          </AssociationSet>
           <AssociationSet Name="FK_SellProduct_Market" Association="SmartBuyModel.FK_SellProduct_Market">
             <End Role="Market" EntitySet="Markets" />
             <End Role="SellProduct" EntitySet="SellProducts" />
@@ -421,6 +417,11 @@
           <AssociationSet Name="FK_MarketDistance_Market" Association="SmartBuyModel.FK_MarketDistance_Market">
             <End Role="Market" EntitySet="Markets" />
             <End Role="MarketDistance" EntitySet="MarketDistances" />
+          </AssociationSet>
+          <EntitySet Name="ParseInfoes" EntityType="SmartBuyModel.ParseInfo" />
+          <AssociationSet Name="FK_ParseInfo_Market" Association="SmartBuyModel.FK_ParseInfo_Market">
+            <End Role="Market" EntitySet="Markets" />
+            <End Role="ParseInfo" EntitySet="ParseInfoes" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Dictionary">
@@ -462,18 +463,6 @@
           <Property Type="String" Name="FileName" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Type="DateTime" Name="CreatedTime" Precision="3" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ParseInfo">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="MarketId" />
-          <Property Type="String" Name="ParseLink" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ProductNameXpath" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="PriceXpath" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <NavigationProperty Name="Market" Relationship="SmartBuyModel.FK_ParseInfo_Market" FromRole="ParseInfo" ToRole="Market" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -666,23 +655,11 @@
           <Property Type="String" Name="Latitude" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Longitude" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <NavigationProperty Name="ParseInfoes" Relationship="SmartBuyModel.FK_ParseInfo_Market" FromRole="Market" ToRole="ParseInfo" />
           <NavigationProperty Name="SellProducts" Relationship="SmartBuyModel.FK_SellProduct_Market" FromRole="Market" ToRole="SellProduct" />
           <NavigationProperty Name="UserPrices" Relationship="SmartBuyModel.FK_UserPrice_Market" FromRole="Market" ToRole="UserPrice" />
           <NavigationProperty Name="MarketDistances" Relationship="SmartBuyModel.FK_MarketDistance_Market" FromRole="Market" ToRole="MarketDistance" />
+          <NavigationProperty Name="ParseInfoes" Relationship="SmartBuyModel.FK_ParseInfo_Market" FromRole="Market" ToRole="ParseInfo" />
         </EntityType>
-        <Association Name="FK_ParseInfo_Market">
-          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
-          <End Type="SmartBuyModel.ParseInfo" Role="ParseInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Market">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParseInfo">
-              <PropertyRef Name="MarketId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SellProduct_Market">
           <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
           <End Type="SmartBuyModel.SellProduct" Role="SellProduct" Multiplicity="*" />
@@ -729,6 +706,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ParseInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="MarketId" />
+          <Property Type="String" Name="ParseLink" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ProductNameXpath" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PriceXpath" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PagingXpath" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <NavigationProperty Name="Market" Relationship="SmartBuyModel.FK_ParseInfo_Market" FromRole="ParseInfo" ToRole="Market" />
+        </EntityType>
+        <Association Name="FK_ParseInfo_Market">
+          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
+          <End Type="SmartBuyModel.ParseInfo" Role="ParseInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Market">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParseInfo">
+              <PropertyRef Name="MarketId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -770,18 +772,6 @@
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ParseInfoes">
-            <EntityTypeMapping TypeName="SmartBuyModel.ParseInfo">
-              <MappingFragment StoreEntitySet="ParseInfo">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="PriceXpath" ColumnName="PriceXpath" />
-                <ScalarProperty Name="ProductNameXpath" ColumnName="ProductNameXpath" />
-                <ScalarProperty Name="ParseLink" ColumnName="ParseLink" />
-                <ScalarProperty Name="MarketId" ColumnName="MarketId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -868,6 +858,19 @@
                 <ScalarProperty Name="Distance" ColumnName="Distance" />
                 <ScalarProperty Name="ToMarket" ColumnName="ToMarket" />
                 <ScalarProperty Name="FromMarket" ColumnName="FromMarket" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParseInfoes">
+            <EntityTypeMapping TypeName="SmartBuyModel.ParseInfo">
+              <MappingFragment StoreEntitySet="ParseInfo">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="PagingXpath" ColumnName="PagingXpath" />
+                <ScalarProperty Name="PriceXpath" ColumnName="PriceXpath" />
+                <ScalarProperty Name="ProductNameXpath" ColumnName="ProductNameXpath" />
+                <ScalarProperty Name="ParseLink" ColumnName="ParseLink" />
+                <ScalarProperty Name="MarketId" ColumnName="MarketId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

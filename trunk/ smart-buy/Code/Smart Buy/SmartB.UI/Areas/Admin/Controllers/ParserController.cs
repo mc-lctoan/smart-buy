@@ -74,14 +74,15 @@ namespace SmartB.UI.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult CreateParser(ParserCreator model)
         {
-            ParseInfo parser = new ParseInfo
-                                   {
-                                       MarketId = model.MarketId,
-                                       ParseLink = model.ParseLink,
-                                       ProductNameXpath = model.ProductNameXpath,
-                                       PriceXpath = model.PriceXpath,
-                                       IsActive = true
-                                   };
+            var parser = new ParseInfo
+                             {
+                                 MarketId = model.MarketId,
+                                 ParseLink = model.ParseLink,
+                                 ProductNameXpath = model.ProductNameXpath,
+                                 PriceXpath = model.PriceXpath,
+                                 PagingXpath = model.PagingXpath,
+                                 IsActive = true
+                             };
             context.ParseInfoes.Add(parser);
             context.SaveChanges();
             return RedirectToAction("Index");

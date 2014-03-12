@@ -284,7 +284,7 @@ function getGridPath(event) {
 function getPaging(event) {
     var xpath = getPath(event.target, webDiv);
     xpath[0].position = -1;
-    xpath[0].tagName += "[i]";
+    //xpath[0].tagName += "[i]";
     xpath.reverse();
     var result = "";
 
