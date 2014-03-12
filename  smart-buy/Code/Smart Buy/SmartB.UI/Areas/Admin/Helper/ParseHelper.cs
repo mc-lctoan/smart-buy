@@ -70,20 +70,7 @@ namespace SmartB.UI.Areas.Admin.Helper
                 {
                     stopwatch.Start();
 
-                    // Load website
-                    HtmlDocument doc = web.Load(parseInfo.ParseLink);
-
-                    // Get product name
-                    List<string> names = doc.DocumentNode
-                        .SelectNodes(parseInfo.ProductNameXpath)
-                        .Select(x => x.InnerText)
-                        .ToList();
-
-                    // Get product price
-                    List<string> prices = doc.DocumentNode
-                        .SelectNodes(parseInfo.PriceXpath)
-                        .Select(x => x.InnerText)
-                        .ToList();
+                    var data = GetData(web, parseInfo);
 
                     stopwatch.Stop();
 
@@ -91,11 +78,8 @@ namespace SmartB.UI.Areas.Admin.Helper
                                   {
                                       Link = parseInfo.ParseLink,
                                       ElapsedTime = stopwatch.Elapsed.Milliseconds,
-                                      TotalItems = names.Count > prices.Count ? prices.Count : names.Count
+                                      TotalItems = data.Count
                                   };
-
-                    // Match name with price
-                    var data = MatchNamePrice(names, prices);
 
                     // Insert to database
                     log.ToDatabase = InsertProductToDb(data, parseInfo.MarketId.Value);
@@ -107,19 +91,88 @@ namespace SmartB.UI.Areas.Admin.Helper
             LogFileHelper.GenerateLogFile(logInfos, path);
         }
 
-        private static IEnumerable<KeyValuePair<string, string>> MatchNamePrice(List<string> names, List<string> prices)
+        private static List<KeyValuePair<string, string>> GetData(HtmlWeb web, ParseInfo info)
         {
-            var result = new List<KeyValuePair<string, string>>();
+            var data = new List<KeyValuePair<string, string>>();
 
-            // User the shorter as base
-            int length = names.Count < prices.Count ? names.Count : prices.Count;
+            Uri uri = new Uri(info.ParseLink);
+            string host = uri.GetLeftPart(UriPartial.Authority);
 
-            for (int i = 0; i < length; i++)
+            // Load website
+            try
             {
-                var pair = new KeyValuePair<string, string>(names[i], prices[i]);
-                result.Add(pair);
+                // First page
+                HtmlDocument doc = web.Load(info.ParseLink);
+                data = MatchData(doc, info.ProductNameXpath, info.PriceXpath);
+
+                // Other pages
+                if (info.PagingXpath != null)
+                {
+                    var pages = doc.DocumentNode.SelectNodes(info.PagingXpath);
+                    foreach (var page in pages)
+                    {
+                        int pageNumber;
+                        if (page == null || !Int32.TryParse(page.InnerText, out pageNumber))
+                        {
+                            break;
+                        }
+
+                        // Get address
+                        string url = host + page.Attributes["href"].Value;
+
+                        // Load page
+                        doc = web.Load(url);
+
+                        // Get data
+                        var tmp = MatchData(doc, info.ProductNameXpath, info.PriceXpath);
+
+                        // Add to collection
+                        data.AddRange(tmp);
+                    }
+                }
             }
-            return result;
+            catch (Exception)
+            {
+                return data;
+            }
+            return data;
+        }
+
+        private static List<KeyValuePair<string, string>> MatchData(HtmlDocument doc, string nameXpath, string priceXpath)
+        {
+            var data = new List<KeyValuePair<string, string>>();
+            var i = 1;
+            while (true)
+            {
+                // Replace XPath
+                string namei = nameXpath.Replace("[i]", ")[" + i + "]");
+                namei = "(" + namei;
+                string pricei = priceXpath.Replace("[i]", ")[" + i + "]");
+                pricei = "(" + pricei;
+
+                // Get pair of data
+                var name = doc.DocumentNode.SelectSingleNode(namei);
+                var price = doc.DocumentNode.SelectSingleNode(pricei);
+
+                // Got it?
+                if (name != null && price != null)
+                {
+                    // Has data?
+                    if (name.InnerText != "" && price.InnerText != "")
+                    {
+                        var pair = new KeyValuePair<string, string>(name.InnerText, price.InnerText);
+                        data.Add(pair);
+                    }
+                }
+
+                // Get all?
+                if (name == null && price == null)
+                {
+                    break;
+                }
+                i++;
+            }
+            return data;
         }
 
         private static int ConvertPrice(string price)
@@ -130,6 +183,10 @@ namespace SmartB.UI.Areas.Admin.Helper
                 if (Char.IsDigit(c))
                 {
                     result += c;
+                }
+                if (c == ' ')
+                {
+                    break;
                 }
             }
             double tmp = Double.Parse(result);
@@ -148,14 +205,25 @@ namespace SmartB.UI.Areas.Admin.Helper
                     int price = ConvertPrice(pair.Value);
 
                     // Check product existent
-                    // TODO: find a better way later
-                    var product = context.Products
-                        .Include(x => x.ProductAttributes)
-                        .FirstOrDefault(x => x.Name == pair.Key && x.IsActive);
+                    int pId = -1;
+                    foreach (var dictionary in context.Dictionaries)
+                    {
+                        double match = CompareStringHelper.CompareString(pair.Key, dictionary.Name);
+                        if (match > 0.85)
+                        {
+                            pId = dictionary.ProductId.Value;
+                            break;
+                        }
+                    }
 
                     // Already existed?
-                    if (product != null)
+                    if (pId != -1)
                     {
+                        // Get product
+                        var product = context.Products
+                            .Include(x => x.ProductAttributes)
+                            .FirstOrDefault(x => x.Id == pId);
+
                         // Get latest product attributes
                         ProductAttribute latest = product.ProductAttributes
                             .OrderByDescending(x => x.LastUpdatedTime)
@@ -205,10 +273,20 @@ namespace SmartB.UI.Areas.Admin.Helper
                         newProduct.SellProducts.Add(sell);
 
                         context.Products.Add(newProduct);
+
                         try
                         {
                             context.SaveChanges();
                             success++;
+
+                            // Add to dictionary
+                            var dictionary = new Dictionary
+                                                 {
+                                                     Name = newProduct.Name,
+                                                     ProductId = newProduct.Id
+                                                 };
+                            context.Dictionaries.Add(dictionary);
+                            context.SaveChanges();
                         }
                         catch (DbUpdateException)
                         {

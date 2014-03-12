@@ -19,6 +19,7 @@ namespace SmartB.UI.Models.EntityFramework
         public string ParseLink { get; set; }
         public string ProductNameXpath { get; set; }
         public string PriceXpath { get; set; }
+        public string PagingXpath { get; set; }
         public bool IsActive { get; set; }
     
         public virtual Market Market { get; set; }
