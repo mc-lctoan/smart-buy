@@ -1,7 +1,9 @@
 ﻿var displayType, currentStep;
+var prevExp = "";
 var $tile = $('#xpathTile');
 var $productName = $('#xpathProductName');
 var $price = $('#xpathPrice');
+var $paging = $('#xpathPaging');
 
 $('#ParserForm').wizard({
     nextButtonLabel: "Sau &raquo;",
@@ -22,6 +24,11 @@ function validateStep(wzr, fset) {
         switch (fset.dataset["name"]) {
             case "type":
                 displayType = $('input[type="radio"]:checked', fset).val();
+                if (displayType == "table") {
+                    $tile.prop("disabled", true);
+                } else {
+                    $tile.prop("disabled", false);
+                }
                 return true;
             case "divInfo":
                 if (displayType == "grid" && $tile.val() == "") {
@@ -52,15 +59,15 @@ function validateStep(wzr, fset) {
 
 function showStep(wzr) {
     var step = getStep(wzr._activeStepId);
-    if (displayType == "table" && step == "1") {
-        if (currentStep < step) {
-            step++;
-            wzr.nextStep();
-        } else {
-            step--;
-            wzr.prevStep();
-        }
-    }
+    //if (displayType == "table" && step == "1") {
+    //    if (currentStep < step) {
+    //        step++;
+    //        wzr.nextStep();
+    //    } else {
+    //        step--;
+    //        wzr.prevStep();
+    //    }
+    //}
     currentStep = step;
 }
 
@@ -105,12 +112,25 @@ function mouseOut(event) {
     element.style.outline = "none";
 }
 
+function clearHighlight(xpathExpression) {
+    var selected = myFrameDoc.evaluate(xpathExpression, myFrameDoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    for (var i = 0; i < selected.snapshotLength; i++) {
+        var node = selected.snapshotItem(i);
+        node.style.outline = "none";
+    }
+}
+
 function highlightElement(xpathExpression) {
+    xpathExpression = xpathExpression.replace("[i]", "");
+    if (prevExp != "") {
+        clearHighlight(prevExp);
+    }
     var selected = myFrameDoc.evaluate(xpathExpression, myFrameDoc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
     for (var i = 0; i < selected.snapshotLength; i++) {
         var node = selected.snapshotItem(i);
         node.style.outline = "thin dashed #FF0000";
     }
+    prevExp = xpathExpression;
 }
 
 function XpathElement(tagName, id, className, position) {
@@ -174,20 +194,23 @@ function getPath(clickedNode, root) {
 
 function setTextBoxXpathValue(expression) {
     if (currentStep == 2) {
-        //document.getElementById("xpathProductName").value = expression;
         $productName.val(expression);
     } else if (currentStep == 3) {
-        //document.getElementById("xpathPrice").value = expression;
         $price.val(expression);
     } else if (currentStep == 1) {
-        //document.getElementById("xpathTile").value = expression;
         $tile.val(expression);
+    } else if (currentStep == 4) {
+        $paging.val(expression);
     }
 }
 
 function getXPath(event) {
     event.preventDefault();
-    if (displayType == "table") {
+    if (currentStep == 4) {
+        getPaging(event);
+        return;
+    }
+    if (displayType == "table" && currentStep != 1) {
         getTabularPath(event);
     } else if (displayType == "grid") {
         getGridPath(event);
@@ -200,6 +223,7 @@ function getTabularPath(event) {
     for (var i = 0; i < xpath.length; i++) {
         if (xpath[i].tagName == "tr") {
             xpath[i].position = -1;
+            xpath[i].tagName += "[i]";
             break;
         }
     }
@@ -244,6 +268,7 @@ function getGridPath(event) {
         return;
     }
     result = document.getElementById("xpathTile").value;
+    result += "[i]";
     var xpath = getPath(target, tile);
     xpath.reverse();
     for (var i = 0; i < xpath.length; i++) {
@@ -254,4 +279,33 @@ function getGridPath(event) {
     }
     setTextBoxXpathValue(result);
     highlightElement(result);
+}
+
+function getPaging(event) {
+    var xpath = getPath(event.target, webDiv);
+    xpath[0].position = -1;
+    xpath[0].tagName += "[i]";
+    xpath.reverse();
+    var result = "";
+
+    if (xpath[0].id != "") {
+        result += "//*[@id='" + xpath[0].id + "']";
+        for (var i = 1; i < xpath.length; i++) {
+            result += "/" + xpath[i].tagName;
+            if (xpath[i].position != -1) {
+                result += "[" + xpath[i].position + "]";
+            }
+        }
+    } else {
+        for (i = 0; i < xpath.length; i++) {
+            if (xpath[i].position != -1) {
+                result += "[" + xpath[i].position + "]";
+            }
+            result += "/";
+        }
+        result = result.slice(0, -1);
+    }
+    highlightElement(result);
+    result = result.replace("/tbody", "");
+    setTextBoxXpathValue(result);
 }

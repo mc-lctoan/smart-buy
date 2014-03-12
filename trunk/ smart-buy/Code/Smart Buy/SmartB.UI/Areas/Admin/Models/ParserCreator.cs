@@ -16,5 +16,10 @@ namespace SmartB.UI.Areas.Admin.Models
 
         [Display(Name = "Giá sản phẩm")]
         public string PriceXpath { get; set; }
+
+        [Display(Name = "Phân trang")]
+        public string PagingXpath { get; set; }
+
+        public int MarketId { get; set; }
     }
 }

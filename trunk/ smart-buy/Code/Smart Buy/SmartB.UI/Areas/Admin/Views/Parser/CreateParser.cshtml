@@ -7,16 +7,16 @@
 
 @section headScript
 {
+    <!-- Select2 -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/select2/select2.css")" media="screen" />
+    
+    <!-- Wizard Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/wizard/wizard.css")" />
+    
     <script>
-        $(document).ready(function () {
-            $('#rad_gridView').click(function () {
-                $('#gridItemCheck').show('slow');
-            }); // end click
-
-            $('#rad_tabularView').click(function () {
-                $('#gridItemCheck').hide('slow');
-            }); // end click
-        }); // end ready
+        $(document).ready(function() {
+            $('.select2-select-00').select2();
+        });
     </script>
 }
 
@@ -42,6 +42,9 @@
 
 @section footScript
 {
+    <!-- Select2 -->
+	<script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/select2/select2.min.js")"></script>
+
     <!-- Wizard -->
     <script src="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/wizard/wizard.min.js")"></script>
     <script src="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/wizard/jquery.form.min.js")"></script>
@@ -101,6 +104,10 @@
                                     Dạng lưới
                                 </label>
                             </div>
+                            <label class="control-label">Tên chợ</label>
+                            <div class="controls">
+                                @Html.DropDownListFor(x => x.MarketId, ViewBag.Markets as List<SelectListItem>, new { @class = "select2-select-00 span5" })
+                            </div>
                         </div>
                     </fieldset>
                     <fieldset class="wizard-step" data-name="divInfo" data-step-id="1">
@@ -108,7 +115,7 @@
                         <div class="control-group">
                             <label class="control-label">Xpath tới khung thông tin</label>
                             <div class="controls">
-                                <input type="text" id="xpathTile" />
+                                <input type="text" id="xpathTile" class="span5" />
                             </div>
                         </div>
                     </fieldset>
@@ -117,7 +124,7 @@
                         <div class="control-group">
                             <label class="control-label">Xpath tới tên sản phẩm</label>
                             <div class="controls">
-                                @Html.TextBoxFor(x => x.ProductNameXpath, new { id = "xpathProductName" })
+                                @Html.TextBoxFor(x => x.ProductNameXpath, new { id = "xpathProductName", @class = "span5" })
                             </div>
                         </div>
                     </fieldset>
@@ -126,17 +133,24 @@
                         <div class="control-group">
                             <label class="control-label">Xpath tới giá sản phẩm</label>
                             <div class="controls">
-                                @Html.TextBoxFor(x => x.PriceXpath, new { id = "xpathPrice" })
+                                @Html.TextBoxFor(x => x.PriceXpath, new { id = "xpathPrice", @class = "span5" })
                             </div>
                         </div>
                     </fieldset>
                     <fieldset class="wizard-step" data-name="paging" data-step-id="4">
                         <legend class="wizard-label"><i class="icon-book"></i>Phân trang</legend>
-                        Phân trang
+                        <div class="control-group">
+                            <label class="control-label">Xpath tới phần phân trang</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(x => x.PagingXpath, new { id = "xpathPaging", @class = "span5" })
+                            </div>
+                        </div>
                     </fieldset>
                     <fieldset class="wizard-step" data-name="finish" data-step-id="5">
                         <legend class="wizard-label"><i class="icon-ok"></i>Kết thúc</legend>
-                        Bạn chắc chắn muốn tạo parser với cấu hình đã chọn?
+                        <div class="control-group">
+                            <h3>Bạn chắc chắn muốn tạo parser với cấu hình đã chọn?</h3>
+                        </div>
                     </fieldset>
 @*<input class="primary" type="submit" value="Tạo parser" />*@
                 }

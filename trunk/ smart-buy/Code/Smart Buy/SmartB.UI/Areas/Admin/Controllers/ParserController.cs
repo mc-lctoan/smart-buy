@@ -14,7 +14,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
 {
     public class ParserController : Controller
     {
-        SmartBuyEntities context = new SmartBuyEntities();
+        private SmartBuyEntities context = new SmartBuyEntities();
 
         //
         // GET: /Admin/ParseWeb/
@@ -40,7 +40,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             ParseHelper.CorrectLink(link, parseLink, "href");
 
             // TODO: Remove all script?
-            //document.DocumentNode.Descendants().Where(x => x.Name == "script").ToList().ForEach(x => x.Remove());
+            document.DocumentNode.Descendants().Where(x => x.Name == "script").ToList().ForEach(x => x.Remove());
 
             string fileName = "tmp.html";
             string path = Path.Combine(Server.MapPath("~/Areas/Admin/SavedPages"), fileName);
@@ -52,6 +52,22 @@ namespace SmartB.UI.Areas.Admin.Controllers
 
         public ActionResult CreateParser()
         {
+            var markets = context.Markets
+                .OrderBy(x => x.Name)
+                .Where(x => x.IsActive)
+                .ToList();
+            var marketList = new List<SelectListItem>();
+            foreach (var market in markets)
+            {
+                var item = new SelectListItem
+                               {
+                                   Text = market.Name,
+                                   Value = market.Id.ToString()
+                               };
+                marketList.Add(item);
+            }
+
+            ViewBag.Markets = marketList;
             return View();
         }
 
@@ -60,8 +76,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
         {
             ParseInfo parser = new ParseInfo
                                    {
-                                       // TODO: fix market for testing
-                                       MarketId = 31,
+                                       MarketId = model.MarketId,
                                        ParseLink = model.ParseLink,
                                        ProductNameXpath = model.ProductNameXpath,
                                        PriceXpath = model.PriceXpath,
