@@ -16,35 +16,16 @@
     <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
     <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
 }
-
-@*<div id="top-image" class="top-image1">
-    <div class="container">
-        <div id="top-image-caption">
-            <h2>Tìm kiếm sản phẩm</h2>
-        </div>
-    </div>
-</div>
-
-<div id="breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="span8">
-                <ul class="breadcrumb">
-                    <li>
-                        <a href="@Url.Action("Index", "Home")">Trang chủ</a>
-                        <span class="divider">/</span>
-                    </li>
-                    <li>
-                        <p>Tìm kiếm</p>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="span4">
-            </div>
-        </div>
-    </div>
-</div>*@
+<script>
+    $(document).ready(function () {
+        $("#order-total").load("../Cart/ViewCart #order-total-detail");
+        $("#order-summary").show();
+        
+        //if ($("#order-total").load("../Cart/ViewCart #order-total-detail").text() == "") {
+        //    $("#order-summary").hide();
+        //} 
+    });
+</script>
 <div id="Contain">
     <div class="ProductDetail" >
         <div class="Tools">
@@ -61,7 +42,7 @@
             <div class="clr"></div>
         </div>
     </div>
-    <div class="main-content" style="padding: 60px 20px 20px; min-height: 600px;">
+    <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
         <div >
             @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search" }))
             {
