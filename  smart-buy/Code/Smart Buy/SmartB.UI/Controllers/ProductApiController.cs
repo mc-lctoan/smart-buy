@@ -17,33 +17,9 @@ namespace SmartB.UI.Controllers
         [AcceptVerbs("GET")]
         public List<ProductInfo> Search(string keyword)
         {
-            // TODO: may change to full text search
-            //var products = context.Products
-            //    .Include(x => x.ProductAttributes)
-            //    .Where(x => x.Name.Contains(keyword))
-            //    .ToList();
-            //var result = new List<ProductInfo>();
-            //foreach (Product product in products)
-            //{
-            //    List<int?> minPrice = product.ProductAttributes
-            //        .OrderByDescending(x => x.LastUpdatedTime)
-            //        .Select(x => x.MinPrice)
-            //        .ToList();
-            //    List<int?> maxPrice = product.ProductAttributes
-            //        .OrderByDescending(x => x.LastUpdatedTime)
-            //        .Select(x => x.MaxPrice)
-            //        .ToList();
-            //    var info = new ProductInfo
-            //                   {
-            //                       Name = product.Name,
-            //                       MinPrice = minPrice[0].Value,
-            //                       MaxPrice = maxPrice[0].Value
-            //                   };
-            //    result.Add(info);
-            //}
 
             //search product by dictionary
-            var dictionaries = context.Dictionaries.Include(i => i.Product).Where(p => p.Name.Contains(keyword)).ToList();
+            var dictionaries = context.Dictionaries.Include(i => i.Product).Where(p => p.Name.Contains(keyword)).OrderByDescending(p => p.Name).ToList();
 
             var result = new List<ProductInfo>();
             foreach (Dictionary dictionary in dictionaries)
@@ -70,6 +46,30 @@ namespace SmartB.UI.Controllers
                 }
 
             }
+            result.OrderByDescending(p => p.Name);
+
+            return result;
+        }
+
+        [HttpGet]
+        public List<Market> GetMarket()
+        {
+            var result = new List<Market>();
+            var markets = context.Markets.ToList();
+
+            foreach (Market market in markets)
+            {
+                var item = new Market
+                {
+                    Id = market.Id,
+                    Name = market.Name,
+                    Address = market.Address,
+                    Latitude = market.Latitude,
+                    Longitude = market.Longitude
+                };
+                result.Add(item);
+            }
+            result.OrderBy(m => m.Name);
 
             return result;
         }
