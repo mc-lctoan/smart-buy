@@ -114,3 +114,89 @@ url('../Fonts/uosm_steelfish_rg4.svg#steelfish_rgregular') format('svg');
     font-size: 14px;
     padding: 10px;
 }
+#btn-addcart
+{
+    background-color: transparent;
+    background-image: url("../../../Images/add_to_shopping_cart.png");
+   
+    height: 14px;
+    width: 14px;
+}
+.bgSizeCover {
+    
+    background: url(../../images/bg-cover5.jpg) ;
+    background-size:cover;
+}
+
+.AddToCardDetail{
+background-image: url("../../../Images/bglines.png");
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 0 2px 0 #333333;
+    color: #2E2E2E;
+    height: 25px;
+    width: 50%;
+    text-shadow: 0 1px rgba(0, 0, 255, 0.298);
+    color: white;
+    line-height: 27px;
+    float:left
+}
+.btnAddToCardDetail{
+position: relative;
+width: 40px;
+height: 40px;
+float: left;
+left: -5px;
+top:-5px;
+border: none;
+background-color: transparent;
+background-image: url(../../../Images/add_to_shopping_cart.png);
+background-repeat: no-repeat;
+background-position: center;
+background-size:cover;
+color: transparent;
+cursor: pointer;
+}
+.btnAddToCardDetail:hover {
+	top: 0px;
+	
+}
+.btnAddToCardDetail:active {
+	top: -5px;	
+}
+
+.SuggestPrice{
+background-image: url("../../../Images/bglines2.png");
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 0 2px 0 #333333;
+    color: #FF9900;
+    height: 25px;
+    width:140px;
+    text-shadow: 0 1px rgba(0, 0, 255, 0.298);
+    color: white;
+    line-height: 27px;
+    float:left;
+    margin-left:10px;
+}
+.btnSuggestPrice{
+position: relative;
+width: 40px;
+height: 40px;
+float: left;
+left: -5px;
+top:-5px;
+border: none;
+background-color: transparent;
+background-image: url(../../../Images/dollar.png);
+background-repeat: no-repeat;
+background-position: center;
+background-size:cover;
+color: transparent;
+cursor: pointer;
+}
+.btnSuggestPrice:hover {
+	top: 0px;
+	
+}
+.btnSuggestPrice:active {
+	top: -5px;	
+}
