@@ -33,8 +33,8 @@ namespace SmartB.UI.Controllers
                 var user = context.Users.FirstOrDefault(x => x.Username == User.Identity.Name);
                 if (user != null)
                 {
-                    user.DefinedRoute = model.Route;
-                    user.MarketId = model.MarketId;
+                    //user.DefinedRoute = model.Route;
+                    //user.MarketId = model.MarketId;
                     context.SaveChanges();
                     TempData["DefineRoute"] = "Success";
                     return RedirectToAction("DefineRoute");
@@ -59,10 +59,11 @@ namespace SmartB.UI.Controllers
             {
                 // TODO: haven't defined? Redirect to define route, show error
                 // Get route
-                ViewBag.Route = user.DefinedRoute;
+                //ViewBag.Route = user.DefinedRoute;
 
                 // Get nearby markets id
-                string[] ids = user.MarketId.Split(',');
+                //string[] ids = user.MarketId.Split(',');
+                string[] ids = new string[10];
 
                 // Construct a market list
                 var markets = new List<Market>();

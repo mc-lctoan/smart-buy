@@ -25,7 +25,6 @@ namespace SmartB.UI.Helper
                                   {
                                       Username = model.UserName,
                                       Password = model.Password,
-                                      Email = model.Email,
                                       RoleId = model.RoleId,
                                       IsActive = true
                                   };

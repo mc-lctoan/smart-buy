@@ -22,13 +22,11 @@ namespace SmartB.UI.Models.EntityFramework
     
         public string Username { get; set; }
         public string Password { get; set; }
-        public string Email { get; set; }
-        public string DefinedRoute { get; set; }
-        public string MarketId { get; set; }
         public int RoleId { get; set; }
         public bool IsActive { get; set; }
     
         public virtual ICollection<History> Histories { get; set; }
+        public virtual Profile Profile { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<UserPrice> UserPrices { get; set; }
     }

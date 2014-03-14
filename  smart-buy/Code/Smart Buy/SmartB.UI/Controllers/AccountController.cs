@@ -104,6 +104,12 @@ namespace SmartB.UI.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public RedirectToRouteResult ChangePassword()
+        {
+            return RedirectToAction("AccountDetails");
+        }
+
         public ActionResult AccountDetails()
         {
             return View();
