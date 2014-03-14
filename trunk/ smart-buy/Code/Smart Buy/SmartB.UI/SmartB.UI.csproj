@@ -213,6 +213,7 @@
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
     <Compile Include="Areas\Admin\Models\ProductInfo.cs" />
     <Compile Include="Binder\CartModelBinder.cs" />
+    <Compile Include="Controllers\AccountApiController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
@@ -263,6 +264,9 @@
       <DependentUpon>SmartBuy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EntityFramework\ProductAttribute.cs">
+      <DependentUpon>SmartBuy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityFramework\Profile.cs">
       <DependentUpon>SmartBuy.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EntityFramework\Role.cs">
@@ -599,6 +603,16 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmartBuy.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\add_to_shopping_cart.png" />
+    <Content Include="Images\bg-cover5.jpg" />
+    <Content Include="Images\bg-login.jpg" />
+    <Content Include="Images\bg-repeat.png" />
+    <Content Include="Images\bglines.png" />
+    <Content Include="Images\bglines2.png" />
+    <Content Include="Images\dollar.png" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\paper.png" />
+    <Content Include="Images\shopping_cart_accept.png" />
     <Content Include="Metro\css\docs.css" />
     <Content Include="Metro\css\jquery.dataTables.css" />
     <Content Include="Metro\css\jquery.dataTables_themeroller.css" />
@@ -821,6 +835,9 @@
     <Content Include="Template\Stylish\images\brand02.png" />
     <Content Include="Template\Stylish\images\brand03.png" />
     <Content Include="Template\Stylish\images\browser1.png" />
+    <Content Include="Template\Stylish\images\BuaSang.png" />
+    <Content Include="Template\Stylish\images\BuaToi.png" />
+    <Content Include="Template\Stylish\images\BuaTrua.png" />
     <Content Include="Template\Stylish\images\buttons-loop.png" />
     <Content Include="Template\Stylish\images\carousel-img.png" />
     <Content Include="Template\Stylish\images\carousel-img02.png" />
@@ -844,6 +861,8 @@
     <Content Include="Template\Stylish\images\header-image2.png" />
     <Content Include="Template\Stylish\images\header-image3.png" />
     <Content Include="Template\Stylish\images\header-image4.png" />
+    <Content Include="Template\Stylish\images\Logo.png" />
+    <Content Include="Template\Stylish\images\macbook2.png" />
     <Content Include="Template\Stylish\images\member-photo1.png" />
     <Content Include="Template\Stylish\images\member-photo2.png" />
     <Content Include="Template\Stylish\images\member-photo3.png" />

@@ -12,18 +12,19 @@ namespace SmartB.UI.Models.EntityFramework
     using System;
     using System.Collections.Generic;
     
-    public partial class History
+    public partial class Profile
     {
-        public History()
-        {
-            this.HistoryDetails = new HashSet<HistoryDetail>();
-        }
-    
-        public int Id { get; set; }
         public string Username { get; set; }
-        public System.DateTime BuyTime { get; set; }
+        public string FirstRoute { get; set; }
+        public string FirstMarkets { get; set; }
+        public string FirstRouteName { get; set; }
+        public string SecondRoute { get; set; }
+        public string SecondMarkets { get; set; }
+        public string SecondRouteName { get; set; }
+        public string ThirdRoute { get; set; }
+        public string ThirdMarkets { get; set; }
+        public string ThirdRouteName { get; set; }
     
-        public virtual ICollection<HistoryDetail> HistoryDetails { get; set; }
         public virtual User User { get; set; }
     }
 }
