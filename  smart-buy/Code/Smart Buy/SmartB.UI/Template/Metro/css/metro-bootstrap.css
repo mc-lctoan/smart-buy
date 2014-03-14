@@ -6208,11 +6208,12 @@ a {
   float: left;
 }
 .metro .window .caption .title {
-  font-size: 14px;
-  margin-top: -2px;
+  font-size: 20px;
+  margin-top: -5px;
   margin-left: 4px;
   position: relative;
-  float: left;
+  /*float: left;*/
+  text-align: center;
 }
 .metro .window .caption .super-title {
   position: absolute;
@@ -6345,8 +6346,8 @@ a {
   border: 1px #e9e9e9 solid;
 }
 .metro .window.flat .caption {
-  height: 32px;
-  background-color: #ffffff;
+  height: 40px;
+  background-color: #AADD00;
   padding: 7px 5px;
   border-bottom: 1px #e9e9e9 solid;
   border-top: 0;

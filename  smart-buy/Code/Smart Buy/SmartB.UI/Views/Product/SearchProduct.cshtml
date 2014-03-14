@@ -1,5 +1,6 @@
-﻿@model PagedList.IPagedList<SmartB.UI.Areas.Admin.Models.ProductInfo>
-@using PagedList.Mvc;
+﻿@*@model PagedList.IPagedList<SmartB.UI.Areas.Admin.Models.ProductInfo>
+@using PagedList.Mvc;*@
+@model List<SmartB.UI.Areas.Admin.Models.ProductInfo>
 @{
     ViewBag.Title = "SearchProduct";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
@@ -14,119 +15,125 @@
     <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
     <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
     <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables.css")">
+    <script type="text/javascript" src="@Url.Content("~/Metro/js/jquery/jquery.dataTables.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables_themeroller.css")">
     <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
 }
 <script>
     $(document).ready(function () {
-        $("#order-total").load("../Cart/ViewCart #order-total-detail");
-        $("#order-summary").show();
-        
+        var table = $('#ProductTable').dataTable();
+        if ($("#order-total").load("../Cart/ViewCart #order-total-detail").text() != "") {
+            $("#order-summary").show();
+        }
+
         //if ($("#order-total").load("../Cart/ViewCart #order-total-detail").text() == "") {
         //    $("#order-summary").hide();
         //} 
     });
 </script>
-<div id="Contain">
-    <div class="ProductDetail" >
-        <div class="Tools">
-            <div class="Left">
-                <ul class="SortTool">
-                    <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
-                        <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
-                        @*<span class="arrowFilter-left"></span>*@
-                    </li>
-                    <li style="padding: 8px 30px; cursor: auto;">Tìm kiếm sản phẩm
-                    </li>
-                </ul>
-            </div>
-            <div class="clr"></div>
-        </div>
-    </div>
-    <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
-        <div >
-            @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search" }))
-            {
-                <div class="metro">
-                    <div class="input-control text size5">
-                        @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
-                        <button type="submit" class="btn-search"></button>
-                    </div>
+<div class="bgSizeCover">
+    <div id="Contain">
+        <div class="ProductDetail">
+            <div class="Tools">
+                <div class="Left">
+                    <ul class="SortTool">
+                        <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
+                            <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                            @*<span class="arrowFilter-left"></span>*@
+                        </li>
+                        <li style="padding: 8px 30px; cursor: auto;">Tìm kiếm sản phẩm
+                        </li>
+                    </ul>
                 </div>
-            }
+                <div class="clr"></div>
+            </div>
+        </div>
+        <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
+            <div style="min-height: 700px;">
+                @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search" }))
+                {
+                    <div class="metro">
+                        <div class="input-control text size5">
+                            @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
+                            <button type="submit" class="btn-search"></button>
+                        </div>
+                    </div>
+                }
+                @if (Model != null)
+                {
+                    <div class="ProductNameDetail">Kết quả tìm kiếm</div>
+                    <div style="font-weight: bold; text-align: right">*Đơn vị tính Nghìn đồng.</div>
+                    <table class="table table-bordered table-hover" id="ProductTable">
+                        <thead>
+                            <tr style="background-color: white;">
+                                <th style="width: 50%">Tên sản phẩm</th>
+                                <th style="width: 15%">Giá sản phẩm</th>
+                                <th style="width: 35%">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
+                                        @{
+                                var productId = item.ProductId;
+                                var productName = item.Name;
+                                        }
 
-            @if (Model != null)
-            {
-                <div class="ProductNameDetail">Kết quả tìm kiếm</div><br />
-            <div style="font-weight:bold;text-align:right">*Đơn vị tính Nghìn đồng.</div>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th style="width:55%">Tên sản phẩm</th>
-                            <th style="width:15%">Giá sản phẩm</th>
-                            <th style="width:30%">Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Name)
-                                    @{
-                            var productId = item.ProductId;
-                            var productName = item.Name;
-                                    }
+                                    </td>
 
-                                </td>
+                                    <td>@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                        @{
+                                var minPrice = item.MinPrice;
+                                var maxPrice = item.MaxPrice;
+                                        }
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <div class="AddToCardDetail">
+                                                <input type="button" name="action" value="Add" onclick="addToCart('@productId')" class="btnAddToCardDetail" data-id ="" />
+                                                <div style="color:black">Thêm vào giỏ</div>
+                                            </div>
+                                            <div class="SuggestPrice">
+                                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                                <div style="color:black">Đề xuất giá</div>
+                                            </div>
+                                        </div>
+                                        <script>
 
-                                <td>@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
-                                    @{
-                            var minPrice = item.MinPrice;
-                            var maxPrice = item.MaxPrice;
-                                    }
-                                </td>
-                                <td>
-                                    <div class="metro">
-                                        <button class="success" onclick="addToCart('@productId')">
-                                            <i class="icon-plus-2 on-left"></i>
-                                            Thêm
-                                        </button>
-
-                                        <button class="editDialog inverse">
-                                            <i class="icon-dollar on-left"></i>
-                                            Đề xuất giá                                
-                                        </button>
-                                    </div>
-                                    <script>
-
-                                        $(".editDialog").on("click", function (e) { // e.preventDefault(); use this or return false
-                                            $.Dialog({
-                                                overlay: true,
-                                                shadow: true,
-                                                flat: true,
-                                                icon: '<i class="icon-dollar-2 on-left"></i>',
-                                                title: 'Đề xuất giá',
-                                                content: '',
-                                                padding: 10,
-                                                onShow: function (_dialog) {
-                                                    var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
+                                                $.Dialog({
+                                                    overlay: true,
+                                                    shadow: true,
+                                                    flat: true,
+                                                    width: 442,
+                                                    icon: '<i class="btnSuggestPrice"></i>',
+                                                    title: 'Đề xuất giá',
+                                                    content: '',
+                                                    padding: 10,
+                                                    onShow: function (_dialog) {
+                                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
                                                         $.Dialog.content(content);
                                                         $.Metro.initInputs();
                                                     }
                                                 });
                                                 return true;
                                             });
-                                    </script>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>    
-                @Html.PagedListPager(Model, page => Url.Action("SearchProduct", new { currentFilter = ViewBag.CurrentFilter, page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-            }
-            else
-            {
-                @Html.Action("ProductMostBuy")
-            }
+                                        </script>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table> 
+                    //  @Html.PagedListPager(Model, page => Url.Action("SearchProduct", new { currentFilter = ViewBag.CurrentFilter, page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                }
+                else
+                {
+                    @Html.Action("ProductMostBuy")
+                }
+            </div>
         </div>
     </div>
 </div>

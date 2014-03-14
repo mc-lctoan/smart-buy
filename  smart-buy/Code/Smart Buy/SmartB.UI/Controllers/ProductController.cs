@@ -77,7 +77,8 @@ namespace SmartB.UI.Controllers
 
             //products = products.OrderBy(p => p.Product.Name);
 
-            return View(result.ToPagedList(pageNumber, pageSize));
+            //return View(result.ToPagedList(pageNumber, pageSize));
+            return View(result);
         }
 
         public ActionResult ViewCart()

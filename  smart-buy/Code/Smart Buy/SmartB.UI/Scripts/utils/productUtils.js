@@ -377,10 +377,30 @@ function addToCart(id) {
             showNotifyDialog(message);
         }
     });
-
+    afterbuysuccess(id);
 
     $('#order-summary').show();
     $("#order-total").load("../Cart/ViewCart #order-total-detail");
+}
+
+function afterbuysuccess(id) {
+    var offimg = $("#addProduct_"+id).offset();
+    var offsum = $('#order-summary').offset();
+
+    var newimg = $("#addProduct_"+id).clone().css({
+        'position': 'fixed',
+        'top': offimg.top + 'px',
+        'left': offimg.left + 'px',
+    });
+    $('body').append(newimg);
+    newimg.animate(
+        { 'top': (offsum.top - 50) + 'px', 'left': (offsum.left + 20) + 'px', 'opacity': 1 },
+        {
+            duration: 1200, complete: function () {
+                newimg.remove();
+            }
+        });
+
 }
 
 function removeFromCart(id) {
@@ -416,7 +436,7 @@ function updateQuantityCart(id) {
         return;
     } else {
         if (quantity <= 0) {
-            quantity = 0.1;
+            quantity = 1;
         } else if (quantity > 10) {
             quantity = 10;
         }

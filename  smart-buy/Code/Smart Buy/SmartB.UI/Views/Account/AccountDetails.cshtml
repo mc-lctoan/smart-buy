@@ -1,46 +1,82 @@
 ﻿@{
-    ViewBag.Title = "AccountDetails";
+    ViewBag.Title = "Thông tin tài khoản";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
+<link rel="stylesheet" href="@Url.Content("~/Metro/css/metro-bootstrap.css")">
 
-<h2>Thông tin tài khoản</h2>
-<form>
-    <label>Tên tài khoản</label>
-    <div class="input-control text">
-        <input type="text" value="" placeholder="user01" disabled />
-        <button class="btn-clear"></button>
+
+<div id="Contain" style="min-height: 600px">
+    <div class="ProductDetail">
+        <div class="Tools">
+            <div class="Left">
+                <ul class="SortTool">
+                    <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
+                        <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                    </li>
+                    <li style="padding: 8px 30px; cursor: auto;">Thông tin tài khoản
+                    </li>
+                </ul>
+            </div>
+            <div class="clr"></div>
+        </div>
     </div>
-    <label>Mật khẩu mới</label>
-    <div class="input-control text">
-        <input type="password" value="" placeholder="" />
-        <button class="btn-clear"></button>
+    <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
+        <div class="span3 bg-dark" style="min-height: 500px;border-right:dashed">
+            <nav class="sidebar">
+                
+                    <div class="">Thông tin tài khoản</div>
+                    <div class=""><a href="@Url.Action("AccountDetails", "Account")"><i class="icon-user"></i>Sửa thông tin cá nhân</a></div>
+                    <div class=""><a href="@Url.Action("BuyingHistory", "History")"><i class="icon-history"></i>Lịch sử mua sắm</a></div>
+                    <div class=""><a href="@Url.Action("DefineRoute", "Route")"><i class="icon-location"></i>Định nghĩa đường đi</a></div>
+                    <div class=""><a href="@Url.Action("LogOff", "Account")"><i class="icon-switch"></i>Thoát</a></div>
+                
+            </nav>
+        </div>
+        <div class="span6">
+            <form>
+                <label>Tên tài khoản</label>
+                <div class="input-control text">
+                    <input type="text" value="" placeholder="user01" disabled />
+                    <button class="btn-clear"></button>
+                </div>
+                <label>Mật khẩu mới</label>
+                <div class="input-control text">
+                    <input type="password" value="" placeholder="" />
+                    <button class="btn-clear"></button>
+                </div>
+                <label>Xác nhận mật khẩu</label>
+                <div class="input-control text">
+                    <input type="password" value="" placeholder="" />
+                    <button class="btn-clear"></button>
+                </div>
+                <hr />
+                <label>Tên đầy đủ</label>
+                <div class="input-control text">
+                    <input type="text" value="" placeholder="Sergey Pimenov" />
+                    <button class="btn-clear"></button>
+                </div>
+                <label>Địa chỉ mail</label>
+                <div class="input-control text">
+                    <input type="email" data-transform="input-control" placeholder="user01@gmail.com" />
+                    <button class="btn-clear"></button>
+                </div>
+                <label>Số điện thoại</label>
+                <div class="input-control text">
+                    <input type="tel" data-transform="input-control" placeholder="0123456789" />
+                    <button class="btn-clear"></button>
+                </div>
+                <button class="primary">
+                    <i class="icon-checkmark"></i>
+                    Lưu
+                </button>
+                <button class="bg-gray fg-white">
+                    <i class="icon-undo"></i>
+                    Làm lại
+                </button>
+            </form>
+        </div>
+
     </div>
-    <label>Xác nhận mật khẩu</label>
-    <div class="input-control text">
-        <input type="password" value="" placeholder="" />
-        <button class="btn-clear"></button>
-    </div>
-    <hr />
-    <label>Tên đầy đủ</label>
-    <div class="input-control text">
-        <input type="text" value="" placeholder="Sergey Pimenov" />
-        <button class="btn-clear"></button>
-    </div>
-    <label>Địa chỉ mail</label>
-    <div class="input-control text">
-        <input type="email" data-transform="input-control" placeholder="user01@gmail.com" />
-        <button class="btn-clear"></button>
-    </div>
-    <label>Số điện thoại</label>
-    <div class="input-control text">
-        <input type="tel" data-transform="input-control" placeholder="0123456789" />
-        <button class="btn-clear"></button>
-    </div>
-    <button class="primary">
-        <i class="icon-checkmark"></i>
-        Lưu
-    </button>
-    <button class="bg-gray fg-white">
-        <i class="icon-undo"></i>
-        Làm lại
-    </button>
-</form>
+</div>
+@*<h2>Thông tin tài khoản</h2>
+*@

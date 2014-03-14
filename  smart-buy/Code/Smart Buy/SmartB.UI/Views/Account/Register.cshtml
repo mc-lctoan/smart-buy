@@ -67,7 +67,7 @@
                         <span class="lbl-input" style="width: 32%">Tên Tài Khoản
                                 <span class="lbl-require" style="display: normal">[*]</span>
                         </span>
-                        <span>@Html.TextBoxFor(model => model.UserName, new { @class = "text-box", @placeholder = "Tên tài khoản", @maxlength = 36 , style="width:65%"})</span>
+                        <span>@Html.TextBoxFor(model => model.UserName, new { @class = "text-box", @placeholder = "Nhập tên tài khoản", @maxlength = 36 , style="width:65%"})</span>
                         <br />
                         <span class="text-warning">@Html.ValidationMessageFor(m => m.UserName)</span>
                     </div>
@@ -76,7 +76,7 @@
                         <span class="lbl-input" style="width: 32%">Mật khẩu
                                 <span class="lbl-require" style="display: normal">[*]</span>
                         </span>
-                        <span>@Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Mật khẩu", @maxlength = 36, style="width:65%" })
+                        <span>@Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Nhập mật khẩu", @maxlength = 36, style="width:65%" })
                         </span>
                         <span class="text-warning">@Html.ValidationMessageFor(m => m.Password)</span>
                     </div>
@@ -84,7 +84,7 @@
                     <div class="bg-white-input">
                         <span class="lbl-input" style="width: 32%">Xác nhận mật khẩu <span class="lbl-require" style="display: normal">[*]</span>
                         </span>
-                        <span>@Html.PasswordFor(model => model.ConfirmPassword, new { @class = "text-box", @placeholder = "Xác Nhận Mật khẩu", style="width:65%" })</span>
+                        <span>@Html.PasswordFor(model => model.ConfirmPassword, new { @class = "text-box", @placeholder = "Nhập lại mật khẩu", style="width:65%" })</span>
                         <br />
                         <span class="text-warning">@Html.ValidationMessageFor(m => m.ConfirmPassword)</span>
                     </div>

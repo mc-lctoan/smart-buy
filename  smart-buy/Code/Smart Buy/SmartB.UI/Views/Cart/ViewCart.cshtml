@@ -18,94 +18,94 @@
 
 }
 
-
-<div id="Contain">
-    <div class="ProductDetail">
-        <div class="Tools">
-            <div class="Left">
-                <ul class="SortTool">
-                    <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
-                        <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
-                        @*<span class="arrowFilter-left"></span>*@
-                    </li>
-                    <li style="padding: 8px 30px; cursor: auto;">Chi tiết giỏ hàng
-                    </li>
-                </ul>
+<div class="bgSizeCover">
+    <div id="Contain">
+        <div class="ProductDetail">
+            <div class="Tools">
+                <div class="Left">
+                    <ul class="SortTool">
+                        <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
+                            <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                            @*<span class="arrowFilter-left"></span>*@
+                        </li>
+                        <li style="padding: 8px 30px; cursor: auto;">Chi tiết giỏ hàng
+                        </li>
+                    </ul>
+                </div>
+                <div class="clr"></div>
             </div>
-            <div class="clr"></div>
-        </div>
 
-        <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
-            <div id="order-detail-table">
-                @if (Model != null)
-                {
-                    <div style="font-weight: bold; text-align: right">*Đơn vị tính Nghìn đồng.</div>
-                    <table class="table table-bordered table-hover" id="tableViewCart">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%">STT</th>
-                                <th style="width: 60%">Tên sản phẩm</th>
-                                <th style="width: 15%">Đơn giá</th>
-                                <th style="width: 10%">Số lượng</th>
-                                <th style="width: 10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{var i = 0;}
-                            @foreach (var line in Model.Cart.Lines)
-                            {
-                                i++;          
+            <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
+                <div id="order-detail-table">
+                    @if (Model != null)
+                    {
+                        <div style="font-weight: bold; text-align: right">*Đơn vị tính Nghìn đồng.</div>
+                        <table class="table table-bordered table-hover" id="tableViewCart">
+                            <thead>
                                 <tr>
-                                    <td>@i</td>
-                                    <td>@line.Product.Product.Name</td>
-                                    <td>@line.Product.MinPrice - @line.Product.MaxPrice</td>
-                                    <td>
-                                        <div class="metro">
-                                            <div class='input-control text size1'>
-                                                <input type="text" style="text-align:center" value="@line.Quantity" id="quantityItem @line.Product.ProductId"  onblur="updateQuantityCart('@line.Product.ProductId')"/>
+                                    <th style="width: 5%">STT</th>
+                                    <th style="width: 60%">Tên sản phẩm</th>
+                                    <th style="width: 15%">Đơn giá</th>
+                                    <th style="width: 10%">Số lượng</th>
+                                    <th style="width: 10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{var i = 0;}
+                                @foreach (var line in Model.Cart.Lines)
+                                {
+                                    i++;          
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@line.Product.Product.Name</td>
+                                        <td>@line.Product.MinPrice - @line.Product.MaxPrice</td>
+                                        <td>
+                                            <div class="metro">
+                                                <div class='input-control text size1'>
+                                                    <input type="text" maxlength="2" style="text-align:center" value="@line.Quantity" id="quantityItem @line.Product.ProductId"  onblur="updateQuantityCart('@line.Product.ProductId')"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="metro">
-                                            <button onclick="removeFromCart('@line.Product.ProductId')">
-                                                <i class="icon-cancel-2"></i>
-                                                Xóa
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr> 
-                            }
-                        </tbody>
-                        <tr>
-                            <th colspan="5" align="right" style="text-align: right">
-                                Tổng tiền: <span style="font-weight:bold" id="order-total-detail">@Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax())</span> (nghìn đồng)
-                            </th>
+                                        </td>
+                                        <td>
+                                            <div class="metro">
+                                                <button onclick="removeFromCart('@line.Product.ProductId')">
+                                                    <i class="icon-cancel-2"></i>
+                                                    Xóa
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr> 
+                                }
+                            </tbody>
+                            <tr>
+                                <th colspan="5" align="right" style="text-align: right;font-size: 18px;">Tổng tiền: <span style="font-weight: bold" id="order-total-detail">@Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax())</span> (nghìn đồng)
+                                </th>
 
-                        </tr>
-                    </table>
-                    <div class="stylish-button" id="btn-submit-order">
-                        <a href="@Url.Action("SaveCart", "Cart")">
-                            <i class="icon-save"></i>
-                            Lưu lại
-                        </a>
-                    </div>
-                            if (User.Identity.IsAuthenticated)
-                            {
-                    <div class="stylish-button" style="background-color: #FFCC00">
-                        <a href="@Url.Action("SuggestRoute", "Route")">
-                            <i class="icon-lightbulb"></i>
-                            Gợi ý
-                        </a>
-                    </div>
-                            }
-                }
-                else
-                {
-                    <div id="no-item-in-order">
-                        <span style="color: red; font-style: italic; font-size: 16px;">(*) Không có sản phẩm nào trong giỏ hàng.</span>
-                    </div>
-                }
+                            </tr>
+                        </table>
+                        <div class="stylish-button" id="btn-submit-order">
+                            <a href="@Url.Action("SaveCart", "Cart")">
+                                <i class="icon-save"></i>
+                                Lưu lại
+                            </a>
+                        </div>
+                                if (User.Identity.IsAuthenticated)
+                                {
+                        <div class="stylish-button" style="background-color: #FFCC00">
+                            <a href="@Url.Action("SuggestRoute", "Route")">
+                                <i class="icon-lightbulb"></i>
+                                Gợi ý
+                            </a>
+                        </div>
+                                }
+                    }
+                    else
+                    {
+                        <div id="no-item-in-order">
+                            <span style="color: red; font-style: italic; font-size: 16px;">(*) Không có sản phẩm nào trong giỏ hàng.</span>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
