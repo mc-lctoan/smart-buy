@@ -533,6 +533,8 @@
     <Content Include="Areas\Admin\MoonCake\sample\p7.jpg" />
     <Content Include="Areas\Admin\Scripts\getXPath.js" />
     <Content Include="Content\Error.css" />
+    <Content Include="Content\login.css" />
+    <Content Include="Content\Order.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -730,6 +732,7 @@
     <Content Include="Areas\Admin\Views\Market\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Market\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Parser\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\SmartBuy.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
