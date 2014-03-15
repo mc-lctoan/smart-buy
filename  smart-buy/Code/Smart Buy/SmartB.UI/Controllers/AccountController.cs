@@ -23,6 +23,8 @@ namespace SmartB.UI.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        private SmartBuyEntities context = new SmartBuyEntities();
+
         //
         // GET: /Account/Login
         
@@ -112,8 +114,38 @@ namespace SmartB.UI.Controllers
 
         public ActionResult AccountDetails()
         {
-            return View();
-        }        
+            var user = context.Users
+                .Include(x => x.Profile)
+                .FirstOrDefault(x => x.Username == User.Identity.Name);
+            if (user.Profile == null)
+            {
+                user.Profile = new Profile();
+            }
+            var markets = context.Markets
+                .Where(x => x.IsActive)
+                .ToList();
+            var model = new AccountDetailModel
+                            {
+                                Username = User.Identity.Name,
+                                Markets = markets,
+                                FirstRouteName = user.Profile.FirstRouteName,
+                                FirstRoute = user.Profile.FirstRoute,
+                                FirstMarkets = user.Profile.FirstMarkets,
+                                SecondRouteName = user.Profile.SecondRouteName,
+                                SecondRoute = user.Profile.SecondRoute,
+                                SecondMarkets = user.Profile.SecondMarkets,
+                                ThirdRouteName = user.Profile.ThirdRouteName,
+                                ThirdRoute = user.Profile.ThirdRoute,
+                                ThirdMarkets = user.Profile.ThirdMarkets
+                            };
+            return View(model);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            context.Dispose();
+            base.Dispose(disposing);
+        }
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
