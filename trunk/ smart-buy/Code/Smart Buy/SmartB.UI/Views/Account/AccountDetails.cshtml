@@ -1,8 +1,13 @@
-﻿@model SmartB.UI.Models.EntityFramework.User
+﻿@model SmartB.UI.Models.AccountDetailModel
 
 @{
     ViewBag.Title = "Thông tin tài khoản";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
+    string message = null;
+    if (TempData["DefineRoute"] != null)
+    {
+        message = TempData["DefineRoute"].ToString();
+    }
 }
 
 @section head
@@ -15,6 +20,261 @@
     @*<script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>*@
 
     <link rel="stylesheet" href="@Url.Content("~/Content/Error.css")"/>
+
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/RouteBoxer.js")"></script>
+
+    <script type="text/javascript">
+        var map, directionsDisplay, directionsService, boxes,
+            fromAddress_1, toAddress_1, fromLocation_1, toLocation_1,
+            fromAddress_2, toAddress_2, fromLocation_2, toLocation_2,
+            fromAddress_3, toAddress_3, fromLocation_3, toLocation_3;
+        var nearbyMarkets = [];
+        var markers = [];
+        var data = { };
+        var rboxer = new RouteBoxer();
+        var distance = 0.5; // km
+        var marketList = create_marketList();
+        var boxpolys = null;
+
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(10.791658, 106.658163),
+                zoom: 12
+            };
+            map = new google.maps.Map(document.getElementById("map-canvas"),
+                mapOptions);
+            
+            directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+            directionsDisplay.setMap(map);
+            directionsService = new google.maps.DirectionsService();
+
+            fromAddress_1 = new google.maps.places.Autocomplete(document.getElementById('FirstStart'), { types: ['geocode'] });
+            toAddress_1 = new google.maps.places.Autocomplete(document.getElementById('FirstEnd'), { types: ['geocode'] });
+            
+            fromAddress_2 = new google.maps.places.Autocomplete(document.getElementById('SecondStart'), { types: ['geocode'] });
+            toAddress_2 = new google.maps.places.Autocomplete(document.getElementById('SecondEnd'), { types: ['geocode'] });
+            
+            fromAddress_3 = new google.maps.places.Autocomplete(document.getElementById('ThirdStart'), { types: ['geocode'] });
+            toAddress_3 = new google.maps.places.Autocomplete(document.getElementById('ThirdEnd'), { types: ['geocode'] });
+            
+            google.maps.event.addListener(fromAddress_1, 'place_changed', function () {
+                var place = fromAddress_1.getPlace();
+                fromLocation_1 = place.geometry.location;
+            });
+            google.maps.event.addListener(toAddress_1, 'place_changed', function () {
+                var place = toAddress_1.getPlace();
+                toLocation_1 = place.geometry.location;
+            });
+            
+            google.maps.event.addListener(fromAddress_2, 'place_changed', function () {
+                var place = fromAddress_2.getPlace();
+                fromLocation_2 = place.geometry.location;
+            });
+            google.maps.event.addListener(toAddress_2, 'place_changed', function () {
+                var place = toAddress_2.getPlace();
+                toLocation_2 = place.geometry.location;
+            });
+            
+            google.maps.event.addListener(fromAddress_3, 'place_changed', function () {
+                var place = fromAddress_3.getPlace();
+                fromLocation_3 = place.geometry.location;
+            });
+            
+            google.maps.event.addListener(toAddress_3, 'place_changed', function () {
+                var place = toAddress_3.getPlace();
+                toLocation_3 = place.geometry.location;
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function calcRoute(start, end) {
+            var pStart = new google.maps.LatLng(start.lat(), start.lng());
+            var pEnd = new google.maps.LatLng(end.lat(), end.lng());
+            
+            var request = {
+                origin: pStart,
+                destination: pEnd,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function(result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                    
+                    // Box the overview path of the first route
+                    var path = result.routes[0].overview_path;
+                    boxes = rboxer.box(path, distance);
+
+                    //drawBoxes(boxes);
+                    nearbyMarkets = search_market(boxes);
+                }
+            });
+        }
+        
+        // Draw the array of boxes as polylines on the map
+        function drawBoxes(boxes) {
+            boxpolys = new Array(boxes.length);
+            for (var i = 0; i < boxes.length; i++) {
+                boxpolys[i] = new google.maps.Rectangle({
+                    bounds: boxes[i],
+                    fillOpacity: 0,
+                    strokeOpacity: 1.0,
+                    strokeColor: '#000000',
+                    strokeWeight: 1,
+                    map: map
+                });
+            }
+        }
+
+        function create_marker(place) {
+            var marker = new google.maps.Marker({
+                position: place.position,
+                map: map,
+                title: place.title,
+                animation: google.maps.Animation.DROP
+            });
+            markers.push(marker);
+        }
+        
+        function clear_marker() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+
+        function is_inBound(boxes, location) {
+            for (var i = 0; i < boxes.length; i++) {
+                var bound = boxes[i];
+                if (bound.contains(location)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function create_marketList() {
+            var list = [];
+            var lat, lng, position;
+            @foreach (var market in Model.Markets)
+            {
+                if (market.Latitude != null && market.Longitude != null)
+                {
+                    <text>
+            lat = @market.Latitude;
+            lng = @market.Longitude;
+            position = new google.maps.LatLng(lat, lng);
+            var m = {
+                id: @market.Id,
+                position: position,
+                title: '@Html.Raw(HttpUtility.HtmlDecode(market.Name))'
+            };
+            list.push(m);
+                    </text>
+                }
+            }
+            return list;
+        }
+
+        function search_market(boxes) {
+            var m = [];
+            for (var i = 0; i < marketList.length; i++) {
+                if (is_inBound(boxes, marketList[i].position)) {
+                    m.push(marketList[i]);
+                    create_marker(marketList[i]);
+                }
+            }
+            return m;
+        }
+
+        function set_market_textbox(markets, textbox) {
+            var str = "";
+            for (var i = 0; i < markets.length; i++) {
+                if (str != "") {
+                    str += ',' + markets[i].id;
+                } else {
+                    str = markets[i].id;
+                }
+            }
+            textbox.val(str);
+        }
+
+        function save_waypoints() {
+            var w = [], wp;
+            var rleg = directionsDisplay.directions.routes[0].legs[0];
+            data.start = { 'lat': rleg.start_location.lat(), 'lng': rleg.start_location.lng() };
+            data.end = { 'lat': rleg.end_location.lat(), 'lng': rleg.end_location.lng() };
+            wp = rleg.via_waypoints;
+            for (var i = 0; i < wp.length; i++) w[i] = [wp[i].lat(), wp[i].lng()];
+            data.waypoints = w;
+
+            var str = JSON.stringify(data);
+            return str;
+        }
+
+        function set_route(way) {
+            var wp = [];
+            for (var i = 0; i < way.waypoints.length; i++)
+                wp[i] = { 'location': new google.maps.LatLng(way.waypoints[i][0], way.waypoints[i][1]), 'stopover': false };
+
+            var request = {
+                origin: new google.maps.LatLng(way.start.lat, way.start.lng),
+                destination: new google.maps.LatLng(way.end.lat, way.end.lng),
+                waypoints: wp,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                }
+            });
+        }
+        
+        $(document).ready(function() {
+            $('#Choose_1').click(function() {
+                $('#FirstRouteHid').val("");
+                $('#FirstMarketsHid').val("");
+                clear_marker();
+                calcRoute(fromLocation_1, toLocation_1);
+                setTimeout(function() {
+                    $('#FirstRouteHid').val(save_waypoints);
+                    set_market_textbox(nearbyMarkets, $('#FirstMarketsHid'));
+                }, 3000);
+            }); // end choose 1
+            
+            $('#Choose_2').click(function() {
+                $('#SecondRouteHid').val("");
+                $('#SecondMarketsHid').val("");
+                clear_marker();
+                calcRoute(fromLocation_2, toLocation_2);
+                setTimeout(function() {
+                    $('#SecondRouteHid').val(save_waypoints);
+                    set_market_textbox(nearbyMarkets, $('#SecondMarketsHid'));
+                }, 3000);
+            }); // end choose 2
+            
+            $('#Choose_3').click(function() {
+                $('#ThirdRouteHid').val("");
+                $('#ThirdMarketsHid').val("");
+                clear_marker();
+                calcRoute(fromLocation_3, toLocation_3);
+                setTimeout(function() {
+                    $('#ThirdRouteHid').val(save_waypoints);
+                    set_market_textbox(nearbyMarkets, $('#ThirdMarketsHid'));
+                }, 3000);
+            }); // end choose 3
+
+            $('#Confirm').click(function() {
+                $('#FirstRouteNameHid').val($('#FirstRouteName').val());
+                $('#SecondRouteNameHid').val($('#SecondRouteName').val());
+                $('#ThirdRouteNameHid').val($('#ThirdRouteName').val());
+                return true;
+            }); // end confirm
+
+        }); // end ready
+    </script>
 }
 
 <div id="top-image" class="top-image1">
@@ -47,7 +307,31 @@
 </div>
 
 <div class="main-content">
-    <div class="container fadeDown">
+    <div class="container">
+        @if (message == "Success")
+        {
+            <div class="message-box ok-message-box clearfix">
+                <div class="message-icon-box">
+                    <i class="icon-ok"></i>
+                </div>
+
+                <div class="message-container">
+                    <h3>Định nghĩa đường đi thành công!</h3>
+                </div>
+            </div>
+        }
+        else if (message == "Fail")
+        {
+            <div class="message-box warning-message-box clearfix">
+                <div class="message-icon-box">
+                    <i class="icon-exclamation"></i>
+                </div>
+
+                <div class="message-container">
+                    <h3>Có lỗi xảy ra! Vui lòng thử lại sau.</h3>
+                </div>
+            </div>
+        }
         <div class="grid">
             <div class="row">
                 <div class="span4">
@@ -121,6 +405,7 @@
                                 <input type="text" id="FirstEnd" />
                             </div>
                         </div>
+                        <input type="button" value="Chọn" id="Choose_1" />
                     </div>
                     <h5><i class="icon-plus-sign"></i>Đường đi thứ hai</h5>
                     <div>
@@ -144,6 +429,7 @@
                                 <input type="text" id="SecondEnd" />
                             </div>
                         </div>
+                        <input type="button" value="Chọn" id="Choose_2" />
                     </div>
                     <h5><i class="icon-plus-sign"></i>Đường đi thứ ba</h5>
                     <div>
@@ -167,8 +453,29 @@
                                 <input type="text" id="ThirdEnd" />
                             </div>
                         </div>
+                        <input type="button" value="Chọn" id="Choose_3" />
                     </div>
                 </div>
+                @using (Html.BeginForm("DefineRoute", "Route"))
+                {
+                    @Html.TextBoxFor(x => x.FirstRouteName, new { id = "FirstRouteNameHid" })
+                    @Html.TextBoxFor(x => x.FirstRoute, new { id = "FirstRouteHid" })
+                    @Html.TextBoxFor(x => x.FirstMarkets, new { id = "FirstMarketsHid" })
+
+                    @Html.TextBoxFor(x => x.SecondRouteName, new { id = "SecondRouteNameHid" })
+                    @Html.TextBoxFor(x => x.SecondRoute, new { id = "SecondRouteHid" })
+                    @Html.TextBoxFor(x => x.SecondMarkets, new { id = "SecondMarketsHid" })
+
+                    @Html.TextBoxFor(x => x.ThirdRouteName, new { id = "ThirdRouteNameHid" })
+                    @Html.TextBoxFor(x => x.ThirdRoute, new { id = "ThirdRouteHid" })
+                    @Html.TextBoxFor(x => x.ThirdMarkets, new { id = "ThirdMarketsHid" })
+
+                    <input type="submit" value="Xác nhận" id="Confirm" />
+                }
+            </div>
+
+            <div class="google-map">
+                <div id="map-canvas" />
             </div>
         </div>
     </div>

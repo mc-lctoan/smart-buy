@@ -233,6 +233,7 @@
     <Compile Include="Infrastructure\CustomRoleProvider.cs" />
     <Compile Include="Infrastructure\JsonContentNegotiator.cs" />
     <Compile Include="Infrastructure\ParseService.cs" />
+    <Compile Include="Models\AccountDetailModel.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartHistory.cs" />

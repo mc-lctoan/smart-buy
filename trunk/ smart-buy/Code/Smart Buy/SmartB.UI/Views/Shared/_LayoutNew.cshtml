@@ -83,12 +83,23 @@
                                 <div class="nav-text">Giỏ hàng</div>
                             </a>
                         </li>
-                        <li id="fourth-nav-pill" class="dropdown">
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li id="fourth-nav-pill" class="dropdown">
+                                <a href="@Url.Action("SuggestRoute", "Route")" class="dropdown-toggle">
+                                    <div class="nav-icon"><i class="li_bulb"></i></div>
+                                    <div class="nav-text">Gợi ý</div>
+                                </a>
+                            </li>
+                        }
+
+                        <li id="fifth-nav-pill" class="dropdown">
 
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <a href="#">
-                                    <div class="nav-icon"><i class="li_settings"></i></div>
+                                    <div class="nav-icon"><i class="li_user"></i></div>
                                     <div class="nav-text">@User.Identity.Name</div>
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
@@ -102,7 +113,7 @@
                             else
                             {
                                 <a href="@Url.Action("Login", "Account")" class="dropdown-toggle">
-                                    <div class="nav-icon"><i class="li_vallet"></i></div>
+                                    <div class="nav-icon"><i class="li_user"></i></div>
                                     <div class="nav-text">Đăng nhập</div>
                                 </a>
                             }
@@ -158,7 +169,7 @@
             <input type="hidden" id="data-order" name="orderStr" />
             <input title="Xem chi tiết đơn hàng" type="submit" id="btn-checkout" class="Left" />
         </form>
-        <div id="order-infor" style="float: left;color:black">
+        <div id="order-infor" style="float: left; color: black">
             Tổng: <span id="order-total">0</span><br />
             (nghìn đồng)
         </div>
@@ -266,7 +277,7 @@
 
     <!-- Magnific Popup Plugin -->
     <script type="text/javascript" src="@Url.Content("~/Template/Stylish/vendors/magnific-popup/jquery.magnific-popup.min.js")"></script>
-    
+
     <script type="text/javascript" src="@Url.Content("~/Template/Stylish/scripts/plugins.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Template/Stylish/scripts/main.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Template/Stylish/scripts/custom.js")"></script>
