@@ -11,7 +11,7 @@ namespace SmartB.UI.Models
     public class UsersContext : DbContext
     {
         public UsersContext()
-            : base("DefaultConnection")
+            : base("ConnStringForWebSecurity")
         {
         }
 
