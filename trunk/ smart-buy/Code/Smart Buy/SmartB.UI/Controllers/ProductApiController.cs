@@ -18,13 +18,13 @@ namespace SmartB.UI.Controllers
 
         //search product
         [AcceptVerbs("GET")]
-        public List<ProductInfo> Search(string keyword)
+        public List<ProductMobileModel> Search(string keyword)
         {
 
             //search product by dictionary
             var dictionaries = context.Dictionaries.Include(i => i.Product).Where(p => p.Name.Contains(keyword)).OrderBy(p => p.Name).ToList();
 
-            var result = new List<ProductInfo>();
+            var result = new List<ProductMobileModel>();
             foreach (Dictionary dictionary in dictionaries)
             {
                 List<int?> minPrice = dictionary.Product.ProductAttributes
@@ -38,12 +38,12 @@ namespace SmartB.UI.Controllers
                 var productName = context.Products.Where(p => p.Id == dictionary.ProductId).Select(p => p.Name).FirstOrDefault();
                 if (!result.Any(p => p.Name == productName))
                 {
-                    var info = new ProductInfo
+                    var info = new ProductMobileModel
                     {
-                        ProductId = dictionary.ProductId.GetValueOrDefault(),
+                        ProductId = dictionary.ProductId.ToString(),
                         Name = productName,
-                        MinPrice = minPrice[0].Value,
-                        MaxPrice = maxPrice[0].Value
+                        MinPrice = minPrice[0].ToString(),
+                        MaxPrice = maxPrice[0].ToString()
                     };
                     result.Add(info);
                 }
@@ -56,16 +56,16 @@ namespace SmartB.UI.Controllers
 
         //get all market
         [HttpGet]
-        public List<Market> GetMarket()
+        public List<MarketMobileModel> GetMarket()
         {
-            var result = new List<Market>();
+            var result = new List<MarketMobileModel>();
             var markets = context.Markets.ToList();
 
             foreach (Market market in markets)
             {
-                var item = new Market
+                var item = new MarketMobileModel
                 {
-                    Id = market.Id,
+                    Id = market.Id.ToString(),
                     Name = market.Name,
                     Address = market.Address,
                     Latitude = market.Latitude,
@@ -79,9 +79,9 @@ namespace SmartB.UI.Controllers
 
         //get history by username
         [HttpGet]
-        public List<History> GetHistory(string username)
+        public List<HistoryMobileModel> GetHistory(string username)
         {
-            var result = new List<History>();
+            var result = new List<HistoryMobileModel>();
             DateTime minusThirty = DateTime.Today.AddDays(-30);
             DateTime minusZero = DateTime.Today.AddDays(0);
             try
@@ -93,9 +93,9 @@ namespace SmartB.UI.Controllers
 
                 foreach (History history in histories)
                 {
-                    var item = new History
+                    var item = new HistoryMobileModel
                     {
-                        Id = history.Id,
+                        Id = history.Id.ToString(),
                         Username = username,
                         BuyTime = history.BuyTime
                     };
@@ -131,18 +131,18 @@ namespace SmartB.UI.Controllers
                 {
                     var item = new HistoryDetailMobileModel
                     {
-                        Id = historyDetail.Id,
-                        HistoryId = historyDetail.HistoryId,
+                        Id = historyDetail.Id.ToString(),
+                        HistoryId = historyDetail.HistoryId.ToString(),
                         ProductName = historyDetail.Product.Name,
-                        MinPrice = historyDetail.MinPrice.GetValueOrDefault(),
-                        MaxPrice = historyDetail.MaxPrice.GetValueOrDefault(),
+                        MinPrice = historyDetail.MinPrice.ToString(),
+                        MaxPrice = historyDetail.MaxPrice.ToString(),
                     };
                     foreach (ProductAttribute p in modelProduct)
                     {
                         if (p.ProductId == historyDetail.ProductId)
                         {
-                            item.MinPriceToday = p.MinPrice.GetValueOrDefault();
-                            item.MaxPriceToday = p.MaxPrice.GetValueOrDefault();
+                            item.MinPriceToday = p.MinPrice.ToString();
+                            item.MaxPriceToday = p.MaxPrice.ToString();
                         }
                     }
                     result.Add(item);
@@ -158,7 +158,7 @@ namespace SmartB.UI.Controllers
 
         //get suggest product
         [AcceptVerbs("GET")]
-        public List<ProductInfo> GetSuggestProduct(string username)
+        public List<ProductMobileModel> GetSuggestProduct(string username)
         {
             try
             {
@@ -172,19 +172,19 @@ namespace SmartB.UI.Controllers
                                         numberOfBuy = productMostBuyGroup.Count()
                                     }).Where(x => x.numberOfBuy >= 5).OrderByDescending(o => o.numberOfBuy).Take(5);
 
-                var result = new List<ProductInfo>();
+                var result = new List<ProductMobileModel>();
                 foreach (ProductMostBuy pmb in productModel)
                 {
                     var product = (from p in context.ProductAttributes
                                    where p.ProductId == pmb.Product.Id
                                    group p by p.ProductId into grp
                                    select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
-                    var info = new ProductInfo
+                    var info = new ProductMobileModel
                     {
-                        ProductId = product.ProductId,
+                        ProductId = product.ProductId.ToString(),
                         Name = product.Product.Name,
-                        MinPrice = product.MinPrice.GetValueOrDefault(),
-                        MaxPrice = product.MaxPrice.GetValueOrDefault(),
+                        MinPrice = product.MinPrice.ToString(),
+                        MaxPrice = product.MaxPrice.ToString(),
                     };
                     result.Add(info);
                 }
