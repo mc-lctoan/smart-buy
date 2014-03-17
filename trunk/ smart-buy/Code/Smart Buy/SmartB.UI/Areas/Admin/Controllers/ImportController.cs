@@ -830,7 +830,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
         public JsonResult UpdateSession(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
         {
             Result result = new Result();
-            if (Session["CorrectProducts"] != null)
+            if (Session["CorrectProducts"] != null)  // Khi chưa so sánh với DB
             {
                 var correctProducts = (List<SellProductModel>)Session["CorrectProducts"];
                 var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
@@ -884,7 +884,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 result.correctMarketName = ProductMarketName;
                 result.correctProductPrice = ProductPrice;
             }
-            else
+            else // So sánh với DB
             {
                 List<SellProductModel> correctProductsCollection = new List<SellProductModel>();
                 SellProductModel model = new SellProductModel();

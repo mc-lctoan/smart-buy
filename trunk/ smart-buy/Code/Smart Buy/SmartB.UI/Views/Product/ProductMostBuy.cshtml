@@ -1,14 +1,31 @@
 ﻿@model IEnumerable<SmartB.UI.Models.ProductMostBuy>
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/utils/productUtils.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
+    <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
+    <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
 
+<script>
+    $(document).ready(function () {
+        var table = $('#ProductTable').dataTable();
+        if ($("#order-total").load("../Cart/ViewCart #order-total-detail").text() != "") {
+            $("#order-summary").show();
+        }
+
+        //if ($("#order-total").load("../Cart/ViewCart #order-total-detail").text() == "") {
+        //    $("#order-summary").hide();
+        //} 
+    });
+    </script>
 @if (Model != null)
 {
-    <h4>Sản phẩm ưa thích</h4>
-    <table class="table table-bordered table-hover">
+    <h4 class="ProductNameDetail">Sản phẩm ưa thích</h4>
+    <table class="table table-bordered table-hover" >
         <thead>
-            <tr>
-                <th>Tên sản phẩm</th>
-                <th>Giá sản phẩm (nghìn đồng)</th>
-                <th>Thao tác</th>
+            <tr style="background-color: white;">
+                <th style="width: 50%">Tên sản phẩm</th>
+                <th style="width: 15%">Giá sản phẩm</th>
+                <th style="width: 35%">Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -20,8 +37,8 @@
                                                                             where p.ProductId == productId
                                                                             group p by p.ProductId into grp
                                                                             select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Product.Name)
+                <tr >
+                    <td id="addProduct_@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)
                         @{                
                 var productName = item.Product.Name;
                         }
@@ -35,26 +52,26 @@
                         }
                     </td>
                     <td>
-                        <div class="metro">
-                            <button class="success" onclick="addToCart('@productId')">
-                                <i class="icon-plus-2 on-left"></i>
-                                Thêm
-                            </button>
-
-                            <button class="editDialog inverse">
-                                <i class="icon-dollar on-left"></i>
-                                Đề xuất giá                                
-                            </button>
+                        <div>
+                            <div class="AddToCardDetail">
+                                <input type="button" name="action" value="Add" onclick="addToCart('@productId')" class="btnAddToCardDetail" data-id ="" />
+                                <div style="color: black">Thêm vào giỏ</div>
+                            </div>
+                            <div class="SuggestPrice">
+                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                <div style="color: black">Đề xuất giá</div>
+                            </div>
                         </div>
 
                         <script>
 
-                            $(".editDialog").on("click", function (e) { // e.preventDefault(); use this or return false
+                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
                                 $.Dialog({
                                     overlay: true,
                                     shadow: true,
                                     flat: true,
-                                    icon: '<i class="icon-dollar-2 on-left"></i>',
+                                    width: 442,
+                                    icon: '<i class="btnSuggestPrice"></i>',
                                     title: 'Đề xuất giá',
                                     content: '',
                                     padding: 10,
@@ -66,8 +83,6 @@
                                 });
                                 return true;
                             });
-
-
                         </script>
                     </td>
                 </tr>

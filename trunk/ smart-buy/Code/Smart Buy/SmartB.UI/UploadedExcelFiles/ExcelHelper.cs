@@ -75,9 +75,9 @@ namespace SmartB.UI.UploadedExcelFiles
                         }
 
 
-                        if (sellProduct.MarketName.Length < 5 || sellProduct.MarketName.Length > 20)
+                        if (sellProduct.MarketName.Length < 5 || sellProduct.MarketName.Length > 100)
                         {
-                            InvalidNumberException invalidNumberException = new InvalidNumberException("Tên chợ phải từ 5 đến 20 ký tự");
+                            InvalidNumberException invalidNumberException = new InvalidNumberException("Tên chợ phải từ 5 đến 100 ký tự");
                             errorMarket = invalidNumberException.Message;
                             errorCount++;
                         }
@@ -196,7 +196,7 @@ namespace SmartB.UI.UploadedExcelFiles
                             }
 
 
-                            if (sellProductCorrect.MarketName.Length < 5 || sellProductCorrect.MarketName.Length > 20)
+                            if (sellProductCorrect.MarketName.Length < 5 || sellProductCorrect.MarketName.Length > 100)
                             {
                                 error = true;
                             }
@@ -324,7 +324,7 @@ namespace SmartB.UI.UploadedExcelFiles
                             }
 
 
-                            if (sellProductError.MarketName.Length < 5 || sellProductError.MarketName.Length > 20)
+                            if (sellProductError.MarketName.Length < 5 || sellProductError.MarketName.Length > 100)
                             {
                                 InvalidNumberException invalidNumberException = new InvalidNumberException("Tên chợ phải từ 5 đến 20 ký tự");
                                 errorMarket = invalidNumberException.Message;
