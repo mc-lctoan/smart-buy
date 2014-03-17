@@ -5,16 +5,21 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SmartB.UI.Models.EntityFramework;
+using PagedList;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
     public class LogFileController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();
+        private const int PageSize = 10;
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            var files = context.LogFiles.Where(x => x.IsActive).ToList();
+            var files = context.LogFiles
+                .Where(x => x.IsActive)
+                .OrderByDescending(x => x.CreatedTime)
+                .ToPagedList(page, PageSize);
             return View(files);
         }
 

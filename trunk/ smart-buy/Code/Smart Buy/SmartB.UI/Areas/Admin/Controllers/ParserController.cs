@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,19 +10,26 @@ using HtmlAgilityPack;
 using SmartB.UI.Areas.Admin.Helper;
 using SmartB.UI.Areas.Admin.Models;
 using SmartB.UI.Models.EntityFramework;
+using PagedList;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
     public class ParserController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();
+        private const int PageSize = 10;
 
         //
         // GET: /Admin/ParseWeb/
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            return View();
+            var parsers = context.ParseInfoes
+                .Include(x => x.Market)
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.Id)
+                .ToPagedList(page, PageSize);
+            return View(parsers);
         }
 
         [HttpPost]
@@ -85,6 +93,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                              };
             context.ParseInfoes.Add(parser);
             context.SaveChanges();
+            TempData["create"] = "Success";
             return RedirectToAction("Index");
         }
 
