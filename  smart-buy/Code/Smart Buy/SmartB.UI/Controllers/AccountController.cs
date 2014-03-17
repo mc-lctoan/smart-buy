@@ -61,6 +61,7 @@ namespace SmartB.UI.Controllers
         public ActionResult LogOff()
         {
             WebSecurity.Logout();
+            Session["Cart"] = null;
 
             return RedirectToAction("Index", "Home");
         }

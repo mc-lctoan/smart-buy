@@ -206,6 +206,7 @@
     <Compile Include="Areas\Admin\Controllers\TrainingController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserPriceController.cs" />
     <Compile Include="Areas\Admin\Helper\CompareStringHelper.cs" />
+    <Compile Include="Areas\Admin\Helper\ConfigHelper.cs" />
     <Compile Include="Areas\Admin\Helper\LogFileHelper.cs" />
     <Compile Include="Areas\Admin\Helper\MarketHelper.cs" />
     <Compile Include="Areas\Admin\Helper\ParseHelper.cs" />

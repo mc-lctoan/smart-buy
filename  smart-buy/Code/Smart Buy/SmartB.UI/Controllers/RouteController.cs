@@ -159,7 +159,7 @@ namespace SmartB.UI.Controllers
                     }
                 }
 
-                var route = new SuggestRouteHelper(products, markets);
+                var route = new SuggestRouteHelper(products, markets, HttpContext.Application["ConfigPath"].ToString());
                 model = route.Suggest();
 
                 // Construct the dropdownlist
