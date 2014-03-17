@@ -20,20 +20,6 @@
     <!-- Uniform Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/uniform/css/uniform.default.css")" />
 
-    @*<!-- Plugin Stylsheets first to ease overrides -->
-
-    <!-- iButton -->
-    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/ibutton/jquery.ibutton.css")" media="screen" />
-
-    <!-- Circular Stat -->
-    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/circular-stat/circular-stat.css")" />
-
-    <!-- Fullcalendar -->
-    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/fullcalendar/fullcalendar.css")" media="screen" />
-    <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/plugins/fullcalendar/fullcalendar.print.css")" media="print" />
-
-    <!-- End Plugin Stylesheets -->*@
-
     <!-- Main Layout Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/assets/css/fonts/icomoon/style.css")" media="screen" />
     <link rel="stylesheet" href="@Url.Content("~/Areas/Admin/MoonCake/assets/css/mooncake.min.css")" media="screen" />
@@ -71,46 +57,11 @@
                     </div>
 
                     <div id="header-right" class="clearfix">
-                        <div id="nav-toggle" data-toggle="collapse" data-target="#navigation" class="collapsed">
-                            <i class="icon-caret-down"></i>
-                        </div>
-                        <div id="header-search">
-                            <span id="search-toggle" data-toggle="dropdown">
-                                <i class="icon-search"></i>
-                            </span>
-                            <form class="navbar-search">
-                                <input type="text" class="search-query" placeholder="Search" />
-                            </form>
-                        </div>
-                        <div id="dropdown-lists">
-                            <a class="item" href="#">
-                                <span class="item-icon"><i class="icon-exclamation-sign"></i></span>
-                                <span class="item-label">Notifications</span>
-                                <span class="item-count">4</span>
-                            </a>
-                            <a class="item" href="mail.html">
-                                <span class="item-icon"><i class="icon-envelope"></i></span>
-                                <span class="item-label">Messages</span>
-                                <span class="item-count">16</span>
-                            </a>
-                        </div>
-
                         <div id="header-functions" class="pull-right">
                             <div id="user-info" class="clearfix">
                                 <span class="info">Welcome
                                     <span class="name">@User.Identity.Name</span>
                                 </span>
-                                <div class="avatar">
-                                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                                        <img src="@Url.Content("~/Areas/Admin/MoonCake/assets/images/pp.jpg")" alt="Avatar" />
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="profile.html"><i class="icol-user"></i>My Profile</a></li>
-                                        <li><a href="#"><i class="icol-layout"></i>My Invoices</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="@Url.Action("LogOff", "Authentication")"><i class="icol-key"></i>Logout</a></li>
-                                    </ul>
-                                </div>
                             </div>
                             <div id="logout-ribbon">
                                 <a href="@Url.Action("LogOff", "Authentication")"><i class="icon-off"></i></a>
@@ -125,88 +76,7 @@
             <div id="content">
                 <div id="content-outer">
                     <div id="content-inner">
-                        <aside id="sidebar">
-                            <nav id="navigation" class="collapse">
-                                <ul>
-                                    <li class="active">
-                                        <span title="General">
-                                            <i class="icon-home"></i>
-                                            <span class="nav-title">Trang chủ</span>
-                                        </span>
-                                        <ul class="inner-nav">
-                                            <li class="active">
-                                                <a href="@Url.Action("Statistics", "System")">
-                                                    <i class="icol-chart-curve"></i>
-                                                    Thông tin hệ thống
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="icol-cog"></i>
-                                                    Cấu hình hệ thống
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Index", "LogFile")">
-                                                    <i class="icol-page-white-text"></i>
-                                                    Quản lý log file
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span title="Data">
-                                            <i class="icon-table"></i>
-                                            <span class="nav-title">Dữ liệu</span>
-                                        </span>
-                                        <ul class="inner-nav">
-                                            <li><a href="@Url.Action("UploadProduct", "Import")"><i class="icol-doc-excel-table"></i>Nhập từ Excel</a></li>
-                                            <li><a href="@Url.Action("TrainingMatch", "Training")"><i class="icol-application-double"></i>Xử lý dữ liệu trùng</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span title="Market">
-                                            <i class="icon-bag"></i>
-                                            <span class="nav-title">Quản lý chợ</span>
-                                        </span>
-                                        <ul class="inner-nav">
-                                            <li>
-                                                <a href="@Url.Action("Index", "Market")">
-                                                    <i class="icol-application-view-columns"></i>
-                                                    Danh sách các chợ
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("Create", "Market")">
-                                                    <i class="icol-application-add"></i>
-                                                    Tạo chợ mới
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span title="Parser">
-                                            <i class="icon-download-2"></i>
-                                            <span class="nav-title">Parser</span>
-                                        </span>
-                                        <ul class="inner-nav">
-                                            <li>
-                                                <a href="@Url.Action("Index", "Parser")">
-                                                    <i class="icol-application-view-columns"></i>
-                                                    Danh sách các parser
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="@Url.Action("CreateParser", "Parser")">
-                                                    <i class="icol-application-add"></i>
-                                                    Tạo parser
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </aside>
+                        @RenderSection("sidebar", true)
 
                         <div id="sidebar-separator"></div>
 
@@ -242,34 +112,6 @@
     <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/jui/jquery-ui.custom.min.js")"></script>
     <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/jui/timepicker/jquery-ui-timepicker.min.js")"></script>
     <script src="@Url.Content("~/Areas/Admin/MoonCake/assets/jui/jquery.ui.touch-punch.min.js")"></script>
-
-    @*<!-- Plugin Scripts -->
-
-    <!-- Flot -->
-    <!--[if lt IE 9]>
-    <script src="assets/js/libs/excanvas.min.js"></script>
-    <![endif]-->
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/flot/jquery.flot.min.js")"></script>
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/flot/plugins/jquery.flot.tooltip.min.js")"></script>
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/flot/plugins/jquery.flot.pie.min.js")"></script>
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/flot/plugins/jquery.flot.resize.min.js")"></script>
-
-    <!-- Circular Stat -->
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/custom-plugins/circular-stat/circular-stat.min.js")"></script>
-
-    <!-- SparkLine -->
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/sparkline/jquery.sparkline.min.js")"></script>
-
-    <!-- iButton -->
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/ibutton/jquery.ibutton.js")"></script>
-
-    <!-- Full Calendar -->
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/fullcalendar/fullcalendar.min.js")"></script>
-
-    <!-- DataTables -->
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/jquery.dataTables.min.js")"></script>
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/TableTools/js/TableTools.min.js")"></script>
-    <script src="@Url.Content("~/Areas/Admin/MoonCake/plugins/datatables/dataTables.bootstrap.js")"></script>*@
 
     @RenderSection("footScript", false)
 </body>
