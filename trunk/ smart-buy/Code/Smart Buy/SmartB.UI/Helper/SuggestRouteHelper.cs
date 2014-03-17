@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using SmartB.UI.Areas.Admin.Helper;
 using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
 
@@ -14,17 +15,29 @@ namespace SmartB.UI.Helper
         public List<Product> CannotBuyProducts { get; set; }
         public List<Market> Markets { get; set; }
 
+        private readonly ConfigHelper _config;
+
         private const int LargeNumber = 10000;
 
-        // TODO: Put in configuration file later
-        private const double Fuel = 0.625;
-
-        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets)
+        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets, string xmlPath)
         {
             AllProducts = allProducts;
             Markets = markets;
             CannotBuyProducts = CannotBuy();
             CanBuyProducts = AllProducts.Except(CannotBuyProducts).ToList();
+            _config = new ConfigHelper(xmlPath);
+        }
+
+        /// <summary>
+        /// Calculate price to move 1 km
+        /// Assumpt 1 litre of fuel can move 40 kms
+        /// </summary>
+        /// <returns>The price to move 1 km</returns>
+        private double CalculateFuelPrice()
+        {
+            int fuel = _config.GetFuel();
+            double price = fuel/40.0;
+            return price;
         }
 
         /// <summary>
@@ -115,6 +128,7 @@ namespace SmartB.UI.Helper
         /// <returns>It costs matrix[i,j] to move from market[i] to market[j]</returns>
         private double[,] CreateDistanceMatrix()
         {
+            double fuel = CalculateFuelPrice();
             int row = Markets.Count;
             int col = row;
             var matrix = new double[row, col];
@@ -133,7 +147,7 @@ namespace SmartB.UI.Helper
                             .FirstOrDefault(x => x.FromMarket == fromId && x.ToMarket == toId);
                         if (mDis != null)
                         {
-                            matrix[i, j] = matrix[j, i] = mDis.Distance.Value*Fuel;
+                            matrix[i, j] = matrix[j, i] = mDis.Distance.Value * fuel;
                         }
                         else
                         {

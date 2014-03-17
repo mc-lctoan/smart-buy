@@ -31,9 +31,10 @@ namespace SmartB.UI
             AdminConfig.Register(Server);
 
             ModelBinders.Binders.Add(typeof(Cart), new CartModelBinder());
-
+            
             Application["LogPath"] = Server.MapPath("~/Areas/Admin/LogFiles/");
-            TaskManager.Initialize(new ParseService(Application["LogPath"].ToString()));
+            Application["ConfigPath"] = Server.MapPath("~/Areas/Admin/AdminConfig.xml");
+            TaskManager.Initialize(new ParseService(Application["LogPath"].ToString(), Application["ConfigPath"].ToString()));
         }
     }
 }
