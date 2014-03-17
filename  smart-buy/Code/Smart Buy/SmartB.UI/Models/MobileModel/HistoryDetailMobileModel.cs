@@ -9,12 +9,12 @@ namespace SmartB.UI.Models
 {
     public class HistoryDetailMobileModel
     {
-        public int Id { get; set; }
-        public int HistoryId { get; set; }
+        public string Id { get; set; }
+        public string HistoryId { get; set; }
         public string ProductName { get; set; }
-        public int MinPrice { get; set; }
-        public int MaxPrice { get; set; }
-        public int MinPriceToday { get; set; }
-        public int MaxPriceToday { get; set; }
+        public string MinPrice { get; set; }
+        public string MaxPrice { get; set; }
+        public string MinPriceToday { get; set; }
+        public string MaxPriceToday { get; set; }
     }
 }
