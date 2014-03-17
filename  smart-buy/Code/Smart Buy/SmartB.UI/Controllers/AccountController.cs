@@ -45,6 +45,7 @@ namespace SmartB.UI.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
+                Session["Username"] = model.UserName;
                 return RedirectToLocal(returnUrl);
             }
 
@@ -62,7 +63,7 @@ namespace SmartB.UI.Controllers
         {
             WebSecurity.Logout();
             Session["Cart"] = null;
-
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
 
@@ -95,6 +96,7 @@ namespace SmartB.UI.Controllers
                     accountHelper.CreateAccount(model);
                     //WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new {RoleId = 3, IsActive = true});
                     WebSecurity.Login(model.UserName, model.Password);
+                    Session["Username"] = model.UserName;
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
