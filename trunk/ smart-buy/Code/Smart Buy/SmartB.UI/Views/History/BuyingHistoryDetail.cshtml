@@ -1,6 +1,6 @@
 ﻿@{
-    ViewBag.Title = "BuyingHistoryDetail";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Chi tiết lịch sử đơn hàng";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
 @model SmartB.UI.Models.HistoryDetailViewModel
@@ -10,42 +10,75 @@
     string buytimeFormat = String.Format("{0:dd/MM/yyyy}", buyTime);
             
 }
-                    
-<h2>Giỏ sản phẩm trong ngày @buytimeFormat</h2>
-<table class="table bordered hovered">
-    <thead>
-        <tr>            
-            <th>Sản phẩm</th>
-            <th>Giá sản phẩm (nghìn đồng)</th>
-            <th>Giá sản phẩm hôm nay (nghìn đồng)</th>
-        </tr>
-    </thead>
-    <tbody>
-        
-        @foreach (var item in Model.History.HistoryDetails)
-        {
+<link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+
+
+<div class="bgSizeCover">
+    <div id="Contain" class="bgContainCover">
+        <div class="ProductDetail">
+            <div class="Tools">
+                <div class="Left">
+                    <ul class="SortTool">
+                        <li style="padding: 8px 30px; background-color: #3399FF; color: white !important;">
+                            <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        </li>
+                        <li style="padding: 8px 30px; background-color: #3399FF; color: white !important;">
+                            <a style="color:white" href="@Url.Action("BuyingHistory", "History")">Lịch sử mua sắm</a>
+                        </li>
+                        <li style="padding: 8px 30px; cursor: auto;">Chi tiết đơn hàng
+                        </li>
+                    </ul>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+
+        <div class="main-content" style="padding: 60px 20px 20px 20px; min-height: 700px;">
+            <div>
+                <div class="ProductNameDetail">Giỏ sản phẩm trong ngày @buytimeFormat.</div>
+                <br />
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Giá sản phẩm (nghìn đồng)</th>
+                            <th>Giá sản phẩm hôm nay (nghìn đồng)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.History.HistoryDetails)
+                        {
             
-            <tr>                
-                <td>
-                    @Html.DisplayFor(modelItem => item.Product.Name)                    
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
-                </td>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Product.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                </td>
 
-                @foreach (var p in Model.ProductAttributes)
-                {
-                    if (p.ProductId == item.ProductId)
-                    {
-                        <td>
-                            @Html.DisplayFor(modelItem => p.MinPrice) - @Html.DisplayFor(modelItem => p.MaxPrice)
-                        </td>
-                    }
-                }
-            </tr>
-        }
+                                @foreach (var p in Model.ProductAttributes)
+                                {
+                                    if (p.ProductId == item.ProductId)
+                                    {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => p.MinPrice) - @Html.DisplayFor(modelItem => p.MaxPrice)
+                                    </td>
+                                    }
+                                }
+                            </tr>
+                        }
 
-    </tbody>
-</table>
-@Html.ActionLink("Quay lại", "BuyingHistory", "History", null, new {@class = "button"})
-
+                    </tbody>
+                </table>
+                <div class="metro">
+                <input class="primary" value="Quay lại" type="button" onclick='window.location = "/History/BuyingHistory"' />
+                    </div>
+                @*@Html.ActionLink("Quay lại", "BuyingHistory", "History", null, new { @class = "button" })*@
+            </div>
+        </div>
+    </div>
+</div>

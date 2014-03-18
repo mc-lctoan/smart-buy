@@ -11,6 +11,8 @@
 {
     <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false"></script>
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
 
     <script type="text/javascript">
         var map, directionsService, directionsDisplay;
@@ -56,8 +58,8 @@
                 if (item.MarketName != "")
                 {
                     <text>
-                        point = { 'location': new google.maps.LatLng(@item.Latitude, @item.Longitude), 'stopover': true };
-                        wp.push(point);
+            point = { 'location': new google.maps.LatLng(@item.Latitude, @item.Longitude), 'stopover': true };
+            wp.push(point);
                     </text>
                 }
             }
@@ -66,95 +68,89 @@
     </script>
 }
 
-<div id="top-image" class="top-image1">
-    <div class="container">
-        <div id="top-image-caption">
-            <h2>Gợi ý cách mua</h2>
-        </div>
-    </div>
-</div>
-
-<div id="breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="span8">
-                <ul class="breadcrumb">
-                    <li>
-                        <a href="@Url.Action("Index", "Home")">Trang chủ</a>
-                        <span class="divider">/</span>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("ViewCart", "Cart")">Thông tin giỏ hàng</a>
-                        <span class="divider">/</span>
-                    </li>
-                    <li>
-                        <p>Gợi ý cách mua</p>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="span4">
+<div class="bgSizeCover">
+    <div id="Contain" class="bgContainCover">
+        <div class="ProductDetail">
+            <div class="Tools">
+                <div class="Left">
+                    <ul class="SortTool">
+                        <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
+                            <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        </li>
+                        <li style="padding: 8px 30px; cursor: auto;">Gợi ý cách mua hàng.
+                        </li>
+                    </ul>
+                </div>
+                <div class="clr"></div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="main-content">
-    <div class="container fadeDown">
-        
-        @using (Html.BeginForm("SuggestRoute", "Route"))
-        {
-            <label>Chọn đường đi</label>
-            @Html.DropDownList("Routes")
-            <input type="submit" value="Chọn"/>
-        }
 
-        @if (Model.Any())
-        {
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Tên chợ</th>
-                        <th>Giá bán</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        counter++;
-                        <tr>
-                            <td>@counter</td>
-                            <td>@item.ProductName</td>
-                            <td>
-                                @if (item.MarketName != "")
-                                {
-                                    <span>@item.MarketName</span>
-                                }
-                                else
-                                {
-                                    <span>Không tìm thấy</span>
-                                }
-                            </td>
-                            <td>
-                                @if (item.MarketName != "")
-                                {
-                                    <span>@item.Price</span>
-                                }
-                                else
-                                {
-                                    <span>@item.MinPrice - @item.MaxPrice</span>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
+        <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
+            <div style="min-height: 700px;">
 
-        <div class="google-map fadeDown">
-            <div id="map-canvas" />
+                @using (Html.BeginForm("SuggestRoute", "Route"))
+                {
+                    <div class="ProductNameDetail" style="margin-bottom: 10px;">Chọn đường đi</div>
+                    <div style="margin-left:10px;float:left">
+                    @Html.DropDownList("Routes")
+                        </div>
+                    <div class="metro" style="margin-left:5px;float:left">
+                        <button type="submit" class="primary ">
+                            <i class="icon-checkmark"></i>
+                            Chọn
+                        </button>
+                    </div>
+                }
+
+                @if (Model.Any())
+                {
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Tên chợ</th>
+                                <th>Giá bán</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                counter++;
+                                <tr>
+                                    <td>@counter</td>
+                                    <td>@item.ProductName</td>
+                                    <td>
+                                        @if (item.MarketName != "")
+                                        {
+                                            <span>@item.MarketName</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Không tìm thấy</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.MarketName != "")
+                                        {
+                                            <span>@item.Price</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@item.MinPrice - @item.MaxPrice</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+                <div class="google-map fadeDown">
+                    <div id="map-canvas" />
+                </div>
+            </div>
         </div>
     </div>
 </div>

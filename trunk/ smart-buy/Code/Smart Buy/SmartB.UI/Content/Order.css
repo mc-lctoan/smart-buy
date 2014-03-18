@@ -200,3 +200,20 @@ cursor: pointer;
 .btnSuggestPrice:active {
 	top: -5px;	
 }
+
+.blueButton {
+color: #666699;
+}
+
+.bg-address {
+border: 1px solid #f0f3f4;
+padding: 5px;
+box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+margin-left: 0px;
+}
+
+.bgContainCover {
+    
+    background: url(../../images/bg-cover6.png) ;
+    background-size:cover;
+}
