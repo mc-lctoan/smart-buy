@@ -14,65 +14,70 @@
     <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
     <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
     <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
-}
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
 
-<div id="Contain">
-    <div class="ProductDetail" >
-        <div class="Tools">
-            <div class="Left">
-                <ul class="SortTool">
-                    <li style="padding: 8px 30px;background-color: #3399FF; color: white !important;">
-                        <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
-                    </li>
-                    <li style="padding: 8px 30px;  background-color: #3399FF; color: white !important;">
-                        <a style="color:white" href="@Url.Action("AccountDetails", "Account")">Tài khoản</a>
-                    </li>
-                    <li style="padding: 8px 30px; cursor: auto;">Lịch sử mua sắm
-                    </li>
-                </ul>
+}
+<script>
+    $(document).ready(function () {
+        $("#order-summary").hide();
+    });
+</script>
+<div class="bgSizeCover">
+    <div id="Contain" class="bgContainCover"> 
+        <div class="ProductDetail">
+            <div class="Tools">
+                <div class="Left">
+                    <ul class="SortTool">
+                        <li style="padding: 8px 30px; background-color: #3399FF; color: white !important;">
+                            <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        </li>
+                        <li style="padding: 8px 30px; cursor: auto;">Lịch sử mua sắm
+                        </li>
+                    </ul>
+                </div>
+                <div class="clr"></div>
             </div>
-            <div class="clr"></div>
+        </div>
+
+        <div class="main-content" style="padding: 60px 20px 20px 20px; min-height: 700px;">
+            <div>
+                <div class="ProductNameDetail">Lịch sử mua sắm 30 ngày gần nhất.</div>
+                <br />
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Ngày mua</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+            
+                            <tr>
+                                <td>
+                                    @{
+                            var historyID = item.Id;
+                            var buyTime = item.BuyTime;
+                            string buytimeFormat = String.Format("{0:dd/MM/yyyy}", buyTime);
+            
+                                    }
+                                    @buytimeFormat
+                                </td>
+
+                                <td>
+                                    <a href="@Url.Action("BuyingHistoryDetail", "History", new { id = @historyID })">Chi tiết
+                                    </a>
+
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("BuyingHistory", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+            </div>
         </div>
     </div>
-
-<div class="main-content" style="padding: 60px 20px 20px 20px; min-height: 560px;">
-    <div >
-        <div class="ProductNameDetail">Lịch sử mua sắm 30 ngày gần nhất.</div><br />
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Ngày mua</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var item in Model)
-                {
-            
-                    <tr>
-                        <td>
-                            @{
-                                var historyID = item.Id;
-                                var buyTime = item.BuyTime;
-                                string buytimeFormat = String.Format("{0:dd/MM/yyyy}", buyTime);
-            
-                            }
-                            @buytimeFormat
-                        </td>
-
-                        <td>
-                            <a href="@Url.Action("BuyingHistoryDetail", "History", new { id = @historyID })">
-                                Chi tiết
-                            </a>
-
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-        @Html.PagedListPager(Model, page => Url.Action("BuyingHistory", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-    </div>
-</div>
 </div>
