@@ -62,7 +62,6 @@ namespace SmartB.UI.Controllers
         public ActionResult LogOff()
         {
             WebSecurity.Logout();
-            Session["Cart"] = null;
             Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
@@ -94,10 +93,9 @@ namespace SmartB.UI.Controllers
 
                     var accountHelper = new AccountHelper();
                     accountHelper.CreateAccount(model);
-                    //WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new {RoleId = 3, IsActive = true});
                     WebSecurity.Login(model.UserName, model.Password);
                     Session["Username"] = model.UserName;
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("AccountDetails", "Account");
                 }
                 catch (MembershipCreateUserException e)
                 {
