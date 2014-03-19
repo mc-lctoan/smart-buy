@@ -35,7 +35,7 @@ namespace SmartB.UI
 
             ConstantManager.LogPath = Server.MapPath("~/Areas/Admin/LogFiles/");
             ConstantManager.ConfigPath = Server.MapPath("~/Areas/Admin/AdminConfig.xml");
-            MarketHelper.CalculateDistance();
+            //MarketHelper.CalculateDistance();
 
             TaskManager.Initialize(new ParseService());
         }

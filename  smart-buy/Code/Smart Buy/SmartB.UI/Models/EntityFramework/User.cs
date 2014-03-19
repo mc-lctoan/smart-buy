@@ -26,8 +26,8 @@ namespace SmartB.UI.Models.EntityFramework
         public bool IsActive { get; set; }
     
         public virtual ICollection<History> Histories { get; set; }
-        public virtual Profile Profile { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<UserPrice> UserPrices { get; set; }
+        public virtual Profile Profile { get; set; }
     }
 }

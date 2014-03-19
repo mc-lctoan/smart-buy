@@ -16,7 +16,7 @@ namespace SmartB.UI.Controllers
     {
         private SmartBuyEntities context = new SmartBuyEntities();
 
-        [AcceptVerbs("GET")]
+        [AcceptVerbs("POST")]
         public List<SuggestRouteModel> SuggestRoute(SuggestMobileModel model)
         {
             var result = new List<SuggestRouteModel>();

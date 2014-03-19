@@ -37,7 +37,7 @@ namespace SmartB.UI.Models.EntityFramework
         public DbSet<Market> Markets { get; set; }
         public DbSet<MarketDistance> MarketDistances { get; set; }
         public DbSet<ParseInfo> ParseInfoes { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
     }
 }

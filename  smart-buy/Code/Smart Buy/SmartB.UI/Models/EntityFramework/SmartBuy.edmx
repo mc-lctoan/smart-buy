@@ -167,12 +167,18 @@
             <PropertyRef Name="Username" />
           </Key>
           <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="FirstStartAddress" Type="nvarchar" MaxLength="300" />
+          <Property Name="FirstEndAddress" Type="nvarchar" MaxLength="300" />
           <Property Name="FirstRoute" Type="nvarchar" MaxLength="300" />
           <Property Name="FirstMarkets" Type="nvarchar" MaxLength="100" />
           <Property Name="FirstRouteName" Type="nvarchar" MaxLength="100" />
+          <Property Name="SecondStartAddress" Type="nvarchar" MaxLength="300" />
+          <Property Name="SecondEndAddress" Type="nvarchar" MaxLength="300" />
           <Property Name="SecondRoute" Type="nvarchar" MaxLength="300" />
           <Property Name="SecondMarkets" Type="nvarchar" MaxLength="100" />
           <Property Name="SecondRouteName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ThirdStartAddress" Type="nvarchar" MaxLength="300" />
+          <Property Name="ThirdEndAddress" Type="nvarchar" MaxLength="300" />
           <Property Name="ThirdRoute" Type="nvarchar" MaxLength="300" />
           <Property Name="ThirdMarkets" Type="nvarchar" MaxLength="100" />
           <Property Name="ThirdRouteName" Type="nvarchar" MaxLength="100" />
@@ -439,15 +445,10 @@
             <End Role="Market" EntitySet="Markets" />
             <End Role="ParseInfo" EntitySet="ParseInfoes" />
           </AssociationSet>
-          <EntitySet Name="Profiles" EntityType="SmartBuyModel.Profile" />
           <EntitySet Name="Users" EntityType="SmartBuyModel.User" />
           <AssociationSet Name="FK_History_User" Association="SmartBuyModel.FK_History_User">
             <End Role="User" EntitySet="Users" />
             <End Role="History" EntitySet="Histories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Profile_User" Association="SmartBuyModel.FK_Profile_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Profile" EntitySet="Profiles" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Role" Association="SmartBuyModel.FK_User_Role">
             <End Role="Role" EntitySet="Roles" />
@@ -456,6 +457,11 @@
           <AssociationSet Name="FK_UserPrice_User" Association="SmartBuyModel.FK_UserPrice_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserPrice" EntitySet="UserPrices" />
+          </AssociationSet>
+          <EntitySet Name="Profiles" EntityType="SmartBuyModel.Profile" />
+          <AssociationSet Name="FK_Profile_User" Association="SmartBuyModel.FK_Profile_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Profile" EntitySet="Profiles" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Dictionary">
@@ -714,22 +720,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Profile">
-          <Key>
-            <PropertyRef Name="Username" />
-          </Key>
-          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="FirstRoute" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="FirstMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="FirstRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="SecondRoute" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="SecondMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="SecondRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ThirdRoute" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ThirdMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ThirdRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="SmartBuyModel.FK_Profile_User" FromRole="Profile" ToRole="User" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Username" />
@@ -739,9 +729,9 @@
           <Property Type="Int32" Name="RoleId" Nullable="false" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <NavigationProperty Name="Histories" Relationship="SmartBuyModel.FK_History_User" FromRole="User" ToRole="History" />
-          <NavigationProperty Name="Profile" Relationship="SmartBuyModel.FK_Profile_User" FromRole="User" ToRole="Profile" />
           <NavigationProperty Name="Role" Relationship="SmartBuyModel.FK_User_Role" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="UserPrices" Relationship="SmartBuyModel.FK_UserPrice_User" FromRole="User" ToRole="UserPrice" />
+          <NavigationProperty Name="Profile" Relationship="SmartBuyModel.FK_Profile_User" FromRole="User" ToRole="Profile" />
         </EntityType>
         <Association Name="FK_History_User">
           <End Type="SmartBuyModel.User" Role="User" Multiplicity="1" />
@@ -751,18 +741,6 @@
               <PropertyRef Name="Username" />
             </Principal>
             <Dependent Role="History">
-              <PropertyRef Name="Username" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Profile_User">
-          <End Type="SmartBuyModel.User" Role="User" Multiplicity="1" />
-          <End Type="SmartBuyModel.Profile" Role="Profile" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Username" />
-            </Principal>
-            <Dependent Role="Profile">
               <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
@@ -787,6 +765,40 @@
               <PropertyRef Name="Username" />
             </Principal>
             <Dependent Role="UserPrice">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FirstStartAddress" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstEndAddress" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstRoute" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondStartAddress" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondEndAddress" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondRoute" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ThirdStartAddress" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ThirdEndAddress" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ThirdRoute" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ThirdMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ThirdRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="SmartBuyModel.FK_Profile_User" FromRole="Profile" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Profile_User">
+          <End Type="SmartBuyModel.User" Role="User" Multiplicity="1" />
+          <End Type="SmartBuyModel.Profile" Role="Profile" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Profile">
               <PropertyRef Name="Username" />
             </Dependent>
           </ReferentialConstraint>
@@ -921,28 +933,34 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Profiles">
-            <EntityTypeMapping TypeName="SmartBuyModel.Profile">
-              <MappingFragment StoreEntitySet="Profile">
-                <ScalarProperty Name="ThirdRouteName" ColumnName="ThirdRouteName" />
-                <ScalarProperty Name="ThirdMarkets" ColumnName="ThirdMarkets" />
-                <ScalarProperty Name="ThirdRoute" ColumnName="ThirdRoute" />
-                <ScalarProperty Name="SecondRouteName" ColumnName="SecondRouteName" />
-                <ScalarProperty Name="SecondMarkets" ColumnName="SecondMarkets" />
-                <ScalarProperty Name="SecondRoute" ColumnName="SecondRoute" />
-                <ScalarProperty Name="FirstRouteName" ColumnName="FirstRouteName" />
-                <ScalarProperty Name="FirstMarkets" ColumnName="FirstMarkets" />
-                <ScalarProperty Name="FirstRoute" ColumnName="FirstRoute" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="SmartBuyModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profiles">
+            <EntityTypeMapping TypeName="SmartBuyModel.Profile">
+              <MappingFragment StoreEntitySet="Profile">
+                <ScalarProperty Name="ThirdRouteName" ColumnName="ThirdRouteName" />
+                <ScalarProperty Name="ThirdMarkets" ColumnName="ThirdMarkets" />
+                <ScalarProperty Name="ThirdRoute" ColumnName="ThirdRoute" />
+                <ScalarProperty Name="ThirdEndAddress" ColumnName="ThirdEndAddress" />
+                <ScalarProperty Name="ThirdStartAddress" ColumnName="ThirdStartAddress" />
+                <ScalarProperty Name="SecondRouteName" ColumnName="SecondRouteName" />
+                <ScalarProperty Name="SecondMarkets" ColumnName="SecondMarkets" />
+                <ScalarProperty Name="SecondRoute" ColumnName="SecondRoute" />
+                <ScalarProperty Name="SecondEndAddress" ColumnName="SecondEndAddress" />
+                <ScalarProperty Name="SecondStartAddress" ColumnName="SecondStartAddress" />
+                <ScalarProperty Name="FirstRouteName" ColumnName="FirstRouteName" />
+                <ScalarProperty Name="FirstMarkets" ColumnName="FirstMarkets" />
+                <ScalarProperty Name="FirstRoute" ColumnName="FirstRoute" />
+                <ScalarProperty Name="FirstEndAddress" ColumnName="FirstEndAddress" />
+                <ScalarProperty Name="FirstStartAddress" ColumnName="FirstStartAddress" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
               </MappingFragment>
             </EntityTypeMapping>

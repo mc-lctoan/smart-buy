@@ -33,12 +33,20 @@ namespace SmartB.UI.Controllers
                 {
                     var profile = new Profile
                                       {
+                                          FirstStartAddress = model.FirstStartAddress,
+                                          FirstEndAddress = model.FirstEndAddress,
                                           FirstRouteName = model.FirstRouteName,
                                           FirstRoute = model.FirstRoute,
                                           FirstMarkets = model.FirstMarkets,
+
+                                          SecondStartAddress = model.SecondStartAddress,
+                                          SecondEndAddress = model.SecondEndAddress,
                                           SecondRouteName = model.SecondRouteName,
                                           SecondRoute = model.SecondRoute,
                                           SecondMarkets = model.SecondMarkets,
+
+                                          ThirdStartAddress = model.ThirdStartAddress,
+                                          ThirdEndAddress = model.ThirdEndAddress,
                                           ThirdRouteName = model.ThirdRouteName,
                                           ThirdRoute = model.ThirdRoute,
                                           ThirdMarkets = model.ThirdMarkets
