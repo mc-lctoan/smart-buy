@@ -108,8 +108,21 @@ namespace SmartB.UI.Controllers
         }
 
         [HttpPost]
-        public RedirectToRouteResult ChangePassword()
+        public RedirectToRouteResult ChangePassword(AccountDetailModel model)
         {
+            string state = "Fail";
+            string message = "Sai mật khẩu. Vui lòng thử lại.";
+
+            var user = context.Users.FirstOrDefault(x => x.Username == User.Identity.Name && x.Password == model.Password);
+            if (user != null)
+            {
+                user.Password = model.NewPassword;
+                context.SaveChanges();
+                state = "Success";
+                message = "Đổi mật khẩu thành công.";
+            }
+            TempData["State"] = state;
+            TempData["Message"] = message;
             return RedirectToAction("AccountDetails");
         }
 
@@ -129,12 +142,21 @@ namespace SmartB.UI.Controllers
                             {
                                 Username = User.Identity.Name,
                                 Markets = markets,
+
+                                FirstStartAddress = user.Profile.FirstStartAddress,
+                                FirstEndAddress = user.Profile.FirstEndAddress,
                                 FirstRouteName = user.Profile.FirstRouteName,
                                 FirstRoute = user.Profile.FirstRoute,
                                 FirstMarkets = user.Profile.FirstMarkets,
+
+                                SecondStartAddress = user.Profile.SecondStartAddress,
+                                SecondEndAddress = user.Profile.SecondEndAddress,
                                 SecondRouteName = user.Profile.SecondRouteName,
                                 SecondRoute = user.Profile.SecondRoute,
                                 SecondMarkets = user.Profile.SecondMarkets,
+
+                                ThirdStartAddress = user.Profile.ThirdStartAddress,
+                                ThirdEndAddress = user.Profile.ThirdEndAddress,
                                 ThirdRouteName = user.Profile.ThirdRouteName,
                                 ThirdRoute = user.Profile.ThirdRoute,
                                 ThirdMarkets = user.Profile.ThirdMarkets
