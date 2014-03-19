@@ -895,7 +895,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 correctProductsCollection.Add(model);
                 Session["CorrectProducts"] = correctProductsCollection;
 
-                var dupCorrectProducts = (List<List<SellProductModel>>)Session["duplicateProductsDB"];
+                var dupCorrectProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
                 string[] productNames = ProductName.Split(';');
                 for (int h = 0; h < productNames.Count(); h++)
                 {
@@ -921,7 +921,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                     status = true;
                                     break;
                                 }
-                                Session["duplicateProductsDB"] = dupCorrectProducts;
+                                Session["duplicateProducts"] = dupCorrectProducts;
                             }
 
                             if (dupCorrectProducts[i].Count == 0)

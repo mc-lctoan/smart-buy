@@ -611,7 +611,7 @@
             if(listTr[j].id != 'header_'+i) {
                 var cells = listTr[j].cells;
                 for (var l = 0; l < 2; l++) {
-                    var checkbox = cells[0].childNodes[l].childNodes[0].childNodes[0].checked;
+                    var checkbox = cells[0].childNodes[l].checked;
                     if(checkbox == true || checkbox == false)
                     {
                         break;
@@ -622,7 +622,7 @@
                 var market = cells[2].innerHTML;
                 var price = cells[3].innerHTML;
                 for (var m  = 0; m < 2; m++) {
-                    var checked = cells[4].childNodes[m].childNodes[0].childNodes[0].checked;
+                    var checked = cells[4].childNodes[m].checked;
                     if(checked == true|| checked == false)
                     {
                         break;
@@ -750,7 +750,7 @@
                 var cells = listTr[j].cells;
                 //var checkbox = cells[0].childNodes[1].checked;
                 for (var l = 0; l < 2; l++) {
-                    var checkbox = cells[0].childNodes[l].childNodes[0].childNodes[0].checked;
+                    var checkbox = cells[0].childNodes[l].checked;
                     if(checkbox == true || checkbox == false)
                     {
                         break;
@@ -760,7 +760,7 @@
                 var market = cells[2].innerHTML;
                 var price = cells[3].innerHTML;
                 for (var m  = 0; m < 2; m++) {
-                    var checked = cells[4].childNodes[m].childNodes[0].childNodes[0].checked;
+                    var checked = cells[4].childNodes[m].checked;
                     if(checked == true|| checked == false)
                     {
                         break;
@@ -771,10 +771,11 @@
                     var product = new Product(j,checkbox,name,market,price,checked);
                     products.push(product);
                 }
-                else if(checkbox == true){
-                    var product = new Product(j,checkbox,name,market,price,checked);
-                    products.push(product);
-                }
+                else 
+                    if(checkbox == true){
+                        var product = new Product(j,checkbox,name,market,price,checked);
+                        products.push(product);
+                    }
             }
         }
         if(products.length < 1)
@@ -836,24 +837,29 @@
 
     function mergeAll(i)
     {
-        var countTable = $("#fb").find("table").size();
-        for (var i = 0; i < countTable; i++) 
-        {
-            $("#fb").find("#dupTable_"+i).find("input:checkbox")[0].click();
-            $("#fb").find("#dupTable_"+i).find("#combine_"+i).click();
-        }
-        //$('input[value="Gộp"]').click()
+    //    var countTable = $("#fb").find("table").size();
+    //    for (var i = 0; i < countTable; i++) 
+    //    {
+    //        //$("#fb").find("#dupTable_"+i).find("input:checkbox")[0].click();
+    //        //$("#fb").find("#dupTable_"+i).find("#combine_"+i).click();
+    //        $("#fb").find("#checkAll").click();
+    //        $('button[value="Gộp"]').click() 
+    //    }
+        $("#fb").find("input:checkbox").click();
+        $('button[value="Gộp"]').click()
     }
 
     function splitAll(i)
     {
-        var countTable = $("#fb").find("table").size();
-        for (var i = 0; i < countTable; i++) 
-        {
-            $("#fb").find("#dupTable_"+i).find("input:checkbox")[0].click();
-            $("#fb").find("#dupTable_"+i).find("#split_"+i).click();
-        }
-                
+        //var countTable = $("#fb").find("table").size();
+        //for (var i = 0; i < countTable; i++) 
+        //{
+        //    $("#fb").find("#dupTable_"+i).find("input:checkbox")[0].click();
+        //    $("#fb").find("#dupTable_"+i).find("#split_"+i).click();
+            
+        //}
+            $("#fb").find("input:checkbox").click();
+            $('button[value="Tách"]').click()
     }
     function saveFile()
     {
@@ -1086,36 +1092,38 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="toolbar">
-                                <div class="pagination-right">
-                                    @Html.PagedListPager(Model.PagedCorrectProducts, page => Url.Action("PagedData", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                            @if (Model.PagedCorrectProducts != null)
+                            {
+                                <div class="toolbar">
+                                    <div class="pagination-right">
+                                        @Html.PagedListPager(Model.PagedCorrectProducts, page => Url.Action("PagedData", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </div>
                     }
                     //View sản phẩm trùng với DB              
                     if (ViewBag.dupSellProduct != null)
                     {
-                   <div class="row-fluid">
+                    <div class="row-fluid">
                         <div class="span12 widget">
                             <div class="widget-header">
                                 <span class="title">Danh sách sản phẩm</span>
-                                @if (Model.ExceptionName != "External table is not in the expected format.")
-                                {
-                                    <div class="toolbar">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn" onclick='window.location = "@Url.Action("SaveDupProducts", "Import")"'>
-                                                <i class="icol-accept"></i>
-                                                Lưu lại
-                                            </button>
-                                            <button type="button" class="btn" onclick='window.location = "@Url.Action("UploadProduct", "Import")"'>
-                                                <i class="icol-cancel"></i>
-                                                Hủy
-                                            </button>
-                                        </div>
+
+                                <div class="toolbar">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn" onclick='window.location = "@Url.Action("SaveDupProducts", "Import")"'>
+                                            <i class="icol-accept"></i>
+                                            Lưu lại
+                                        </button>
+                                        <button type="button" class="btn" onclick='window.location = "@Url.Action("UploadProduct", "Import")"'>
+                                            <i class="icol-cancel"></i>
+                                            Hủy
+                                        </button>
                                     </div>
-                                }
+                                </div>
+
                             </div>
                             <div class="widget-content table-container">
                                 <table class="table table-striped table-bordered" id="dupSellProductTable">
@@ -1130,42 +1138,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for (int i = 0; i < Model.PagedCorrectProducts.Count; i++)
-                                        {
-                        
-                                            <tr id="product_@i">
-                                                <td style="display: none">
-                                                    @Model.PagedCorrectProducts[i].Id
-                                                </td>
-                                                <td id="STT">@(i + 1)</td>
-
-                                                <td>
-                                                    @Model.PagedCorrectProducts[i].Name
-                                                </td>
-
-                                                <td>
-                                                    @Model.PagedCorrectProducts[i].MarketName
-                                                </td>
-
-                                                <td>
-                                                    @Model.PagedCorrectProducts[i].Price
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn" onclick="deleteProduct(@i)">
-                                                        <i class="icol-cross"></i>
-                                                        Xóa
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        }
+                                        <tr>
+                                            <td style="display: none"></td>
+                                            <td id="STT"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            @*@if(Model.PagedCorrectProducts != null)
+                            {
                             <div class="toolbar">
                                 <div class="pagination-right">
                                     @Html.PagedListPager(Model.PagedCorrectProducts, page => Url.Action("PagedData", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
                                 </div>
                             </div>
+                            }*@
                         </div>
                     </div>
                     }
@@ -1415,11 +1406,11 @@
                                     <span class="title">Nhóm sản phẩm trùng</span>
                                     <div class="toolbar">
                                         <div class="btn-group">
-                                            <button class="btn" id="combine_@i" onclick="mergeProduct(@i)">
+                                            <button class="btn" id="combine_@i"  value="Gộp" onclick="mergeProduct(@i)">
                                                 <i class="icol-arrow-join"></i>
                                                 Gộp
                                             </button>
-                                            <button class="btn" id="split_@i" onclick="split(@i)">
+                                            <button class="btn" id="split_@i" value="Tách" onclick="split(@i)">
                                                 <i class="icol-arrow-divide"></i>
                                                 Tách
                                             </button>
@@ -1431,7 +1422,7 @@
                                         <thead>
                                             <tr id="header_@i">
                                                 <th class="checkbox-column" id="checkboxAllTable_@i" style="width:5%">
-                                                    <input type="checkbox" class="uniform" onclick="checkboxAllTable(@i)" />
+                                                    <input id="checkAll" type="checkbox" class="uniform" onclick="checkboxAllTable(@i)" />
                                                 </th>
                                                 <th style="width: 40%">Tên Sản Phẩm</th>
                                                 <th style="width: 35%">Tên Chợ</th>
@@ -1485,18 +1476,18 @@
                 {
                     for (int i = 0; i < ViewBag.dupSellProduct.Count; i++)
                     {
-                    <div id="dupTable_@i">
+                   <div id="dupTable_@i" >
                         <div class="row-fluid">
                             <div class="span12 widget">
                                 <div class="widget-header">
                                     <span class="title">Nhóm sản phẩm trùng</span>
                                     <div class="toolbar">
                                         <div class="btn-group">
-                                            <button class="btn" id="combine_@i" onclick="mergeProduct1(@i)">
+                                            <button class="btn" id="combine_@i"  value="Gộp" onclick="mergeProduct1(@i)">
                                                 <i class="icol-arrow-join"></i>
                                                 Gộp
                                             </button>
-                                            <button class="btn" id="split_@i" onclick="split1(@i)">
+                                            <button class="btn" id="split_@i" value="Tách" onclick="split1(@i)">
                                                 <i class="icol-arrow-divide"></i>
                                                 Tách
                                             </button>
@@ -1507,13 +1498,13 @@
                                     <table id="table_@i" class="table table-bordered table-striped table-checkable">
                                         <thead>
                                             <tr id="header_@i">
-                                                <th class="checkbox-column">
-                                                    <input type="checkbox" class="uniform" />
+                                                <th class="checkbox-column" id="checkboxAllTable_@i" style="width:5%">
+                                                    <input id="checkAll" type="checkbox" class="uniform" onclick="checkboxAllTable(@i)" />
                                                 </th>
-                                                <th>Tên Sản Phẩm</th>
-                                                <th>Tên Chợ</th>
-                                                <th>Giá</th>
-                                                <th>Chọn giá</th>
+                                                <th style="width: 40%">Tên Sản Phẩm</th>
+                                                <th style="width: 35%">Tên Chợ</th>
+                                                <th style="width: 10%">Giá</th>
+                                                <th style="width: 10%">Chọn giá</th>
                                             </tr>
                                         </thead>
 
@@ -1522,34 +1513,32 @@
 
                                             if (j == 0)
                                             {
-                                            <tr>
-                                                <td class="checkbox-column">
-                                                    <input class="uniform" type="checkbox" checked />
+                                            <tr class="checked">
+                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                    <input type="checkbox" checked="checked" id="checkbox" />
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Price</td>
                                                 <td>
-                                                    <input class="uniform" type="radio" name="productPrice_@i" id="Check_@i" checked="checked"/>
+                                                    <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
                                                 </td>
-                                                <
                                             </tr>
                                             }
                                             else
                                             {
                                             <tr>
-                                                <td class="checkbox-column">
-                                                    <input class="uniform" type="checkbox" id="checkbox" />
+                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                    <input type="checkbox" id="checkbox"/>
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Price</td>
                                                 <td>
-                                                    <input class="uniform" type="radio" name="productPrice_@i" id="Check_@i" />
+                                                    <input type="radio" name="productPrice_@i"  id="Check_@i"/>
                                                 </td>
                                             </tr>
                                             }
-
                                         }
                                     </table>
                                 </div>
