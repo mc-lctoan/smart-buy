@@ -92,15 +92,19 @@
                 @using (Html.BeginForm("SuggestRoute", "Route"))
                 {
                     <div class="ProductNameDetail" style="margin-bottom: 10px;">Chọn đường đi</div>
-                    <div style="margin-left:10px;float:left">
-                    @Html.DropDownList("Routes")
+                    <div class="row">
+                        <div class="span3" style="width: inherit">
+                            @Html.DropDownList("Routes")
                         </div>
-                    <div class="metro" style="margin-left:5px;float:left">
-                        <button type="submit" class="primary ">
-                            <i class="icon-checkmark"></i>
-                            Chọn
-                        </button>
-                    </div>
+                        <div class="span2">
+                            <div class="metro">
+                                <button type="submit" class="primary">
+                                    <i class="icon-checkmark"></i>
+                                    Chọn
+                                </button>
+                            </div>
+                        </div>
+                    </div>                    
                 }
 
                 @if (Model.Any())

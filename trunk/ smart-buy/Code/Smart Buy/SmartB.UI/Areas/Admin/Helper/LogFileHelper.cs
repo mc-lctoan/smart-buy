@@ -5,14 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using SmartB.UI.Areas.Admin.Models;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models.EntityFramework;
 
 namespace SmartB.UI.Areas.Admin.Helper
 {
     public static class LogFileHelper
     {
-        public static void GenerateLogFile(List<LogInfo> infos, string path)
+        public static void GenerateLogFile(List<LogInfo> infos)
         {
+            string path = ConstantManager.LogPath;
+
             int max = infos.Max(x => x.Link.Length);
             max++;
             string link = "Link".PadRight(max);

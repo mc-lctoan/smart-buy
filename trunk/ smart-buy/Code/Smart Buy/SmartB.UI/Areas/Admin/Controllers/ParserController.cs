@@ -100,8 +100,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
         //[HttpPost]
         public ActionResult ParseData()
         {
-            ParseHelper.ParseData(HttpContext.Application["LogPath"].ToString(),
-                HttpContext.Application["ConfigPath"].ToString());
+            ParseHelper.ParseData();
             return View();
         }
 

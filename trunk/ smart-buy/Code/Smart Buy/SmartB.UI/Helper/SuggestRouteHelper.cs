@@ -19,13 +19,13 @@ namespace SmartB.UI.Helper
 
         private const int LargeNumber = 10000;
 
-        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets, string xmlPath)
+        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets)
         {
             AllProducts = allProducts;
             Markets = markets;
             CannotBuyProducts = CannotBuy();
             CanBuyProducts = AllProducts.Except(CannotBuyProducts).ToList();
-            _config = new ConfigHelper(xmlPath);
+            _config = new ConfigHelper();
         }
 
         /// <summary>
