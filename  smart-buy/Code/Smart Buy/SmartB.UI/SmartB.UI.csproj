@@ -305,6 +305,7 @@
     <Compile Include="Models\MobileModel\HistoryMobileModel.cs" />
     <Compile Include="Models\MobileModel\MarketMobileModel.cs" />
     <Compile Include="Models\MobileModel\ProductMobileModel.cs" />
+    <Compile Include="Models\MobileModel\SuggestMobileModel.cs" />
     <Compile Include="Models\ProductMostBuy.cs" />
     <Compile Include="Models\SellProductModels.cs" />
     <Compile Include="Models\SuggestRouteModel.cs" />
