@@ -300,6 +300,10 @@
     </Compile>
     <Compile Include="Models\HistoryDetailViewModel.cs" />
     <Compile Include="Models\ListSellProductModel.cs" />
+    <Compile Include="Models\MobileModel\HistoryDetailMobileModel.cs" />
+    <Compile Include="Models\MobileModel\HistoryMobileModel.cs" />
+    <Compile Include="Models\MobileModel\MarketMobileModel.cs" />
+    <Compile Include="Models\MobileModel\ProductMobileModel.cs" />
     <Compile Include="Models\ProductMostBuy.cs" />
     <Compile Include="Models\SellProductModels.cs" />
     <Compile Include="Models\SuggestRouteModel.cs" />
@@ -609,6 +613,7 @@
     </EntityDeploy>
     <Content Include="Images\add_to_shopping_cart.png" />
     <Content Include="Images\bg-cover5.jpg" />
+    <Content Include="Images\bg-cover6.png" />
     <Content Include="Images\bg-login.jpg" />
     <Content Include="Images\bg-repeat.png" />
     <Content Include="Images\bglines.png" />
@@ -953,6 +958,7 @@
     <Content Include="Template\Stylish\vendors\revolution-slider\images\gradient\g30.png" />
     <Content Include="Template\Stylish\vendors\revolution-slider\images\gradient\g40.png" />
     <Content Include="Template\Stylish\vendors\revolution-slider\js\jquery.themepunch.revolution.min.js" />
+    <Content Include="UploadedExcelFiles\ProductName.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

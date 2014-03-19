@@ -23,6 +23,10 @@ namespace SmartB.UI.Areas.Admin.Helper
 
                     for (int j = i + 1; j < markets.Count; j++)
                     {
+                        if (markets[j].Latitude == null || markets[j].Longitude == null)
+                        {
+                            continue;
+                        }
                         double lat2 = Double.Parse(markets[j].Latitude);
                         double lng2 = Double.Parse(markets[j].Longitude);
 

@@ -52,9 +52,9 @@ namespace SmartB.UI.Areas.Admin.Helper
             }
         }
 
-        public static void ParseData(string path, string xmlPath)
+        public static void ParseData()
         {
-            var config = new ConfigHelper(xmlPath);
+            var config = new ConfigHelper();
             config.TurnParser(true);
 
             // Stopwatch to measure elapsed time
@@ -91,7 +91,7 @@ namespace SmartB.UI.Areas.Admin.Helper
                     stopwatch.Reset();
                 }
             }
-            LogFileHelper.GenerateLogFile(logInfos, path);
+            LogFileHelper.GenerateLogFile(logInfos);
             config.TurnParser(false);
         }
 

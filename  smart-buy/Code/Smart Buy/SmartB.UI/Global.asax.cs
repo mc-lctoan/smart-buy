@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using FluentScheduler;
+using SmartB.UI.Areas.Admin.Helper;
 using SmartB.UI.Binder;
 using SmartB.UI.Infrastructure;
 using SmartB.UI.Models;
@@ -31,10 +32,12 @@ namespace SmartB.UI
             AdminConfig.Register(Server);
 
             ModelBinders.Binders.Add(typeof(Cart), new CartModelBinder());
-            
-            Application["LogPath"] = Server.MapPath("~/Areas/Admin/LogFiles/");
-            Application["ConfigPath"] = Server.MapPath("~/Areas/Admin/AdminConfig.xml");
-            TaskManager.Initialize(new ParseService(Application["LogPath"].ToString(), Application["ConfigPath"].ToString()));
+
+            ConstantManager.LogPath = Server.MapPath("~/Areas/Admin/LogFiles/");
+            ConstantManager.ConfigPath = Server.MapPath("~/Areas/Admin/AdminConfig.xml");
+            MarketHelper.CalculateDistance();
+
+            TaskManager.Initialize(new ParseService());
         }
     }
 }

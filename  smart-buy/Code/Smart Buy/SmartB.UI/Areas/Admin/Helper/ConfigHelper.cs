@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using SmartB.UI.Infrastructure;
 
 namespace SmartB.UI.Areas.Admin.Helper
 {
     public class ConfigHelper
     {
-        private readonly string _xmlPath;
-
-        public ConfigHelper(string xmlPath)
-        {
-            _xmlPath = xmlPath;
-        }
+        private readonly string _xmlPath = ConstantManager.ConfigPath;
 
         public string GetLogPath()
         {

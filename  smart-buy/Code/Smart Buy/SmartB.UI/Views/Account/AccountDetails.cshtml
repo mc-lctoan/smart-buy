@@ -28,7 +28,7 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/RouteBoxer.js")"></script>
 
     <script type="text/javascript">
-        var map, directionsDisplay, directionsService, boxes,
+        var map, directionsDisplay, directionsService, boxes, userRoute, rNo,
             fromAddress_1, toAddress_1, fromLocation_1, toLocation_1,
             fromAddress_2, toAddress_2, fromLocation_2, toLocation_2,
             fromAddress_3, toAddress_3, fromLocation_3, toLocation_3;
@@ -88,6 +88,28 @@
                 var place = toAddress_3.getPlace();
                 toLocation_3 = place.geometry.location;
             });
+
+            google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+                if (this.get('directions')) {
+                    userRoute = save_waypoints();
+                    switch (rNo) {
+                        case 1:
+                            $('#FirstRouteHid').val(userRoute);
+                            set_market_textbox(nearbyMarkets, $('#FirstMarketsHid'));
+                            break;
+                        case 2:
+                            $('#SecondRouteHid').val(userRoute);
+                            set_market_textbox(nearbyMarkets, $('#SecondMarketsHid'));
+                            break;
+                        case 3:
+                            $('#ThirdRouteHid').val(save_waypoints);
+                            set_market_textbox(nearbyMarkets, $('#ThirdMarketsHid'));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
@@ -103,7 +125,6 @@
             };
             directionsService.route(request, function(result, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(result);
                     
                     // Box the overview path of the first route
                     var path = result.routes[0].overview_path;
@@ -111,6 +132,8 @@
 
                     //drawBoxes(boxes);
                     nearbyMarkets = search_market(boxes);
+                    
+                    directionsDisplay.setDirections(result);
                 }
             });
         }
@@ -235,37 +258,36 @@
         }
         
         $(document).ready(function() {
+            $('#order-summary').hide();
+
             $('#Choose_1').click(function() {
+                rNo = 1;
                 $('#FirstRouteHid').val("");
                 $('#FirstMarketsHid').val("");
                 clear_marker();
                 calcRoute(fromLocation_1, toLocation_1);
-                setTimeout(function() {
-                    $('#FirstRouteHid').val(save_waypoints);
-                    set_market_textbox(nearbyMarkets, $('#FirstMarketsHid'));
-                }, 3000);
+                //$('#FirstRouteHid').val(userRoute);
+                //set_market_textbox(nearbyMarkets, $('#FirstMarketsHid'));
             }); // end choose 1
             
             $('#Choose_2').click(function() {
+                rNo = 2;
                 $('#SecondRouteHid').val("");
                 $('#SecondMarketsHid').val("");
                 clear_marker();
                 calcRoute(fromLocation_2, toLocation_2);
-                setTimeout(function() {
-                    $('#SecondRouteHid').val(save_waypoints);
-                    set_market_textbox(nearbyMarkets, $('#SecondMarketsHid'));
-                }, 3000);
+                //$('#SecondRouteHid').val(userRoute);
+                //set_market_textbox(nearbyMarkets, $('#SecondMarketsHid'));
             }); // end choose 2
             
             $('#Choose_3').click(function() {
+                rNo = 3;
                 $('#ThirdRouteHid').val("");
                 $('#ThirdMarketsHid').val("");
                 clear_marker();
                 calcRoute(fromLocation_3, toLocation_3);
-                setTimeout(function() {
-                    $('#ThirdRouteHid').val(save_waypoints);
-                    set_market_textbox(nearbyMarkets, $('#ThirdMarketsHid'));
-                }, 3000);
+                //$('#ThirdRouteHid').val(save_waypoints);
+                //set_market_textbox(nearbyMarkets, $('#ThirdMarketsHid'));
             }); // end choose 3
 
             $('#Confirm').click(function() {
@@ -278,11 +300,7 @@
         }); // end ready
     </script>
 }
-<script>
-    $(document).ready(function () {
-        $("#order-summary").hide();
-    });
-</script>
+
 <div class="bgSizeCover">
     <div id="Contain" class="bgContainCover">
         <div class="ProductDetail">
@@ -301,148 +319,79 @@
         </div>
 
         <div class="main-content" style="padding: 40px 20px 20px;">
-            <div style="min-height: 800px;">
-                @if (message == "Success")
-                {
-                    <div class="message-box ok-message-box clearfix">
-                        <div class="message-icon-box">
-                            <i class="icon-ok"></i>
-                        </div>
-
-                        <div class="message-container">
-                            <h3 class="ProductNameDetail">Định nghĩa đường đi thành công!</h3>
-                        </div>
+            @if (message == "Success")
+            {
+                <div class="message-box ok-message-box clearfix">
+                    <div class="message-icon-box">
+                        <i class="icon-ok"></i>
                     </div>
-                }
-                else if (message == "Fail")
-                {
-                    <div class="message-box warning-message-box clearfix">
-                        <div class="message-icon-box">
-                            <i class="icon-exclamation"></i>
-                        </div>
 
-                        <div class="message-container">
-                            <h3>Có lỗi xảy ra! Vui lòng thử lại sau.</h3>
-                        </div>
+                    <div class="message-container">
+                        <h3 class="ProductNameDetail">Định nghĩa đường đi thành công!</h3>
                     </div>
-                }
-                <div>
-                    <div class="span5" style="float: left">
-                        <div class="row">
-                            <div>
-                                @using (Html.BeginForm("ChangePassword", "Account"))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.ValidationSummary(true)
+                </div>
+            }
+            else if (message == "Fail")
+            {
+                <div class="message-box warning-message-box clearfix">
+                    <div class="message-icon-box">
+                        <i class="icon-exclamation"></i>
+                    </div>
 
-                                    <fieldset >
-                                        <legend class="ProductNameDetail">Thay đổi mật khẩu</legend>
-                                        <div class="bg-address">
-                                        <div class="bg-white-input">
-                                            <span class="lbl-input" style="width: 32%">Tên Tài Khoản
-                                            </span>
-                                            <span>@Html.TextBoxFor(m => m.Username, new { disabled = "disabled", style = "width: 65%" })</span>
+                    <div class="message-container">
+                        <h3>Có lỗi xảy ra! Vui lòng thử lại sau.</h3>
+                    </div>
+                </div>
+            }
+            <div class="container">
+                <div class="row">
+                    <div class="span5">
+                        @using (Html.BeginForm("ChangePassword", "Account"))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
 
-                                        </div>
-                                        <div class="bg-white-input">
-                                            <span class="lbl-input" style="width: 32%">Mật khẩu
-                                            </span>
-                                            <span>@Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Nhập mật khẩu mới", @maxlength = 36, style = "width:65%" })
-                                            </span>
-                                            <span class="text-warning">@Html.ValidationMessageFor(m => m.Password)</span>
-                                        </div>
+                            <fieldset>
+                                <legend class="ProductNameDetail">Thay đổi mật khẩu</legend>
+                                <div class="bg-address">
+                                    <div class="bg-white-input">
+                                        <span class="lbl-input" style="width: 32%">Tên Tài Khoản
+                                        </span>
+                                        <span>@Html.TextBoxFor(m => m.Username, new { disabled = "disabled", style = "width: 65%" })</span>
 
-                                        <div class="metro" style="margin-left: 75%">
-                                            <button type="submit" class="primary ">
-                                                <i class="icon-checkmark"></i>
-                                                Lưu lại
-                                            </button>
-                                        </div>
-                                            </div>
-                                    </fieldset>
-                                }
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <div class="ProductNameDetail" style="margin: 10px 0 25px; line-height: 40px; border-bottom: 1px solid #e5e5e5">Thông tin địa chỉ:</div>
-                                @using (Html.BeginForm("DefineRoute", "Route"))
-                                {
-                                    <div class="bg-address">
-                                    <div >
-                                        <div class="blueButton" style="font-size: 15px">Địa chỉ 1:</div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Tên đường đi</span>
-                                            <span>@Html.TextBoxFor(x => x.FirstRouteName, new { id = "FirstRouteNameHid", style = "height:23px" })</span>
-                                        </div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Điểm xuất phát</span>
-                                            <span>@Html.TextBoxFor(x => x.FirstRoute, new { id = "FirstRouteHid", style = "height:23px" })</span>
-                                        </div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Điểm xuất phát</span>
-                                            <span>@Html.TextBoxFor(x => x.FirstMarkets, new { id = "FirstMarketsHid", style = "height:23px" })</span>
-                                        </div>
                                     </div>
-                                    
-                                    <div>
-                                        <div class="blueButton" style="font-size: 15px">Địa chỉ 2:</div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Tên đường đi</span>
-                                            <span>@Html.TextBoxFor(x => x.SecondRouteName, new { id = "SecondRouteNameHid", style = "height:23px" })</span>
-                                        </div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Điểm xuất phát</span>
-                                            <span>@Html.TextBoxFor(x => x.SecondRoute, new { id = "SecondRouteHid", style = "height:23px" })</span>
-                                        </div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Điểm xuất phát</span>
-                                            <span>@Html.TextBoxFor(x => x.SecondMarkets, new { id = "SecondMarketsHid", style = "height:23px" })</span>
-                                        </div>
+                                    <div class="bg-white-input">
+                                        <span class="lbl-input" style="width: 32%">Mật khẩu
+                                        </span>
+                                        <span>@Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Nhập mật khẩu mới", @maxlength = 36, style = "width:65%" })
+                                        </span>
+                                        <span class="text-warning">@Html.ValidationMessageFor(m => m.Password)</span>
                                     </div>
-                                   
-                                    <div>
-                                        <div class="blueButton" style="font-size: 15px">Địa chỉ 2:</div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Tên đường đi</span>
-                                            <span>@Html.TextBoxFor(x => x.ThirdRouteName, new { id = "ThirdRouteNameHid", style = "height:23px" })</span>
-                                        </div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Điểm xuất phát</span>
-                                            <span>@Html.TextBoxFor(x => x.ThirdRoute, new { id = "ThirdRouteHid", style = "height:23px" })</span>
-                                        </div>
-                                        <div class="bg-white-input" style="margin: 0px; padding: 0px">
-                                            <span class="lbl-input" style="width: 30%; padding: 0px 0px 0 4px">Điểm xuất phát</span>
-                                            <span>@Html.TextBoxFor(x => x.ThirdMarkets, new { id = "ThirdMarketsHid", style = "height:23px" })</span>
-                                        </div>
-                                    </div>
-                                    <br />
-                                    
-                                    <div class="metro" style="margin-left: 70%">
-                                        <button type="submit" class="primary" id="Confirm">
+
+                                    <div class="metro" style="margin-left: 75%">
+                                        <button type="submit" class="primary">
                                             <i class="icon-checkmark"></i>
-                                            Xác nhận
+                                            Lưu lại
                                         </button>
                                     </div>
-                                        </div>
-                                }
-                            </div>
-                        </div>
-
+                                </div>
+                            </fieldset>
+                        }
                     </div>
-                    @*<div class="stylish-dark-separator"></div>*@
-                    <div class="span5" style="float: left; margin-left: 60px">
-                        <div class="row">
-                            <div class="ProductNameDetail" style="margin: 0px 0 20px; line-height: 40px; border-bottom: 1px solid #e5e5e5;">
-                                Đường Đi Ưu Tiên
-                            </div>
+                    <div class="span5">
+                        <div class="ProductNameDetail" style="margin: 0px 0 20px; line-height: 40px; border-bottom: 1px solid #e5e5e5;">
+                            Đường Đi Ưu Tiên
+                        </div>
+                        @using (Html.BeginForm("DefineRoute", "Route"))
+                        {
                             <div class="accordion fadeDown">
                                 <h5><i class="icon-plus-sign"></i>Đường đi thứ nhất</h5>
                                 <div>
                                     <label>Tên đường đi</label>
                                     <div class="metro">
                                         <div class="input-control text size5">
-                                            <input type="text" id="FirstRouteName" />
+                                            @Html.TextBoxFor(x => x.FirstRouteName, new { id = "FirstRouteName" })
+                                            @*<input type="text" id="FirstRouteName" />*@
                                         </div>
                                     </div>
 
@@ -459,7 +408,9 @@
                                             <input type="text" id="FirstEnd" />
                                         </div>
                                     </div>
-                                    <div class="metro">
+                                    <div class="metro" style="margin-left: 72%">
+                                        @Html.TextBoxFor(x => x.FirstRoute, new { id = "FirstRouteHid" })
+                                        @Html.TextBoxFor(x => x.FirstMarkets, new { id = "FirstMarketsHid" })
                                         <input type="button" class="primary" value="Chọn" id="Choose_1" />
                                     </div>
                                 </div>
@@ -468,7 +419,8 @@
                                     <label>Tên đường đi</label>
                                     <div class="metro">
                                         <div class="input-control text size5">
-                                            <input type="text" id="SecondRouteName" />
+                                            @Html.TextBoxFor(x => x.SecondRouteName, new { id = "SecondRouteName" })
+                                            @*<input type="text" id="SecondRouteName" />*@
                                         </div>
                                     </div>
 
@@ -485,7 +437,9 @@
                                             <input type="text" id="SecondEnd" />
                                         </div>
                                     </div>
-                                    <div class="metro">
+                                    <div class="metro" style="margin-left: 72%">
+                                        @Html.TextBoxFor(x => x.SecondRoute, new { id = "SecondRouteHid" })
+                                        @Html.TextBoxFor(x => x.SecondMarkets, new { id = "SecondMarketsHid" })
                                         <input type="button" class="primary" value="Chọn" id="Choose_2" />
                                     </div>
                                 </div>
@@ -494,7 +448,8 @@
                                     <label>Tên đường đi</label>
                                     <div class="metro">
                                         <div class="input-control text size5">
-                                            <input type="text" id="ThirdRouteName" />
+                                            @Html.TextBoxFor(x => x.ThirdRouteName, new { id = "ThirdRouteName" })
+                                            @*<input type="text" id="ThirdRouteName" />*@
                                         </div>
                                     </div>
 
@@ -511,20 +466,28 @@
                                             <input type="text" id="ThirdEnd" />
                                         </div>
                                     </div>
-                                    <div class="metro">
+                                    <div class="metro" style="margin-left: 72%">
+                                        @Html.TextBoxFor(x => x.ThirdRoute, new { id = "ThirdRouteHid" })
+                                        @Html.TextBoxFor(x => x.ThirdMarkets, new { id = "ThirdMarketsHid" })
                                         <input type="button" class="primary" value="Chọn" id="Choose_3" />
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
-                    </div>
-                    <div class="google-map">
-                        <div id="map-canvas" />
+                            <div class="metro">
+                                <div class="place-right">
+                                    <button type="submit" class="primary">
+                                        <i class="icon-checkmark"></i>
+                                        Xác nhận
+                                    </button>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
+            <div class="google-map">
+                <div id="map-canvas" />
+            </div>
         </div>
-
     </div>
 </div>
