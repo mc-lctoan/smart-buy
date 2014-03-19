@@ -8,6 +8,7 @@ using System.Web.Http;
 using SmartB.UI.Helper;
 using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
+using SmartB.UI.Models.MobileModel;
 
 namespace SmartB.UI.Controllers
 {
@@ -15,25 +16,26 @@ namespace SmartB.UI.Controllers
     {
         private SmartBuyEntities context = new SmartBuyEntities();
 
-        public List<SuggestRouteModel> SuggestRoute(string username, List<int> productId, string routeName)
+        [AcceptVerbs("GET")]
+        public List<SuggestRouteModel> SuggestRoute(SuggestMobileModel model)
         {
             var result = new List<SuggestRouteModel>();
             var user = context.Users
                 .Include(x => x.Profile)
-                .FirstOrDefault(x => x.Username == username);
+                .FirstOrDefault(x => x.Username == model.Username);
             if (user != null)
             {
                 string[] ids = null;
 
-                if (user.Profile.FirstRouteName == routeName)
+                if (user.Profile.FirstRouteName == model.RouteName)
                 {
                     ids = user.Profile.FirstMarkets.Split(',');
                 }
-                else if (user.Profile.SecondRouteName == routeName)
+                else if (user.Profile.SecondRouteName == model.RouteName)
                 {
                     ids = user.Profile.SecondMarkets.Split(',');
                 }
-                else if (user.Profile.ThirdRouteName == routeName)
+                else if (user.Profile.ThirdRouteName == model.RouteName)
                 {
                     ids = user.Profile.ThirdMarkets.Split(',');
                 }
@@ -52,7 +54,7 @@ namespace SmartB.UI.Controllers
 
                 // Construct a product list
                 var products = new List<Product>();
-                foreach (var id in productId)
+                foreach (var id in model.ProductIds)
                 {
                     var tmp = context.Products
                         .Include(x => x.SellProducts)
