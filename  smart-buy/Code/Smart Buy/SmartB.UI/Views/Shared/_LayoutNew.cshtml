@@ -11,7 +11,7 @@
 
     <link rel="shortcut icon" href="@Url.Content("~/Template/Stylish/images/favicon.png")" type="image/x-icon" />
 
-    @*<link href="http://fonts.googleapis.com/css?family=Open+Sans" type="text/css" rel="stylesheet" />*@
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" type="text/css" rel="stylesheet" />
 
     <title>@ViewBag.Title | Smart Buy</title>
 
@@ -162,17 +162,7 @@
     </header>
 
     @RenderBody()
-    <!-- Order -->
-    <div id="order-summary">
-        <form action="@Url.Action("ViewCart", "Cart")" method="post" style="float:left">
-            <input type="hidden" id="data-order" name="orderStr" />
-            <input title="Xem chi tiết đơn hàng" type="submit" id="btn-checkout" class="Left" />
-        </form>
-        <div id="order-infor" style="float: left; color: black">
-            Tổng: <span id="order-total">0</span><br />
-            (nghìn đồng)
-        </div>
-    </div>
+   
     <div id="testimonials" class="page-element" hidden>
         <div class="container">
             <h3>WHAT PEOPLE ARE SAYING</h3>
@@ -253,7 +243,17 @@
             </div>
         </div>
     </footer>
-
+     <!-- Order -->
+    <div id="order-summary">
+        <form action="@Url.Action("ViewCart", "Cart")" method="post" style="float:left">
+            <input type="hidden" id="data-order" name="orderStr" />
+            <input title="Xem chi tiết đơn hàng" type="submit" id="btn-checkout" class="Left" />
+        </form>
+        <div id="order-infor" style="float: left; color: black">
+            Tổng: <span id="order-total">0</span><br />
+            (nghìn đồng)
+        </div>
+    </div>
     <div id="scroll-up-button">
         <i class="icon-angle-up"></i>
     </div>

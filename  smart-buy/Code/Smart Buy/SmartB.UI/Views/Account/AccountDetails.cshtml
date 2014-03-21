@@ -8,7 +8,7 @@
     {
         message = TempData["DefineRoute"].ToString();
     }
-    string passwordState = (string) TempData["State"];
+    string passwordState = (string)TempData["State"];
     string passwordMes = (string)TempData["Message"];
 }
 
@@ -26,7 +26,8 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/login.css")" />
 
     <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places">
+    </script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/RouteBoxer.js")"></script>
 
     <script type="text/javascript">
@@ -345,7 +346,7 @@
                     </div>
                 </div>
             }
-            
+
             @if (passwordState == "Success")
             {
                 <div class="message-box ok-message-box clearfix">
@@ -372,145 +373,151 @@
             }
             <div class="container">
                 <div class="row">
-                    <div class="span5">
+                    <div class="span4">
                         @using (Html.BeginForm("ChangePassword", "Account"))
                         {
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(false)
 
-                            <fieldset>
-                                <legend class="ProductNameDetail">Thay đổi mật khẩu</legend>
+                            <div>
+                                <div class="titlespec">
+                                    <div class="ProductNameDetail" style="line-height: 40px; margin-left: 5px">Thay đổi mật khẩu</div>
+                                </div>
                                 <div class="bg-address">
-                                    <div class="bg-white-input">
-                                        <span class="lbl-input" style="width: 32%">Tên Tài Khoản</span>
-                                        <span>
+                                    <div class="bg-white-input" style="margin: 0px">
+                                        <span class="lbl-input" style="width: 32%; color: black; font-size: 11px">Tên Tài Khoản</span>
+                                        <span style="width: 65%;">
                                             @Html.TextBoxFor(m => m.Username, new { disabled = "disabled", style = "width: 65%" })
                                         </span>
 
                                     </div>
-                                    <div class="bg-white-input">
-                                        <span class="lbl-input" style="width: 32%">Mật khẩu cũ</span>
+                                    <div class="bg-white-input" style="margin: 0px">
+                                        <span class="lbl-input" style="width: 32%; color: black; font-size: 11px">Mật khẩu cũ</span>
                                         <span>
                                             @Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Mật khẩu cũ", @maxlength = 36, style = "width:65%" })
                                         </span>
                                         <span class="text-warning">@Html.ValidationMessageFor(m => m.Password)</span>
                                     </div>
-                                    <div class="bg-white-input">
-                                        <span class="lbl-input" style="width: 32%">Mật khẩu mới</span>
+                                    <div class="bg-white-input" style="margin: 0px">
+                                        <span class="lbl-input" style="width: 32%; color: black; font-size: 11px">Mật khẩu mới</span>
                                         <span>
                                             @Html.PasswordFor(model => model.NewPassword, new { @class = "text-box", @placeholder = "Mật khẩu mới", @maxlength = 36, style = "width:65%" })
                                         </span>
                                         <span class="text-warning">@Html.ValidationMessageFor(m => m.NewPassword)</span>
                                     </div>
 
-                                    <div class="metro" style="margin-left: 67%">
+                                    <div class="metro" style="margin-left: 55%">
                                         <button type="submit" class="primary">
                                             <i class="icon-checkmark"></i>
                                             Đổi mật khẩu
                                         </button>
                                     </div>
                                 </div>
-                            </fieldset>
+                            </div>
                         }
                     </div>
-                    <div class="span5">
-                        <div class="ProductNameDetail" style="margin: 0px 0 20px; line-height: 40px; border-bottom: 1px solid #e5e5e5;">
-                            Đường Đi Ưu Tiên
+                    <div class="span" style="min-width: 400px">
+                        <div class="titlespec">
+                            <div class="ProductNameDetail" style="margin: 0px 0 20px 5px; line-height: 40px; border-bottom: 1px solid #e5e5e5;">
+                                Đường Đi Ưu Tiên
+                            </div>
                         </div>
                         @using (Html.BeginForm("DefineRoute", "Route"))
                         {
-                            <div class="accordion fadeDown">
-                                <h5><i class="icon-plus-sign"></i>Đường đi thứ nhất</h5>
-                                <div>
-                                    <label>Tên đường đi</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.FirstRouteName, new { id = "FirstRouteName" })
+                            <div style="background-color: white">
+                                <div class="accordion fadeDown">
+                                    <h5><i class="icon-plus-sign"></i>Đường đi thứ nhất</h5>
+                                    <div>
+                                        <label>Tên đường đi</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.FirstRouteName, new { id = "FirstRouteName" })
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <label>Điểm xuất phát</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.FirstStartAddress, new { id = "FirstStart" })
+                                        <label>Điểm xuất phát</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.FirstStartAddress, new { id = "FirstStart" })
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <label>Điểm kết thúc</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.FirstEndAddress, new { id = "FirstEnd" })
+                                        <label>Điểm kết thúc</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.FirstEndAddress, new { id = "FirstEnd" })
+                                            </div>
+                                        </div>
+                                        <div class="metro" style="margin-left: 85%">
+                                            @Html.HiddenFor(x => x.FirstRoute, new { id = "FirstRouteHid" })
+                                            @Html.HiddenFor(x => x.FirstMarkets, new { id = "FirstMarketsHid" })
+                                            <input type="button" class="primary" value="Chọn" id="Choose_1" />
                                         </div>
                                     </div>
-                                    <div class="metro" style="margin-left: 72%">
-                                        @Html.HiddenFor(x => x.FirstRoute, new { id = "FirstRouteHid" })
-                                        @Html.HiddenFor(x => x.FirstMarkets, new { id = "FirstMarketsHid" })
-                                        <input type="button" class="primary" value="Chọn" id="Choose_1" />
+                                    <h5><i class="icon-plus-sign"></i>Đường đi thứ hai</h5>
+                                    <div>
+                                        <label>Tên đường đi</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.SecondRouteName, new { id = "SecondRouteName" })
+                                            </div>
+                                        </div>
+
+                                        <label>Điểm xuất phát</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.SecondStartAddress, new { id = "SecondStart" })
+                                            </div>
+                                        </div>
+
+                                        <label>Điểm kết thúc</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.SecondEndAddress, new { id = "SecondEnd" })
+                                            </div>
+                                        </div>
+                                        <div class="metro" style="margin-left: 85%">
+                                            @Html.HiddenFor(x => x.SecondRoute, new { id = "SecondRouteHid" })
+                                            @Html.HiddenFor(x => x.SecondMarkets, new { id = "SecondMarketsHid" })
+                                            <input type="button" class="primary" value="Chọn" id="Choose_2" />
+                                        </div>
+                                    </div>
+                                    <h5><i class="icon-plus-sign"></i>Đường đi thứ ba</h5>
+                                    <div>
+                                        <label>Tên đường đi</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.ThirdRouteName, new { id = "ThirdRouteName" })
+                                            </div>
+                                        </div>
+
+                                        <label>Điểm xuất phát</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.ThirdStartAddress, new { id = "ThirdStart" })
+                                            </div>
+                                        </div>
+
+                                        <label>Điểm kết thúc</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                @Html.TextBoxFor(x => x.ThirdEndAddress, new { id = "ThirdEnd" })
+                                            </div>
+                                        </div>
+                                        <div class="metro" style="margin-left: 85%">
+                                            @Html.HiddenFor(x => x.ThirdRoute, new { id = "ThirdRouteHid" })
+                                            @Html.HiddenFor(x => x.ThirdMarkets, new { id = "ThirdMarketsHid" })
+                                            <input type="button" class="primary" value="Chọn" id="Choose_3" />
+                                        </div>
                                     </div>
                                 </div>
-                                <h5><i class="icon-plus-sign"></i>Đường đi thứ hai</h5>
-                                <div>
-                                    <label>Tên đường đi</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.SecondRouteName, new { id = "SecondRouteName" })
-                                        </div>
+                                <div class="metro">
+                                    <div class="place-right">
+                                        <button type="submit" class="primary">
+                                            <i class="icon-checkmark"></i>
+                                            Xác nhận
+                                        </button>
                                     </div>
-
-                                    <label>Điểm xuất phát</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.SecondStartAddress, new { id = "SecondStart" })
-                                        </div>
-                                    </div>
-
-                                    <label>Điểm kết thúc</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.SecondEndAddress, new { id = "SecondEnd" })
-                                        </div>
-                                    </div>
-                                    <div class="metro" style="margin-left: 72%">
-                                        @Html.HiddenFor(x => x.SecondRoute, new { id = "SecondRouteHid" })
-                                        @Html.HiddenFor(x => x.SecondMarkets, new { id = "SecondMarketsHid" })
-                                        <input type="button" class="primary" value="Chọn" id="Choose_2" />
-                                    </div>
-                                </div>
-                                <h5><i class="icon-plus-sign"></i>Đường đi thứ ba</h5>
-                                <div>
-                                    <label>Tên đường đi</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.ThirdRouteName, new { id = "ThirdRouteName" })
-                                        </div>
-                                    </div>
-
-                                    <label>Điểm xuất phát</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.ThirdStartAddress, new { id = "ThirdStart" })
-                                        </div>
-                                    </div>
-
-                                    <label>Điểm kết thúc</label>
-                                    <div class="metro">
-                                        <div class="input-control text size5">
-                                            @Html.TextBoxFor(x => x.ThirdEndAddress, new { id = "ThirdEnd" })
-                                        </div>
-                                    </div>
-                                    <div class="metro" style="margin-left: 72%">
-                                        @Html.HiddenFor(x => x.ThirdRoute, new { id = "ThirdRouteHid" })
-                                        @Html.HiddenFor(x => x.ThirdMarkets, new { id = "ThirdMarketsHid" })
-                                        <input type="button" class="primary" value="Chọn" id="Choose_3" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="metro">
-                                <div class="place-right">
-                                    <button type="submit" class="primary">
-                                        <i class="icon-checkmark"></i>
-                                        Xác nhận
-                                    </button>
                                 </div>
                             </div>
                         }

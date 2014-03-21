@@ -2,79 +2,83 @@
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
 
-<div class="rev-slider-wrapper" style="margin-top:100px">
-    <div class="rev-slider">
-        <ul class="unstyled">
-           <li data-transition="slideup" data-slotamount="1">
-                <img src="@Url.Content("~/Template/Stylish/images/slide-bg-1.png")" alt="slide background" />
-                <div class="caption lfl image-caption" data-x="center" data-y="center" data-hoffset="-300" data-voffset="130" data-speed="700" data-start="1000" data-easing="easeOutBack">
-                    <img src="@Url.Content("~/Template/Stylish/images/slide-image-1.png")" alt="slide image" />
-                </div>
-                <div class="caption lfr black-medium" data-x="center" data-y="center" data-hoffset="160" data-voffset="100" data-speed="700" data-start="1700" data-easing="easeOutBack"  style="font-family:'UVF Slim Tony';">
-                    SmartBuy
-                </div>
-                <div class="caption lfr orange-big" data-x="center" data-y="center" data-hoffset="280" data-voffset="190" data-speed="700" data-start="1900" data-easing="easeOutBack"  style="font-family:'UVF Slim Tony';">
-                    Niềm vui
-                </div>
-                <div class="caption lfr black-small" data-x="center" data-y="center" data-hoffset="437" data-voffset="265" data-speed="500" data-start="2100" data-easing="easeOutBack"  style="font-family:'UVF Slim Tony';">
-                    của Nhà nội trợ
-                </div>
-            </li>
-            <li data-transition="zoomout" data-slotamount="2" data-masterspeed="1000">
-					<!-- MAIN IMAGE -->
-					 <img src="@Url.Content("~/Template/Stylish/images/slide-bg-2.png")" alt="slider-image" />
-                    <!-- LAYERS -->
+        <div class="rev-slider-wrapper" style="margin-top: 100px">
+            <div class="rev-slider">
+                <ul class="unstyled">
+                    <li data-transition="slideup" data-slotamount="1">
+                        <img src="@Url.Content("~/Template/Stylish/images/slide-bg-1.png")" alt="slide background" />
+                        <div class="caption lfl image-caption" data-x="center" data-y="center" data-hoffset="-300" data-voffset="130" data-speed="700" data-start="1000" data-easing="easeOutBack">
+                            <img src="@Url.Content("~/Template/Stylish/images/slide-image-1.png")" alt="slide image" />
+                        </div>
+                        <div class="caption lfr black-medium" data-x="center" data-y="center" data-hoffset="160" data-voffset="100" data-speed="700" data-start="1700" data-easing="easeOutBack" style="font-family: 'UVF Slim Tony';">
+                            SmartBuy
+                        </div>
+                        <div class="caption lfr orange-big" data-x="center" data-y="center" data-hoffset="280" data-voffset="190" data-speed="700" data-start="1900" data-easing="easeOutBack" style="font-family: 'UVF Slim Tony';">
+                            Niềm vui
+                        </div>
+                        <div class="caption lfr black-small" data-x="center" data-y="center" data-hoffset="437" data-voffset="265" data-speed="500" data-start="2100" data-easing="easeOutBack" style="font-family: 'UVF Slim Tony';">
+                            của Nhà nội trợ
+                        </div>
+                    </li>
+                    <li data-transition="zoomout" data-slotamount="2" data-masterspeed="1000">
+                        <!-- MAIN IMAGE -->
+                        <img src="@Url.Content("~/Template/Stylish/images/slide-bg-2.png")" alt="slider-image" />
+                        <!-- LAYERS -->
 
-					<!-- LAYER NR. 1 -->
-					<div class="caption lfr image-caption" data-x="650" data-y="220" data-hoffset="-205" data-voffset="100" data-speed="500" data-start="800" data-easing="Power3.easeInOut" data-endspeed="300" style="z-index: 2; left: 474px; top: 189px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 50% 0px;">
-                        <img src="~/Template/Stylish/images/macbook2.png" alt="" style="width: 471px; height: 294px;">
-					</div>
+                        <!-- LAYER NR. 1 -->
+                        <div class="caption lfr image-caption" data-x="650" data-y="220" data-hoffset="-205" data-voffset="100" data-speed="500" data-start="800" data-easing="Power3.easeInOut" data-endspeed="300" style="z-index: 2; left: 474px; top: 189px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 50% 0px;">
+                            <img src="~/Template/Stylish/images/macbook2.png" alt="" style="width: 471px; height: 294px;">
+                        </div>
 
-					<!--LAYER NR. 2-->
-					<div class="caption lfr image-caption" data-x="center" data-y="center"  data-speed="100" data-start="500" data-easing="Power3.easeInOut" data-endspeed="200" style="z-index: 3; left: 245px; top: 92px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 50% 0px;">
-                        <img src="~/Template/Stylish/images/BuaTrua.png" alt="" style="width: 300px; height: 250px;">
-					</div>
+                        <!--LAYER NR. 2-->
+                        <div class="caption lfr image-caption" data-x="center" data-y="center" data-speed="100" data-start="500" data-easing="Power3.easeInOut" data-endspeed="200" style="z-index: 3; left: 245px; top: 92px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 50% 0px;">
+                            <img src="~/Template/Stylish/images/BuaTrua.png" alt="" style="width: 300px; height: 250px;">
+                        </div>
 
-					<!-- LAYER NR. 3 -->
-					<div class="caption lfr image-caption" data-x="500" data-y="250"  data-speed="100" data-start="1300" data-easing="Power3.easeInOut" data-endspeed="200" style="z-index: 4; left: 693px; top: 69px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 50% 0px;">
-                        <img src="~/Template/Stylish/images/BuaToi.png" alt="" style="width: 300px; height: 250px;">
-					</div>
+                        <!-- LAYER NR. 3 -->
+                        <div class="caption lfr image-caption" data-x="500" data-y="250" data-speed="100" data-start="1300" data-easing="Power3.easeInOut" data-endspeed="200" style="z-index: 4; left: 693px; top: 69px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 50% 0px;">
+                            <img src="~/Template/Stylish/images/BuaToi.png" alt="" style="width: 300px; height: 250px;">
+                        </div>
 
-					<!-- LAYER NR. 4 -->
-					<div class="caption lfr image-caption" data-x="120" data-y="250"  data-speed="100" data-start="1400" data-easing="Power3.easeInOut" data-endspeed="200" style="z-index: 5; left: 100px; top: 171px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 50% 0px;">
-                        <img src="~/Template/Stylish/images/BuaSang.png" alt="" style="width: 300px; height: 250px;">
-					</div>
-				
-                	<!-- LAYER NR. 5 -->
-					<div class="caption lfr blue-big" data-x="370" data-y="380" data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;" data-speed="600" data-start="1100" data-easing="Back.easeOut" data-endspeed="300" data-endeasing="Power1.easeIn" style="z-index: 10; -webkit-transition: all 0s ease 0s; transition: all 0s ease 0s; min-height: 0px; min-width: 0px; line-height: 60px; font-size: 58px; left: 428px; top: 34px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 0% 0px;font-family:'UVF Slim Tony'">Bữa ăn
-					</div>
+                        <!-- LAYER NR. 4 -->
+                        <div class="caption lfr image-caption" data-x="120" data-y="250" data-speed="100" data-start="1400" data-easing="Power3.easeInOut" data-endspeed="200" style="z-index: 5; left: 100px; top: 171px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 50% 0px;">
+                            <img src="~/Template/Stylish/images/BuaSang.png" alt="" style="width: 300px; height: 250px;">
+                        </div>
 
-					<!-- LAYER NR. 6 -->
-					<div class="caption lfr black-medium" data-x="400" data-y="430" data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;" data-speed="600" data-start="1200" data-easing="Back.easeOut" data-endspeed="300" data-endeasing="Power1.easeIn" style="z-index: 11; -webkit-transition: all 0s ease 0s; transition: all 0s ease 0s; min-height: 0px; min-width: 0px; line-height: 36px; border-width: 0px; margin: 0px; padding: 0px; letter-spacing: 0px; font-size: 30px; left: 536px; top: 51px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 0% 0px;font-family:'UVF Slim Tony'">hàng ngày
-					</div>
-				</li>
-            <li data-transition="slidedown" data-slotamount="3">
-                <img src="@Url.Content("~/Template/Stylish/images/slide-image-4.png")" alt="slider-image" />
-                <div class="caption lfr image-caption" data-x="right" data-y="350" data-hoffset="15" data-voffset="310" data-speed="700" data-start="1000" data-easing="easeOutBack">
-                    <img src="@Url.Content("~/Template/Stylish/images/slide-image-2.png")" alt="slide image" />
-                </div>
-                <div class="caption lft image-caption" data-x="right" data-y="100" data-hoffset="115" data-voffset="200" data-speed="700" data-start="1700" data-easing="easeOutBounce">
-                    <img src="@Url.Content("~/Template/Stylish/images/slide-image-3.png")" alt="slide image" />
-                </div>
-                <div class="caption lfl black-medium" data-x="350" data-y="400" data-hoffset="-120" data-voffset="100" data-speed="700" data-start="2500" data-easing="easeOutBack" style="font-family:'UVF Slim Tony';">Hiệu quả </div>
-                <div class="caption lfl green-big" data-x="" data-y="500" data-hoffset="-122" data-voffset="170" data-speed="700" data-start="2700" data-easing="easeOutBack" style="font-family:'UVF Slim Tony'">Nhanh chóng</div>
-            </li>
-            <li data-transition="slideleft" data-slotamount="4">
-                <img src="@Url.Content("~/Template/Stylish/images/slide-bg-3.png")" alt="slider-image" />
-                <div class="caption lft image-caption" data-x="left" data-y="170" data-hoffset="-115" data-voffset="200" data-speed="700" data-start="1000" data-easing="easeOutBack">
-                    <img src="@Url.Content("~/Template/Stylish/images/slide-image-5.png")" alt="slide image" />
-                </div>
-                <div class="caption lfr black-medium" data-x="600" data-y="380" data-hoffset="-205" data-voffset="100" data-speed="700" data-start="1700" data-easing="easeOutBack" style="font-family:'UVF Slim Tony';">Thao tác</div>
-                <div class="caption lfr orange-big" data-x="500" data-y="450" data-hoffset="123" data-voffset="180" data-speed="700" data-start="1900" data-easing="easeOutBack" style="font-family:'UVF Slim Tony';">Đơn giản</div>
-                @*<div class="caption lfr black-small" data-x="right" data-y="center" data-hoffset="116" data-voffset="260" data-speed="500" data-start="2100" data-easing="easeOutBack">Ideas & Concepts</div>*@
-            </li>
-             
-        </ul>
-    </div>
-</div>
+                        <!-- LAYER NR. 5 -->
+                        <div class="caption lfr blue-big" data-x="370" data-y="380" data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;" data-speed="600" data-start="1100" data-easing="Back.easeOut" data-endspeed="300" data-endeasing="Power1.easeIn" style="z-index: 10; -webkit-transition: all 0s ease 0s; transition: all 0s ease 0s; min-height: 0px; min-width: 0px; line-height: 60px; font-size: 58px; left: 428px; top: 34px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 0% 0px; font-family: 'UVF Slim Tony'">
+                            Bữa ăn
+                        </div>
+
+                        <!-- LAYER NR. 6 -->
+                        <div class="caption lfr black-medium" data-x="400" data-y="430" data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;" data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;" data-speed="600" data-start="1200" data-easing="Back.easeOut" data-endspeed="300" data-endeasing="Power1.easeIn" style="z-index: 11; -webkit-transition: all 0s ease 0s; transition: all 0s ease 0s; min-height: 0px; min-width: 0px; line-height: 36px; border-width: 0px; margin: 0px; padding: 0px; letter-spacing: 0px; font-size: 30px; left: 536px; top: 51px; visibility: visible; opacity: 1; -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -0.0025, 0, 0, 0, 1); -webkit-transform-origin: 50% 0% 0px; font-family: 'UVF Slim Tony'">
+                            hàng ngày
+                        </div>
+                    </li>
+                    <li data-transition="slidedown" data-slotamount="3">
+                        <img src="@Url.Content("~/Template/Stylish/images/slide-image-4.png")" alt="slider-image" />
+                        <div class="caption lfr image-caption" data-x="right" data-y="450" data-hoffset="15" data-voffset="310" data-speed="700" data-start="1000" data-easing="easeOutBack">
+                            <img src="@Url.Content("~/Template/Stylish/images/slide-image-2.png")" alt="slide image" />
+                        </div>
+                        <div class="caption lft image-caption" data-x="right" data-y="200" data-hoffset="115" data-voffset="200" data-speed="700" data-start="1700" data-easing="easeOutBounce">
+                            <img src="@Url.Content("~/Template/Stylish/images/slide-image-3.png")" alt="slide image" />
+                        </div>
+                        <div class="caption lfl black-medium" data-x="350" data-y="400" data-hoffset="-120" data-voffset="100" data-speed="700" data-start="2500" data-easing="easeOutBack" style="font-family: 'UVF Slim Tony';">Hiệu quả </div>
+                        <div class="caption lfl green-big" data-x="" data-y="500" data-hoffset="-122" data-voffset="170" data-speed="700" data-start="2700" data-easing="easeOutBack" style="font-family: 'UVF Slim Tony'">Nhanh chóng</div>
+                    </li>
+                    <li data-transition="slideleft" data-slotamount="4">
+                        <img src="@Url.Content("~/Template/Stylish/images/slide-bg-3.png")" alt="slider-image" />
+                        <div class="caption lft image-caption" data-x="left" data-y="170" data-hoffset="-115" data-voffset="200" data-speed="700" data-start="1000" data-easing="easeOutBack">
+                            <img src="@Url.Content("~/Template/Stylish/images/slide-image-5.png")" alt="slide image" />
+                        </div>
+                        <div class="caption lfr black-medium" data-x="600" data-y="380" data-hoffset="-205" data-voffset="100" data-speed="700" data-start="1700" data-easing="easeOutBack" style="font-family: 'UVF Slim Tony';">Thao tác</div>
+                        <div class="caption lfr orange-big" data-x="500" data-y="450" data-hoffset="123" data-voffset="180" data-speed="700" data-start="1900" data-easing="easeOutBack" style="font-family: 'UVF Slim Tony';">Đơn giản</div>
+                        @*<div class="caption lfr black-small" data-x="right" data-y="center" data-hoffset="116" data-voffset="260" data-speed="500" data-start="2100" data-easing="easeOutBack">Ideas & Concepts</div>*@
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+

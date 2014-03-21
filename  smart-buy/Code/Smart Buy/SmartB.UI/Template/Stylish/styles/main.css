@@ -374,8 +374,10 @@ iframe {
 
 #header-container {
     width: 100%;
-    height: 100px;
-    background: transparent url(img/header-bg.png) top left repeat;
+    /*height: 100px;*/
+    /*background: transparent url(img/header-bg.png) top left repeat;*/
+    background-image: url(../../../Images/header2.png);
+    background-size: cover;
 }
 
 #logo {
@@ -383,6 +385,7 @@ iframe {
     height: 100px;
     /*background: #ffffff;*/
     float: left;
+    margin-left:12%;
 }
 
 #logo h1 {
@@ -403,6 +406,7 @@ iframe {
 
 #header-navigation {
     float: right;
+    margin-right:25px;
 }
 
 #header-navigation span {
@@ -411,6 +415,7 @@ iframe {
 
 #header-navigation ul {
     margin: 0;
+     margin-right:25px;
 }
 
 #header-navigation .nav > li {
@@ -1489,7 +1494,7 @@ textarea.stylish-textarea {
 }
 .ProductDetail
 {
-    margin-top: 120px;
+    margin-top: 100px;
     width:100%;
     -moz-box-shadow: 0px -5px 5px #ccc;
     -webkit-box-shadow: 0px -5px 5px #ccc;
@@ -1523,7 +1528,7 @@ textarea.stylish-textarea {
     width: 80%;
     background-color: white;
     background-repeat: repeat-y;
-    margin: 20px auto;
+    margin: 0px auto;
     -moz-box-shadow: 0px 5px 15px #ccc;
     -webkit-box-shadow: 0px 5px 15px #ccc;
     box-shadow: 0px 5px 15px #ccc;
