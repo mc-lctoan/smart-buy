@@ -37,17 +37,17 @@
                 <fieldset>
                     <legend class="titlespec"> <text style="margin-left:10px">ĐĂNG NHẬP</text> </legend>
                     <div class="bg-white-input">
-                        <span class="lbl-input" style="width: 32%">Tên Tài Khoản
+                        <span class="lbl-input" style="width: 40%">Tên Tài Khoản
                                 <span class="lbl-require" style="display: normal">[*]</span>
                         </span>
-                        <span>@Html.TextBoxFor(model => model.UserName, new { @class = "text-box", @placeholder = "Nhập tên tài khoản", @maxlength = 36, style="width:65%" })</span>
+                        <span>@Html.TextBoxFor(model => model.UserName, new { @class = "text-box", @placeholder = "Nhập tên tài khoản", @maxlength = 36, style="width:60%" })</span>
                         <br />
                         <span class="text-warning">@Html.ValidationMessageFor(m => m.UserName)</span>
                     </div>
                       <div class="bg-white-input">
-                        <span class="lbl-input" style="width: 32%">Mật khẩu
+                        <span class="lbl-input" style="width: 40%">Mật khẩu
                         </span>
-                        <span>@Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Nhập mật khẩu", @maxlength = 36, style="width:65%" })
+                        <span>@Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Nhập mật khẩu", @maxlength = 36, style="width:60%" })
                         </span>
                         <span class="text-warning">@Html.ValidationMessageFor(m => m.Password)</span>
                     </div>
