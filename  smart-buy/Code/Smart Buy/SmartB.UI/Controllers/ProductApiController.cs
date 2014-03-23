@@ -54,25 +54,78 @@ namespace SmartB.UI.Controllers
             return result;
         }
 
+        [AcceptVerbs("GET")]
+        public List<ProductMobileModel> GetProduct()
+        {
+            var products = context.Products.Include(i => i.ProductAttributes).ToList();
+            var result = new List<ProductMobileModel>();
+            foreach (Product product in products)
+            {
+                List<int?> minPrice = product.ProductAttributes
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MinPrice)
+                    .ToList();
+                List<int?> maxPrice = product.ProductAttributes
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MaxPrice)
+                    .ToList();
+
+                var info = new ProductMobileModel
+                {
+                    ProductId = product.Id.ToString(),
+                    Name = product.Name,
+                    MinPrice = minPrice[0].ToString(),
+                    MaxPrice = maxPrice[0].ToString()
+                };
+                result.Add(info);
+            }
+            return result;
+        }
+
         //get all market
         [HttpGet]
         public List<MarketMobileModel> GetMarket()
         {
             var result = new List<MarketMobileModel>();
             var markets = context.Markets.ToList();
-
-            foreach (Market market in markets)
+            var defaulMarket = new MarketMobileModel
             {
+                Id = markets[0].Id.ToString(),
+                Name = markets[0].Name,
+                Address = markets[0].Address,
+                Latitude = markets[0].Latitude,
+                Longitude = markets[0].Longitude
+            };
+            result.Add(defaulMarket);
+
+            markets.RemoveAt(0);
+            var marketsOrder = markets.OrderBy(m => m.Name).ToList();
+            for (int i = 0; i < marketsOrder.Count(); i++)
+            {
+
                 var item = new MarketMobileModel
                 {
-                    Id = market.Id.ToString(),
-                    Name = market.Name,
-                    Address = market.Address,
-                    Latitude = market.Latitude,
-                    Longitude = market.Longitude
+                    Id = marketsOrder[i].Id.ToString(),
+                    Name = marketsOrder[i].Name,
+                    Address = marketsOrder[i].Address,
+                    Latitude = marketsOrder[i].Latitude,
+                    Longitude = marketsOrder[i].Longitude
                 };
                 result.Add(item);
             }
+
+            //foreach (Market market in markets)
+            //{
+            //    var item = new MarketMobileModel
+            //    {
+            //        Id = market.Id.ToString(),
+            //        Name = market.Name,
+            //        Address = market.Address,
+            //        Latitude = market.Latitude,
+            //        Longitude = market.Longitude
+            //    };
+            //    result.Add(item);
+            //}
 
             return result;
         }
@@ -290,7 +343,7 @@ namespace SmartB.UI.Controllers
                     {
                         var historyId = (from h in context.Histories
                                          where h.BuyTime == now && h.Username == username
-                                         select h.Id).First();                        
+                                         select h.Id).First();
 
                         var dupProductId = context.HistoryDetails.Where(p => p.ProductId == pid && p.HistoryId == historyId).FirstOrDefault();
                         if (dupProductId == null)
@@ -315,6 +368,32 @@ namespace SmartB.UI.Controllers
             {
                 return check;
             }
+        }
+
+        [HttpGet]
+        public Profile getProfile(string username)
+        {
+            //var result = new Profile();
+            var profile = context.Profiles.Where(p => p.Username.Equals(username)).FirstOrDefault();
+
+            var result = new Profile
+            {
+                Username = username,
+                FirstRoute = profile.FirstRoute,
+                FirstStartAddress = profile.FirstStartAddress,
+                FirstEndAddress = profile.FirstEndAddress,
+                FirstRouteName = profile.FirstRouteName,
+                SecondRoute = profile.SecondRoute,
+                SecondRouteName = profile.SecondRouteName,
+                SecondStartAddress = profile.SecondStartAddress,
+                SecondEndAddress = profile.SecondEndAddress,
+                ThirdRoute = profile.ThirdRoute,
+                ThirdRouteName = profile.ThirdRouteName,
+                ThirdStartAddress = profile.ThirdStartAddress,
+                ThirdEndAddress = profile.ThirdEndAddress,
+            };
+
+            return result;
         }
     }
 
