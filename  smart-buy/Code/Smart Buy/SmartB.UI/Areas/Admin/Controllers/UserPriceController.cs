@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models.EntityFramework;
 using PagedList;
 using System.Data.Entity;
 
-
 namespace SmartB.UI.Areas.Admin.Controllers
 {
+    [MyAuthorize(Roles = "staff")]
     public class UserPriceController : Controller
     {
         //

@@ -1,0 +1,154 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.User>
+
+@{
+    ViewBag.Title = "Danh sách tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
+    int end = Model.PageNumber * Model.PageSize;
+    int start = end - Model.PageSize;
+}
+
+@section sidebar
+{
+    <aside id="sidebar">
+        <nav id="navigation" class="collapse">
+            <ul>
+                <li class="active">
+                    <span title="General">
+                        <i class="icon-home"></i>
+                        <span class="nav-title">Tài khoản</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li class="active">
+                            <a href="@Url.Action("Index", "ManageUser")">
+                                <i class="icol-chart-curve"></i>
+                                Danh sách tài khoản
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Create", "ManageUser")">
+                                <i class="icol-cog"></i>
+                                Tạo tài khoản mới
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+}
+
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Quản lý tài khoản
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "ManageUser")">Danh sách tài khoản</a>
+            </li>
+        </ul>
+
+        <h1 id="main-heading">Danh sách tài khoản
+            <span>Danh sách tất cả các tài khoản trong hệ thống</span>
+        </h1>
+    </div>
+}
+
+@section headScript
+{
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="row-fluid">
+    <div class="span12 widget">
+        @if (TempData["create"] != null)
+        {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Tài khoản mới đã được thêm vào hệ thống.
+            </div>
+        }
+        @if (TempData["edit"] != null)
+        {
+            string message = TempData["edit"].ToString();
+            if (message == "Success")
+            {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Cập nhật thành công.
+            </div>
+            }
+            else if (message == "Failed")
+            {
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thất bại</strong><br />
+                Cập nhật thất bại. Vui lòng thử lại sau.
+            </div>
+            }
+        }
+        @if (TempData["delete"] != null)
+        {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Xóa thành công.
+            </div>
+        }
+        @using (Html.BeginForm("Delete", "ManageUser"))
+        {
+            <div class="widget-header">
+                <span class="title">Danh sách các tài khoản</span>
+                <div class="toolbar">
+                    <div class="btn-group">
+                        <button class="btn" type="submit">
+                            <i class="icol-cancel"></i>
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content table-container">
+                <table class="table table-bordered table-striped table-checkable">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên tài khoản</th>
+                            <th>Vai trò</th>
+                            <th class="checkbox-column">
+                                <input type="checkbox"/>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@(start + 1)</td>
+                                <td>
+                                    @Html.ActionLink(user.Username, "Edit", new { username = user.Username })
+                                </td>
+                                <td>@user.Role.Name</td>
+                                <td class="checkbox-column">
+                                    <input type="checkbox" value="@user.Username" name="usernames"/>
+                                </td>
+                            </tr>
+                            start++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="toolbar">
+                <div class="pagination-right">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+        }
+    </div>
+</div>

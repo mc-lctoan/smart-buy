@@ -9,11 +9,13 @@ using System.Web.Mvc;
 using HtmlAgilityPack;
 using SmartB.UI.Areas.Admin.Helper;
 using SmartB.UI.Areas.Admin.Models;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models.EntityFramework;
 using PagedList;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
+    [MyAuthorize(Roles = "staff")]
     public class ParserController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();

@@ -12,10 +12,21 @@ namespace SmartB.UI.Areas.Admin.Controllers
         //
         // GET: /Admin/System/
 
-        public ActionResult Statistics()
+        public RedirectToRouteResult Processing()
         {
-            return View();
+            if (User.IsInRole("admin"))
+            {
+                return RedirectToAction("Index", "ManageUser");
+            }
+            if (User.IsInRole("staff"))
+            {
+                return RedirectToAction("TrainingMatch", "Training");
+            }
+            if (User.IsInRole("member"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return null;
         }
-
     }
 }
