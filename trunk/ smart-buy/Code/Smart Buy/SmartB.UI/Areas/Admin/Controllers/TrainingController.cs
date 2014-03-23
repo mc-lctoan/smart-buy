@@ -9,11 +9,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using SmartB.UI.Areas.Admin.Helper;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
+    [MyAuthorize(Roles = "staff")]
     public class TrainingController : Controller
     {
         //

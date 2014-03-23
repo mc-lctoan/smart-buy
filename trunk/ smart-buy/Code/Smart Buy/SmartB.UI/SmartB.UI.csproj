@@ -200,6 +200,7 @@
     <Compile Include="Areas\Admin\Controllers\AuthenticationController.cs" />
     <Compile Include="Areas\Admin\Controllers\ImportController.cs" />
     <Compile Include="Areas\Admin\Controllers\LogFileController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ManageUserController.cs" />
     <Compile Include="Areas\Admin\Controllers\MarketController.cs" />
     <Compile Include="Areas\Admin\Controllers\ParserController.cs" />
     <Compile Include="Areas\Admin\Controllers\SystemController.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Controllers\AccountApiController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HistoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductApiController.cs" />
@@ -230,6 +232,7 @@
     <Compile Include="Helper\AccountHelper.cs" />
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Helper\SuggestRouteHelper.cs" />
+    <Compile Include="Infrastructure\MyAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\ConstantManager.cs" />
     <Compile Include="Infrastructure\CustomMembershipProvider.cs" />
     <Compile Include="Infrastructure\CustomRoleProvider.cs" />
@@ -744,6 +747,9 @@
     <Content Include="Areas\Admin\Views\Parser\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Market\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Parser\EditParser.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageUser\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageUser\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageUser\Create.cshtml" />
     <None Include="Properties\PublishProfiles\SmartBuy.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
@@ -1028,6 +1034,9 @@
     <Content Include="Views\Cart\Summary.cshtml" />
     <Content Include="Views\Cart\ViewCart.cshtml" />
     <Content Include="Views\Shared\_LayoutNew.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\Forbidden.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

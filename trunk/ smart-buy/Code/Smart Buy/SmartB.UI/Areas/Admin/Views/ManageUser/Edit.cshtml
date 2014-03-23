@@ -1,0 +1,91 @@
+﻿@model SmartB.UI.Models.EntityFramework.User
+
+@{
+    ViewBag.Title = "Sửa tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
+}
+
+@section sidebar
+{
+    <aside id="sidebar">
+        <nav id="navigation" class="collapse">
+            <ul>
+                <li class="active">
+                    <span title="General">
+                        <i class="icon-home"></i>
+                        <span class="nav-title">Tài khoản</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li class="active">
+                            <a href="@Url.Action("Index", "ManageUser")">
+                                <i class="icol-chart-curve"></i>
+                                Danh sách tài khoản
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Create", "ManageUser")">
+                                <i class="icol-cog"></i>
+                                Tạo tài khoản mới
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+}
+
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Quản lý tài khoản
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                Sửa tài khoản
+            </li>
+        </ul>
+
+        <h1 id="main-heading">Sửa tài khoản
+            <span>Sửa thông tin của một tài khoản</span>
+        </h1>
+    </div>
+}
+
+<div class="row-fluid">
+    <div class="span12 widget">
+        <div class="widget-header">
+            <span class="title">Thông tin tài khoản</span>
+        </div>
+        <div class="widget-content form-container">
+            @using (Html.BeginForm("Edit", "ManageUser", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                <div class="control-group">
+                    <label class="control-label">Tên tài khoản</label>
+                    <div class="controls">
+                        @Html.TextBoxFor(x => x.Username, new { disabled = "disabled", @class = "span12" })
+                        @Html.HiddenFor(x => x.Username)
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Mật khẩu</label>
+                    <div class="controls">
+                        @Html.PasswordFor(x => x.Password, new { @class = "span12" })
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Vai trò</label>
+                    <div class="controls">
+                        @Html.DropDownListFor(x => x.RoleId, ViewBag.Roles as SelectList, new { @class = "span12" })
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <input type="submit" class="btn btn-primary" value="Cập nhật"/>
+                </div>
+            }
+        </div>
+    </div>
+</div>

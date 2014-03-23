@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models.EntityFramework;
 using PagedList;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
+    [MyAuthorize(Roles = "staff")]
     public class LogFileController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();

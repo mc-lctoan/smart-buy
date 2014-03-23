@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models.EntityFramework;
 using PagedList;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
+    [MyAuthorize(Roles = "staff")]
     public class MarketController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();

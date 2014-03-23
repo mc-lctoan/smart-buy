@@ -51,10 +51,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction("Statistics", "System");
-            }
+            return RedirectToAction("Processing", "System");
         }
     }
 }

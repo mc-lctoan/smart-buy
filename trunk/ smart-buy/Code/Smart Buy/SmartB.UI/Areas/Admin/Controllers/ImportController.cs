@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using SmartB.UI.Areas.Admin.Helper;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
 using SmartB.UI.UploadedExcelFiles;
@@ -14,6 +15,7 @@ using PagedList;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
+    [MyAuthorize(Roles = "staff")]
     public class ImportController : Controller
     {
         //
