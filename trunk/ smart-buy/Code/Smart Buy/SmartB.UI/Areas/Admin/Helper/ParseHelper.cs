@@ -3,17 +3,42 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using HtmlAgilityPack;
 using SmartB.UI.Areas.Admin.Models;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models.EntityFramework;
 
 namespace SmartB.UI.Areas.Admin.Helper
 {
     public static class ParseHelper
     {
-        public static void CorrectLink(List<HtmlNode> nodes, string url, string attName)
+        public static void LoadWeb(string parseLink)
+        {
+            // Create Firefox browser
+            var web = new HtmlWeb { UserAgent = "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0" };
+
+            // Load website
+            var document = web.Load(parseLink);
+
+            // Correct links
+            var src = new List<HtmlNode>(document.DocumentNode.Descendants().Where(x => x.Attributes["src"] != null));
+            var link = new List<HtmlNode>(document.DocumentNode.Descendants().Where(x => x.Attributes["href"] != null));
+            CorrectLink(src, parseLink, "src");
+            CorrectLink(link, parseLink, "href");
+
+            // TODO: Remove all script?
+            document.DocumentNode.Descendants().Where(x => x.Name == "script").ToList().ForEach(x => x.Remove());
+
+            string fileName = "tmp.html";
+            string path = Path.Combine(ConstantManager.SavedPath, fileName);
+            document.Save(path, new UTF8Encoding());
+        }
+
+        private static void CorrectLink(List<HtmlNode> nodes, string url, string attName)
         {
             Uri uri = new Uri(url);
             string host = uri.GetLeftPart(UriPartial.Authority);
@@ -182,13 +207,15 @@ namespace SmartB.UI.Areas.Admin.Helper
         private static int ConvertPrice(string price)
         {
             string result = "";
+            int count = 0;
             foreach (char c in price)
             {
                 if (Char.IsDigit(c))
                 {
                     result += c;
+                    count++;
                 }
-                if (c == ' ')
+                if (!Char.IsDigit(c) && count > 1 && !Char.IsWhiteSpace(c))
                 {
                     break;
                 }

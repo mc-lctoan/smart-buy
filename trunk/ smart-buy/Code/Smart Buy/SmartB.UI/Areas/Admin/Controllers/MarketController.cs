@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using SmartB.UI.Areas.Admin.Helper;
 using SmartB.UI.Models.EntityFramework;
 using PagedList;
 
@@ -18,7 +17,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
         {
             var markets = context.Markets
                 .OrderBy(x => x.Name)
-                .Where(x => x.IsActive)
+                .Where(x => x.IsActive && x.Address != null)
                 .ToPagedList(page, PageSize);
             return View(markets);
         }
@@ -45,6 +44,50 @@ namespace SmartB.UI.Areas.Admin.Controllers
             ModelState.AddModelError("", "Chợ này đã có trong hệ thống.");
 
             return View();
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var market = context.Markets.FirstOrDefault(x => x.Id == id);
+            return View(market);
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult Edit(Market model)
+        {
+            var market = context.Markets.FirstOrDefault(x => x.Id == model.Id);
+            string message;
+            if (market != null)
+            {
+                market.Name = model.Name;
+                market.Address = model.Address;
+                market.Latitude = model.Latitude;
+                market.Longitude = model.Longitude;
+                context.SaveChanges();
+                message = "Success";
+            }
+            else
+            {
+                message = "Failed";
+            }
+            TempData["edit"] = message;
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult Delete(int[] ids)
+        {
+            foreach (var id in ids)
+            {
+                var market = context.Markets.FirstOrDefault(x => x.Id == id);
+                if (market != null)
+                {
+                    market.IsActive = false;
+                }
+            }
+            context.SaveChanges();
+            TempData["delete"] = "Done";
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
