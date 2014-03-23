@@ -616,11 +616,13 @@
     <Content Include="Images\add_to_shopping_cart.png" />
     <Content Include="Images\bg-cover5.jpg" />
     <Content Include="Images\bg-cover6.png" />
+    <Content Include="Images\bg-cover7.png" />
     <Content Include="Images\bg-login.jpg" />
     <Content Include="Images\bg-repeat.png" />
     <Content Include="Images\bglines.png" />
     <Content Include="Images\bglines2.png" />
     <Content Include="Images\dollar.png" />
+    <Content Include="Images\header2.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\paper.png" />
     <Content Include="Images\shopping_cart_accept.png" />
@@ -740,6 +742,8 @@
     <Content Include="Areas\Admin\Views\Market\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Market\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Parser\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Market\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Parser\EditParser.cshtml" />
     <None Include="Properties\PublishProfiles\SmartBuy.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
@@ -762,10 +766,15 @@
     <Content Include="Template\Metro\css\docs.css" />
     <Content Include="Template\Metro\css\jquery.dataTables.css" />
     <Content Include="Template\Metro\css\jquery.dataTables_themeroller.css" />
+    <Content Include="Template\Metro\css\less\docs.less" />
     <Content Include="Template\Metro\css\metro-bootstrap-responsive.css" />
     <Content Include="Template\Metro\css\metro-bootstrap.css" />
     <Content Include="Template\Metro\fonts\iconFont.dev.svg" />
+    <Content Include="Template\Metro\fonts\iconFont.eot" />
+    <Content Include="Template\Metro\fonts\iconFont.json" />
     <Content Include="Template\Metro\fonts\iconFont.svg" />
+    <Content Include="Template\Metro\fonts\iconFont.ttf" />
+    <Content Include="Template\Metro\fonts\iconFont.woff" />
     <Content Include="Template\Metro\js\holder\holder.js" />
     <Content Include="Template\Metro\js\jquery\jquery.dataTables.js" />
     <Content Include="Template\Metro\js\jquery\jquery.dataTables.min.js" />
@@ -808,6 +817,7 @@
     <Content Include="Template\Metro\js\metro\metro-touch-handler.js" />
     <Content Include="Template\Metro\js\metro\metro-treeview.js" />
     <Content Include="Template\Metro\js\metro\metro.min.js" />
+    <Content Include="Template\Metro\js\metro\README.md" />
     <Content Include="Template\Metro\js\prettify\lang-apollo.js" />
     <Content Include="Template\Metro\js\prettify\lang-basic.js" />
     <Content Include="Template\Metro\js\prettify\lang-clj.js" />
@@ -922,9 +932,15 @@
     <Content Include="Template\Stylish\vendors\bootstrap\js\bootstrap.js" />
     <Content Include="Template\Stylish\vendors\font-awesome\css\font-awesome.css" />
     <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont.svg" />
+    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont.woff" />
+    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont_2d2816fe.eot" />
+    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont_aea8981c.eot" />
+    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont_aea8981c.ttf" />
+    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont_aea8981c.woff" />
     <Content Include="Template\Stylish\vendors\inview\jquery.inview.js" />
     <Content Include="Template\Stylish\vendors\isotope\imagesloaded.pkgd.min.js" />
     <Content Include="Template\Stylish\vendors\isotope\jquery.isotope.min.js" />
+    <Content Include="Template\Stylish\vendors\linecons\fonts\linecons.eot" />
     <Content Include="Template\Stylish\vendors\linecons\style.css" />
     <Content Include="Template\Stylish\vendors\magnific-popup\jquery.magnific-popup.min.js" />
     <Content Include="Template\Stylish\vendors\magnific-popup\magnific-popup.css" />
@@ -1011,19 +1027,7 @@
     <Content Include="Views\Product\ProductMostBuy.cshtml" />
     <Content Include="Views\Cart\Summary.cshtml" />
     <Content Include="Views\Cart\ViewCart.cshtml" />
-    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont.woff" />
-    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont_2d2816fe.eot" />
-    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont_aea8981c.eot" />
-    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont_aea8981c.ttf" />
-    <Content Include="Template\Stylish\vendors\font-awesome\font\fontawesome-webfont_aea8981c.woff" />
-    <Content Include="Template\Stylish\vendors\linecons\fonts\linecons.eot" />
     <Content Include="Views\Shared\_LayoutNew.cshtml" />
-    <Content Include="Template\Metro\css\less\docs.less" />
-    <Content Include="Template\Metro\fonts\iconFont.eot" />
-    <Content Include="Template\Metro\fonts\iconFont.json" />
-    <Content Include="Template\Metro\fonts\iconFont.ttf" />
-    <Content Include="Template\Metro\fonts\iconFont.woff" />
-    <Content Include="Template\Metro\js\metro\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

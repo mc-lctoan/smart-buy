@@ -35,25 +35,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult LoadWeb(string parseLink)
         {
-            // Create Firefox browser
-            var web = new HtmlWeb {UserAgent = "Mozilla/5.0 (Windows NT 6.1; rv:26.0) Gecko/20100101 Firefox/26.0"};
-
-            // Load website
-            var document = web.Load(parseLink);
-
-            // Correct links
-            var src = new List<HtmlNode>(document.DocumentNode.Descendants().Where(x => x.Attributes["src"] != null));
-            var link = new List<HtmlNode>(document.DocumentNode.Descendants().Where(x => x.Attributes["href"] != null));
-            ParseHelper.CorrectLink(src, parseLink, "src");
-            ParseHelper.CorrectLink(link, parseLink, "href");
-
-            // TODO: Remove all script?
-            document.DocumentNode.Descendants().Where(x => x.Name == "script").ToList().ForEach(x => x.Remove());
-
-            string fileName = "tmp.html";
-            string path = Path.Combine(Server.MapPath("~/Areas/Admin/SavedPages"), fileName);
-            document.Save(path, new UTF8Encoding());
-
+            ParseHelper.LoadWeb(parseLink);
             TempData["link"] = parseLink;
             return RedirectToAction("CreateParser");
         }
@@ -94,6 +76,75 @@ namespace SmartB.UI.Areas.Admin.Controllers
             context.ParseInfoes.Add(parser);
             context.SaveChanges();
             TempData["create"] = "Success";
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult EditParser(int id)
+        {
+            var parser = context.ParseInfoes.FirstOrDefault(x => x.Id == id);
+
+            if (parser != null)
+            {
+                var markets = context.Markets
+               .OrderBy(x => x.Name)
+               .Where(x => x.IsActive)
+               .ToList();
+                var marketList = new List<SelectListItem>();
+                foreach (var market in markets)
+                {
+                    var item = new SelectListItem
+                    {
+                        Text = market.Name,
+                        Value = market.Id.ToString()
+                    };
+                    marketList.Add(item);
+                }
+                ViewBag.Markets = marketList;
+
+                ParseHelper.LoadWeb(parser.ParseLink);
+                TempData["link"] = parser.ParseLink;
+            }
+
+            return View(parser);
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult EditParser(ParseInfo model)
+        {
+            var parser = context.ParseInfoes.FirstOrDefault(x => x.Id == model.Id);
+            string message;
+            if (parser != null)
+            {
+                parser.MarketId = model.MarketId;
+                parser.ParseLink = model.ParseLink;
+                parser.ProductNameXpath = model.ProductNameXpath;
+                parser.PriceXpath = model.PriceXpath;
+                parser.PagingXpath = model.PagingXpath;
+
+                context.SaveChanges();
+                message = "Success";
+            }
+            else
+            {
+                message = "Failed";
+            }
+            TempData["edit"] = message;
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult DeleteParser(int[] ids)
+        {
+            foreach (int id in ids)
+            {
+                var parser = context.ParseInfoes.FirstOrDefault(x => x.Id == id);
+                if (parser != null)
+                {
+                    parser.IsActive = false;
+                }
+            }
+            context.SaveChanges();
+            TempData["delete"] = "Done";
             return RedirectToAction("Index");
         }
 

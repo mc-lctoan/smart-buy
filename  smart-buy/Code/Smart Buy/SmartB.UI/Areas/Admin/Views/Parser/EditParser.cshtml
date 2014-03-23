@@ -1,4 +1,4 @@
-﻿@model SmartB.UI.Areas.Admin.Models.ParserCreator
+﻿@model SmartB.UI.Models.EntityFramework.ParseInfo
 
 @{
     ViewBag.Title = "Tạo Parser";
@@ -85,13 +85,13 @@
                         <span class="nav-title">Parser</span>
                     </span>
                     <ul class="inner-nav">
-                        <li>
+                        <li class="active">
                             <a href="@Url.Action("Index", "Parser")">
                                 <i class="icol-application-view-columns"></i>
                                 Danh sách các parser
                             </a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="@Url.Action("CreateParser", "Parser")">
                                 <i class="icol-application-add"></i>
                                 Tạo parser
@@ -120,12 +120,12 @@
                 <span class="divider">&raquo;</span>
             </li>
             <li>
-                <a href="@Url.Action("CreateParser", "Parser")">Tạo parser</a>
+                Sửa parser
             </li>
         </ul>
 
-        <h1 id="main-heading">Tạo parser
-            <span>Tạo một parser mới cho hệ thống</span>
+        <h1 id="main-heading">Sửa parser
+            <span>Sửa thông tin parser</span>
         </h1>
     </div>
 }
@@ -175,7 +175,7 @@
                 </span>
             </div>
             <div class="widget-content form-container">
-                @using (Html.BeginForm("CreateParser", "Parser", FormMethod.Post, new { @class = "form-horizontal", id = "ParserForm" }))
+                @using (Html.BeginForm("EditParser", "Parser", FormMethod.Post, new { @class = "form-horizontal", id = "ParserForm" }))
                 {
                     <input type="hidden" name="ParseLink" value="@TempData["link"]"/>
                     <fieldset class="wizard-step" data-name="type" data-step-id="0">

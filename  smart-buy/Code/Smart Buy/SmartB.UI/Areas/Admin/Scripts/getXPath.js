@@ -8,7 +8,7 @@ var $paging = $('#xpathPaging');
 $('#ParserForm').wizard({
     nextButtonLabel: "Sau &raquo;",
     prevButtonLabel: "&laquo; Trước",
-    submitButtonLabel: "Tạo parser",
+    submitButtonLabel: "Hoàn thành",
     onStepLeave: validateStep,
     onStepShown: showStep
 });

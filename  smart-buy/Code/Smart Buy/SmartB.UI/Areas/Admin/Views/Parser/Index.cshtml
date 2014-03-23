@@ -2,7 +2,7 @@
 @model PagedList.IPagedList<SmartB.UI.Models.EntityFramework.ParseInfo>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Danh sách parser";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
     int end = Model.PageNumber * Model.PageSize;
     int start = end - Model.PageSize;
@@ -113,12 +113,12 @@
                 <span class="divider">&raquo;</span>
             </li>
             <li>
-                <a href="@Url.Action("CreateParser", "Parser")">Tạo parser</a>
+                <a href="@Url.Action("Index", "Parser")">Danh sách parser</a>
             </li>
         </ul>
 
-        <h1 id="main-heading">Tạo parser
-            <span>Tạo một parser mới cho hệ thống</span>
+        <h1 id="main-heading">Danh sách parser
+            <span>Tất cả các parser trong hệ thống</span>
         </h1>
     </div>
 }
@@ -133,35 +133,84 @@
                 Parser mới đã được thêm vào hệ thống.
             </div>
         }
-        <div class="widget-header">
-            <span class="title">Danh sách các parsers</span>
-        </div>
-        <div class="widget-content table-container">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên chợ</th>
-                        <th>Đường dẫn</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var info in Model)
-                    {
-                        <tr>
-                            <td>@(start + 1)</td>
-                            <td>@info.Market.Name</td>
-                            <td>@info.ParseLink</td>
-                        </tr>
-                        start++;
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="toolbar">
-            <div class="pagination-right">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+        @if (TempData["edit"] != null)
+        {
+            string message = TempData["edit"].ToString();
+            if (message == "Success")
+            {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Cập nhật thành công
             </div>
-        </div>
+            }
+            else if (message == "Failed")
+            {
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thất bại</strong><br />
+                Cập nhật thất bại. Vui lòng thử lại sau.
+            </div>
+            }
+        }
+        @if (TempData["delete"] != null)
+        {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Xóa thành công
+            </div>
+        }
+        @using (Html.BeginForm("DeleteParser", "Parser"))
+        {
+            <div class="widget-header">
+                <span class="title">Danh sách các parsers</span>
+                <div class="toolbar">
+                    <div class="btn-group">
+                        <button class="btn" type="submit">
+                            <i class="icol-cancel"></i>
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content table-container">
+                <table class="table table-bordered table-striped table-checkable">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên chợ</th>
+                            <th>Đường dẫn</th>
+                            <th>Thao tác</th>
+                            <th class="checkbox-column">
+                                <input type="checkbox" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var info in Model)
+                        {
+                            <tr>
+                                <td>@(start + 1)</td>
+                                <td>@info.Market.Name</td>
+                                <td>@info.ParseLink</td>
+                                <td>
+                                    @Html.ActionLink("Chỉnh sửa", "EditParser", new { id = info.Id })
+                                </td>
+                                <td class="checkbox-column">
+                                    <input type="checkbox" value="@info.Id" name="ids"/>
+                                </td>
+                            </tr>
+                            start++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="toolbar">
+                <div class="pagination-right">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+        }
     </div>
 </div>

@@ -133,35 +133,82 @@
                 Chợ mới đã được thêm vào hệ thống.
             </div>
         }
-        <div class="widget-header">
-            <span class="title">Danh sách các chợ</span>
-        </div>
-        <div class="widget-content table-container">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên chợ</th>
-                        <th>Địa chỉ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var market in Model)
-                    {
-                        <tr>
-                            <td>@(start + 1)</td>
-                            <td>@market.Name</td>
-                            <td>@market.Address</td>
-                        </tr>
-                        start++;
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="toolbar">
-            <div class="pagination-right">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+        @if (TempData["edit"] != null)
+        {
+            string message = TempData["edit"].ToString();
+            if (message == "Success")
+            {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Cập nhật thành công
             </div>
-        </div>
+            }
+            else if (message == "Failed")
+            {
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thất bại</strong><br />
+                Cập nhật thất bại. Vui lòng thử lại sau.
+            </div>
+            }
+        }
+        @if (TempData["delete"] != null)
+        {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Xóa thành công
+            </div>
+        }
+        @using (Html.BeginForm("Delete", "Market"))
+        {
+            <div class="widget-header">
+                <span class="title">Danh sách các chợ</span>
+                <div class="toolbar">
+                    <div class="btn-group">
+                        <button class="btn" type="submit">
+                            <i class="icol-cancel"></i>
+                            Xóa
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content table-container">
+                <table class="table table-bordered table-striped table-checkable">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên chợ</th>
+                            <th>Địa chỉ</th>
+                            <th class="checkbox-column">
+                                <input type="checkbox"/>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var market in Model)
+                        {
+                            <tr>
+                                <td>@(start + 1)</td>
+                                <td>
+                                    @Html.ActionLink(market.Name, "Edit", new { id = market.Id })
+                                </td>
+                                <td>@market.Address</td>
+                                <td class="checkbox-column">
+                                    <input type="checkbox" value="@market.Id" name="ids"/>
+                                </td>
+                            </tr>
+                            start++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="toolbar">
+                <div class="pagination-right">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+            </div>
+        }
     </div>
 </div>

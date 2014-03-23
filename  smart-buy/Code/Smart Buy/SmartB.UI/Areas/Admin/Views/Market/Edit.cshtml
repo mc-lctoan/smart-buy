@@ -1,7 +1,7 @@
 ﻿@model SmartB.UI.Models.EntityFramework.Market
 
 @{
-    ViewBag.Title = "Tạo chợ mới";
+    ViewBag.Title = "Sửa thông tin chợ";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
 }
 
@@ -50,13 +50,13 @@
                         <span class="nav-title">Quản lý chợ</span>
                     </span>
                     <ul class="inner-nav">
-                        <li>
+                        <li class="active">
                             <a href="@Url.Action("Index", "Market")">
                                 <i class="icol-application-view-columns"></i>
                                 Danh sách các chợ
                             </a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="@Url.Action("Create", "Market")">
                                 <i class="icol-application-add"></i>
                                 Tạo chợ mới
@@ -104,14 +104,12 @@
                 Quản lý chợ
                 <span class="divider">&raquo;</span>
             </li>
-            <li>
-                <a href="@Url.Action("Create", "Market")">Tạo chợ mới</a>
+            <li>Sửa thông tin chợ
             </li>
         </ul>
 
-        <h1 id="main-heading">
-            Tạo chợ mới
-            <span>Tạo một chợ mới cho hệ thống</span>
+        <h1 id="main-heading">Sửa thông tin chợ
+            <span>Sửa thông tin của một chợ trong hệ thống</span>
         </h1>
     </div>
 }
@@ -119,15 +117,16 @@
 @section headScript
 {
     <style>
-        #map-canvas {
+        #map-canvas
+        {
             width: inherit;
             height: 600px;
         }
     </style>
 
     <script type="text/javascript"
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
-    
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false&libraries=places"></script>
+
     <script type="text/javascript">
         var map, marketAddress;
         
@@ -142,7 +141,12 @@
             @if (Model != null)
             {
                 <text>
-                    center = new google.maps.LatLng(@Model.Latitude, @Model.Longitude);
+            center = new google.maps.LatLng(@Model.Latitude, @Model.Longitude);
+            var marker = new google.maps.Marker({
+                position: center,
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
                 </text>
             }
 
@@ -178,7 +182,7 @@
                 <span class="title">Tạo chợ mới</span>
             </div>
             <div class="widget-content form-container">
-                @using (Html.BeginForm("Create", "Market", FormMethod.Post, new { @class = "form-horizontal" }))
+                @using (Html.BeginForm("Edit", "Market", FormMethod.Post, new { @class = "form-horizontal" }))
                 {
                     @Html.HiddenFor(x => x.Latitude, new { id = "Latitude" })
                     @Html.HiddenFor(x => x.Longitude, new { id = "Longitude" })
@@ -197,7 +201,7 @@
                     </div>
                     
                     <div class="form-actions">
-                        <input type="submit" class="btn btn-primary" value="Tạo chợ mới"/>
+                        <input type="submit" class="btn btn-primary" value="Cập nhật" />
                     </div>
                     
                     <div class="control-group">
