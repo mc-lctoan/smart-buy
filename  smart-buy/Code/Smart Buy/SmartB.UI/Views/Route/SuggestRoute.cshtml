@@ -11,8 +11,15 @@
 {
     <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false"></script>
-    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+   <!-- Metro -->
     <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
+    <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
+    <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables.css")">
+    <script type="text/javascript" src="@Url.Content("~/Metro/js/jquery/jquery.dataTables.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables_themeroller.css")">
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+
 
     <script type="text/javascript">
         var map, directionsService, directionsDisplay;
@@ -74,10 +81,10 @@
             <div class="Tools">
                 <div class="Left">
                     <ul class="SortTool">
-                        <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
+                        <li style=" cursor: auto; background-color: #3399FF; color: white !important;">
                             <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
                         </li>
-                        <li style="padding: 8px 30px; cursor: auto;">Gợi ý cách mua hàng.
+                        <li style=" cursor: auto;">Gợi ý cách mua hàng.
                         </li>
                     </ul>
                 </div>
@@ -109,7 +116,7 @@
 
                 @if (Model.Any())
                 {
-                    <table class="table table-bordered table-hover">
+                    <table id="ProductTable" class="table table-bordered table-hover" style="background:white">
                         <thead>
                             <tr>
                                 <th>STT</th>

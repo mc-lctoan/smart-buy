@@ -1474,9 +1474,9 @@ textarea.stylish-textarea {
     {
         cursor: pointer;
         float: left;
-        font: italic 16px/24px georgia,serif;
+        font: italic 14px/24px georgia,serif;
         opacity: 0.6;
-        padding: 7px 30px;
+        padding: 3px 30px;
     }
 
 .SortTool li:hover
@@ -1487,7 +1487,7 @@ textarea.stylish-textarea {
 
 .Tools {
     box-shadow: 2px 2px 2px #CCCCCC;
-    height: 40px;
+    height: 30px;
     position: absolute;
     width: 80%;
     

@@ -38,31 +38,31 @@
             <div class="Tools">
                 <div class="Left">
                     <ul class="SortTool">
-                        <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
+                        <li style="cursor: auto; background-color: #3399FF; color: white !important;">
                             <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
                         </li>
-                        <li style="padding: 8px 30px; cursor: auto;">Tìm kiếm sản phẩm
+                        <li style="cursor: auto;">Tìm kiếm sản phẩm
                         </li>
                     </ul>
                 </div>
                 <div class="clr"></div>
             </div>
         </div>
-        <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
-            <div style="min-height: 700px;">
-                @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search" }))
-                {
-                    <div class="metro">
-                        <div class="input-control text size5">
-                            @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
-                            <button type="submit" class="btn-search"></button>
+        <div class="main-content" style="padding: 40px 20px 20px; min-height: 560px;">
+            <div style="min-height: 700px; font-size: 11px; padding: 0px;">
+                    @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search", style = "margin:2px" }))
+                    {
+                        <div class="metro">
+                            <div class="input-control text size5" style="margin: 0px">
+                                @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
+                                <button type="submit" class="btn-search"></button>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
                 @if (Model != null)
                 {
-                    <div class="ProductNameDetail">Kết quả tìm kiếm</div>
-                    <div style="font-weight: bold; text-align: right">*Đơn vị tính Nghìn đồng.</div>
+                    <div class="ProductNameDetail" style="float:left">Kết quả tìm kiếm</div>
+                    <div style="font-weight: bold; text-align: right; float:right;margin-bottom: 10px;">*Đơn vị tính Nghìn đồng.</div>
                     <table class="table table-bordered table-hover" id="ProductTable">
                         <thead>
                             <tr style="background-color: white;">
@@ -74,8 +74,8 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
+                                <tr >
+                                    <td style="padding: 3px 10px;"  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
                                         @{
                                 var productId = item.ProductId;
                                 var productName = item.Name;
@@ -83,21 +83,21 @@
 
                                     </td>
 
-                                    <td>@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                    <td style="padding: 3px 10px;">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
                                 var minPrice = item.MinPrice;
                                 var maxPrice = item.MaxPrice;
                                         }
                                     </td>
-                                    <td>
+                                    <td style="padding: 3px 10px;">
                                         <div>
                                             <div class="AddToCardDetail">
-                                                <input type="button" name="action" value="Add" onclick="addToCart('@productId')" class="btnAddToCardDetail" data-id ="" />
-                                                <div style="color:black">Thêm vào giỏ</div>
+                                                <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
+                                                <div style="color: black">Thêm vào giỏ</div>
                                             </div>
                                             <div class="SuggestPrice">
                                                 <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
-                                                <div style="color:black">Đề xuất giá</div>
+                                                <div style="color: black">Đề xuất giá</div>
                                             </div>
                                         </div>
                                         <script>
