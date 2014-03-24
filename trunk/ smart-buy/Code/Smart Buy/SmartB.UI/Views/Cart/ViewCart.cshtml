@@ -24,30 +24,30 @@
             <div class="Tools">
                 <div class="Left">
                     <ul class="SortTool">
-                        <li style="padding: 8px 30px; cursor: auto; background-color: #3399FF; color: white !important;">
+                        <li style="cursor: auto; background-color: #3399FF; color: white !important;">
                             <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
                             @*<span class="arrowFilter-left"></span>*@
                         </li>
-                        <li style="padding: 8px 30px; cursor: auto;">Chi tiết giỏ hàng
+                        <li style=" cursor: auto;">Chi tiết giỏ hàng
                         </li>
                     </ul>
                 </div>
                 <div class="clr"></div>
             </div>
 
-            <div class="main-content" style="padding: 60px 20px 20px;">
-                <div id="order-detail-table" style="min-height: 650px;">
+            <div class="main-content" style="padding: 40px 20px 20px;">
+                <div id="order-detail-table" style="min-height: 650px;font-size: 11px;">
                     @if (Model != null)
                     {
-                        <div style="font-weight: bold; text-align: right">*Đơn vị tính Nghìn đồng.</div>
+                        <div style="font-weight: bold; text-align: right;float:right">*Đơn vị tính Nghìn đồng.</div>
                         <table class="table table-bordered table-hover" id="tableViewCart" style="background-color:white">
                             <thead>
                                 <tr>
                                     <th style="width: 5%">STT</th>
-                                    <th style="width: 60%">Tên sản phẩm</th>
+                                    <th style="width: 55%">Tên sản phẩm</th>
                                     <th style="width: 15%">Đơn giá</th>
                                     <th style="width: 10%">Số lượng</th>
-                                    <th style="width: 10%"></th>
+                                    <th style="width: 15%"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,16 +59,16 @@
                                         <td>@i</td>
                                         <td>@line.Product.Product.Name</td>
                                         <td>@line.Product.MinPrice - @line.Product.MaxPrice</td>
-                                        <td>
+                                        <td style="padding:3px">
                                             <div class="metro">
-                                                <div class='input-control text size1'>
+                                                <div class='input-control text size1' style="margin:0px;padding:3px">
                                                     <input type="text" maxlength="2" style="text-align:center" value="@line.Quantity" id="quantityItem @line.Product.ProductId"  onblur="updateQuantityCart('@line.Product.ProductId')"/>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="padding:8px">
                                             <div class="metro">
-                                                <button onclick="removeFromCart('@line.Product.ProductId')">
+                                                <button onclick="removeFromCart('@line.Product.ProductId')" style="padding:3px">
                                                     <i class="icon-cancel-2"></i>
                                                     Xóa
                                                 </button>
@@ -78,7 +78,7 @@
                                 }
                             </tbody>
                             <tr>
-                                <th colspan="5" align="right" style="text-align: right;font-size: 18px;">Tổng tiền: <span style="font-weight: bold" id="order-total-detail">@Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax())</span> (nghìn đồng)
+                                <th colspan="5" align="right" style="text-align: right;font-size: 16px;">Tổng tiền: <span style="font-weight: bold" id="order-total-detail">@Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax())</span> (nghìn đồng)
                                 </th>
 
                             </tr>

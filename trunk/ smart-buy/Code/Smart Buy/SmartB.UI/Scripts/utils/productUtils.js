@@ -394,7 +394,7 @@ function afterbuysuccess(id) {
     });
     $('body').append(newimg);
     newimg.animate(
-        { 'top': (offsum.top - 50) + 'px', 'left': (offsum.left + 20) + 'px', 'opacity': 1 },
+        { 'top': (offsum.top ) + 'px', 'left': (offsum.left +20) + 'px', 'opacity': 1 },
         {
             duration: 1200, complete: function () {
                 newimg.remove();
