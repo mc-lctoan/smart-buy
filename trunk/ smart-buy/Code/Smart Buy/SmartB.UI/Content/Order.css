@@ -219,3 +219,8 @@ background-color: white;
     background-size:cover;
     
 }
+.redWeek {
+    background-color: rgba(255, 31, 0, 0.6) !important;
+}
+.yellowWeek {
+    background-color: rgba(246, 255, 27, 0.6) !important;

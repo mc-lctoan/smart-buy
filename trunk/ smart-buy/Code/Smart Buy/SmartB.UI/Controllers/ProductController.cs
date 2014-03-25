@@ -55,6 +55,7 @@ namespace SmartB.UI.Controllers
                     .OrderByDescending(x => x.LastUpdatedTime)
                     .Select(x => x.MaxPrice)
                     .ToList();
+                var lastUpdated = db.ProductAttributes.Where(p => p.Id == dictionary.ProductId).Select(p => p.LastUpdatedTime).FirstOrDefault();
                 var productName = db.Products.Where(p => p.Id == dictionary.ProductId).Select(p => p.Name).FirstOrDefault();
                 if (!result.Any(p => p.Name == productName))
                 {
@@ -63,7 +64,8 @@ namespace SmartB.UI.Controllers
                         ProductId = dictionary.ProductId.GetValueOrDefault(),
                         Name = productName,
                         MinPrice = minPrice[0].Value,
-                        MaxPrice = maxPrice[0].Value
+                        MaxPrice = maxPrice[0].Value,
+                        LastUpdatedTime = Convert.ToDateTime(lastUpdated),
                     };
                     result.Add(info);
                 }

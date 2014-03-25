@@ -50,19 +50,26 @@
         </div>
         <div class="main-content" style="padding: 40px 20px 20px; min-height: 560px;">
             <div style="min-height: 700px; font-size: 11px; padding: 0px;">
-                    @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search", style = "margin:2px" }))
-                    {
-                        <div class="metro">
-                            <div class="input-control text size5" style="margin: 0px">
-                                @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
-                                <button type="submit" class="btn-search"></button>
-                            </div>
+                <div style="float:left">
+                @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search", style = "margin:2px;float:left" }))
+                {
+                    <div class="metro">
+                        <div class="input-control text size5" style="margin: 0px">
+                            @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
+                            <button type="submit" class="btn-search"></button>
                         </div>
-                    }
+                    </div>
+                }
+                    <div class="ProductNameDetail" >Kết quả tìm kiếm</div>
+                 </div>
                 @if (Model != null)
                 {
-                    <div class="ProductNameDetail" style="float:left">Kết quả tìm kiếm</div>
-                    <div style="font-weight: bold; text-align: right; float:right;margin-bottom: 10px;">*Đơn vị tính Nghìn đồng.</div>
+                   <div style="text-align: left; float: right;width:35%">
+                        <div style="font-weight: bold;float:left;margin-left: 10px; ">*Đơn vị tính Nghìn đồng.</div>
+                        <div style="background-color: rgba(0, 214, 255, 0.23);width: 50%; float: right">
+                            <img src="~/Images/InfoPrice.png"/>
+                        </div>
+                    </div>
                     <table class="table table-bordered table-hover" id="ProductTable">
                         <thead>
                             <tr style="background-color: white;">
@@ -74,19 +81,21 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr >
+                                if ((DateTime.Now - item.LastUpdatedTime).TotalDays > 13)
+                                {
+                                <tr class="redWeek">
                                     <td style="padding: 3px 10px;"  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
                                         @{
-                                var productId = item.ProductId;
-                                var productName = item.Name;
+                                    var productId = item.ProductId;
+                                    var productName = item.Name;
                                         }
 
                                     </td>
 
                                     <td style="padding: 3px 10px;">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
-                                var minPrice = item.MinPrice;
-                                var maxPrice = item.MaxPrice;
+                                    var minPrice = item.MinPrice;
+                                    var maxPrice = item.MaxPrice;
                                         }
                                     </td>
                                     <td style="padding: 3px 10px;">
@@ -123,10 +132,113 @@
                                         </script>
                                     </td>
                                 </tr>
+                                }
+                                else if ((DateTime.Now - item.LastUpdatedTime).TotalDays > 6)
+                                {
+                                <tr class="yellowWeek">
+                                    <td style="padding: 3px 10px;"  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
+                                        @{
+                                    var productId = item.ProductId;
+                                    var productName = item.Name;
+                                        }
+
+                                    </td>
+
+                                    <td style="padding: 3px 10px;">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                        @{
+                                    var minPrice = item.MinPrice;
+                                    var maxPrice = item.MaxPrice;
+                                        }
+                                    </td>
+                                    <td style="padding: 3px 10px;">
+                                        <div>
+                                            <div class="AddToCardDetail">
+                                                <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
+                                                <div style="color: black">Thêm vào giỏ</div>
+                                            </div>
+                                            <div class="SuggestPrice">
+                                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                                <div style="color: black">Đề xuất giá</div>
+                                            </div>
+                                        </div>
+                                        <script>
+
+                                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
+                                                $.Dialog({
+                                                    overlay: true,
+                                                    shadow: true,
+                                                    flat: true,
+                                                    width: 442,
+                                                    icon: '<i class="btnSuggestPrice"></i>',
+                                                    title: 'Đề xuất giá',
+                                                    content: '',
+                                                    padding: 10,
+                                                    onShow: function (_dialog) {
+                                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                                        $.Dialog.content(content);
+                                                        $.Metro.initInputs();
+                                                    }
+                                                });
+                                                return true;
+                                            });
+                                        </script>
+                                    </td>
+                                </tr>
+                                }
+                                else
+                                {
+                                <tr>
+                                    <td style="padding: 3px 10px;"  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
+                                        @{
+                                    var productId = item.ProductId;
+                                    var productName = item.Name;
+                                        }
+
+                                    </td>
+                                    <td style="padding: 3px 10px;">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                        @{
+                                    var minPrice = item.MinPrice;
+                                    var maxPrice = item.MaxPrice;
+                                        }
+                                    </td>
+                                    <td style="padding: 3px 10px;">
+                                        <div>
+                                            <div class="AddToCardDetail">
+                                                <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
+                                                <div style="color: black">Thêm vào giỏ</div>
+                                            </div>
+                                            <div class="SuggestPrice">
+                                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                                <div style="color: black">Đề xuất giá</div>
+                                            </div>
+                                        </div>
+                                        <script>
+
+                                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
+                                                $.Dialog({
+                                                    overlay: true,
+                                                    shadow: true,
+                                                    flat: true,
+                                                    width: 442,
+                                                    icon: '<i class="btnSuggestPrice"></i>',
+                                                    title: 'Đề xuất giá',
+                                                    content: '',
+                                                    padding: 10,
+                                                    onShow: function (_dialog) {
+                                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                                        $.Dialog.content(content);
+                                                        $.Metro.initInputs();
+                                                    }
+                                                });
+                                                return true;
+                                            });
+                                        </script>
+                                    </td>
+                                </tr>
+                                }
                             }
                         </tbody>
                     </table> 
-                    //  @Html.PagedListPager(Model, page => Url.Action("SearchProduct", new { currentFilter = ViewBag.CurrentFilter, page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
                 }
                 else
                 {
