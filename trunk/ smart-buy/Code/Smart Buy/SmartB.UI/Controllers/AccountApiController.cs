@@ -27,7 +27,7 @@ namespace SmartB.UI.Controllers
 
                 if (HaveUser)
                 {
-                    FormsAuthentication.SetAuthCookie(username, false);
+                   // FormsAuthentication.SetAuthCookie(username, false);
                     return true;
                 }
                 return false;

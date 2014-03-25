@@ -70,12 +70,18 @@ namespace SmartB.UI.Controllers
                     .Select(x => x.MaxPrice)
                     .ToList();
 
+                DateTime? lastUpdateTime = product.ProductAttributes
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.LastUpdatedTime).FirstOrDefault();
+                string lastUpdateTimeFormat = String.Format("{0:MM-dd-yyyy}", lastUpdateTime);
+                
                 var info = new ProductMobileModel
                 {
                     ProductId = product.Id.ToString(),
                     Name = product.Name,
                     MinPrice = minPrice[0].ToString(),
-                    MaxPrice = maxPrice[0].ToString()
+                    MaxPrice = maxPrice[0].ToString(),
+                    LastUpdateTime = lastUpdateTimeFormat
                 };
                 result.Add(info);
             }
@@ -146,11 +152,12 @@ namespace SmartB.UI.Controllers
 
                 foreach (History history in histories)
                 {
+                    string buyTimeFormat = String.Format("{0:dd-MM-yyyy}", history.BuyTime);
                     var item = new HistoryMobileModel
                     {
                         Id = history.Id.ToString(),
                         Username = username,
-                        BuyTime = history.BuyTime
+                        BuyTime = buyTimeFormat
                     };
                     result.Add(item);
                 }
@@ -232,12 +239,15 @@ namespace SmartB.UI.Controllers
                                    where p.ProductId == pmb.Product.Id
                                    group p by p.ProductId into grp
                                    select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
+                    DateTime? lastUpdateTime = product.LastUpdatedTime;
+                    string lastUpdateTimeFormat = String.Format("{0:MM-dd-yyyy}", lastUpdateTime);
                     var info = new ProductMobileModel
                     {
                         ProductId = product.ProductId.ToString(),
                         Name = product.Product.Name,
                         MinPrice = product.MinPrice.ToString(),
                         MaxPrice = product.MaxPrice.ToString(),
+                        LastUpdateTime = lastUpdateTimeFormat
                     };
                     result.Add(info);
                 }
@@ -271,18 +281,21 @@ namespace SmartB.UI.Controllers
             {
                 var pId = parseJson.ProductId;
                 var updatedPrice = parseJson.UpdatedPrice;
+                
+                var minPrice = context.ProductAttributes.Where(p => p.ProductId == pId)
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MinPrice)
+                    .FirstOrDefault();
 
-                var minPrice = from p in context.ProductAttributes
-                               where p.ProductId == pId
-                               select p.MinPrice;
 
-                var maxPrice = from p in context.ProductAttributes
-                               where p.ProductId == pId
-                               select p.MinPrice;
+                var maxPrice = context.ProductAttributes.Where(p => p.ProductId == pId)
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MaxPrice)
+                    .FirstOrDefault();
 
-                var averagePrice = (minPrice.First() + maxPrice.First()) / 2;
-                var rangeFrom = minPrice.First() - ep * averagePrice;
-                var rangeTo = maxPrice.First() + ep * averagePrice;
+                var averagePrice = (minPrice + maxPrice) / 2;
+                var rangeFrom = minPrice - ep * averagePrice;
+                var rangeTo = maxPrice + ep * averagePrice;
 
                 if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
                 {
@@ -394,6 +407,59 @@ namespace SmartB.UI.Controllers
             };
 
             return result;
+        }
+
+        [HttpGet]
+        public String getTimeServer()
+        {
+            DateTime today = DateTime.Now.Date;
+            string todayFormat = String.Format("{0:MM-dd-yyyy}", today);
+            return todayFormat;
+        }
+
+        [HttpGet]
+        public List<HistoryDetailMobileModel> GetHistoryDetail(string username)
+        {
+            var result = new List<HistoryDetailMobileModel>();
+            try
+            {
+                var historyDetails = context.HistoryDetails.Where(h => h.History.Username == username).ToList();
+                var modelProduct = from p in context.ProductAttributes
+                                   group p by p.ProductId into grp
+                                   select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault();
+
+                if (historyDetails == null)
+                {
+                    return null;
+                }
+
+                foreach (HistoryDetail historyDetail in historyDetails)
+                {
+                    var item = new HistoryDetailMobileModel
+                    {
+                        Id = historyDetail.Id.ToString(),
+                        HistoryId = historyDetail.HistoryId.ToString(),
+                        ProductName = historyDetail.Product.Name,
+                        MinPrice = historyDetail.MinPrice.ToString(),
+                        MaxPrice = historyDetail.MaxPrice.ToString(),
+                    };
+                    foreach (ProductAttribute p in modelProduct)
+                    {
+                        if (p.ProductId == historyDetail.ProductId)
+                        {
+                            item.MinPriceToday = p.MinPrice.ToString();
+                            item.MaxPriceToday = p.MaxPrice.ToString();
+                        }
+                    }
+                    result.Add(item);
+                }
+
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 
