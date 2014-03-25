@@ -198,17 +198,20 @@ namespace SmartB.UI.Controllers
                 var pId = parseJson.ProductId;
                 var updatedPrice = parseJson.UpdatedPrice;
 
-                var minPrice = from p in db.ProductAttributes
-                               where p.ProductId == pId
-                               select p.MinPrice;
+                var minPrice = db.ProductAttributes.Where(p => p.ProductId == pId)
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MinPrice)
+                    .FirstOrDefault();
 
-                var maxPrice = from p in db.ProductAttributes
-                               where p.ProductId == pId
-                               select p.MinPrice;
 
-                var averagePrice = (minPrice.First() + maxPrice.First()) / 2;
-                var rangeFrom = minPrice.First() - ep * averagePrice;
-                var rangeTo = maxPrice.First() + ep * averagePrice;
+                var maxPrice = db.ProductAttributes.Where(p => p.ProductId == pId)
+                    .OrderByDescending(x => x.LastUpdatedTime)
+                    .Select(x => x.MaxPrice)
+                    .FirstOrDefault();
+
+                var averagePrice = (minPrice + maxPrice) / 2;
+                var rangeFrom = minPrice - ep * averagePrice;
+                var rangeTo = maxPrice + ep * averagePrice;
 
                 if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
                 {
