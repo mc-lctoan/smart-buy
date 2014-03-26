@@ -289,7 +289,7 @@ namespace SmartB.UI.Helper
                 if (attribute != null)
                 {
                     tmp.MinPrice = attribute.MinPrice.Value;
-                    tmp.MaxPrice = attribute.MinPrice.Value;
+                    tmp.MaxPrice = attribute.MaxPrice.Value;
                 }
                 models.Add(tmp);
             }

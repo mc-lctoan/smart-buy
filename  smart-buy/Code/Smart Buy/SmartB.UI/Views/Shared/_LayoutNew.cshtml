@@ -84,9 +84,16 @@
                             </a>
                         </li>
 
+                        <li id="fourth-nav-pill" class="dropdown">
+                            <a href="@Url.Action("Index", "Report")" class="dropdown-toggle">
+                                <div class="nav-icon"><i class="li_news"></i></div>
+                                <div class="nav-text">Thống kê</div>
+                            </a>
+                        </li>
+
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li id="fourth-nav-pill" class="dropdown">
+                            <li id="fifth-nav-pill" class="dropdown">
                                 <a href="@Url.Action("SuggestRoute", "Route")" class="dropdown-toggle">
                                     <div class="nav-icon"><i class="li_bulb"></i></div>
                                     <div class="nav-text">Gợi ý</div>
@@ -94,7 +101,7 @@
                             </li>
                         }
 
-                        <li id="fifth-nav-pill" class="dropdown">
+                        <li id="sixth-nav-pill" class="dropdown">
 
                             @if (User.Identity.IsAuthenticated)
                             {
