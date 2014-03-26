@@ -1,0 +1,64 @@
+﻿@model List<SmartB.UI.Models.EntityFramework.Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
+}
+
+@section head
+{
+    <!-- Metro -->
+    <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
+    <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
+    <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables.css")">
+    <script type="text/javascript" src="@Url.Content("~/Metro/js/jquery/jquery.dataTables.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables_themeroller.css")">
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="bgSizeCover">
+    <div id="Contain" class="bgContainCover">
+        <div class="ProductDetail">
+            <div class="Tools">
+                <div class="Left">
+                    <ul class="SortTool">
+                        <li style=" cursor: auto; background-color: #3399FF; color: white !important;">
+                            <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
+                        </li>
+                        <li style=" cursor: auto;">
+                            Thống kê.
+                        </li>
+                    </ul>
+                </div>
+                <div class="clr"></div>
+            </div>
+        </div>
+        
+        <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
+            <div style="min-height: 700px;">
+                <table class="table table-bordered table-hover" style="background:white">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Thống kê</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td>@(i + 1)</td>
+                                <td>@Model[i].Name</td>
+                                <td>
+                                    @Html.ActionLink("Xem", "ViewChart", new { id = Model[i].Id })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
