@@ -38,6 +38,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
         public JsonResult UpdateUserPrice(int id, int productId, int price, DateTime lastUpdatedTime)
         {
             var check = false;
+            string message = "";
             try
             {
                 ProductAttribute product = db.ProductAttributes
@@ -62,10 +63,14 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 db.SaveChanges();
 
                 check = true;
+                message = "Success";
+                TempData["UpdateUserPrice"] = message;
                 return Json(check, JsonRequestBehavior.AllowGet);
             }
             catch
             {
+                message = "Failed";
+                TempData["UpdateUserPrice"] = message;
                 return Json(check, JsonRequestBehavior.AllowGet);
             }
             
