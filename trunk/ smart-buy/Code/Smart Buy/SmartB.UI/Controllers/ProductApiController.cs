@@ -268,47 +268,46 @@ namespace SmartB.UI.Controllers
 
         //Save user price
         [HttpPost]
-        public bool SaveUserPrice(UserPrice parseJson)
+        public bool SaveUserPrice(List<UserPrice> parseJson)
         {
             var check = false;
 
             // define epsilon
-            var ep = 0.1;
-
-            //JavaScriptSerializer ser = new JavaScriptSerializer();
-            //UserPrice parseJson = ser.Deserialize<UserPrice>(userPriceJson);
+            var ep = 0.1;            
             try
             {
-                var pId = parseJson.ProductId;
-                var updatedPrice = parseJson.UpdatedPrice;
-                
-                var minPrice = context.ProductAttributes.Where(p => p.ProductId == pId)
-                    .OrderByDescending(x => x.LastUpdatedTime)
-                    .Select(x => x.MinPrice)
-                    .FirstOrDefault();
-
-
-                var maxPrice = context.ProductAttributes.Where(p => p.ProductId == pId)
-                    .OrderByDescending(x => x.LastUpdatedTime)
-                    .Select(x => x.MaxPrice)
-                    .FirstOrDefault();
-
-                var averagePrice = (minPrice + maxPrice) / 2;
-                var rangeFrom = minPrice - ep * averagePrice;
-                var rangeTo = maxPrice + ep * averagePrice;
-
-                if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
+                for (int i = 0; i < parseJson.Count; i++)
                 {
-                    var userPrice = new UserPrice();
-                    userPrice.Username = parseJson.Username;
-                    userPrice.MarketId = parseJson.MarketId;
-                    userPrice.ProductId = pId;
-                    userPrice.UpdatedPrice = updatedPrice;
-                    userPrice.LastUpdatedTime = DateTime.Now;
-                    context.UserPrices.Add(userPrice);
-                    context.SaveChanges();
-                }
+                    var pId = parseJson[i].ProductId;
+                    var updatedPrice = parseJson[i].UpdatedPrice;
 
+                    var minPrice = context.ProductAttributes.Where(p => p.ProductId == pId)
+                        .OrderByDescending(x => x.LastUpdatedTime)
+                        .Select(x => x.MinPrice)
+                        .FirstOrDefault();
+
+
+                    var maxPrice = context.ProductAttributes.Where(p => p.ProductId == pId)
+                        .OrderByDescending(x => x.LastUpdatedTime)
+                        .Select(x => x.MaxPrice)
+                        .FirstOrDefault();
+
+                    var averagePrice = (minPrice + maxPrice) / 2;
+                    var rangeFrom = minPrice - ep * averagePrice;
+                    var rangeTo = maxPrice + ep * averagePrice;
+
+                    if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
+                    {
+                        var userPrice = new UserPrice();
+                        userPrice.Username = parseJson[i].Username;
+                        userPrice.MarketId = parseJson[i].MarketId;
+                        userPrice.ProductId = pId;
+                        userPrice.UpdatedPrice = updatedPrice;
+                        userPrice.LastUpdatedTime = DateTime.Now;
+                        context.UserPrices.Add(userPrice);
+                        context.SaveChanges();
+                    }                    
+                }
                 check = true;
                 return check;
             }
