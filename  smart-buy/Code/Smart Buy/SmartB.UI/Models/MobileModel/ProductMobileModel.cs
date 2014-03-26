@@ -11,5 +11,6 @@ namespace SmartB.UI.Models
         public string Name { get; set; }
         public string MinPrice { get; set; }
         public string MaxPrice { get; set; }
+        public string LastUpdateTime { get; set; }
     }
 }

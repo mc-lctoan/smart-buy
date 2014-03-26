@@ -9,6 +9,6 @@ namespace SmartB.UI.Models
     {
         public string Id { get; set; }
         public string Username { get; set; }
-        public System.DateTime BuyTime { get; set; }
+        public string BuyTime { get; set; }
     }
 }
