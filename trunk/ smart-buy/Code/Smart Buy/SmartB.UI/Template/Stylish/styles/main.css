@@ -381,11 +381,9 @@ iframe {
 }
 
 #logo {
-    width: 200px;
-    height: 100px;
+    width: 160px;
     /*background: #ffffff;*/
     float: left;
-    margin-left:12%;
 }
 
 #logo h1 {
