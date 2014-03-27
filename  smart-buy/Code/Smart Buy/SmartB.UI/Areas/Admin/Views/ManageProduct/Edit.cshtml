@@ -1,0 +1,191 @@
+﻿@model SmartB.UI.Models.EntityFramework.SellProduct
+
+@{
+    ViewBag.Title = "Sửa thông tin sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
+    var selectList = new SelectList((System.Collections.IEnumerable)ViewBag.ddlMarket, "Value", "Text");
+    
+}
+@section sidebar
+{
+    <aside id="sidebar">
+        <nav id="navigation" class="collapse">
+            <ul>
+                <li>
+                    <span title="General">
+                        <i class="icon-home"></i>
+                        <span class="nav-title">Trang chủ</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("Statistics", "System")">
+                                <i class="icol-chart-curve"></i>
+                                Thông tin hệ thống
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="icol-cog"></i>
+                                Cấu hình hệ thống
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span title="Data">
+                        <i class="icon-table"></i>
+                        <span class="nav-title">Dữ liệu</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("UploadProduct", "Import")">
+                                <i class="icol-doc-excel-table"></i>Nhập từ Excel
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("TrainingMatch", "Training")">
+                                <i class="icol-application-double"></i>Xử lý dữ liệu trùng
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <span title="Product">
+                        <i class="icon-gift"></i>
+                        <span class="nav-title">Quản lý sản phẩm</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li class="active">
+                            <a href="@Url.Action("Index", "ManageProduct")">
+                                <i class="icol-application-view-columns"></i>
+                                Danh sách sản phẩm
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Create", "ManageProduct")">
+                                <i class="icol-application-add"></i>
+                                Tạo sản phẩm mới
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span title="Market">
+                        <i class="icon-bag"></i>
+                        <span class="nav-title">Quản lý chợ</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("Index", "Market")">
+                                <i class="icol-application-view-columns"></i>
+                                Danh sách các chợ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Create", "Market")">
+                                <i class="icol-application-add"></i>
+                                Tạo chợ mới
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span title="Parser">
+                        <i class="icon-download-2"></i>
+                        <span class="nav-title">Parser</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("Index", "Parser")">
+                                <i class="icol-application-view-columns"></i>
+                                Danh sách các parser
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("CreateParser", "Parser")">
+                                <i class="icol-application-add"></i>
+                                Tạo parser
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "LogFile")">
+                                <i class="icol-page-white-text"></i>
+                                Quản lý log file
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+}
+
+@section headScript
+{
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+}
+
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Quản lý sản phẩm
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "ManageProduct")">Danh sách sản phẩm</a>
+            </li>
+        </ul>
+
+        <h1 id="main-heading">Danh sách sản phẩm
+            <span>Danh sách tất cả sản phẩm trong hệ thống</span>
+        </h1>
+    </div>
+}
+
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="widget">
+            <div class="widget-header">
+                <span class="title">Sửa thông tin</span>
+            </div>
+            <div class="widget-content form-container">
+                @using (Html.BeginForm("Edit", "ManageProduct", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    
+                    <div class="control-group">
+                        <label class="control-label" for="Name">Tên sản phẩm</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(x => x.Product.Name, new {  @class = "span4",required="required" })
+                            <div style="margin-top: 5px;color:red">
+                                @Html.ValidationMessageFor(x => x.Product.Name)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Name">Tên Chợ</label>
+                        <div class="controls">
+                            @Html.DropDownListFor(x => x.MarketId, selectList,  new {  required="required"})
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="Address">Giá</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(x => x.SellPrice, new {  @class = "span4",maxlength = "5",required="required" })
+                            <div style="margin-top: 5px;color:red">
+                                @Html.ValidationMessageFor(x => x.SellPrice)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-primary" value="Cập nhật" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

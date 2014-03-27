@@ -1,0 +1,304 @@
+﻿@model SmartB.UI.Models.EntityFramework.SellProduct
+
+@{
+    ViewBag.Title = "Tạo sản phẩm mới";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
+}
+<meta name="viewport" content="width=device-width" />
+<script lang="javascript" type="text/javascript">
+    function saveUserPrice(id) {
+        var productName = document.getElementById('txtProductName').value;
+        var marketId = document.getElementById('ddlMarket');
+        marketId = marketId.options[marketId.selectedIndex].value;
+        var sellPrice = document.getElementById('txtPrice').value;
+
+        var PriceData = {
+            ProductName: productName,
+            MarketId: marketId,
+            SellPrice: sellPrice
+        }
+        var PriceJson = JSON.stringify(PriceData);
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("SaveSellProduct", "ManageProduct")',
+                data: { 'ProductName': productName, 'MarketId': marketId, 'SellPrice': sellPrice },
+                cache: true,
+
+                success: function (data) {
+
+                    if (data == true) {
+                        message = "Tạo sản phẩm mới thành công";
+                        document.getElementById("pppStatus").innerHTML = message;
+                    } else {
+                        message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
+                    }
+                },
+        });
+        window.location = 'http://localhost:2030/Admin/ManageProduct/Create';
+        }
+        function validateProductName() {
+            var productName = document.getElementById('txtProductName');
+            if (trim(productName) != '') {
+                document.getElementById('errorProductName').innerHTML = "";
+                return true;
+            } else {
+                document.getElementById('errorProductName').innerHTML = "Vui lòng nhập tên sản phẩm.";
+                return false;
+            }
+        }
+        function validateMarket() {
+            var marketId = document.getElementById('ddlMarket');
+            marketId = marketId.options[marketId.selectedIndex].value;
+            if (trim(marketId) != '') {
+                document.getElementById('errorMarket').innerHTML = "";
+                return true;
+            } else {
+                document.getElementById('errorMarket').innerHTML = "Vui lòng chọn địa điểm.";
+                return false;
+            }
+        }
+
+        function validatePrice() {
+            var price = document.getElementById('txtPrice').value;
+            var RE_PRICE = /^\d{1,5}$/;
+
+            if (RE_PRICE.test(price) == false || price == 0 || price > 10000) {
+                document.getElementById('errorPrice').innerHTML = "Giá không phù hợp. Vui lòng nhập giá trị từ 1 đến 10000";
+                return false;
+            } else {
+                document.getElementById('errorPrice').innerHTML = "";
+                return true;
+            }
+        }
+        function trim(str) {
+            var start = 0;
+            var end = str.length;
+            while (start < str.length && str.charAt(start) == " ")
+                start++;
+            while (end > 0 && str.charAt(end - 1) == " ")
+                end--;
+            return str.substr(start, end - start);
+        }
+
+@*        $(function () {
+            $('#txtProductName').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "@Url.Action("GetProductName", "ManageProduct")",
+                        data: "{ 'pre':'" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data.d, function (item) {
+                                return { value: item }
+                            }))
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(textStatus);
+                        }
+                    });
+                }
+            });
+        });*@
+</script>
+
+@section sidebar
+{
+    <aside id="sidebar">
+        <nav id="navigation" class="collapse">
+            <ul>
+                <li>
+                    <span title="General">
+                        <i class="icon-home"></i>
+                        <span class="nav-title">Trang chủ</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("Statistics", "System")">
+                                <i class="icol-chart-curve"></i>
+                                Thông tin hệ thống
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="icol-cog"></i>
+                                Cấu hình hệ thống
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span title="Data">
+                        <i class="icon-table"></i>
+                        <span class="nav-title">Dữ liệu</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("UploadProduct", "Import")">
+                                <i class="icol-doc-excel-table"></i>Nhập từ Excel
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("TrainingMatch", "Training")">
+                                <i class="icol-application-double"></i>Xử lý dữ liệu trùng
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="active">
+                    <span title="Product">
+                        <i class="icon-gift"></i>
+                        <span class="nav-title">Quản lý sản phẩm</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("Index", "ManageProduct")">
+                                <i class="icol-application-view-columns"></i>
+                                Danh sách sản phẩm
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="@Url.Action("Create", "ManageProduct")">
+                                <i class="icol-application-add"></i>
+                                Tạo sản phẩm mới
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span title="Market">
+                        <i class="icon-bag"></i>
+                        <span class="nav-title">Quản lý chợ</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("Index", "Market")">
+                                <i class="icol-application-view-columns"></i>
+                                Danh sách các chợ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Create", "Market")">
+                                <i class="icol-application-add"></i>
+                                Tạo chợ mới
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span title="Parser">
+                        <i class="icon-download-2"></i>
+                        <span class="nav-title">Parser</span>
+                    </span>
+                    <ul class="inner-nav">
+                        <li>
+                            <a href="@Url.Action("Index", "Parser")">
+                                <i class="icol-application-view-columns"></i>
+                                Danh sách các parser
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("CreateParser", "Parser")">
+                                <i class="icol-application-add"></i>
+                                Tạo parser
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "LogFile")">
+                                <i class="icol-page-white-text"></i>
+                                Quản lý log file
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+}
+
+@section headScript
+{
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+}
+
+@section mainHeader
+{
+    <div id="main-header" class="page-header">
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home"></i>
+                Quản lý chợ
+                <span class="divider">&raquo;</span>
+            </li>
+            <li>
+                <a href="@Url.Action("Create", "ManageProduct")">Tạo sản phẩm mới</a>
+            </li>
+        </ul>
+
+        <h1 id="main-heading">Tạo sản phẩm mới
+            <span>Tạo một sản phẩm mới cho hệ thống</span>
+        </h1>
+    </div>
+}
+
+
+<div class="row-fluid">
+    <div class="span12">
+        @if (TempData["create"] != null)
+        {
+            string message = TempData["create"].ToString();
+            if (message == "Success")
+            {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Sản phẩm mới đã được thêm vào hệ thống.
+            </div>
+            }
+            else if (message == "Duplicate")
+            {
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thất bại</strong><br />
+                Sản phẩm bị trùng. Vui lòng thử lại sau.
+            </div>
+            }
+        }
+        <div class="widget">
+            <div class="widget-header">
+                <span class="title">Tạo sản phẩm mới</span>
+            </div>
+
+            <div class="widget-content form-container">
+                <div class="control-group">
+                    <label class="control-label" for="Name">Tên Sản phẩm *</label>
+                    <div class="controls">
+                        <input id="txtProductName" runat="server" type="text" value="" onchange="validateProductName()"  required/>
+                        <span id="errorProductName" style="color: red; font-style: italic;"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Name">Tên Chợ *</label>
+                    <div class="controls">
+                        @Html.DropDownList("ddlMarket", null, String.Empty, new { @onchange = "validateMarket()" })
+                        <span id="errorMarket" style="color: red; font-style: italic;"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="Name">Giá sản phẩm *</label>
+                    <div class="controls">
+                        <input id="txtPrice" type="text" value="" onchange="validatePrice()"  required/>
+                        <span id="errorPrice" style="color: red; font-style: italic;"></span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <input type="submit" class="btn btn-primary" value="Tạo sản phẩm mới" id="btnSaveUserPrice" onclick="saveUserPrice(id)" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
