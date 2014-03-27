@@ -598,6 +598,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 if (sellProduct.SellPrice != product.Price)
                 {
                     sellProduct.SellPrice = product.Price;
+                    sellProduct.LastUpdatedTime = System.DateTime.Now;
                     countUpdate++;
                 }
                 else
@@ -610,11 +611,14 @@ namespace SmartB.UI.Areas.Admin.Controllers
             if (product.Price < dupProductAtt.MinPrice)
             {
                 dupProductAtt.MinPrice = product.Price;
+                dupProductAtt.LastUpdatedTime = System.DateTime.Now;
             }
             else if (product.Price > dupProductAtt.MaxPrice)
             {
                 dupProductAtt.MaxPrice = product.Price;
+                dupProductAtt.LastUpdatedTime = System.DateTime.Now;
             }
+            dupProductAtt.LastUpdatedTime = System.DateTime.Now;
             db.SaveChanges(); // Save to database
             // add Product Dictionary
             var dictionaries = product.Name.Split(';').ToList();

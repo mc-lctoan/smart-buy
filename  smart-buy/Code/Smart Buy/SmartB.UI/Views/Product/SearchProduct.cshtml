@@ -65,7 +65,7 @@
                 @if (Model != null)
                 {
                    <div style="text-align: left; float: right;width:35%">
-                        <div style="font-weight: bold;float:left;margin-left: 10px; ">*Đơn vị tính Nghìn đồng.</div>
+                        <div style="font-weight: bold;float:right;margin-left: 10px; ">*Đơn vị tính Nghìn đồng.</div>
                         <div style="background-color: rgba(0, 214, 255, 0.23);width: 50%; float: right">
                             <img src="~/Images/InfoPrice.png"/>
                         </div>
@@ -81,10 +81,10 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                if ((DateTime.Now - item.LastUpdatedTime).TotalDays > 13)
+                                if ((DateTime.Now - item.LastUpdatedTime).TotalDays >= 14)
                                 {
                                 <tr class="redWeek">
-                                    <td style="padding: 3px 10px;"  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
+                                    <td style="padding: 3px 10px;color:white"  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
                                         @{
                                     var productId = item.ProductId;
                                     var productName = item.Name;
@@ -92,7 +92,7 @@
 
                                     </td>
 
-                                    <td style="padding: 3px 10px;">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                    <td style="padding: 3px 10px;color:white">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
                                     var minPrice = item.MinPrice;
                                     var maxPrice = item.MaxPrice;
@@ -133,7 +133,7 @@
                                     </td>
                                 </tr>
                                 }
-                                else if ((DateTime.Now - item.LastUpdatedTime).TotalDays > 6)
+                                else if ((DateTime.Now - item.LastUpdatedTime).TotalDays >= 7)
                                 {
                                 <tr class="yellowWeek">
                                     <td style="padding: 3px 10px;"  id="addProduct_@item.ProductId">@Html.DisplayFor(modelItem => item.Name)
