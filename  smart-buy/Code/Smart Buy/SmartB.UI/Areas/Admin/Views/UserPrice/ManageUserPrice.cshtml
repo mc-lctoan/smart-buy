@@ -146,7 +146,7 @@
             error: function (e) {
                 //$.Dialog.close();
                 alert("(*) Có lỗi xảy ra. Vui lòng thử lại ");
-               // message = "(*) Có lỗi xảy ra. Vui lòng thử lại " + e.message;
+                // message = "(*) Có lỗi xảy ra. Vui lòng thử lại " + e.message;
                 //showNotifyDialog(message);
             }
         });
@@ -172,103 +172,124 @@
             </li>
         </ul>
 
-        <h1 id="main-heading">Giá người dùng đề xuất trong ngày @todayFormat
+        <h1 id="main-heading">Giá sản phẩm người dùng đề xuất 
+            @*trong ngày @todayFormat*@
         </h1>
     </div>
 }
 
-@if (TempData["UpdateUserPrice"] != null)
-{
-    string message = TempData["UpdateUserPrice"].ToString();
-    if (message == "Success")
-    {
-    <div class="alert alert-success fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Thành công</strong><br />
-        Cập nhật thành công
-    </div>
-    }
-    else if (message == "Failed")
-    {
-    <div class="alert alert-danger fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Thất bại</strong><br />
-        Cập nhật thất bại. Vui lòng thử lại sau.
-    </div>
-    }
-}
 
 <div class="row-fluid">
     <div class="span12 widget">
-        <div class="widget-header">
-            <span class="title">Danh sách giá người dùng đề xuất</span>
-            <div class="toolbar">
-                    <span>*Đơn vị tính : Nghìn đồng.</span>
-                </div>
-        </div>
+        @if (TempData["UpdateUserPrice"] != null)
+        {
+            string message = TempData["UpdateUserPrice"].ToString();
+            if (message == "Success")
+            {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Cập nhật thành công
+            </div>
+            }
+            else if (message == "Failed")
+            {
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thất bại</strong><br />
+                Cập nhật thất bại. Vui lòng thử lại sau.
+            </div>
+            }
+        }
 
-        <div class="widget-content table-container">
-            <table class="table table-bordered table-striped table-checkable">
-                <thead>
-                    <tr>
-                        <th>Tên sản phẩm</th>
-                        <th>Giá hiện tại</th>
-                        <th>Giá đề xuất</th>
-                        <th>Địa điểm</th>
-                        <th>Người đề xuất</th>
-                        <th>Thời điểm đề xuất</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-                        var userPriceId = item.Id;
-                        var updatedTime = item.LastUpdatedTime;
-                        string updatedTimeFormat = String.Format("{0:HH:mm:ss}", updatedTime);
-                        SmartB.UI.Models.EntityFramework.SmartBuyEntities db = new SmartB.UI.Models.EntityFramework.SmartBuyEntities();
-                        var productId = item.Product.Id;
-                        SmartB.UI.Models.EntityFramework.ProductAttribute proAtt = (from p in db.ProductAttributes
-                                                                                    where p.ProductId == productId
-                                                                                    group p by p.ProductId into grp
-                                                                                    select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
-            
-                        <tr>
-                            <td>
-                                @item.Product.Name
-                            </td>
-                            <td>
-                                @proAtt.MinPrice - @proAtt.MaxPrice
-                            </td>
-                            <td>
-                                @item.UpdatedPrice
-                            </td>
-                            <td>
-                                @item.Market.Name
-                            </td>
-                            <td>
-                                @item.Username
-                            </td>
-                            <td>
-                            @updatedTimeFormat
-                        </td>
-                            <td>
-                                <button class="btn btn-primary" id="btnSaveUserPrice" onclick="updateUserPrice('@item.Id','@productId','@item.UpdatedPrice', '@updatedTime')">
-                                    Lưu lại
-                                </button>
-                            </td>
-                        </tr>
-                    }
-
-                </tbody>
-            </table>
-
-            <div class="toolbar">
-                <div class="pagination-right">
-                    @Html.PagedListPager(Model, page => Url.Action("ManageUserPrice", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+        @if (TempData["deleteUserPrice"] != null)
+        {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Xóa thành công
+            </div>
+        }
+        @using (Html.BeginForm("Delete", "UserPrice"))
+        {
+            <div class="widget-header">
+                <span class="title">Danh sách giá sản phẩm người dùng đề xuất </span>
+                <span>*Đơn vị tính : Nghìn đồng.</span>
+                <div class="toolbar">
+                    <div class="btn-group">
+                        <button class="btn" type="submit">
+                            <i class="icol-cancel"></i>
+                            Xóa
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="widget-content table-container">
+                <table class="table table-bordered table-striped table-checkable">
+                    <thead>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá hiện tại</th>
+                            <th>Giá đề xuất</th>
+                            <th>Địa điểm</th>
+                            <th>Người đề xuất</th>
+                            <th>Thời điểm đề xuất</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            var userPriceId = item.Id;
+                            var updatedTime = item.LastUpdatedTime;
+                            string updatedTimeFormat = String.Format("{0:HH:mm:ss}", updatedTime);
+                            SmartB.UI.Models.EntityFramework.SmartBuyEntities db = new SmartB.UI.Models.EntityFramework.SmartBuyEntities();
+                            var productId = item.Product.Id;
+                            SmartB.UI.Models.EntityFramework.ProductAttribute proAtt = (from p in db.ProductAttributes
+                                                                                        where p.ProductId == productId
+                                                                                        group p by p.ProductId into grp
+                                                                                        select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
+            
+                            <tr>
+                                <td>
+                                    @item.Product.Name
+                                </td>
+                                <td>
+                                    @proAtt.MinPrice - @proAtt.MaxPrice
+                                </td>
+                                <td>
+                                    @item.UpdatedPrice
+                                </td>
+                                <td>
+                                    @item.Market.Name
+                                </td>
+                                <td>
+                                    @item.Username
+                                </td>
+                                <td>
+                                    @updatedTimeFormat
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary" id="btnSaveUserPrice" onclick="updateUserPrice('@item.Id','@productId','@item.UpdatedPrice', '@updatedTime')">
+                                        Lưu lại
+                                    </button>
+                                </td>
+                                <td class="checkbox-column">
+                                    <input type="checkbox" value="@item.Id" name="userIds"/></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+                <div class="toolbar">
+                    <div class="pagination-right">
+                        @Html.PagedListPager(Model, page => Url.Action("ManageUserPrice", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
