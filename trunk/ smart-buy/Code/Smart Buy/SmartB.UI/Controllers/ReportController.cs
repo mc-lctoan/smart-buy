@@ -48,6 +48,8 @@ namespace SmartB.UI.Controllers
 
             if (product != null)
             {
+                ViewBag.Name = product.Name;
+
                 // Get data from 10 latest days
                 var attributes = product.ProductAttributes
                     .OrderByDescending(x => x.LastUpdatedTime)

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using HtmlAgilityPack;
 using SmartB.UI.Areas.Admin.Helper;
 using SmartB.UI.Areas.Admin.Models;
 using SmartB.UI.Infrastructure;
@@ -150,11 +149,11 @@ namespace SmartB.UI.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        public ActionResult ParseData()
+        [HttpPost]
+        public RedirectToRouteResult ParseData()
         {
-            ParseHelper.ParseData();
-            return View();
+            Task.Factory.StartNew(ParseHelper.ParseData);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
