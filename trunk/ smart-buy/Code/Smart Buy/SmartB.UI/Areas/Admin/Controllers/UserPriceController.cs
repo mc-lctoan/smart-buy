@@ -24,12 +24,14 @@ namespace SmartB.UI.Areas.Admin.Controllers
 
         public ActionResult ManageUserPrice(int? page)
         {
+
+
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             DateTime start = DateTime.Today.AddDays(0);
             DateTime end = DateTime.Today.AddDays(1);
             var userPrice = (from item in db.UserPrices
-                            where item.LastUpdatedTime >= start && item.LastUpdatedTime <= end
+                            //where item.LastUpdatedTime >= start && item.LastUpdatedTime <= end
                             select item).OrderByDescending(u=>u.LastUpdatedTime);
            return View(userPrice.ToPagedList(pageNumber, pageSize));
         }
@@ -76,5 +78,23 @@ namespace SmartB.UI.Areas.Admin.Controllers
             
         }
 
+        [HttpPost]
+        public RedirectToRouteResult Delete(int[] userIds)
+        {
+            if (userIds != null)
+            {
+                foreach (var id in userIds)
+                {
+                    var userPrice = db.UserPrices.FirstOrDefault(x => x.Id == id);
+                    if (userPrice != null)
+                    {
+                        db.UserPrices.Remove(userPrice);
+                    }
+                }
+                db.SaveChanges();
+                TempData["deleteUserPrice"] = "Done";
+            }
+            return RedirectToAction("ManageUserPrice");
+        }
     }
 }
