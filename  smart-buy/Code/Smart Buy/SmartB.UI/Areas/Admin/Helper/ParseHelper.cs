@@ -167,6 +167,7 @@ namespace SmartB.UI.Areas.Admin.Helper
         private static List<KeyValuePair<string, string>> MatchData(HtmlDocument doc, string nameXpath, string priceXpath)
         {
             var data = new List<KeyValuePair<string, string>>();
+            int miss = 0;
             var i = 1;
             while (true)
             {
@@ -183,6 +184,8 @@ namespace SmartB.UI.Areas.Admin.Helper
                 // Got it?
                 if (name != null && price != null)
                 {
+                    miss = 0;
+
                     // Has data?
                     if (name.InnerText != "" && price.InnerText != "")
                     {
@@ -193,6 +196,10 @@ namespace SmartB.UI.Areas.Admin.Helper
 
                 // Get all?
                 if (name == null && price == null)
+                {
+                    miss++;
+                }
+                if (miss > 1)
                 {
                     break;
                 }
@@ -212,7 +219,7 @@ namespace SmartB.UI.Areas.Admin.Helper
                     result += c;
                     count++;
                 }
-                if (!Char.IsDigit(c) && count > 1 && !Char.IsWhiteSpace(c))
+                if (!Char.IsDigit(c) && count > 1 && !Char.IsWhiteSpace(c) && c != '.')
                 {
                     break;
                 }
@@ -262,8 +269,8 @@ namespace SmartB.UI.Areas.Admin.Helper
                         // Match well with more than 1 product, admin decide
                         ExportTrainingFile(goodMatch, pair.Key);
                         continue;
-                    }
-                    if (averageMatch.Count > 0 && pId == -1)
+                    } 
+                    else if (averageMatch.Count > 0 && pId == -1)
                     {
                         // Only average match, admin decide
                         ExportTrainingFile(averageMatch, pair.Key);
@@ -281,15 +288,24 @@ namespace SmartB.UI.Areas.Admin.Helper
                         // Get latest product attributes
                         ProductAttribute latest = product.ProductAttributes
                             .OrderByDescending(x => x.LastUpdatedTime)
-                            .First();
+                            .FirstOrDefault();
 
                         // Create new attribute
                         var attribute = new ProductAttribute();
                         attribute.LastUpdatedTime = DateTime.Now;
 
-                        // Calculate max and min price
-                        attribute.MinPrice = price < latest.MinPrice ? price : latest.MinPrice;
-                        attribute.MaxPrice = price > latest.MaxPrice ? price : latest.MaxPrice;
+                        if (latest != null)
+                        {
+                            // Calculate max and min price
+                            attribute.MinPrice = price < latest.MinPrice ? price : latest.MinPrice;
+                            attribute.MaxPrice = price > latest.MaxPrice ? price : latest.MaxPrice;
+                        }
+                        else
+                        {
+                            // Calculate max and min price
+                            attribute.MinPrice = price;
+                            attribute.MaxPrice = price;
+                        }
 
                         // Save to database
                         product.ProductAttributes.Add(attribute);
@@ -369,7 +385,7 @@ namespace SmartB.UI.Areas.Admin.Helper
                 }
             }
 
-            content += "\n";
+            content += name + "\n";
 
             using (StreamWriter writer = File.AppendText(path))
             {
