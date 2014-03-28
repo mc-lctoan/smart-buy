@@ -200,6 +200,7 @@
     <Compile Include="Areas\Admin\Controllers\AuthenticationController.cs" />
     <Compile Include="Areas\Admin\Controllers\ImportController.cs" />
     <Compile Include="Areas\Admin\Controllers\LogFileController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ManageProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\ManageUserController.cs" />
     <Compile Include="Areas\Admin\Controllers\MarketController.cs" />
     <Compile Include="Areas\Admin\Controllers\ParserController.cs" />
@@ -628,6 +629,7 @@
     <Content Include="Images\bglines2.png" />
     <Content Include="Images\dollar.png" />
     <Content Include="Images\header2.png" />
+    <Content Include="Images\InfoPrice.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\paper.png" />
     <Content Include="Images\shopping_cart_accept.png" />
@@ -752,6 +754,9 @@
     <Content Include="Areas\Admin\Views\ManageUser\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ManageUser\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ManageUser\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageProduct\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageProduct\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageProduct\Index.cshtml" />
     <None Include="Properties\PublishProfiles\SmartBuy.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />

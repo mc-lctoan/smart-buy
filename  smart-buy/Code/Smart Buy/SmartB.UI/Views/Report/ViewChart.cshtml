@@ -1,7 +1,7 @@
 ﻿@model List<SmartB.UI.Models.ChartPriceModel>
 
 @{
-    ViewBag.Title = "ViewChart";
+    ViewBag.Title = "Biến đổi giá";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
@@ -44,23 +44,23 @@
                 },
 
                 title: {
-                    text: 'Sự biến động giá'
+                    text: 'Sự biến động giá của @Html.Raw(HttpUtility.HtmlDecode(ViewBag.Name))'
                 },
 
                 xAxis: {
-                    type: 'datetime'
+                    type: 'datetime',
+                    minTickInterval: 24 * 3600 * 1000
                 },
 
                 yAxis: {
                     title: {
-                        text: 'Giá'
+                        text: 'Giá (nghìn đồng)'
                     }
                 },
 
                 tooltip: {
                     crosshairs: true,
-                    shared: true,
-                    valueSuffix: ' nghìn đồng'
+                    shared: true
                 },
 
                 legend: {

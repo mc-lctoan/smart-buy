@@ -79,8 +79,7 @@ namespace SmartB.UI.Areas.Admin.Helper
 
         public static void ParseData()
         {
-            var config = new ConfigHelper();
-            config.TurnParser(true);
+            ConstantManager.IsParserRunning = true;
 
             // Stopwatch to measure elapsed time
             var stopwatch = new Stopwatch();
@@ -106,18 +105,16 @@ namespace SmartB.UI.Areas.Admin.Helper
                                   {
                                       Link = parseInfo.ParseLink,
                                       ElapsedTime = stopwatch.Elapsed.Milliseconds,
-                                      TotalItems = data.Count
+                                      TotalItems = data.Count,
+                                      ToDatabase = InsertProductToDb(data, parseInfo.MarketId.Value)
                                   };
-
-                    // Insert to database
-                    log.ToDatabase = InsertProductToDb(data, parseInfo.MarketId.Value);
 
                     logInfos.Add(log);
                     stopwatch.Reset();
                 }
             }
             LogFileHelper.GenerateLogFile(logInfos);
-            config.TurnParser(false);
+            ConstantManager.IsParserRunning = false;
         }
 
         private static List<KeyValuePair<string, string>> GetData(HtmlWeb web, ParseInfo info)
@@ -236,15 +233,41 @@ namespace SmartB.UI.Areas.Admin.Helper
                     int price = ConvertPrice(pair.Value);
 
                     // Check product existent
+                    var goodMatch = new List<int>();
+                    var averageMatch = new List<int>();
                     int pId = -1;
                     foreach (var dictionary in context.Dictionaries)
                     {
                         double match = CompareStringHelper.CompareString(pair.Key, dictionary.Name);
-                        if (match > 0.85)
+                        
+                        if (match > 0.9)
                         {
-                            pId = dictionary.ProductId.Value;
-                            break;
+                            // Good match
+                            goodMatch.Add(dictionary.ProductId.Value);
+                        } 
+                        else if (match > 0.7)
+                        {
+                            // Average match
+                            averageMatch.Add(dictionary.ProductId.Value);
                         }
+                    }
+
+                    if (goodMatch.Count == 1)
+                    {
+                        // Match well with only 1 product, take it
+                        pId = goodMatch[0];
+                    }
+                    else if (goodMatch.Count > 1)
+                    {
+                        // Match well with more than 1 product, admin decide
+                        ExportTrainingFile(goodMatch, pair.Key);
+                        continue;
+                    }
+                    if (averageMatch.Count > 0 && pId == -1)
+                    {
+                        // Only average match, admin decide
+                        ExportTrainingFile(averageMatch, pair.Key);
+                        continue;
                     }
 
                     // Already existed?
@@ -327,6 +350,31 @@ namespace SmartB.UI.Areas.Admin.Helper
                 }
             }
             return success;
+        }
+
+        private static void ExportTrainingFile(List<int> match, string name)
+        {
+            string path = ConstantManager.TrainingFilePath;
+            string content = "";
+
+            using (var context = new SmartBuyEntities())
+            {
+                foreach (int id in match)
+                {
+                    var product = context.Products.FirstOrDefault(x => x.Id == id);
+                    if (product != null)
+                    {
+                        content += product.Name + ";";
+                    }
+                }
+            }
+
+            content += "\n";
+
+            using (StreamWriter writer = File.AppendText(path))
+            {
+                writer.Write(content);
+            }
         }
     }
 }

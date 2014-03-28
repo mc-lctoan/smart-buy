@@ -1,7 +1,7 @@
 ﻿@model List<SmartB.UI.Models.EntityFramework.Product>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Thống kê";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
@@ -37,6 +37,10 @@
         
         <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
             <div style="min-height: 700px;">
+                <div class="ProductNameDetail">
+                    Những sản phẩm được quan tâm nhất hiện nay
+                </div>
+                <br/>
                 <table class="table table-bordered table-hover" style="background:white">
                     <thead>
                         <tr>
