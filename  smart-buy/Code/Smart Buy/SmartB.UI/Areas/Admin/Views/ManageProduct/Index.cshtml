@@ -179,11 +179,22 @@
         }
         @if (TempData["delete"] != null)
         {
+            string message = TempData["delete"].ToString();
+            if (message == "Done")
+            {
             <div class="alert alert-success fade in">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <strong>Thành công</strong><br />
                 Xóa thành công
             </div>
+            }
+            else if (message == "Empty")
+            {
+                <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Vui lòng chọn sản phẩm.</strong>
+            </div>
+            }
         }
         @using (Html.BeginForm("Delete", "ManageProduct"))
         {

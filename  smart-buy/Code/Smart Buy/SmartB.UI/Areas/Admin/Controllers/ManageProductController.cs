@@ -166,16 +166,23 @@ namespace SmartB.UI.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Delete(int[] ids)
         {
-            foreach (var id in ids)
+            if (ids != null)
             {
-                var sellProduct = context.SellProducts.FirstOrDefault(x => x.Id == id);
-                if (sellProduct != null)
+                foreach (var id in ids)
                 {
-                    context.SellProducts.Remove(sellProduct);
+                    var sellProduct = context.SellProducts.FirstOrDefault(x => x.Id == id);
+                    if (sellProduct != null)
+                    {
+                        context.SellProducts.Remove(sellProduct);
+                    }
                 }
+                context.SaveChanges();
+                TempData["delete"] = "Done";
             }
-            context.SaveChanges();
-            TempData["delete"] = "Done";
+            else
+            {
+                TempData["delete"] = "Empty";
+            }
             return RedirectToAction("Index");
         }
         protected override void Dispose(bool disposing)
