@@ -465,7 +465,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
             }
             db.SaveChanges(); // Save to database
             return countInsert;
-
         }
 
         private static int TrungTenSanPham(int countInsert, SellProductModel product, SmartBuyEntities db, Product dupProduct)
@@ -620,22 +619,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
             }
             dupProductAtt.LastUpdatedTime = System.DateTime.Now;
             db.SaveChanges(); // Save to database
-            // add Product Dictionary
-            var dictionaries = product.Name.Split(';').ToList();
-
-            for (int i = 1; i < dictionaries.Count; i++)
-            {
-                if (dictionaries[i].ToString() != "")
-                {
-                    var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
-                    {
-                        Name = dictionaries[i].ToString(),
-                        ProductId = dupProduct.Id
-                    };
-                    var addProductDic = db.Dictionaries.Add(ProductDic);
-                }
-            }
-            db.SaveChanges(); // Save to database
         }
 
         public JsonResult SaveProductError(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
@@ -701,7 +684,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
                             }
                         }
                     }
-                    
                 }
 
                 // Compare with Correct Products
@@ -747,7 +729,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 break;
                             }
                         }
-
                     }
 
                     if (compareCorrectResult == false)
@@ -784,7 +765,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
                         }
                     }
                 }
-
             }
             result.status = status;
             result.tableId = tableId;
@@ -830,7 +810,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
             }
             Session["CorrectProducts"] = correctProducts;
             return Json(result);
-
         }
 
         public JsonResult UpdateSession(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
@@ -867,10 +846,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 if (productNames[h].ToString() == nameDupProduct.ToString())
                                 {
                                     dupCorrectProducts[i].Remove(dupCorrectProducts[i][j]);
-                                    //if (dupCorrectProducts[i].Count == 0)
-                                    //{
-                                    //    dupCorrectProducts.Remove(dupCorrectProducts[i]);
-                                    //}
                                     status = true;
                                     break;
                                 }
@@ -978,7 +953,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 TextWriter sw = new StreamWriter(text + "\\UploadedExcelFiles\\ProductName.txt");
                 var correctDupProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
 
-
                 for (int i = 0; i < correctDupProducts.Count; i++)
                 {
                     var productName = "";
@@ -993,7 +967,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 sw.Close();
             }
             var message = "Lưu file thành công";
-            //Message.Show("Data Successfully Exported");
             return Json(message);
         }
     }
