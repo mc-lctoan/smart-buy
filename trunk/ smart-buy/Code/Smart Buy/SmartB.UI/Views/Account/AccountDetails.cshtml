@@ -50,8 +50,8 @@
             };
             map = new google.maps.Map(document.getElementById("map-canvas"),
                 mapOptions);
-            
-            directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+
+            directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true, 'suppressMarkers': true });
             directionsDisplay.setMap(map);
             directionsService = new google.maps.DirectionsService();
 
@@ -120,6 +120,24 @@
         function calcRoute(start, end) {
             var pStart = new google.maps.LatLng(start.lat(), start.lng());
             var pEnd = new google.maps.LatLng(end.lat(), end.lng());
+            
+            var startMarker = new google.maps.Marker({
+                position: pStart,
+                map: map,
+                icon: '@Url.Content("~/Images/Marker/Shopping.png")',
+                title: 'Nơi xuất phát',
+                animation: google.maps.Animation.DROP
+            });
+            markers.push(startMarker);
+            
+            var endMarker = new google.maps.Marker({
+                position: pEnd,
+                map: map,
+                icon: '@Url.Content("~/Images/Marker/Home.png")',
+                title: 'Nơi kết thúc',
+                animation: google.maps.Animation.DROP
+             });
+            markers.push(endMarker);
             
             var request = {
                 origin: pStart,
