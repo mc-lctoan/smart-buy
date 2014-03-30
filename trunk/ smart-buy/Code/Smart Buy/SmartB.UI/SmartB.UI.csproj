@@ -190,7 +190,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AdminConfig.cs" />
+    <Compile Include="App_Start\ConstantConfig.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -212,6 +212,7 @@
     <Compile Include="Areas\Admin\Helper\LogFileHelper.cs" />
     <Compile Include="Areas\Admin\Helper\MarketHelper.cs" />
     <Compile Include="Areas\Admin\Helper\ParseHelper.cs" />
+    <Compile Include="Areas\Admin\Models\ConfigurationModel.cs" />
     <Compile Include="Areas\Admin\Models\LogInfo.cs" />
     <Compile Include="Areas\Admin\Models\ParserCreator.cs" />
     <Compile Include="Areas\Admin\Models\ProductInfo.cs" />
@@ -614,7 +615,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\Web.config" />
-    <Content Include="Areas\Admin\Views\Parser\ParseData.cshtml" />
     <EntityDeploy Include="Models\EntityFramework\SmartBuy.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SmartBuy.Designer.cs</LastGenOutput>
@@ -741,7 +741,6 @@
     <Content Include="Areas\Admin\MoonCake\assets\css\fonts\icomoon\fonts\icomoon.woff" />
     <Content Include="Areas\Admin\MoonCake\assets\css\fonts\icomoon\fonts\icomoon_2d2816fe.eot" />
     <Content Include="Areas\Admin\MoonCake\custom-plugins\ScriptGates.com.url" />
-    <Content Include="Areas\Admin\Views\System\Statistics.cshtml" />
     <Content Include="Areas\Admin\Views\Authentication\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Import\UploadProduct.cshtml" />
     <Content Include="Areas\Admin\Views\UserPrice\ManageUserPrice.cshtml" />
@@ -757,6 +756,7 @@
     <Content Include="Areas\Admin\Views\ManageProduct\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ManageProduct\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ManageProduct\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\System\ConfigureSystem.cshtml" />
     <None Include="Properties\PublishProfiles\SmartBuy.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />

@@ -9,9 +9,9 @@ namespace SmartB.UI.Infrastructure
 {
     public class ParseService : Registry
     {
-        public ParseService()
+        public ParseService(int hour, int minute)
         {
-            Schedule(ParseHelper.ParseData).ToRunEvery(1).Days().At(4, 0);
+            Schedule(ParseHelper.ParseData).WithName("Parser").ToRunEvery(1).Days().At(hour, minute);
         }
     }
 }
