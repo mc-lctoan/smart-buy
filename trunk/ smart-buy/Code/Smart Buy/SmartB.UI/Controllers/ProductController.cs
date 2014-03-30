@@ -57,14 +57,14 @@ namespace SmartB.UI.Controllers
                     .ToList();
                 var lastUpdated = db.ProductAttributes.Where(p => p.Id == dictionary.ProductId).Select(p => p.LastUpdatedTime).FirstOrDefault();
                 var productName = db.Products.Where(p => p.Id == dictionary.ProductId).Select(p => p.Name).FirstOrDefault();
-                if (!result.Any(p => p.Name == productName))
+                if (result.All(p => p.Name != productName))
                 {
                     var info = new ProductInfo
                     {
                         ProductId = dictionary.ProductId.GetValueOrDefault(),
                         Name = productName,
-                        MinPrice = minPrice[0].Value,
-                        MaxPrice = maxPrice[0].Value,
+                        MinPrice = minPrice[0].HasValue ? minPrice[0].Value : 0,
+                        MaxPrice = maxPrice[0].HasValue ? maxPrice[0].Value : 0,
                         LastUpdatedTime = Convert.ToDateTime(lastUpdated),
                     };
                     result.Add(info);

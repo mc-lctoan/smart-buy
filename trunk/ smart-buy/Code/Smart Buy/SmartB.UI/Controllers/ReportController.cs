@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using SmartB.UI.Helper;
 using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
 
@@ -34,7 +35,6 @@ namespace SmartB.UI.Controllers
                     products.Add(product);
                 }
             }
-
             return View(products);
         }
 
