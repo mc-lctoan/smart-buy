@@ -198,21 +198,42 @@
                 contentType: "application/json",
                 dataType: 'json',
                 success: function (data) {
-                    if (data == true) {
-
-                        if (trFor.length == 2) {
-                            $("#dupTable_" + i).find("tr").find("input:checkbox");
-                            $("#split_" + i).click();
+                    //if (data == true) {
+                    //var length = trFor.length;
+                    //var checked = new Array();
+                    //var count = 0;
+                    for (var j = 0; j < trFor.length; j++) {
+                        var cell = trFor[j].cells;
+                        //var checkbox = cell[0].checkbox.checked;
+                        for (var l = 0; l < 2; l++) {
+                            var checkbox = cell[0].childNodes[l].checked;
+                            if (checkbox == true || checkbox == false) {
+                                break;
+                            }
                         }
-                        var mes = "Gộp thành công";
-                        showNotifyDialog(mes);
+                        if (checkbox == true) {
+                            document.getElementById("table_" + i).deleteRow(j + 1);
+                            j = -1;
+                        }
                     }
-                    else {
 
-                        showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
-                        var mesDialog = document.getElementById('mesDialog');
-                        mesDialog.style.color = 'red';
+                    //for (var k = 0; k < checked.length; k++) {
+                    //}
+
+                    if (trFor.length == 1) {
+                        $("#dupTable_" + i).find("tr").find("input:checkbox");
+                        $("#split_" + i).click();
                     }
+                    window.parent.location.href = window.parent.location.href;
+                        //var mes = "Gộp thành công";
+                        //showNotifyDialog(mes);
+                    //}
+                    //else {
+                        
+                        //showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
+                        //var mesDialog = document.getElementById('mesDialog');
+                        //mesDialog.style.color = 'red';
+                    //}
                 },
                 error: function (e) {
                     showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại. " + e.message);
@@ -241,7 +262,7 @@
                 }
                 var name = cells[1].innerHTML;
 
-                if (trFor.length < 3) {
+                if (trFor.length < 2) {
                     var product = new Product(name);
                     products.push(product);
                 }
@@ -279,16 +300,16 @@
                 contentType: "application/json",
                 dataType: 'json',
                 success: function (data) {
-                    if (data == true) {
-                        var mes = "Tách thành công";
-                        showNotifyDialog(mes);
-                    }
-                    else {
-
-                        showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
-                        var mesDialog = document.getElementById('mesDialog');
-                        mesDialog.style.color = 'red';
-                    }
+                    //if (data == true) {
+                    //    var mes = "Tách thành công";
+                    //    showNotifyDialog(mes);
+                    //}
+                    //else {
+                    window.parent.location.href = window.parent.location.href;
+                    //    showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
+                    //    var mesDialog = document.getElementById('mesDialog');
+                    //    mesDialog.style.color = 'red';
+                    //}
                 }
             });
         }
@@ -305,6 +326,48 @@
     }
 
 </script>
+
+ @if (TempData["MergeProduct"] != null)
+        {
+            string message = TempData["MergeProduct"].ToString();
+            if (message == "Success")
+            {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Gộp thành công
+            </div>
+            }
+            else if (message == "Failed")
+            {
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thất bại</strong><br />
+                Gộp thất bại. Vui lòng thử lại sau.
+            </div>
+            }
+        }
+
+        @if (TempData["SplitProduct"] != null)
+        {
+            string messageSplit = TempData["SplitProduct"].ToString();
+            if (messageSplit == "Success")
+            {
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thành công</strong><br />
+                Tách thành công
+            </div>
+            }
+            else if (messageSplit == "Failed")
+            {
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Thất bại</strong><br />
+                Tách thất bại. Vui lòng thử lại sau.
+            </div>
+            }
+        }
 
 @if (ViewBag.dupDictionary != null)
 {
@@ -359,7 +422,7 @@
                             </tr>  
                         }
 
-                        @for (int j = 0; j < @ViewBag.dupProduct[i].Count; j++)
+                        @*@for (int j = 0; j < @ViewBag.dupProduct[i].Count; j++)
                         {
                 
                             <tr>
@@ -367,7 +430,7 @@
                                     <input type="checkbox" /></td>
                                 <td>@ViewBag.dupProduct[i][j].Name</td>
                             </tr>
-                        }
+                        }*@
                     </table>
                 </div>
             </div>
