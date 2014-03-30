@@ -1458,28 +1458,28 @@
                                             if (j == 0)
                                             {
                                             <tr class="checked">
-                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)">
-                                                    <input type="checkbox" checked="checked" id="checkbox" />
+                                                <td class="checkbox-column" id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                    <input type="checkbox" class="uniform" checked="checked" id="checkbox" />
                                                 </td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].Name</td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].Price</td>
                                                 <td>
-                                                    <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
+                                                    <input type="radio" class="uniform" name="productPrice_@i" id="Check_@i" checked="checked"/>
                                                 </td>
                                             </tr>
                                             }
                                             else
                                             {
                                             <tr>
-                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)">
-                                                    <input type="checkbox" id="checkbox" />
+                                                <td id="checkbox_@j" class="checkbox-column" onclick="checkboxChecked(@j)">
+                                                    <input class="uniform" type="checkbox" id="checkbox" />
                                                 </td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].Name</td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].Price</td>
                                                 <td>
-                                                    <input type="radio" name="productPrice_@i"  id="Check_@i" />
+                                                    <input type="radio" class="uniform" name="productPrice_@i" id="Check_@i" />
                                                 </td>
                                             </tr>
                                             }
@@ -1535,28 +1535,28 @@
                                             if (j == 0)
                                             {
                                             <tr class="checked">
-                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)">
-                                                    <input type="checkbox" checked="checked" id="checkbox" />
+                                                <td class="checkbox-column" id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                    <input type="checkbox" class="uniform" checked="checked" id="checkbox" />
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Price</td>
                                                 <td>
-                                                    <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
+                                                    <input type="radio" class="uniform" name="productPrice_@i" id="Check_@i" checked="checked"/>
                                                 </td>
                                             </tr>
                                             }
                                             else
                                             {
                                             <tr>
-                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)">
-                                                    <input type="checkbox" id="checkbox"/>
+                                                <td class="checkbox-column" id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                    <input type="checkbox" class="uniform" id="checkbox"/>
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Price</td>
                                                 <td>
-                                                    <input type="radio" name="productPrice_@i"  id="Check_@i"/>
+                                                    <input type="radio" class="uniform" name="productPrice_@i" id="Check_@i"/>
                                                 </td>
                                             </tr>
                                             }

@@ -3,7 +3,7 @@
 @model PagedList.IPagedList<LogFile>
 
 @{
-    ViewBag.Title = "Smart Buy | Quản lý log files";
+    ViewBag.Title = "Quản lý log files";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
     int end = Model.PageNumber * Model.PageSize;
     int start = end - Model.PageSize;
