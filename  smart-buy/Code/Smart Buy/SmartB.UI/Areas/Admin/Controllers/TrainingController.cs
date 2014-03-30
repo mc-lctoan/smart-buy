@@ -46,7 +46,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             foreach (var dictionary in dictionaries.ToList())
             {
                 double compare = CompareStringHelper.CompareString(dictionary.Name, productNameFirst);
-                if (compare > 0.7)
+                if (compare > 0)
                 {
                     return dictionary.ProductId;
                 }
@@ -78,25 +78,25 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 var dupDictionary = db.Dictionaries.Where(d => d.Name == pName).FirstOrDefault();
 
                 //check co chon item trong db hay ko
-                if (dupDictionary != null)
-                {
-                    for (int i = 0; i < parseJson.Count - 1; i++)
-                    {
-                        var pId = dupDictionary.ProductId;
-                        pName = parseJson[i].Name;
-                        var dupName = db.Dictionaries.Where(d => d.Name == pName);
-                        if (!dupName.Any(n => n.Name.Equals(pName)))
-                        {
-                            var dictionary = new Dictionary();
-                            dictionary.Name = pName;
-                            dictionary.ProductId = pId;
-                            db.Dictionaries.Add(dictionary);
-                            db.SaveChanges();
-                        }
-                    }
-                }
-                else
-                {
+                //if (dupDictionary != null)
+                //{
+                //    for (int i = 0; i < parseJson.Count - 1; i++)
+                //    {
+                //        var pId = dupDictionary.ProductId;
+                //        pName = parseJson[i].Name;
+                //        var dupName = db.Dictionaries.Where(d => d.Name == pName);
+                //        if (!dupName.Any(n => n.Name.Equals(pName)))
+                //        {
+                //            var dictionary = new Dictionary();
+                //            dictionary.Name = pName;
+                //            dictionary.ProductId = pId;
+                //            db.Dictionaries.Add(dictionary);
+                //            db.SaveChanges();
+                //        }
+                //    }
+                //}
+                //else
+                //{
                     pName = parseJson[0].Name;
                     var dupProductName = db.Products.Where(p => p.Name == pName).FirstOrDefault();
                     if (dupProductName == null)
@@ -143,15 +143,16 @@ namespace SmartB.UI.Areas.Admin.Controllers
                             db.SaveChanges();
                         }
                     }
-                }
+                //}
 
                 writeToTxt(productName);
-
+                TempData["MergeProduct"] = "Success";
                 check = true;
                 return Json(check, JsonRequestBehavior.AllowGet);
             }
             catch
             {
+                TempData["MergeProduct"] = "Failed";
                 return Json(check, JsonRequestBehavior.AllowGet);
             }
         }
@@ -191,12 +192,13 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 }
 
                 writeToTxt(productName);
-
+                TempData["SplitProduct"] = "Success";
                 check = true;
                 return Json(check, JsonRequestBehavior.AllowGet);
             }
             catch
             {
+                TempData["SplitProduct"] = "Failed";
                 return Json(check, JsonRequestBehavior.AllowGet);
             }
         }
@@ -267,18 +269,17 @@ namespace SmartB.UI.Areas.Admin.Controllers
         public List<List<DictionaryModel>> listDictionaries(string[] lines)
         {
             List<List<DictionaryModel>> listDupDictionary = new List<List<DictionaryModel>>();
-            List<List<DictionaryModel>> listProductInDB = new List<List<DictionaryModel>>();
+            //List<List<DictionaryModel>> listProductInDB = new List<List<DictionaryModel>>();
 
             foreach (string line in lines)
             {
-                List<DictionaryModel> products = new List<DictionaryModel>();
+                //List<DictionaryModel> products = new List<DictionaryModel>();
                 List<DictionaryModel> dupDictionaries = new List<DictionaryModel>();
                 // Use a tab to indent each line of the file.
                 var productName = line.Split(';');
                 for (int i = 0; i < productName.Length; i++)
                 {
                     var name = productName[i];
-
                     var productId = CheckProductNameWithDictionary(name, db.Dictionaries);
                     if (productId != 0)
                     {
@@ -288,15 +289,15 @@ namespace SmartB.UI.Areas.Admin.Controllers
                             ProductId = productId.GetValueOrDefault()
                         });
 
-                        var productInDB = db.Products.Where(p => p.Id == productId).FirstOrDefault();
-                        if (!products.Any(p => p.Name == productInDB.Name))
-                        {
-                            products.Add(new DictionaryModel
-                            {
-                                Name = productInDB.Name,
-                                ProductId = productInDB.Id
-                            });
-                        }
+                        //var productInDB = db.Products.Where(p => p.Id == productId).FirstOrDefault();
+                        //if (!products.Any(p => p.Name == productInDB.Name))
+                        //{
+                        //    products.Add(new DictionaryModel
+                        //    {
+                        //        Name = productInDB.Name,
+                        //        ProductId = productInDB.Id
+                        //    });
+                        //}
 
                     }
                 }
@@ -306,13 +307,13 @@ namespace SmartB.UI.Areas.Admin.Controllers
                     listDupDictionary.Add(dupDictionaries);
                 }
 
-                if (products != null && products.Count > 0)
-                {
-                    listProductInDB.Add(products);
-                }
+                //if (products != null && products.Count > 0)
+                //{
+                //    listProductInDB.Add(products);
+                //}
             }
             ViewBag.dupDictionary = listDupDictionary;
-            ViewBag.dupProduct = listProductInDB;
+            //ViewBag.dupProduct = listProductInDB;
             
             return listDupDictionary;
         }
