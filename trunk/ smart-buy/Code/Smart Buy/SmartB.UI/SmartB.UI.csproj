@@ -631,6 +631,9 @@
     <Content Include="Images\header2.png" />
     <Content Include="Images\InfoPrice.png" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\Marker\Home.png" />
+    <Content Include="Images\Marker\Market.png" />
+    <Content Include="Images\Marker\Shopping.png" />
     <Content Include="Images\paper.png" />
     <Content Include="Images\shopping_cart_accept.png" />
     <Content Include="Metro\css\docs.css" />
