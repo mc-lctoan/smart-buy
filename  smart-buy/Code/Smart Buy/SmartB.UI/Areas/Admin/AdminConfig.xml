@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-  <logPath>E:\Capstone Project\Thesis\Code\Smart Buy\SmartB.UI\Areas\Admin\LogFiles\</logPath>
-  <IsParserRunning>0</IsParserRunning>
   <fuel>25</fuel>
+  <epsilon>5</epsilon>
+  <parseTime>
+    <hour>07</hour>
+    <minute>00</minute>
+  </parseTime>
 </config>

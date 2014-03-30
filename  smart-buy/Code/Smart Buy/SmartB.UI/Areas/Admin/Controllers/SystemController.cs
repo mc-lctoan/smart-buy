@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SmartB.UI.Areas.Admin.Helper;
+using SmartB.UI.Areas.Admin.Models;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
@@ -27,6 +29,22 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return null;
+        }
+
+        public ActionResult ConfigureSystem()
+        {
+            var helper = new ConfigHelper();
+            var model = helper.CreateModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateSystemProperties(ConfigurationModel model)
+        {
+            var helper = new ConfigHelper();
+            helper.UpdateModel(model);
+            TempData["edit"] = "Success";
+            return RedirectToAction("ConfigureSystem");
         }
     }
 }
