@@ -4,14 +4,14 @@
     ViewBag.Title = "Gợi ý";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
     int counter = 0;
-    var markets = Model.Select(x => new { x.MarketName, x.Latitude, x.Longitude }).Distinct();
+    var markets = Model.Select(x => new { x.MarketName, x.Latitude, x.Longitude }).Distinct().ToList();
 }
 
 @section head
 {
     <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmQi6XuUHARe_gzLWFpKWzZSu34ZaWv1Q&sensor=false"></script>
-   <!-- Metro -->
+    <!-- Metro -->
     <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
     <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
     <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
@@ -33,7 +33,7 @@
             };
             map = new google.maps.Map(document.getElementById("map-canvas"),
                 mapOptions);
-            directionsDisplay = new google.maps.DirectionsRenderer();
+            directionsDisplay = new google.maps.DirectionsRenderer({ 'suppressMarkers': true });
             directionsDisplay.setMap(map);
             directionsService = new google.maps.DirectionsService();
 
@@ -43,6 +43,24 @@
         google.maps.event.addDomListener(window, 'load', initialize);
 
         function set_route(data, wp) {
+            var startMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(data.start.lat, data.start.lng),
+                map: map,
+                icon: '@Url.Content("~/Images/Marker/Shopping.png")',
+                title: 'Nơi xuất phát',
+                animation: google.maps.Animation.DROP
+            });
+            
+            var endMarker = new google.maps.Marker({
+                position: new google.maps.LatLng(data.end.lat, data.end.lng),
+                map: map,
+                icon: '@Url.Content("~/Images/Marker/Home.png")',
+                title: 'Nơi kết thúc',
+                animation: google.maps.Animation.DROP
+            });
+
+            draw_markets();
+
             var request = {
                 origin: new google.maps.LatLng(data.start.lat, data.start.lng),
                 destination: new google.maps.LatLng(data.end.lat, data.end.lng),
@@ -55,6 +73,25 @@
                     directionsDisplay.setDirections(result);
                 }
             });
+        }
+
+        function draw_markets() {
+            var marker;
+            @foreach (var market in markets)
+            {
+                if (market.MarketName != "")
+                {
+<text>
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(@market.Latitude, @market.Longitude),
+                map: map,
+                icon: '@Url.Content("~/Images/Marker/Market.png")',
+                title: '@Html.Raw(HttpUtility.HtmlDecode(market.MarketName))',
+                animation: google.maps.Animation.DROP
+            });
+</text>
+                }
+            }
         }
 
         function get_waypoints() {
@@ -81,10 +118,10 @@
             <div class="Tools">
                 <div class="Left">
                     <ul class="SortTool">
-                        <li style=" cursor: auto; background-color: #3399FF; color: white !important;">
+                        <li style="cursor: auto; background-color: #3399FF; color: white !important;">
                             <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
                         </li>
-                        <li style=" cursor: auto;">Gợi ý cách mua hàng.
+                        <li style="cursor: auto;">Gợi ý cách mua hàng.
                         </li>
                     </ul>
                 </div>
@@ -116,7 +153,7 @@
 
                 @if (Model.Any())
                 {
-                    <table id="ProductTable" class="table table-bordered table-hover" style="background:white">
+                    <table id="ProductTable" class="table table-bordered table-hover" style="background: white">
                         <thead>
                             <tr>
                                 <th>STT</th>
