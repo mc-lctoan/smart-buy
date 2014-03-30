@@ -113,6 +113,34 @@
                     }
                 }
             });
+            
+            @if (Model.FirstRoute != null)
+            {
+<text>
+            var tmp = '@Html.Raw(HttpUtility.HtmlDecode(Model.FirstRoute))';
+            var firstRoute = eval('(' + tmp + ')');
+            fromLocation_1 = new google.maps.LatLng(firstRoute.start.lat, firstRoute.start.lng);
+            toLocation_1 = new google.maps.LatLng(firstRoute.end.lat, firstRoute.end.lng)
+</text>
+            }
+            @if (Model.SecondRoute != null)
+            {
+<text>
+            tmp = '@Html.Raw(HttpUtility.HtmlDecode(Model.SecondRoute))';
+            var secondRoute = eval('(' + tmp + ')');
+            fromLocation_2 = new google.maps.LatLng(secondRoute.start.lat, secondRoute.start.lng);
+            toLocation_2 = new google.maps.LatLng(secondRoute.end.lat, secondRoute.end.lng)
+</text>
+            }
+            @if (Model.ThirdRoute != null)
+            {
+<text>
+            tmp = '@Html.Raw(HttpUtility.HtmlDecode(Model.ThirdRoute))';
+            var thirdRoute = eval('(' + tmp + ')');
+            fromLocation_3 = new google.maps.LatLng(thirdRoute.start.lat, thirdRoute.start.lng);
+            toLocation_3 = new google.maps.LatLng(thirdRoute.end.lat, thirdRoute.end.lng)
+</text>
+            }
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
@@ -183,6 +211,16 @@
                 animation: google.maps.Animation.DROP
             });
             markers.push(marker);
+
+            var contentString = "<h1>" + place.title + "</h1>" +
+                "<p>" + place.address + "</p>";
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map, marker);
+            });
         }
         
         function clear_marker() {
@@ -216,7 +254,8 @@
             var m = {
                 id: @market.Id,
                 position: position,
-                title: '@Html.Raw(HttpUtility.HtmlDecode(market.Name))'
+                title: '@Html.Raw(HttpUtility.HtmlDecode(market.Name))',
+                address: '@Html.Raw(HttpUtility.HtmlDecode(market.Address))'
             };
             list.push(m);
                     </text>
