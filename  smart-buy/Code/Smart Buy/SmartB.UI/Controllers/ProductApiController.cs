@@ -74,16 +74,19 @@ namespace SmartB.UI.Controllers
                     .OrderByDescending(x => x.LastUpdatedTime)
                     .Select(x => x.LastUpdatedTime).FirstOrDefault();
                 string lastUpdateTimeFormat = String.Format("{0:MM-dd-yyyy}", lastUpdateTime);
-                
-                var info = new ProductMobileModel
+                var proAtt = context.ProductAttributes.Where(p => p.ProductId == product.Id).OrderByDescending(x => x.LastUpdatedTime).FirstOrDefault();
+                if (proAtt != null)
                 {
-                    ProductId = product.Id.ToString(),
-                    Name = product.Name,
-                    MinPrice = minPrice[0].ToString(),
-                    MaxPrice = maxPrice[0].ToString(),
-                    LastUpdateTime = lastUpdateTimeFormat
-                };
-                result.Add(info);
+                    var info = new ProductMobileModel
+                    {
+                        ProductId = product.Id.ToString(),
+                        Name = product.Name,
+                        MinPrice = minPrice[0].ToString(),
+                        MaxPrice = maxPrice[0].ToString(),
+                        LastUpdateTime = lastUpdateTimeFormat
+                    };
+                    result.Add(info);
+                }
             }
             return result;
         }

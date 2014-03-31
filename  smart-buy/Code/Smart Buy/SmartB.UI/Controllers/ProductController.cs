@@ -55,19 +55,23 @@ namespace SmartB.UI.Controllers
                     .OrderByDescending(x => x.LastUpdatedTime)
                     .Select(x => x.MaxPrice)
                     .ToList();
-                var lastUpdated = db.ProductAttributes.Where(p => p.Id == dictionary.ProductId).Select(p => p.LastUpdatedTime).FirstOrDefault();
+                var lastUpdated = db.ProductAttributes.Where(p => p.ProductId == dictionary.ProductId).Select(p => p.LastUpdatedTime).FirstOrDefault();
                 var productName = db.Products.Where(p => p.Id == dictionary.ProductId).Select(p => p.Name).FirstOrDefault();
-                if (result.All(p => p.Name != productName))
+                var proAtt = db.ProductAttributes.Where(p => p.ProductId == dictionary.ProductId).OrderByDescending(x => x.LastUpdatedTime).FirstOrDefault();
+                if (proAtt != null)
                 {
-                    var info = new ProductInfo
+                    if (result.All(p => p.Name != productName))
                     {
-                        ProductId = dictionary.ProductId.GetValueOrDefault(),
-                        Name = productName,
-                        MinPrice = minPrice[0].HasValue ? minPrice[0].Value : 0,
-                        MaxPrice = maxPrice[0].HasValue ? maxPrice[0].Value : 0,
-                        LastUpdatedTime = Convert.ToDateTime(lastUpdated),
-                    };
-                    result.Add(info);
+                        var info = new ProductInfo
+                        {
+                            ProductId = dictionary.ProductId.GetValueOrDefault(),
+                            Name = productName,
+                            MinPrice = minPrice[0].HasValue ? minPrice[0].Value : 0,
+                            MaxPrice = maxPrice[0].HasValue ? maxPrice[0].Value : 0,
+                            LastUpdatedTime = Convert.ToDateTime(lastUpdated),
+                        };
+                        result.Add(info);
+                    }
                 }
 
             }
