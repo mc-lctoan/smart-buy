@@ -6,7 +6,29 @@ url('../Fonts/uosm_steelfish_rg4.ttf') format('truetype'),
 url('../Fonts/uosm_steelfish_rg4.woff') format('woff'),
 url('../Fonts/uosm_steelfish_rg4.svg#steelfish_rgregular') format('svg');
 }
+.btn {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 5px 10px;
+    box-shadow: 0px 2px 6px #c7d0d2;
+    border: 1px solid #949494;
+    border-radius: 5px;
+}
 
+.saveCart {
+background: #a3cf3c url("../Images/noise.png") repeat;
+color: #fff !important;
+font-size: 16px;
+box-shadow: 1px 2px 1px rgb(0, 112, 63);
+text-shadow: 2px 1px rgb(129, 129, 129);
+font-weight: 400;
+}
+    .saveCart a {
+    color:white;
+    }
+.saveCart:hover {
+background-color:greenyellow;
+}
 .btn-large
 {
     background-color: #FE9D00;
@@ -224,3 +246,13 @@ background-color: white;
 }
 .yellowWeek {
     background-color: rgba(246, 255, 27, 0.6) !important;
+}
+
+.titlespec {
+background: #fff url('http://localhost:2030/images/bg-repeat.png') repeat;
+border-bottom: #cfcfcf 1px solid;
+margin-bottom: 0px;
+height: 40px;
+text-indent: 0px;
+padding: 0px;
+}

@@ -19,8 +19,7 @@
     </script>
 @if (Model != null)
 {
-  
-    <h4 class="ProductNameDetail" style="margin-top:50px">Sản phẩm ưa thích</h4>
+    <h4 class="ProductNameDetail">Sản phẩm ưa thích</h4>
     <table class="table table-bordered table-hover" >
         <thead>
             <tr style="background-color: white;">
@@ -38,24 +37,26 @@
                                                                             where p.ProductId == productId
                                                                             group p by p.ProductId into grp
                                                                             select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
-                <tr style="background-color:white" >
+                if ((DateTime.Now - Convert.ToDateTime(proAtt.LastUpdatedTime)).TotalDays >= 14)
+                {
+                    <tr class="redWeek" style="background-color:white" >
                     <td id="addProduct_@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)
                         @{                
-                var productName = item.Product.Name;
+                    var productName = item.Product.Name;
                         }
 
                     </td>
 
                     <td>@proAtt.MinPrice - @proAtt.MaxPrice
                         @{
-                var minPrice = proAtt.MinPrice;
-                var maxPrice = proAtt.MaxPrice;
+                    var minPrice = proAtt.MinPrice;
+                    var maxPrice = proAtt.MaxPrice;
                         }
                     </td>
                     <td>
                         <div>
                             <div class="AddToCardDetail">
-                                <input type="button" name="action" value="Add" onclick="addToCart('@productId')" class="btnAddToCardDetail" data-id ="" />
+                                <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
                                 <div style="color: black">Thêm vào giỏ</div>
                             </div>
                             <div class="SuggestPrice">
@@ -87,6 +88,111 @@
                         </script>
                     </td>
                 </tr>
+                }
+                else if ((DateTime.Now - Convert.ToDateTime(proAtt.LastUpdatedTime)).TotalDays >= 7)
+                {
+                    <tr class="yellowWeek" style="background-color:white" >
+                    <td id="addProduct_@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)
+                        @{                
+                    var productName = item.Product.Name;
+                        }
+
+                    </td>
+
+                    <td>@proAtt.MinPrice - @proAtt.MaxPrice
+                        @{
+                    var minPrice = proAtt.MinPrice;
+                    var maxPrice = proAtt.MaxPrice;
+                        }
+                    </td>
+                    <td>
+                        <div>
+                            <div class="AddToCardDetail">
+                                <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
+                                <div style="color: black">Thêm vào giỏ</div>
+                            </div>
+                            <div class="SuggestPrice">
+                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                <div style="color: black">Đề xuất giá</div>
+                            </div>
+                        </div>
+
+                        <script>
+
+                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
+                                $.Dialog({
+                                    overlay: true,
+                                    shadow: true,
+                                    flat: true,
+                                    width: 442,
+                                    icon: '<i class="btnSuggestPrice"></i>',
+                                    title: 'Đề xuất giá',
+                                    content: '',
+                                    padding: 10,
+                                    onShow: function (_dialog) {
+                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                        $.Dialog.content(content);
+                                        $.Metro.initInputs();
+                                    }
+                                });
+                                return true;
+                            });
+                        </script>
+                    </td>
+                </tr>
+                }
+                else
+                {
+                 <tr style="background-color:white" >
+                    <td id="addProduct_@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)
+                        @{                
+                    var productName = item.Product.Name;
+                        }
+
+                    </td>
+
+                    <td>@proAtt.MinPrice - @proAtt.MaxPrice
+                        @{
+                    var minPrice = proAtt.MinPrice;
+                    var maxPrice = proAtt.MaxPrice;
+                        }
+                    </td>
+                    <td>
+                        <div>
+                            <div class="AddToCardDetail">
+                                <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
+                                <div style="color: black">Thêm vào giỏ</div>
+                            </div>
+                            <div class="SuggestPrice">
+                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                <div style="color: black">Đề xuất giá</div>
+                            </div>
+                        </div>
+
+                        <script>
+
+                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
+                                $.Dialog({
+                                    overlay: true,
+                                    shadow: true,
+                                    flat: true,
+                                    width: 442,
+                                    icon: '<i class="btnSuggestPrice"></i>',
+                                    title: 'Đề xuất giá',
+                                    content: '',
+                                    padding: 10,
+                                    onShow: function (_dialog) {
+                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                        $.Dialog.content(content);
+                                        $.Metro.initInputs();
+                                    }
+                                });
+                                return true;
+                            });
+                        </script>
+                    </td>
+                </tr>
+                }
             }
         </tbody>
     </table>
