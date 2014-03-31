@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
-using FluentScheduler;
+using Quartz;
+using Quartz.Impl;
+using SmartB.UI.App_Start;
 using SmartB.UI.Areas.Admin.Models;
 using SmartB.UI.Infrastructure;
 
@@ -98,8 +100,10 @@ namespace SmartB.UI.Areas.Admin.Helper
 
                 int h = Int32.Parse(hour);
                 int m = Int32.Parse(minute);
-                TaskManager.RemoveTask("Parser");
-                TaskManager.Initialize(new ParseService(h, m));
+                //var config = new BackgroundConfig();
+                BackgroundConfig.RescheduleParser(h, m);
+                //TaskManager.RemoveTask("Parser");
+                //TaskManager.Initialize(new ParseService(h, m));
             }
         }
 

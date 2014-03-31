@@ -7,8 +7,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using FluentScheduler;
+using SmartB.UI.App_Start;
 using SmartB.UI.Binder;
-using SmartB.UI.Infrastructure;
 using SmartB.UI.Models;
 
 namespace SmartB.UI
@@ -34,7 +34,8 @@ namespace SmartB.UI
 
             //MarketHelper.CalculateDistance();
 
-            TaskManager.Initialize(new ParseService(4, 0));
+            BackgroundConfig.StartScheduler();
+            BackgroundConfig.ScheduleParser();
         }
     }
 }
