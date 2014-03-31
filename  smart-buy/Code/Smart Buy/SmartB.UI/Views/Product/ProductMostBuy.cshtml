@@ -19,7 +19,8 @@
     </script>
 @if (Model != null)
 {
-    <h4 class="ProductNameDetail">Sản phẩm ưa thích</h4>
+  
+    <h4 class="ProductNameDetail" style="margin-top:50px">Sản phẩm ưa thích</h4>
     <table class="table table-bordered table-hover" >
         <thead>
             <tr style="background-color: white;">
@@ -37,7 +38,7 @@
                                                                             where p.ProductId == productId
                                                                             group p by p.ProductId into grp
                                                                             select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
-                <tr >
+                <tr style="background-color:white" >
                     <td id="addProduct_@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)
                         @{                
                 var productName = item.Product.Name;
