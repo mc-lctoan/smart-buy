@@ -269,22 +269,6 @@ namespace SmartB.UI.Areas.Admin.Controllers
                     };
                     var addedProductAtt = db.ProductAttributes.Add(productAttribute);
                     db.SaveChanges(); // Save to database
-                    // add Product Dictionary
-                    var dictionaries = product.Name.Split(';').ToList();
-                    foreach (string dictionary in dictionaries)
-                    {
-                        if (dictionary != "")
-                        {
-                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
-                            {
-                                Name = dictionary,
-                                ProductId = addedProduct.Id
-                            };
-                            var addProductDic = db.Dictionaries.Add(ProductDic);
-                        }
-                    }
-
-                    db.SaveChanges(); // Save to database
 
                 }
 
@@ -952,7 +936,45 @@ namespace SmartB.UI.Areas.Admin.Controllers
 
                 TextWriter sw = new StreamWriter(text + "\\UploadedExcelFiles\\ProductName.txt");
                 var correctDupProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
+                List<SellProduct> productsDB = db.SellProducts.ToList();
+                for (int d = 0; d < productsDB.Count; d++)
+                {
+                    var status = false;
+                    for (int i = 0; i < correctDupProducts.Count; i++)
+                    {
+                        
+                        if (status == true)
+                        {
+                            break;
+                        }
+                        for (int j = 0; j < correctDupProducts[i].Count; j++)
+                        {
+                            if (correctDupProducts[i][j].MarketName != productsDB[d].Market.Name)
+                            {
+                                status = true;
+                                break;
+                            }
+                            else
+                            {
+                                var nameDupProduct = correctDupProducts[i][j].Name;
+                                var percentage =
+                                    CompareStringHelper.CompareString(nameDupProduct, productsDB[d].Product.Name);
+                                if (percentage > 0.85)
+                                {
+                                    SellProductModel model = new SellProductModel();
+                                    model.Id = productsDB[d].Id;
+                                    model.Name = productsDB[d].Product.Name;
+                                    model.MarketName = productsDB[d].Market.Name;
+                                    model.Price = Convert.ToInt32(productsDB[d].SellPrice);
 
+                                    correctDupProducts[i].Add(model);
+                                    status = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
                 for (int i = 0; i < correctDupProducts.Count; i++)
                 {
                     var productName = "";
