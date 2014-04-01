@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Quartz</id>
+    <version>2.2.3</version>
+    <title>Quartz.NET</title>
+    <authors>Marko Lahma</authors>
+    <owners>Marko Lahma</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://www.quartz-scheduler.net/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Quartz.NET Scheduling Framework for .NET Platform</description>
+    <releaseNotes>This is a bug fix release which has some critical fixes, especially for CalendarIntevalTrigger
+future date calculation and trigger's next fires not being processed in a timely fashion when AdoJobStore is used
+with DisallowConcurrentExecutionAttribute and trigger has short repeat interval.
+
+This update is highly recommended for all users.
+
+FIXES
+
+* StdAdoConstants.SqlSelectSchedulerStates does not filter on the SCHED_NAME column
+* CalendarIntervalTrigger produces incorrect schedule
+* Trigger completion signaling from AdoJobStore does not work properly when DisallowConcurrentExecution is set
+
+NEW FEATURE
+
+* IDisposable jobs should be disposed after execution  
+* Support for defining DbMetadata via App.config's quartz section</releaseNotes>
+    <copyright />
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="Common.Logging" version="2.1.2" />
+    </dependencies>
+  </metadata>
+</package>
