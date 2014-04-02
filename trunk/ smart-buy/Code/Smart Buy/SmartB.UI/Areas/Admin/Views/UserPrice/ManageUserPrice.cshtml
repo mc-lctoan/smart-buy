@@ -128,18 +128,18 @@
 
             success: function (data) {
 
-                //if (data == true) {
-                //    message = "Cập nhật thành công.";
-                //    //showNotifyDialog(message);
-                //} else {
+                if (data == true) {
+                    window.parent.location.href = window.parent.location.href;
+                    //showNotifyDialog(message);
+                } //else {
                 //    message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
                 //    //showNotifyDialog(message);
                 //}
-                window.parent.location.href = window.parent.location.href;
+                
             },
             error: function (e) {
                 //$.Dialog.close();
-                alert("(*) Có lỗi xảy ra. Vui lòng thử lại ");
+                //alert("(*) Có lỗi xảy ra. Vui lòng thử lại ");
                 // message = "(*) Có lỗi xảy ra. Vui lòng thử lại " + e.message;
                 //showNotifyDialog(message);
             }
@@ -238,7 +238,7 @@
                         {
                             var userPriceId = item.Id;
                             var updatedTime = item.LastUpdatedTime;
-                            string updatedTimeFormat = String.Format("{0:HH:mm:ss}", updatedTime);
+                            string updatedTimeFormat = String.Format("{0:HH:mm:ss dd/MM/yyyy}", updatedTime);
                             SmartB.UI.Models.EntityFramework.SmartBuyEntities db = new SmartB.UI.Models.EntityFramework.SmartBuyEntities();
                             var productId = item.Product.Id;
                             SmartB.UI.Models.EntityFramework.ProductAttribute proAtt = (from p in db.ProductAttributes
