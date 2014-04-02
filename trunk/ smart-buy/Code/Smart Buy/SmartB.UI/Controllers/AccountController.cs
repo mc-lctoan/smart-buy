@@ -107,8 +107,15 @@ namespace SmartB.UI.Controllers
             return View(model);
         }
 
+        public ActionResult ChangePassword()
+        {
+            var model = new ChangePasswordModel();
+            model.Username = User.Identity.Name;
+            return View(model);
+        }
+
         [HttpPost]
-        public RedirectToRouteResult ChangePassword(AccountDetailModel model)
+        public RedirectToRouteResult ChangePassword(ChangePasswordModel model)
         {
             string state = "Fail";
             string message = "Sai mật khẩu. Vui lòng thử lại.";
@@ -123,7 +130,7 @@ namespace SmartB.UI.Controllers
             }
             TempData["State"] = state;
             TempData["Message"] = message;
-            return RedirectToAction("AccountDetails");
+            return RedirectToAction("ChangePassword");
         }
 
         public ActionResult AccountDetails()
@@ -140,7 +147,6 @@ namespace SmartB.UI.Controllers
                 .ToList();
             var model = new AccountDetailModel
                             {
-                                Username = User.Identity.Name,
                                 Markets = markets,
 
                                 FirstStartAddress = user.Profile.FirstStartAddress,

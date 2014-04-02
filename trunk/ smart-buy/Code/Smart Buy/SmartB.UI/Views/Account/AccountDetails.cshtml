@@ -8,8 +8,6 @@
     {
         message = TempData["DefineRoute"].ToString();
     }
-    string passwordState = (string)TempData["State"];
-    string passwordMes = (string)TempData["Message"];
 }
 
 @section head
@@ -404,77 +402,9 @@
                     </div>
                 </div>
             }
-
-            @if (passwordState == "Success")
-            {
-                <div class="message-box ok-message-box clearfix">
-                    <div class="message-icon-box">
-                        <i class="icon-ok"></i>
-                    </div>
-
-                    <div class="message-container">
-                        <h3 class="ProductNameDetail">@passwordMes</h3>
-                    </div>
-                </div>
-            }
-            else if (passwordState == "Fail")
-            {
-                <div class="message-box warning-message-box clearfix">
-                    <div class="message-icon-box">
-                        <i class="icon-exclamation"></i>
-                    </div>
-
-                    <div class="message-container">
-                        <h3>@passwordMes</h3>
-                    </div>
-                </div>
-            }
             <div class="container">
                 <div class="row">
-                    <div class="span4">
-                        @using (Html.BeginForm("ChangePassword", "Account"))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(false)
-
-                            <div>
-                                <div class="titlespec">
-                                    <div class="ProductNameDetail" style="line-height: 40px; margin-left: 5px">Thay đổi mật khẩu</div>
-                                </div>
-                                <div class="bg-address">
-                                    <div class="bg-white-input" style="margin: 0px">
-                                        <span class="lbl-input" style="width: 32%; color: black; font-size: 11px">Tên Tài Khoản</span>
-                                        <span style="width: 65%;">
-                                            @Html.TextBoxFor(m => m.Username, new { disabled = "disabled", style = "width: 65%" })
-                                        </span>
-
-                                    </div>
-                                    <div class="bg-white-input" style="margin: 0px">
-                                        <span class="lbl-input" style="width: 32%; color: black; font-size: 11px">Mật khẩu cũ</span>
-                                        <span>
-                                            @Html.PasswordFor(model => model.Password, new { @class = "text-box", @placeholder = "Mật khẩu cũ", @maxlength = 36, style = "width:65%" })
-                                        </span>
-                                        <span class="text-warning">@Html.ValidationMessageFor(m => m.Password)</span>
-                                    </div>
-                                    <div class="bg-white-input" style="margin: 0px">
-                                        <span class="lbl-input" style="width: 32%; color: black; font-size: 11px">Mật khẩu mới</span>
-                                        <span>
-                                            @Html.PasswordFor(model => model.NewPassword, new { @class = "text-box", @placeholder = "Mật khẩu mới", @maxlength = 36, style = "width:65%" })
-                                        </span>
-                                        <span class="text-warning">@Html.ValidationMessageFor(m => m.NewPassword)</span>
-                                    </div>
-
-                                    <div class="metro" style="margin-left: 55%">
-                                        <button type="submit" class="primary">
-                                            <i class="icon-checkmark"></i>
-                                            Đổi mật khẩu
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <div class="span" style="min-width: 400px">
+                    <div class="span8">
                         <div class="titlespec">
                             <div class="ProductNameDetail" style="margin: 0px 0 20px 5px; line-height: 40px; border-bottom: 1px solid #e5e5e5;">
                                 Đường Đi Ưu Tiên

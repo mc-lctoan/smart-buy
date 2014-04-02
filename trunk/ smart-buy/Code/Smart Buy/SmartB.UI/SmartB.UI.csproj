@@ -250,6 +250,7 @@
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartHistory.cs" />
     <Compile Include="Models\CartViewModel.cs" />
+    <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\ChartPriceModel.cs" />
     <Compile Include="Models\DefineRouteModel.cs" />
     <Compile Include="Models\DictionaryModel.cs" />
@@ -1165,6 +1166,7 @@
     <Content Include="Template\HighChart\exporting-server\phantomjs\readme.md" />
     <Content Include="Template\HighChart\exporting-server\php\php-batik\index.php" />
     <Content Include="Views\Report\ViewChart.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

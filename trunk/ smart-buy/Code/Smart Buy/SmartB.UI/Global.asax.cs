@@ -6,7 +6,6 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using FluentScheduler;
 using SmartB.UI.App_Start;
 using SmartB.UI.Binder;
 using SmartB.UI.Models;
