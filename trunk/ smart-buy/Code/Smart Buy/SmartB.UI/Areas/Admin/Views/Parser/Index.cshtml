@@ -12,8 +12,28 @@
 @section headScript
 {
     <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
-}
+    <link href="@Url.Content("~/Content/Admin.css")" rel="stylesheet" type="text/css" />
 
+}
+<script src="@Url.Content("~/Scripts/jquery-1.7.2.min.js")"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".SetActive").click(function () {
+            // Get the id from the link
+            var recordToSet = $(this).attr("data-id");
+
+            if (recordToSet != '') {
+
+                // Perform the ajax post
+                $.post("/Parser/SetActive", { "id": recordToSet },
+                    function (data) {
+                        location.reload();
+                    });
+            }
+        });
+
+    });
+</script>
 @section sidebar
 {
     <aside id="sidebar">
@@ -177,7 +197,7 @@
                 Xóa thành công
             </div>
         }
-
+        <div style="float:left;padding-top: 20px;">
         @using (Html.BeginForm("ParseData", "Parser"))
         {
             if (ConstantManager.IsParserRunning)
@@ -189,31 +209,29 @@
                 <input type="submit" value="Chạy parser" class="btn btn-primary"/>
             }
         }
-
-        @using (Html.BeginForm("DeleteParser", "Parser"))
+            </div>
+        <br />
+        <div style="margin-left:60%">
+         @using (Html.BeginForm("Index", "Parser", FormMethod.Get))
         {
+            <p>
+                Tên Chợ: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+                <input type="submit" value="Tìm kiếm" class="btn btn-primary" style="margin-bottom: 10px;" />
+            </p>
+        }
+            </div>
             <div class="widget-header">
                 <span class="title">Danh sách các parsers</span>
-                <div class="toolbar">
-                    <div class="btn-group">
-                        <button class="btn" type="submit">
-                            <i class="icol-cancel"></i>
-                            Xóa
-                        </button>
-                    </div>
-                </div>
             </div>
             <div class="widget-content table-container">
                 <table class="table table-bordered table-striped table-checkable">
                     <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên chợ</th>
-                            <th>Đường dẫn</th>
-                            <th>Thao tác</th>
-                            <th class="checkbox-column">
-                                <input type="checkbox" />
-                            </th>
+                        <tr class="bg-header">
+                            <th style="width:5%;text-align:center">STT</th>
+                            <th style="width:25%;text-align:center">Tên chợ</th>
+                            <th style="width:40%;text-align:center">Đường dẫn</th>
+                            <th style="width:10%;text-align:center">Thao tác</th>
+                            <th  style="width:20%;text-align:center">Trạng thái</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -226,20 +244,33 @@
                                 <td>
                                     @Html.ActionLink("Chỉnh sửa", "EditParser", new { id = info.Id })
                                 </td>
-                                <td class="checkbox-column">
-                                    <input type="checkbox" value="@info.Id" name="ids"/>
-                                </td>
+                                 @if (info.IsActive == true)
+                        {
+                            <td>
+                                <button class="SetActive" data-id="@info.Id" style="background-color: #9DD52A;height: 25px;" >
+                                    <p>Hoạt động</p>
+                                </button>
+                            </td>  
+                        }
+                        else
+                        {
+                            <td>
+                                <button class="SetActive" data-id="@info.Id" style="background-color:lightskyblue;height: 25px;">
+                                    <p>Không hoạt động</p>
+                                </button>
+                            </td>   
+                        }
                             </tr>
                             start++;
                         }
                     </tbody>
                 </table>
             </div>
-            <div class="toolbar">
-                <div class="pagination-right">
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-                </div>
+            <div class="toolbar" style="padding-right: 10px;">
+            <div class="pagination-right">
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
             </div>
-        }
+        </div>
     </div>
 </div>

@@ -13,15 +13,40 @@ namespace SmartB.UI.Areas.Admin.Controllers
     public class MarketController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();
-        private const int PageSize = 10;
+       // private const int PageSize = 10;
 
-        public ActionResult Index(int page = 1)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var markets = context.Markets
-                .OrderBy(x => x.Name)
-                .Where(x => x.IsActive && x.Address != null)
-                .ToPagedList(page, PageSize);
-            return View(markets);
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+            var markets = from p in context.Markets
+                           select p;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                markets = markets.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    markets = markets.OrderByDescending(s => s.Name);
+                    break;
+                default:
+                    markets = markets.OrderBy(s => s.Name);
+                    break;
+            }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(markets.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Create()
@@ -96,6 +121,34 @@ namespace SmartB.UI.Areas.Admin.Controllers
         {
             context.Dispose();
             base.Dispose(disposing);
+        }
+        [HttpPost]
+        public ActionResult SetActive(int id)
+        {
+            var market = context.Markets.FirstOrDefault(x => x.Id == id);
+            bool statusFlag = false;
+            if (ModelState.IsValid)
+            {
+                if (market.IsActive == true)
+                {
+                    market.IsActive = false;
+                    statusFlag = false;
+                }
+                else
+                {
+                    market.IsActive = true;
+                    statusFlag = true;
+                }
+                context.SaveChanges();
+            }
+
+            // Display the confirmation message
+            var results = new Market
+            {
+                IsActive = statusFlag
+            };
+
+            return Json(results);
         }
     }
 }

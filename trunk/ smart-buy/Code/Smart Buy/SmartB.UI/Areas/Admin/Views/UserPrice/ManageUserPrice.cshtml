@@ -9,6 +9,7 @@
 @section headScript
 {
     <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Admin.css")" rel="stylesheet" type="text/css" />
 }
 
 @section sidebar
@@ -222,14 +223,14 @@
             <div class="widget-content table-container">
                 <table class="table table-bordered table-striped table-checkable">
                     <thead>
-                        <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Giá hiện tại</th>
-                            <th>Giá đề xuất</th>
-                            <th>Địa điểm</th>
-                            <th>Người đề xuất</th>
-                            <th>Thời điểm đề xuất</th>
-                            <th>Thao tác</th>
+                         <tr class="bg-header">
+                            <th style="width:15%;text-align:center">Tên sản phẩm</th>
+                            <th style="width:12%;text-align:center">Giá hiện tại</th>
+                            <th style="width:13%;text-align:center">Giá đề xuất</th>
+                            <th style="width:15%;text-align:center">Địa điểm</th>
+                            <th style="width:15%;text-align:center">Người đề xuất</th>
+                            <th style="width:20%;text-align:center">Thời điểm đề xuất</th>
+                            <th style="width:10%;text-align:center">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>

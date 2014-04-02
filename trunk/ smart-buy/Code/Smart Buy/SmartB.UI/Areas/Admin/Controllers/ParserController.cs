@@ -18,19 +18,45 @@ namespace SmartB.UI.Areas.Admin.Controllers
     public class ParserController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();
-        private const int PageSize = 10;
+       // private const int PageSize = 10;
 
         //
         // GET: /Admin/ParseWeb/
 
-        public ActionResult Index(int page = 1)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var parsers = context.ParseInfoes
-                .Include(x => x.Market)
-                .Where(x => x.IsActive)
-                .OrderBy(x => x.Id)
-                .ToPagedList(page, PageSize);
-            return View(parsers);
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+            var parsers = from p in context.ParseInfoes
+                          .Include(x => x.Market)
+                          .OrderBy(x => x.Id)
+                           select p;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                parsers = parsers.Where(s => s.Market.Name.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    parsers = parsers.OrderByDescending(s => s.Market.Name);
+                    break;
+                default:
+                    parsers = parsers.OrderBy(s => s.Market.Name);
+                    break;
+            }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(parsers.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpPost]
@@ -160,6 +186,35 @@ namespace SmartB.UI.Areas.Admin.Controllers
         {
             context.Dispose();
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        public ActionResult SetActive(int id)
+        {
+            var parser = context.ParseInfoes.FirstOrDefault(x => x.Id == id);
+            bool statusFlag = false;
+            if (ModelState.IsValid)
+            {
+                if (parser.IsActive == true)
+                {
+                    parser.IsActive = false;
+                    statusFlag = false;
+                }
+                else
+                {
+                    parser.IsActive = true;
+                    statusFlag = true;
+                }
+                context.SaveChanges();
+            }
+
+            // Display the confirmation message
+            var results = new ParseInfo
+            {
+                IsActive = statusFlag
+            };
+
+            return Json(results);
         }
     }
 }
