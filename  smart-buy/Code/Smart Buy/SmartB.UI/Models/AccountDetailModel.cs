@@ -9,18 +9,6 @@ namespace SmartB.UI.Models
 {
     public class AccountDetailModel
     {
-        [Display(Name = "Tên đăng nhập")]
-        public string Username { get; set; }
-
-        [Display(Name = "Mật khẩu cũ")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        [Display(Name = "Mật khẩu mới")]
-        [DataType(DataType.Password)]
-        [StringLength(100, ErrorMessage = "{0} phải có ít nhất {2} ký tự.", MinimumLength = 6)]
-        public string NewPassword { get; set; }
-
         public List<Market> Markets { get; set; }
 
         public string FirstStartAddress { get; set; }
