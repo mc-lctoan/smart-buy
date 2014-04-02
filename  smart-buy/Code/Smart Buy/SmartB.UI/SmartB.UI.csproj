@@ -237,8 +237,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\AccountHelper.cs" />
+    <Compile Include="Helper\CalculateDistanceHelper.cs" />
+    <Compile Include="Helper\DistanceConfigHelper.cs" />
     <Compile Include="Helper\MathHelper.cs" />
     <Compile Include="Helper\SuggestRouteHelper.cs" />
+    <Compile Include="Infrastructure\CalculateDistanceJob.cs" />
     <Compile Include="Infrastructure\MyAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\ConstantManager.cs" />
     <Compile Include="Infrastructure\CustomMembershipProvider.cs" />
@@ -254,6 +257,7 @@
     <Compile Include="Models\ChartPriceModel.cs" />
     <Compile Include="Models\DefineRouteModel.cs" />
     <Compile Include="Models\DictionaryModel.cs" />
+    <Compile Include="Models\DistanceConfigModel.cs" />
     <Compile Include="Models\EntityFramework\Dictionary.cs">
       <DependentUpon>SmartBuy.tt</DependentUpon>
     </Compile>
@@ -551,6 +555,7 @@
     <Content Include="Areas\Admin\MoonCake\sample\p6.jpg" />
     <Content Include="Areas\Admin\MoonCake\sample\p7.jpg" />
     <Content Include="Areas\Admin\Scripts\getXPath.js" />
+    <Content Include="CalculateMarketDistance.xml" />
     <Content Include="Content\Error.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\Order.css" />

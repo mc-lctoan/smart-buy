@@ -35,6 +35,7 @@ namespace SmartB.UI
 
             BackgroundConfig.StartScheduler();
             BackgroundConfig.ScheduleParser();
+            BackgroundConfig.ScheduleDistanceService();
         }
     }
 }

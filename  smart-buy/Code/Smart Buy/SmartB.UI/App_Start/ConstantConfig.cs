@@ -15,6 +15,7 @@ namespace SmartB.UI
             ConstantManager.ConfigPath = server.MapPath("~/Areas/Admin/AdminConfig.xml");
             ConstantManager.SavedPath = server.MapPath("~/Areas/Admin/SavedPages");
             ConstantManager.TrainingFilePath = server.MapPath("~/UploadedExcelFiles/ProductName.txt");
+            ConstantManager.DistanceFilePath = server.MapPath("~/CalculateMarketDistance.xml");
             ConstantManager.IsParserRunning = false;
         }
     }
