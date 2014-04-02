@@ -11,6 +11,7 @@ namespace SmartB.UI.Infrastructure
         public static string ConfigPath { get; set; }
         public static string SavedPath { get; set; }
         public static string TrainingFilePath { get; set; }
+        public static string DistanceFilePath { get; set; }
         public static bool IsParserRunning { get; set; }
     }
 
@@ -19,5 +20,11 @@ namespace SmartB.UI.Infrastructure
         Admin = 1,
         Staff = 2,
         Member = 3
+    }
+
+    public enum DistanceStatus
+    {
+        Finish = 1,
+        Going = 2
     }
 }

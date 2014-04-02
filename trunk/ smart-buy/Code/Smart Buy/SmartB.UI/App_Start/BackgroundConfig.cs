@@ -13,6 +13,8 @@ namespace SmartB.UI.App_Start
     {
         private static IScheduler scheduler;
 
+        private static ITrigger parserTrigger;
+
         public static void StartScheduler()
         {
             scheduler = StdSchedulerFactory.GetDefaultScheduler();
@@ -29,6 +31,7 @@ namespace SmartB.UI.App_Start
                 .WithIdentity("ParserTrigger", "Trigger")
                 .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(4, 0))
                 .Build();
+            parserTrigger = trigger;
 
             scheduler.ScheduleJob(job, trigger);
         }
@@ -39,7 +42,21 @@ namespace SmartB.UI.App_Start
                 .WithIdentity("ParserTrigger", "Trigger")
                 .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(hour, minute))
                 .Build();
-            //scheduler.RescheduleJob(parserTrigger.Key, trigger);
+            scheduler.RescheduleJob(parserTrigger.Key, trigger);
+        }
+
+        public static void ScheduleDistanceService()
+        {
+            IJobDetail job = JobBuilder.Create<CalculateDistanceJob>()
+                .WithIdentity("Distance", "DistanceJ")
+                .Build();
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity("DistanceTrigger", "DistanceT")
+                .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(1, 0))
+                .Build();
+
+            scheduler.ScheduleJob(job, trigger);
         }
     }
 }
