@@ -74,11 +74,11 @@
                         </div>
                     </div>
                     <table class="table table-bordered table-hover" id="ProductTable">
-                        <thead>
-                            <tr style="background-color: white;">
-                                <th style="width: 50%">Tên sản phẩm</th>
-                                <th style="width: 15%">Giá sản phẩm</th>
-                                <th style="width: 35%">Thao tác</th>
+                        <thead class="bg-header">
+                            <tr>
+                                <th style="width: 40%;text-align:center">Tên sản phẩm</th>
+                                <th style="width: 20%;text-align:center">Giá sản phẩm</th>
+                                <th style="width: 40%;text-align:center">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,7 +95,7 @@
 
                                     </td>
 
-                                    <td style="padding: 3px 10px;color:white">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                    <td style="padding: 3px 10px;color:white;text-align:center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
                                     var minPrice = item.MinPrice;
                                     var maxPrice = item.MaxPrice;
@@ -147,7 +147,7 @@
 
                                     </td>
 
-                                    <td style="padding: 3px 10px;">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                    <td style="padding: 3px 10px;text-align:center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
                                     var minPrice = item.MinPrice;
                                     var maxPrice = item.MaxPrice;
@@ -198,7 +198,7 @@
                                         }
 
                                     </td>
-                                    <td style="padding: 3px 10px;">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                    <td style="padding: 3px 10px;text-align:center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
                                     var minPrice = item.MinPrice;
                                     var maxPrice = item.MaxPrice;

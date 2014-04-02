@@ -249,10 +249,41 @@ background-color: white;
 }
 
 .titlespec {
-background: #fff url('http://localhost:2030/images/bg-repeat.png') repeat;
+/*background: #fff url("../Images/bg-repeat.png") repeat;
 border-bottom: #cfcfcf 1px solid;
 margin-bottom: 0px;
 height: 40px;
 text-indent: 0px;
+padding: 0px;*/
+background: #a3cf3c url("../Images/noise.png") repeat;
+color: #fff !important;
+font-size: 16px;
+box-shadow: 1px 2px 1px rgb(0, 112, 63);
+text-shadow: 2px 1px rgb(129, 129, 129);
+font-weight: 400;
+}
+
+.bg-header {
+background: #a3cf3c url("../Images/noise.png") repeat;
+color: #fff !important;
+font-size: 16px;
+box-shadow: 1px 2px 1px rgb(0, 112, 63);
+text-shadow: 2px 1px rgb(129, 129, 129);
+font-weight: 400;
+}
+    .bg-header a {
+    color:white;
+    }
+
+.ProductNameDetail {
+height: 35px;
+margin-bottom: 5px;
+text-indent: 10px;
 padding: 0px;
+line-height: 30px;
+background: #a3cf3c url("../Images/noise.png") repeat;
+color: #FFF !important;
+font-size: 26px;
+box-shadow: 1px 2px 1px rgb(0, 112, 63);
+text-shadow: 2px 1px rgb(129, 129, 129);
 }

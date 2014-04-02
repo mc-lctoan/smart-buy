@@ -160,7 +160,7 @@ h6 {
 
 a:hover, a:focus {
     text-decoration: none;
-    color: #fff;
+    color: #2205F8;
 }
 
 p {
@@ -1551,15 +1551,4 @@ body
     background-attachment: fixed;
     font-family: "Segoe UI", "Lucida Grande","Lucida","Arial";
 }
-.ProductNameDetail {
-color: #9DD52A;
-font-size: 20pt;
-background: #fff url('http://localhost:2030/images/bg-repeat.png') repeat;
-border-bottom: #cfcfcf 1px solid;
-margin-bottom: 0px;
-height: 40px;
-text-indent: 0px;
-padding: 0px;
-line-height: 40px; 
-margin-left: 5px
-}
+
