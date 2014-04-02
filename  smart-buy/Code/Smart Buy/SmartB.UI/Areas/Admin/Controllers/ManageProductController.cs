@@ -1,6 +1,7 @@
 ﻿using SmartB.UI.Models.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,16 +15,42 @@ namespace SmartB.UI.Areas.Admin.Controllers
     public class ManageProductController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();
-        private const int PageSize = 10;
+      //  private const int PageSize = 10;
         //
         // GET: /Admin/ManageProduct/
 
-        public ActionResult Index(int page = 1)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var sellProducts = context.SellProducts
-                .OrderBy(x => x.Product.Name)
-                .ToPagedList(page, PageSize);
-            return View(sellProducts);
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+            var products = from p in context.Products
+                           select p;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Name.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    products = products.OrderByDescending(s => s.Name);
+                    break;
+                default:
+                    products = products.OrderBy(s => s.Name);
+                    break;
+            }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(products.ToPagedList(pageNumber, pageSize));
         }
         public ActionResult Create()
         {
@@ -111,51 +138,40 @@ namespace SmartB.UI.Areas.Admin.Controllers
 
         public ActionResult Edit(int id)
         {
-            var sellProduct = context.SellProducts.FirstOrDefault(x => x.Id == id);
+            var sellProduct = context.SellProducts.FirstOrDefault(x => x.Product.Id == id);
+            var listSellProduct = context.SellProducts
+                .Include(x => x.Market)
+                .Where(x => x.ProductId == id)
+                .ToList();
+            
             //bind drop down list
-            var market = from m in context.Markets
-                         orderby m.Name
-                         select m;
-            ViewBag.ddlMarket = new SelectList(market, "Id", "Name");
+            List<Market> listMarket = new List<Market>();
+            foreach (var sp in listSellProduct)
+            {
+                var market = from m in context.Markets where m.Id == sp.MarketId
+                             orderby m.Name
+                             select m;
+                listMarket.Add(market.FirstOrDefault());
+            }
+
+            ViewBag.ddlMarket = new SelectList(listMarket, "Id", "Name");
             return View(sellProduct);
         }
 
         [HttpPost]
         public RedirectToRouteResult Edit(SellProduct model)
         {
-            Product product = context.Products.FirstOrDefault(x => x.Name.Equals(model.Product.Name));
+            var product = context.Products.Where(x => x.Name == model.Product.Name).FirstOrDefault();
             var sellProduct = context.SellProducts.FirstOrDefault(x => x.ProductId == product.Id && x.Market.Id == model.MarketId);
-            var dupSellProduct = context.SellProducts.FirstOrDefault(x => x.ProductId == product.Id && x.Market.Id == model.MarketId && x.SellPrice == model.SellPrice);
             string message;
-            if (dupSellProduct != null)
+            if (sellProduct != null)
             {
-                message = "Duplicate";
-            } 
-            else if (sellProduct != null)
-            {
+                sellProduct.MarketId = model.MarketId;
                 sellProduct.SellPrice = model.SellPrice;
                 sellProduct.LastUpdatedTime = System.DateTime.Now;
                 context.SaveChanges();
                 message = "Success";
-            }
-            else if (sellProduct == null)
-            {
-                    // add product
-                    var newProduct = new SmartB.UI.Models.EntityFramework.Product
-                    {
-                        Name = model.Product.Name,
-                        IsActive = true,
-                    };
-                    var addedProduct = context.Products.Add(newProduct);
-
-                    sellProduct.ProductId = addedProduct.Id;
-                    sellProduct.MarketId = model.MarketId;
-                    sellProduct.SellPrice = model.SellPrice;
-                    sellProduct.LastUpdatedTime = System.DateTime.Now;
-                    context.SaveChanges();
-                    message = "Success";
-            }
-            else
+            }else
             {
                 message = "Failed";
             }
@@ -202,6 +218,43 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                   where a.Name.StartsWith(pre)
                                   select a.Name).ToList();
             return allCompanyName;
+        }
+
+        [HttpPost]
+        public ActionResult SetActive(int id)
+        {
+            var product = context.Products.FirstOrDefault(x => x.Id == id);
+            bool statusFlag = false;
+            if (ModelState.IsValid)
+            {
+                if (product.IsActive == true)
+                {
+                    product.IsActive = false;
+                    statusFlag = false;
+                }
+                else
+                {
+                    product.IsActive = true;
+                    statusFlag = true;
+                }
+                context.SaveChanges();
+            }
+
+            // Display the confirmation message
+            var results = new Product
+            {
+                IsActive = statusFlag
+            };
+
+            return Json(results);
+        }
+        public JsonResult ChangePrice(string product, string market)
+        {
+            var listSellProduct = context.SellProducts.ToList();
+            var getProduct = context.Products.Where(p => p.Name.Equals(product)).FirstOrDefault();
+            var sellProduct = listSellProduct.Where(s => s.Product.Id == getProduct.Id && s.Market.Id == Convert.ToInt32(market)).FirstOrDefault();
+            int price = Convert.ToInt32(sellProduct.SellPrice);
+            return Json(price);
         }
     }
 }

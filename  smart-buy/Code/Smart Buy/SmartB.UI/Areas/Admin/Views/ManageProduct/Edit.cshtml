@@ -138,8 +138,24 @@
         </h1>
     </div>
 }
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script>
+    function ddListChange() {
+            var market = $("#marketId").val();
+            var product = $("#productId").val();
 
-
+            $.ajax({
+                url: '@Url.Action("ChangePrice", "ManageProduct")',
+                type: 'POST',
+                data: JSON.stringify({ product: product, market: market }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (price) {
+                    $("#price").val(price);
+                }
+            });
+    }
+</script>
 <div class="row-fluid">
     <div class="span12">
         <div class="widget">
@@ -153,22 +169,19 @@
                     <div class="control-group">
                         <label class="control-label" for="Name">Tên sản phẩm</label>
                         <div class="controls">
-                            @Html.TextBoxFor(x => x.Product.Name, new {  @class = "span4",required="required" })
-                            <div style="margin-top: 5px;color:red">
-                                @Html.ValidationMessageFor(x => x.Product.Name)
-                            </div>
+                            @Html.TextBoxFor(x => x.Product.Name, new {  @class = "span6",required="required", @readonly= "readonly",@id="productId" })
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="Name">Tên Chợ</label>
-                        <div class="controls">
-                            @Html.DropDownListFor(x => x.MarketId, selectList,  new {  required="required"})
+                        <div class="controls" id="selectMarket">
+                            @Html.DropDownListFor(x => x.MarketId, selectList,  new {  required="required",@id="marketId",@onchange="ddListChange()"})
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="Address">Giá</label>
                         <div class="controls">
-                            @Html.TextBoxFor(x => x.SellPrice, new {  @class = "span4",maxlength = "5",required="required" })
+                            @Html.TextBoxFor(x => x.SellPrice, new {  @class = "span4",maxlength = "5",required="required",@id="price" })
                             <div style="margin-top: 5px;color:red">
                                 @Html.ValidationMessageFor(x => x.SellPrice)
                             </div>

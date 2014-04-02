@@ -12,6 +12,8 @@
 @section headScript
 {
     <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Admin.css")" rel="stylesheet" type="text/css" />
+
 }
 
 @section sidebar
@@ -143,11 +145,11 @@
 {
     <table class="table table-bordered table-hovered">
         <thead>
-            <tr>
-                <th>No.</th>
-                <th>Ngày chạy</th>
-                <th>Giờ chạy</th>
-                <th>Hành động</th>
+            <tr class="bg-header">
+                <th style="width:5%;text-align:center">No.</th>
+                <th style="width:30%;text-align:center">Ngày chạy</th>
+                <th style="width:30%;text-align:center">Giờ chạy</th>
+                <th style="width:35%;text-align:center">Hành động</th>
             </tr>
         </thead>
         <tbody>
