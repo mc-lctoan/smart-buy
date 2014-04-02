@@ -119,7 +119,7 @@
             var firstRoute = eval('(' + tmp + ')');
             fromLocation_1 = new google.maps.LatLng(firstRoute.start.lat, firstRoute.start.lng);
             toLocation_1 = new google.maps.LatLng(firstRoute.end.lat, firstRoute.end.lng)
-</text>
+            </text>
             }
             @if (Model.SecondRoute != null)
             {
@@ -128,7 +128,7 @@
             var secondRoute = eval('(' + tmp + ')');
             fromLocation_2 = new google.maps.LatLng(secondRoute.start.lat, secondRoute.start.lng);
             toLocation_2 = new google.maps.LatLng(secondRoute.end.lat, secondRoute.end.lng)
-</text>
+            </text>
             }
             @if (Model.ThirdRoute != null)
             {
@@ -162,7 +162,7 @@
                 icon: '@Url.Content("~/Images/Marker/Home.png")',
                 title: 'Nơi kết thúc',
                 animation: google.maps.Animation.DROP
-             });
+            });
             markers.push(endMarker);
             
             var request = {
@@ -360,8 +360,8 @@
     </script>
 }
 
-<div class="bgSizeCover">
-    <div id="Contain" class="bgContainCover">
+<div class="bgContainCover">
+    <div id="" class="bgContainCover">
         <div class="ProductDetail">
             <div class="Tools">
                 <div class="Left">
@@ -377,7 +377,7 @@
             </div>
         </div>
 
-        <div class="main-content" style="padding: 40px 20px 20px;">
+        <div class="main-content" style="padding: 40px">
             @if (message == "Success")
             {
                 <div class="message-box ok-message-box clearfix">
@@ -386,7 +386,7 @@
                     </div>
 
                     <div class="message-container">
-                        <h3 class="ProductNameDetail">Định nghĩa đường đi thành công!</h3>
+                        <h3 style="line-height:10px">Định nghĩa đường đi thành công!</h3>
                     </div>
                 </div>
             }
@@ -402,13 +402,10 @@
                     </div>
                 </div>
             }
-            <div class="container">
-                <div class="row">
-                    <div class="span8">
-                        <div class="titlespec">
-                            <div class="ProductNameDetail" style="margin: 0px 0 20px 5px; line-height: 40px; border-bottom: 1px solid #e5e5e5;">
-                                Đường Đi Ưu Tiên
-                            </div>
+            <div>
+                    <div style="width:400px;float:left">
+                        <div class="ProductNameDetail">
+                            Đường Đi Ưu Tiên
                         </div>
                         @using (Html.BeginForm("DefineRoute", "Route"))
                         {
@@ -510,10 +507,11 @@
                             </div>
                         }
                     </div>
-                </div>
-            </div>
-            <div class="google-map">
-                <div id="map-canvas" />
+                    <div style="margin-left:410px">
+                        <div class="google-map">
+                            <div id="map-canvas" />
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
