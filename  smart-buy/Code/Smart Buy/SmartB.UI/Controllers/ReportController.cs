@@ -61,7 +61,7 @@ namespace SmartB.UI.Controllers
                     {
                         continue;
                     }
-                    var value = attribute.LastUpdatedTime.Value;
+                    var value = attribute.LastUpdatedTime.Value.Date;
                     var span =
                         (value.AddHours(7).ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
                         .TotalMilliseconds;
