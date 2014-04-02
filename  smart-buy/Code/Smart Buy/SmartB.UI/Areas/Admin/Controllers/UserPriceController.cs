@@ -46,15 +46,16 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 ProductAttribute product = db.ProductAttributes
                     .Where(p => p.ProductId == productId)
                     .OrderByDescending(p => p.LastUpdatedTime).FirstOrDefault();
-
-                if (product != null && price < product.MinPrice)
+               
+                if (product != null && price < product.MinPrice.GetValueOrDefault())
                 {
                     var proAtt = new ProductAttribute();
                     proAtt.ProductId = productId;
                     proAtt.MinPrice = price;
                     proAtt.MaxPrice = product.MaxPrice;
                     proAtt.LastUpdatedTime = lastUpdatedTime;
-                    db.ProductAttributes.Add(proAtt);                    
+                    db.ProductAttributes.Add(proAtt);
+                    db.SaveChanges();
                 }
 
                 UserPrice up = db.UserPrices.Find(id);
