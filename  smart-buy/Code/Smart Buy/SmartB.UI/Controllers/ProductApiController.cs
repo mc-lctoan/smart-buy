@@ -6,9 +6,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Script.Serialization;
+using System.Xml.Linq;
 using SmartB.UI.Areas.Admin.Models;
+using SmartB.UI.Infrastructure;
 using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
+using SmartB.UI.Models.MobileModel;
 
 namespace SmartB.UI.Controllers
 {
@@ -410,13 +413,41 @@ namespace SmartB.UI.Controllers
 
             return result;
         }
-
+        private readonly string _xmlPath = ConstantManager.ConfigPath;
         [HttpGet]
-        public String getTimeServer()
+        public TimeSyncMobileModel getTimeServer()
         {
-            DateTime today = DateTime.Now.Date;
+            bool CheckTimeSync = false;
+            DateTime today = DateTime.Now;
             string todayFormat = String.Format("{0:MM-dd-yyyy}", today);
-            return todayFormat;
+            
+            string result = "";
+            XDocument doc = XDocument.Load(_xmlPath);
+            var hour = doc.Root.Element("parseTime").Element("hour");
+            if (hour != null)
+            {
+                int h = Convert.ToInt32(hour.Value) + 1;
+                result += h + ":";
+            }
+            var minute = doc.Root.Element("parseTime").Element("minute");
+            if (minute != null)
+            {
+                result += minute.Value;
+            }
+            DateTime timeSync = Convert.ToDateTime(result);
+
+            if (today >= timeSync)
+            {
+                CheckTimeSync = true;
+            } else
+            CheckTimeSync = false;
+
+            TimeSyncMobileModel model = new TimeSyncMobileModel
+            {
+                todayFormat = todayFormat,
+                CheckTimeSync = CheckTimeSync
+            };
+            return model;
         }
 
         [HttpGet]
