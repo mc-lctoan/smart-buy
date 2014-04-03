@@ -15,7 +15,6 @@
     <link href="@Url.Content("~/Content/Admin.css")" rel="stylesheet" type="text/css" />
 
 }
-<script src="@Url.Content("~/Scripts/jquery-1.7.2.min.js")"></script>
 <script type="text/javascript">
     $(function () {
         $(".SetActive").click(function () {
@@ -230,32 +229,32 @@
                             <th style="width:5%;text-align:center">STT</th>
                             <th style="width:25%;text-align:center">Tên chợ</th>
                             <th style="width:40%;text-align:center">Đường dẫn</th>
-                            <th style="width:10%;text-align:center">Thao tác</th>
-                            <th  style="width:20%;text-align:center">Trạng thái</th>
+                            <th style="width:15%;text-align:center">Thao tác</th>
+                            <th  style="width:15%;text-align:center">Trạng thái</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var info in Model)
                         {
                             <tr>
-                                <td>@(start + 1)</td>
+                                <td style="text-align:center">@(start + 1)</td>
                                 <td>@info.Market.Name</td>
                                 <td>@info.ParseLink</td>
-                                <td>
+                                <td style="text-align:center">
                                     @Html.ActionLink("Chỉnh sửa", "EditParser", new { id = info.Id })
                                 </td>
                                  @if (info.IsActive == true)
                         {
-                            <td>
-                                <button class="SetActive" data-id="@info.Id" style="background-color: #9DD52A;height: 25px;" >
+                            <td style="text-align:center">
+                                <button class="SetActive activeStatus" data-id="@info.Id">
                                     <p>Hoạt động</p>
                                 </button>
                             </td>  
                         }
                         else
                         {
-                            <td>
-                                <button class="SetActive" data-id="@info.Id" style="background-color:lightskyblue;height: 25px;">
+                            <td style="text-align:center">
+                                <button class="SetActive de-activeStatus" data-id="@info.Id">
                                     <p>Không hoạt động</p>
                                 </button>
                             </td>   

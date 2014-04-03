@@ -44,6 +44,7 @@
                                 <i class="icol-application-double"></i>Xử lý dữ liệu trùng
                             </a>
                         </li>
+                        <li><a href="@Url.Action("ManageUserPrice", "UserPrice")"><i class="icol-application-double"></i>Quản lý giá đề xuất</a></li>
                     </ul>
                 </li>
                 <li class="active">
@@ -210,6 +211,7 @@
         }
         <div class="widget-header">
             <span class="title">Danh sách sản phẩm</span>
+            <span class="title" style="float:right">* Đơn vị tính: nghìn đồng</span>
         </div>
         <div class="widget-content table-container">
             <table class="table table-bordered table-striped table-checkable">
@@ -231,11 +233,11 @@
                                                                                     group p by p.ProductId into grp
                                                                                     select grp.OrderByDescending(o => o.LastUpdatedTime).FirstOrDefault()).FirstOrDefault();
                         <tr>
-                            <td>@(start + 1)</td>
+                            <td style="text-align:center">@(start + 1)</td>
                             <td>
                                 @Html.ActionLink(product.Name, "Edit", new { id = product.Id })
                             </td>
-                            <td>@proAtt.MinPrice - @proAtt.MaxPrice
+                            <td style="text-align:center;">@proAtt.MinPrice - @proAtt.MaxPrice
                                 @{
                         var minPrice = proAtt.MinPrice;
                         var maxPrice = proAtt.MaxPrice;
@@ -243,16 +245,16 @@
                             </td>
                             @if (product.IsActive == true)
                         {
-                            <td>
-                                <button class="SetActive" data-id="@product.Id" style="background-color: #9DD52A;height: 25px;" >
-                                    <p>Hoạt động</p>
+                            <td style="text-align:center">
+                                <button class="SetActive activeStatus" data-id="@product.Id">
+                                    <p>Khả dụng</p>
                                 </button>
                             </td>  
                         }
                         else
                         {
-                            <td>
-                                <button class="SetActive" data-id="@product.Id" style="background-color:lightskyblue;height: 25px;">
+                            <td style="text-align:center">
+                                <button class="SetActive de-activeStatus" data-id="@product.Id">
                                     <p>Không hoạt động</p>
                                 </button>
                             </td>   
