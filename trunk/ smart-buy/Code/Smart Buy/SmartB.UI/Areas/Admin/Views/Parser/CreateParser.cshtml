@@ -169,7 +169,7 @@
                     <div class="control-group">
                         @Html.LabelFor(x => x.ParseLink, new { @class = "control-label" })
                         <div class="controls">
-                            @Html.TextBoxFor(x => x.ParseLink, new { placeholder = "Nhập link cần parse", Value = TempData["link"] })
+                            @Html.TextBoxFor(x => x.ParseLink, new { placeholder = "Nhập link cần parse", Value = TempData["link"] ,required="required"})
                             <input class="btn btn-primary" type="submit" value="Xem" />
                         </div>
                     </div>

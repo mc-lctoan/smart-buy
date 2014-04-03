@@ -220,23 +220,23 @@
                         @foreach (var market in Model)
                         {
                             <tr>
-                                <td>@(start + 1)</td>
+                                <td style="text-align:center">@(start + 1)</td>
                                 <td>
                                     @Html.ActionLink(market.Name, "Edit", new { id = market.Id })
                                 </td>
                                 <td>@market.Address</td>
                                  @if (market.IsActive == true)
                         {
-                            <td>
-                                <button class="SetActive" data-id="@market.Id" style="background-color: #9DD52A;height: 25px;" >
+                            <td style="text-align:center">
+                                <button class="SetActive activeStatus" data-id="@market.Id">
                                     <p>Hoạt động</p>
                                 </button>
                             </td>  
                         }
                         else
                         {
-                            <td>
-                                <button class="SetActive" data-id="@market.Id" style="background-color:lightskyblue;height: 25px;">
+                            <td style="text-align:center">
+                                <button class="SetActive de-activeStatus" data-id="@market.Id" >
                                     <p>Không hoạt động</p>
                                 </button>
                             </td>   
@@ -247,7 +247,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="toolbar">
+            <div class="toolbar" style="padding-right: 10px;">
             <div class="pagination-right">
                 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

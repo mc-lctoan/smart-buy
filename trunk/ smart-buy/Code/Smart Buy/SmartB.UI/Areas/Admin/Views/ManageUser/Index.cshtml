@@ -7,7 +7,26 @@
     int end = Model.PageNumber * Model.PageSize;
     int start = end - Model.PageSize;
 }
+    <link href="@Url.Content("~/Content/Admin.css")" rel="stylesheet" type="text/css" />
 
+<script type="text/javascript">
+    $(function () {
+        $(".SetActive").click(function () {
+            // Get the id from the link
+            var recordToSet = $(this).attr("data-id");
+
+            if (recordToSet != '') {
+
+                // Perform the ajax post
+                $.post("/ManageUser/SetActive", { "id": recordToSet },
+                    function (data) {
+                        location.reload();
+                    });
+            }
+        });
+
+    });
+</script>
 @section sidebar
 {
     <aside id="sidebar">
@@ -101,54 +120,54 @@
                 Xóa thành công.
             </div>
         }
-        @using (Html.BeginForm("Delete", "ManageUser"))
-        {
             <div class="widget-header">
                 <span class="title">Danh sách các tài khoản</span>
-                <div class="toolbar">
-                    <div class="btn-group">
-                        <button class="btn" type="submit">
-                            <i class="icol-cancel"></i>
-                            Xóa
-                        </button>
-                    </div>
-                </div>
             </div>
             <div class="widget-content table-container">
                 <table class="table table-bordered table-striped table-checkable">
                     <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên tài khoản</th>
-                            <th>Vai trò</th>
-                            <th class="checkbox-column">
-                                <input type="checkbox"/>
-                            </th>
+                        <tr class="bg-header">
+                            <th style="width:5%;text-align:center">STT</th>
+                            <th style="width:40%;text-align:center">Tên tài khoản</th>
+                            <th style="width:35%;text-align:center">Vai trò</th>
+                            <th style="width:20%;text-align:center">Trạng thái</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var user in Model)
                         {
                             <tr>
-                                <td>@(start + 1)</td>
+                                <td style="text-align:center">@(start + 1)</td>
                                 <td>
                                     @Html.ActionLink(user.Username, "Edit", new { username = user.Username })
                                 </td>
                                 <td>@user.Role.Name</td>
-                                <td class="checkbox-column">
-                                    <input type="checkbox" value="@user.Username" name="usernames"/>
-                                </td>
+                                @if (user.IsActive == true)
+                        {
+                            <td style="text-align:center">
+                                <button class="SetActive activeStatus" data-id="@user.Username" >
+                                    <p>Hoạt động</p>
+                                </button>
+                            </td>  
+                        }
+                        else
+                        {
+                            <td style="text-align:center">
+                                <button class="SetActive de-activeStatus" data-id="@user.Username" >
+                                    <p>Không hoạt động</p>
+                                </button>
+                            </td>   
+                        }
                             </tr>
                             start++;
                         }
                     </tbody>
                 </table>
             </div>
-            <div class="toolbar">
-                <div class="pagination-right">
-                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-                </div>
+            <div class="toolbar" style="padding-right: 10px;">
+            <div class="pagination-right">
+                @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
             </div>
-        }
     </div>
 </div>

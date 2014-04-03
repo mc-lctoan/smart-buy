@@ -101,5 +101,34 @@ namespace SmartB.UI.Areas.Admin.Controllers
             context.Dispose();
             base.Dispose(disposing);
         }
+
+        [HttpPost]
+        public ActionResult SetActive(string username)
+        {
+            var user = context.Users.FirstOrDefault(x => x.Username == username);
+            bool statusFlag = false;
+            if (ModelState.IsValid)
+            {
+                if (user.IsActive == true)
+                {
+                    user.IsActive = false;
+                    statusFlag = false;
+                }
+                else
+                {
+                    user.IsActive = true;
+                    statusFlag = true;
+                }
+                context.SaveChanges();
+            }
+
+            // Display the confirmation message
+            var results = new User
+            {
+                IsActive = statusFlag
+            };
+
+            return Json(results);
+        }
     }
 }
