@@ -119,8 +119,8 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" />
-          <Property Name="Latitude" Type="varchar" MaxLength="20" />
-          <Property Name="Longitude" Type="varchar" MaxLength="20" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Longitude" Type="float" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="MarketDistance">
@@ -171,16 +171,22 @@
           <Property Name="FirstEndAddress" Type="nvarchar" MaxLength="300" />
           <Property Name="FirstRoute" Type="nvarchar" MaxLength="300" />
           <Property Name="FirstMarkets" Type="nvarchar" MaxLength="100" />
+          <Property Name="FirstStartDistance" Type="nvarchar" MaxLength="200" />
+          <Property Name="FirstEndDistance" Type="nvarchar" MaxLength="200" />
           <Property Name="FirstRouteName" Type="nvarchar" MaxLength="100" />
           <Property Name="SecondStartAddress" Type="nvarchar" MaxLength="300" />
           <Property Name="SecondEndAddress" Type="nvarchar" MaxLength="300" />
           <Property Name="SecondRoute" Type="nvarchar" MaxLength="300" />
           <Property Name="SecondMarkets" Type="nvarchar" MaxLength="100" />
+          <Property Name="SecondStartDistance" Type="nvarchar" MaxLength="200" />
+          <Property Name="SecondEndDistance" Type="nvarchar" MaxLength="200" />
           <Property Name="SecondRouteName" Type="nvarchar" MaxLength="100" />
           <Property Name="ThirdStartAddress" Type="nvarchar" MaxLength="300" />
           <Property Name="ThirdEndAddress" Type="nvarchar" MaxLength="300" />
           <Property Name="ThirdRoute" Type="nvarchar" MaxLength="300" />
           <Property Name="ThirdMarkets" Type="nvarchar" MaxLength="100" />
+          <Property Name="ThirdStartDistance" Type="nvarchar" MaxLength="200" />
+          <Property Name="ThirdEndDistance" Type="nvarchar" MaxLength="200" />
           <Property Name="ThirdRouteName" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Role">
@@ -426,25 +432,8 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="UserPrice" EntitySet="UserPrices" />
           </AssociationSet>
-          <EntitySet Name="Markets" EntityType="SmartBuyModel.Market" />
-          <AssociationSet Name="FK_SellProduct_Market" Association="SmartBuyModel.FK_SellProduct_Market">
-            <End Role="Market" EntitySet="Markets" />
-            <End Role="SellProduct" EntitySet="SellProducts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserPrice_Market" Association="SmartBuyModel.FK_UserPrice_Market">
-            <End Role="Market" EntitySet="Markets" />
-            <End Role="UserPrice" EntitySet="UserPrices" />
-          </AssociationSet>
           <EntitySet Name="MarketDistances" EntityType="SmartBuyModel.MarketDistance" />
-          <AssociationSet Name="FK_MarketDistance_Market" Association="SmartBuyModel.FK_MarketDistance_Market">
-            <End Role="Market" EntitySet="Markets" />
-            <End Role="MarketDistance" EntitySet="MarketDistances" />
-          </AssociationSet>
           <EntitySet Name="ParseInfoes" EntityType="SmartBuyModel.ParseInfo" />
-          <AssociationSet Name="FK_ParseInfo_Market" Association="SmartBuyModel.FK_ParseInfo_Market">
-            <End Role="Market" EntitySet="Markets" />
-            <End Role="ParseInfo" EntitySet="ParseInfoes" />
-          </AssociationSet>
           <EntitySet Name="Users" EntityType="SmartBuyModel.User" />
           <AssociationSet Name="FK_History_User" Association="SmartBuyModel.FK_History_User">
             <End Role="User" EntitySet="Users" />
@@ -462,6 +451,23 @@
           <AssociationSet Name="FK_Profile_User" Association="SmartBuyModel.FK_Profile_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Profile" EntitySet="Profiles" />
+          </AssociationSet>
+          <EntitySet Name="Markets" EntityType="SmartBuyModel.Market" />
+          <AssociationSet Name="FK_MarketDistance_Market" Association="SmartBuyModel.FK_MarketDistance_Market">
+            <End Role="Market" EntitySet="Markets" />
+            <End Role="MarketDistance" EntitySet="MarketDistances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParseInfo_Market" Association="SmartBuyModel.FK_ParseInfo_Market">
+            <End Role="Market" EntitySet="Markets" />
+            <End Role="ParseInfo" EntitySet="ParseInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SellProduct_Market" Association="SmartBuyModel.FK_SellProduct_Market">
+            <End Role="Market" EntitySet="Markets" />
+            <End Role="SellProduct" EntitySet="SellProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPrice_Market" Association="SmartBuyModel.FK_UserPrice_Market">
+            <End Role="Market" EntitySet="Markets" />
+            <End Role="UserPrice" EntitySet="UserPrices" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Dictionary">
@@ -559,8 +565,8 @@
           <Property Type="Int32" Name="UpdatedPrice" />
           <Property Type="DateTime" Name="LastUpdatedTime" Precision="3" />
           <NavigationProperty Name="Product" Relationship="SmartBuyModel.FK_UserPrice_Product" FromRole="UserPrice" ToRole="Product" />
-          <NavigationProperty Name="Market" Relationship="SmartBuyModel.FK_UserPrice_Market" FromRole="UserPrice" ToRole="Market" />
           <NavigationProperty Name="User" Relationship="SmartBuyModel.FK_UserPrice_User" FromRole="UserPrice" ToRole="User" />
+          <NavigationProperty Name="Market" Relationship="SmartBuyModel.FK_UserPrice_Market" FromRole="UserPrice" ToRole="Market" />
         </EntityType>
         <Association Name="FK_Dictionary_Product">
           <End Type="SmartBuyModel.Product" Role="Product" Multiplicity="0..1" />
@@ -634,45 +640,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Market">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Address" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Latitude" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Longitude" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Type="Boolean" Name="IsActive" Nullable="false" />
-          <NavigationProperty Name="SellProducts" Relationship="SmartBuyModel.FK_SellProduct_Market" FromRole="Market" ToRole="SellProduct" />
-          <NavigationProperty Name="UserPrices" Relationship="SmartBuyModel.FK_UserPrice_Market" FromRole="Market" ToRole="UserPrice" />
-          <NavigationProperty Name="MarketDistances" Relationship="SmartBuyModel.FK_MarketDistance_Market" FromRole="Market" ToRole="MarketDistance" />
-          <NavigationProperty Name="ParseInfoes" Relationship="SmartBuyModel.FK_ParseInfo_Market" FromRole="Market" ToRole="ParseInfo" />
-        </EntityType>
-        <Association Name="FK_SellProduct_Market">
-          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
-          <End Type="SmartBuyModel.SellProduct" Role="SellProduct" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Market">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="SellProduct">
-              <PropertyRef Name="MarketId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserPrice_Market">
-          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
-          <End Type="SmartBuyModel.UserPrice" Role="UserPrice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Market">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserPrice">
-              <PropertyRef Name="MarketId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="MarketDistance">
           <Key>
             <PropertyRef Name="FromMarket" />
@@ -683,18 +650,6 @@
           <Property Type="Double" Name="Distance" />
           <NavigationProperty Name="Market" Relationship="SmartBuyModel.FK_MarketDistance_Market" FromRole="MarketDistance" ToRole="Market" />
         </EntityType>
-        <Association Name="FK_MarketDistance_Market">
-          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="1" />
-          <End Type="SmartBuyModel.MarketDistance" Role="MarketDistance" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Market">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="MarketDistance">
-              <PropertyRef Name="FromMarket" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ParseInfo">
           <Key>
             <PropertyRef Name="Id" />
@@ -708,18 +663,6 @@
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <NavigationProperty Name="Market" Relationship="SmartBuyModel.FK_ParseInfo_Market" FromRole="ParseInfo" ToRole="Market" />
         </EntityType>
-        <Association Name="FK_ParseInfo_Market">
-          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
-          <End Type="SmartBuyModel.ParseInfo" Role="ParseInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Market">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ParseInfo">
-              <PropertyRef Name="MarketId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Username" />
@@ -778,16 +721,22 @@
           <Property Type="String" Name="FirstEndAddress" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="FirstRoute" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="FirstMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstStartDistance" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstEndDistance" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="FirstRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="SecondStartAddress" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="SecondEndAddress" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="SecondRoute" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="SecondMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondStartDistance" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondEndDistance" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="SecondRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ThirdStartAddress" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ThirdEndAddress" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ThirdRoute" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ThirdMarkets" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ThirdStartDistance" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ThirdEndDistance" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ThirdRouteName" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="User" Relationship="SmartBuyModel.FK_Profile_User" FromRole="Profile" ToRole="User" />
         </EntityType>
@@ -800,6 +749,69 @@
             </Principal>
             <Dependent Role="Profile">
               <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Market">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Address" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Double" Name="Latitude" />
+          <Property Type="Double" Name="Longitude" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <NavigationProperty Name="MarketDistances" Relationship="SmartBuyModel.FK_MarketDistance_Market" FromRole="Market" ToRole="MarketDistance" />
+          <NavigationProperty Name="ParseInfoes" Relationship="SmartBuyModel.FK_ParseInfo_Market" FromRole="Market" ToRole="ParseInfo" />
+          <NavigationProperty Name="SellProducts" Relationship="SmartBuyModel.FK_SellProduct_Market" FromRole="Market" ToRole="SellProduct" />
+          <NavigationProperty Name="UserPrices" Relationship="SmartBuyModel.FK_UserPrice_Market" FromRole="Market" ToRole="UserPrice" />
+        </EntityType>
+        <Association Name="FK_MarketDistance_Market">
+          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="1" />
+          <End Type="SmartBuyModel.MarketDistance" Role="MarketDistance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Market">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MarketDistance">
+              <PropertyRef Name="FromMarket" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParseInfo_Market">
+          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
+          <End Type="SmartBuyModel.ParseInfo" Role="ParseInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Market">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParseInfo">
+              <PropertyRef Name="MarketId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SellProduct_Market">
+          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
+          <End Type="SmartBuyModel.SellProduct" Role="SellProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Market">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SellProduct">
+              <PropertyRef Name="MarketId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPrice_Market">
+          <End Type="SmartBuyModel.Market" Role="Market" Multiplicity="0..1" />
+          <End Type="SmartBuyModel.UserPrice" Role="UserPrice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Market">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserPrice">
+              <PropertyRef Name="MarketId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -899,18 +911,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Markets">
-            <EntityTypeMapping TypeName="SmartBuyModel.Market">
-              <MappingFragment StoreEntitySet="Market">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MarketDistances">
             <EntityTypeMapping TypeName="SmartBuyModel.MarketDistance">
               <MappingFragment StoreEntitySet="MarketDistance">
@@ -947,21 +947,39 @@
             <EntityTypeMapping TypeName="SmartBuyModel.Profile">
               <MappingFragment StoreEntitySet="Profile">
                 <ScalarProperty Name="ThirdRouteName" ColumnName="ThirdRouteName" />
+                <ScalarProperty Name="ThirdEndDistance" ColumnName="ThirdEndDistance" />
+                <ScalarProperty Name="ThirdStartDistance" ColumnName="ThirdStartDistance" />
                 <ScalarProperty Name="ThirdMarkets" ColumnName="ThirdMarkets" />
                 <ScalarProperty Name="ThirdRoute" ColumnName="ThirdRoute" />
                 <ScalarProperty Name="ThirdEndAddress" ColumnName="ThirdEndAddress" />
                 <ScalarProperty Name="ThirdStartAddress" ColumnName="ThirdStartAddress" />
                 <ScalarProperty Name="SecondRouteName" ColumnName="SecondRouteName" />
+                <ScalarProperty Name="SecondEndDistance" ColumnName="SecondEndDistance" />
+                <ScalarProperty Name="SecondStartDistance" ColumnName="SecondStartDistance" />
                 <ScalarProperty Name="SecondMarkets" ColumnName="SecondMarkets" />
                 <ScalarProperty Name="SecondRoute" ColumnName="SecondRoute" />
                 <ScalarProperty Name="SecondEndAddress" ColumnName="SecondEndAddress" />
                 <ScalarProperty Name="SecondStartAddress" ColumnName="SecondStartAddress" />
                 <ScalarProperty Name="FirstRouteName" ColumnName="FirstRouteName" />
+                <ScalarProperty Name="FirstEndDistance" ColumnName="FirstEndDistance" />
+                <ScalarProperty Name="FirstStartDistance" ColumnName="FirstStartDistance" />
                 <ScalarProperty Name="FirstMarkets" ColumnName="FirstMarkets" />
                 <ScalarProperty Name="FirstRoute" ColumnName="FirstRoute" />
                 <ScalarProperty Name="FirstEndAddress" ColumnName="FirstEndAddress" />
                 <ScalarProperty Name="FirstStartAddress" ColumnName="FirstStartAddress" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Markets">
+            <EntityTypeMapping TypeName="SmartBuyModel.Market">
+              <MappingFragment StoreEntitySet="Market">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

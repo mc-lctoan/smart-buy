@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Quartz;
-using Quartz.Core;
 using Quartz.Impl;
 using SmartB.UI.Infrastructure;
 
@@ -53,6 +52,7 @@ namespace SmartB.UI.App_Start
 
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("DistanceTrigger", "DistanceT")
+                .StartNow()
                 .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(1, 0))
                 .Build();
 

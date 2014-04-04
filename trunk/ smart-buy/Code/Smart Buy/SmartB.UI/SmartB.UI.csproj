@@ -322,7 +322,9 @@
     <Compile Include="Models\MobileModel\MarketMobileModel.cs" />
     <Compile Include="Models\MobileModel\ProductMobileModel.cs" />
     <Compile Include="Models\MobileModel\SuggestMobileModel.cs" />
+    <Compile Include="Models\MobileModel\TimeSyncMobileModel.cs" />
     <Compile Include="Models\ProductMostBuy.cs" />
+    <Compile Include="Models\RouteModel.cs" />
     <Compile Include="Models\SellProductModels.cs" />
     <Compile Include="Models\SuggestRouteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -556,6 +558,7 @@
     <Content Include="Areas\Admin\MoonCake\sample\p7.jpg" />
     <Content Include="Areas\Admin\Scripts\getXPath.js" />
     <Content Include="CalculateMarketDistance.xml" />
+    <Content Include="Content\Admin.css" />
     <Content Include="Content\Error.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\Order.css" />

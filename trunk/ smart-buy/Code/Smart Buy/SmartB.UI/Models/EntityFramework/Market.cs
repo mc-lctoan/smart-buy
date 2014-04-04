@@ -16,22 +16,22 @@ namespace SmartB.UI.Models.EntityFramework
     {
         public Market()
         {
-            this.SellProducts = new HashSet<SellProduct>();
-            this.UserPrices = new HashSet<UserPrice>();
             this.MarketDistances = new HashSet<MarketDistance>();
             this.ParseInfoes = new HashSet<ParseInfo>();
+            this.SellProducts = new HashSet<SellProduct>();
+            this.UserPrices = new HashSet<UserPrice>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
+        public Nullable<double> Latitude { get; set; }
+        public Nullable<double> Longitude { get; set; }
         public bool IsActive { get; set; }
     
-        public virtual ICollection<SellProduct> SellProducts { get; set; }
-        public virtual ICollection<UserPrice> UserPrices { get; set; }
         public virtual ICollection<MarketDistance> MarketDistances { get; set; }
         public virtual ICollection<ParseInfo> ParseInfoes { get; set; }
+        public virtual ICollection<SellProduct> SellProducts { get; set; }
+        public virtual ICollection<UserPrice> UserPrices { get; set; }
     }
 }

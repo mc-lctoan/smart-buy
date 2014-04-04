@@ -18,8 +18,8 @@ namespace SmartB.UI.Areas.Admin.Helper
                 var markets = context.Markets.Where(x => x.IsActive).ToList();
                 for (int i = 0; i < markets.Count - 1; i++)
                 {
-                    double lat1 = Double.Parse(markets[i].Latitude);
-                    double lng1 = Double.Parse(markets[i].Longitude);
+                    double lat1 = markets[i].Latitude.Value;
+                    double lng1 = markets[i].Longitude.Value;
 
                     for (int j = i + 1; j < markets.Count; j++)
                     {
@@ -27,8 +27,8 @@ namespace SmartB.UI.Areas.Admin.Helper
                         {
                             continue;
                         }
-                        double lat2 = Double.Parse(markets[j].Latitude);
-                        double lng2 = Double.Parse(markets[j].Longitude);
+                        double lat2 = markets[j].Latitude.Value;
+                        double lng2 = markets[j].Longitude.Value;
 
                         double distance = math.CalculateDistance(lat1, lng1, lat2, lng2);
 

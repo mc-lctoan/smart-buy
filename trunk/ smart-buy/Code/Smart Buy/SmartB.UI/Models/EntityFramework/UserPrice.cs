@@ -22,7 +22,7 @@ namespace SmartB.UI.Models.EntityFramework
         public Nullable<System.DateTime> LastUpdatedTime { get; set; }
     
         public virtual Product Product { get; set; }
-        public virtual Market Market { get; set; }
         public virtual User User { get; set; }
+        public virtual Market Market { get; set; }
     }
 }

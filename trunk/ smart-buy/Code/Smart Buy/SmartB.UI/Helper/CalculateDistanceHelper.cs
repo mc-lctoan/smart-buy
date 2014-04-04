@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 using SmartB.UI.Infrastructure;
 using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
@@ -28,10 +30,10 @@ namespace SmartB.UI.Helper
                     .ToList();
                 while (true)
                 {
-                    var lat1 = Double.Parse(markets[i].Latitude);
-                    var lng1 = Double.Parse(markets[i].Longitude);
-                    var lat2 = Double.Parse(markets[j].Latitude);
-                    var lng2 = Double.Parse(markets[j].Longitude);
+                    var lat1 = markets[i].Latitude.Value;
+                    var lng1 = markets[i].Longitude.Value;
+                    var lat2 = markets[j].Latitude.Value;
+                    var lng2 = markets[j].Longitude.Value;
                     var distance = math.TravelDistance(lat1, lng1, lat2, lng2);
 
                     // OK
@@ -88,6 +90,47 @@ namespace SmartB.UI.Helper
                     }
                 }
             }
+        }
+
+        public static List<double> DistanceToAllMarket(string route, string[] ids, string type)
+        {
+            var math = new MathHelper();
+            var result = new List<double>();
+            var markets = new List<Market>();
+            var model = JsonConvert.DeserializeObject<RouteModel>(route);
+
+            using (var context = new SmartBuyEntities())
+            {
+                // Construct a market list
+                foreach (string id in ids)
+                {
+                    int tmp = Int32.Parse(id);
+                    var market = context.Markets.FirstOrDefault(x => x.Id == tmp);
+                    if (market != null)
+                    {
+                        markets.Add(market);
+                    }
+                }
+            }
+
+            Coordinate point = new Coordinate();
+            switch (type)
+            {
+                case "start":
+                    point = model.Start;
+                    break;
+                case "end":
+                    point = model.End;
+                    break;
+            }
+
+            foreach (Market market in markets)
+            {
+                double distance = math.TravelDistance(point.Lat, point.Lng, market.Latitude.Value, market.Longitude.Value);
+                result.Add(distance);
+            }
+
+            return result;
         }
     }
 }

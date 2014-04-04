@@ -14,16 +14,20 @@ namespace SmartB.UI.Helper
         public List<Product> CanBuyProducts { get; set; }
         public List<Product> CannotBuyProducts { get; set; }
         public List<Market> Markets { get; set; }
+        public List<double> DistanceA { get; set; }
+        public List<double> DistanceB { get; set; }
 
         private readonly ConfigHelper _config;
 
         private const int LargeNumber = 10000;
 
-        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets)
+        public SuggestRouteHelper(List<Product> allProducts, List<Market> markets, List<double> distanceA, List<double> distanceB)
         {
             AllProducts = allProducts;
             Markets = markets;
             CannotBuyProducts = CannotBuy();
+            DistanceA = distanceA;
+            DistanceB = distanceB;
             CanBuyProducts = AllProducts.Except(CannotBuyProducts).ToList();
             _config = new ConfigHelper();
         }
@@ -145,7 +149,7 @@ namespace SmartB.UI.Helper
                         int toId = Markets[j].Id;
                         var mDis = context.MarketDistances
                             .FirstOrDefault(x => x.FromMarket == fromId && x.ToMarket == toId);
-                        if (mDis != null)
+                        if (mDis != null && mDis.Distance.HasValue)
                         {
                             matrix[i, j] = matrix[j, i] = mDis.Distance.Value * fuel;
                         }
@@ -193,7 +197,7 @@ namespace SmartB.UI.Helper
             // Initilize first row
             for (int i = 0; i < n; i++)
             {
-                total[0, i] = matrix[0, i];
+                total[0, i] = matrix[0, i] + DistanceA[i];
             }
 
             // For each cell in total
@@ -223,9 +227,9 @@ namespace SmartB.UI.Helper
             // Access the last row to find min value
             for (int i = 0; i < n; i++)
             {
-                if (total[m - 1, i] < min)
+                if (total[m - 1, i] + DistanceB[i] < min)
                 {
-                    min = total[m - 1, i];
+                    min = total[m - 1, i] + DistanceB[i];
                     col = i;
                 }
             }
@@ -261,8 +265,8 @@ namespace SmartB.UI.Helper
 
                 var tmp = new SuggestRouteModel();
                 tmp.MarketName = market.Name;
-                tmp.Latitude = market.Latitude;
-                tmp.Longitude = market.Longitude;
+                tmp.Latitude = market.Latitude.Value;
+                tmp.Longitude = market.Longitude.Value;
                 tmp.ProductName = product.Name;
                 var sell = product.SellProducts
                     .Where(x => x.MarketId == market.Id)
