@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Chi tiết lịch sử đơn hàng";
+    ViewBag.Title = "Chi tiết lịch sử giỏ hàng";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
@@ -25,9 +25,9 @@
                             <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
                         </li>
                         <li style="background-color: #3399FF; color: white !important;">
-                            <a style="color:white" href="@Url.Action("BuyingHistory", "History")">Lịch sử mua sắm</a>
+                            <a style="color:white" href="@Url.Action("BuyingHistory", "History")">Lịch sử giỏ hàng</a>
                         </li>
-                        <li style="cursor: auto;">Chi tiết đơn hàng
+                        <li style="cursor: auto;">Chi tiết giỏ hàng
                         </li>
                     </ul>
                 </div>
@@ -57,7 +57,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Product.Name)
                                 </td>
-                                <td>
+                                <td style="text-align:center">
                                     @Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                 </td>
 
@@ -65,7 +65,7 @@
                                 {
                                     if (p.ProductId == item.ProductId)
                                     {
-                                    <td>
+                                    <td style="text-align:center">
                                         @Html.DisplayFor(modelItem => p.MinPrice) - @Html.DisplayFor(modelItem => p.MaxPrice)
                                     </td>
                                     }

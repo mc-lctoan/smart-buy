@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "BuyingHistory";
+    ViewBag.Title = "Lịch sử giỏ hàng";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 @section head
@@ -31,7 +31,7 @@
                         <li style=" background-color: #3399FF; color: white !important;">
                             <a style="color:white" href="@Url.Action("Index", "Home")">Trang chủ</a>
                         </li>
-                        <li style=" cursor: auto;">Lịch sử mua sắm
+                        <li style=" cursor: auto;">Lịch sử giỏ hàng
                         </li>
                     </ul>
                 </div>
@@ -41,7 +41,7 @@
 
         <div class="main-content" style="padding: 60px 20px 20px 20px; min-height: 700px;">
             <div>
-                <div class="ProductNameDetail" style="text-align:center">Lịch sử mua sắm 30 ngày gần nhất.</div>
+                <div class="ProductNameDetail" style="text-align:center">Lịch sử giỏ hàng 30 ngày gần nhất.</div>
                 
                 <table class="table table-bordered table-hover" style="background-color:white">
                     <thead>
