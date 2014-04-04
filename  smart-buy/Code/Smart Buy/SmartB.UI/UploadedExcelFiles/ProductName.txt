@@ -164,3 +164,6 @@ Khoai tây Đà Lạt;Khoai tây Đà Lạt;Khoai tây Đà Lạt;Khoai tây Đ�
 Lê trung quốc;Lê trung quốc;Lê trung quốc
 Bộ Drap Vải Cotton Thắng Lợi;Bộ Drap Cotton Thắng Lợi Có Chăn;Bộ Drap Cotton Thắng Lợi Thanh Trang
 Bộ Drap Vải Cotton Thắng Lợi;Bộ Drap Mền Cotton Vải Thắng Lợi Thanh Trang
+Thịt bò đùi;Thịt heo đùi 
+Thịt bò đùi;Thịt heo nạc đùi;Thịt heo đùi 
+Củ cải trắng (Đà lạt);Bắp cải trắng;Củ cải trắng

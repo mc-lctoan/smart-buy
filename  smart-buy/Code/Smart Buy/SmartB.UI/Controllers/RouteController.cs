@@ -35,18 +35,24 @@ namespace SmartB.UI.Controllers
                                       {
                                           FirstStartAddress = model.FirstStartAddress,
                                           FirstEndAddress = model.FirstEndAddress,
+                                          FirstStartDistance = null,
+                                          FirstEndDistance = null,
                                           FirstRouteName = model.FirstRouteName,
                                           FirstRoute = model.FirstRoute,
                                           FirstMarkets = model.FirstMarkets,
 
                                           SecondStartAddress = model.SecondStartAddress,
                                           SecondEndAddress = model.SecondEndAddress,
+                                          SecondStartDistance = null,
+                                          SecondEndDistance = null,
                                           SecondRouteName = model.SecondRouteName,
                                           SecondRoute = model.SecondRoute,
                                           SecondMarkets = model.SecondMarkets,
 
                                           ThirdStartAddress = model.ThirdStartAddress,
                                           ThirdEndAddress = model.ThirdEndAddress,
+                                          ThirdStartDistance = null,
+                                          ThirdEndDistance = null,
                                           ThirdRouteName = model.ThirdRouteName,
                                           ThirdRoute = model.ThirdRoute,
                                           ThirdMarkets = model.ThirdMarkets
@@ -121,22 +127,145 @@ namespace SmartB.UI.Controllers
             {
                 string chosenRoute = "";
                 string[] ids = null;
+                var distanceA = new List<double>();
+                var distanceB = new List<double>();
 
                 if (user.Profile.FirstRouteName == Routes)
                 {
                     chosenRoute = user.Profile.FirstRoute;
                     ids = user.Profile.FirstMarkets.Split(',');
+                    if (user.Profile.FirstStartDistance != null)
+                    {
+                        string[] distances = user.Profile.FirstStartDistance.Split(',');
+                        foreach (string s in distances)
+                        {
+                            double tmp = Double.Parse(s);
+                            distanceA.Add(tmp);
+                        }
+                    }
+                    else
+                    {
+                        distanceA = CalculateDistanceHelper.DistanceToAllMarket(chosenRoute, ids, "start");
+                        string tmp = "";
+                        foreach (double d in distanceA)
+                        {
+                            tmp += d + ",";
+                        }
+                        tmp = tmp.Remove(tmp.Length - 1);
+                        user.Profile.FirstStartDistance = tmp;
+                    }
+                    if (user.Profile.FirstEndDistance != null)
+                    {
+                        string[] distances = user.Profile.FirstEndDistance.Split(',');
+                        foreach (string s in distances)
+                        {
+                            double tmp = Double.Parse(s);
+                            distanceB.Add(tmp);
+                        }
+                    }
+                    else
+                    {
+                        distanceB = CalculateDistanceHelper.DistanceToAllMarket(chosenRoute, ids, "end");
+                        string tmp = "";
+                        foreach (double d in distanceB)
+                        {
+                            tmp += d + ",";
+                        }
+                        tmp = tmp.Remove(tmp.Length - 1);
+                        user.Profile.FirstEndDistance = tmp;
+                    }
                 } 
                 else if (user.Profile.SecondRouteName == Routes)
                 {
                     chosenRoute = user.Profile.SecondRoute;
                     ids = user.Profile.SecondMarkets.Split(',');
+                    if (user.Profile.SecondStartDistance != null)
+                    {
+                        string[] distances = user.Profile.SecondStartDistance.Split(',');
+                        foreach (string s in distances)
+                        {
+                            double tmp = Double.Parse(s);
+                            distanceA.Add(tmp);
+                        }
+                    }
+                    else
+                    {
+                        distanceA = CalculateDistanceHelper.DistanceToAllMarket(chosenRoute, ids, "start");
+                        string tmp = "";
+                        foreach (double d in distanceA)
+                        {
+                            tmp += d + ",";
+                        }
+                        tmp = tmp.Remove(tmp.Length - 1);
+                        user.Profile.SecondStartDistance = tmp;
+                    }
+                    if (user.Profile.SecondEndDistance != null)
+                    {
+                        string[] distances = user.Profile.SecondEndDistance.Split(',');
+                        foreach (string s in distances)
+                        {
+                            double tmp = Double.Parse(s);
+                            distanceB.Add(tmp);
+                        }
+                    }
+                    else
+                    {
+                        distanceB = CalculateDistanceHelper.DistanceToAllMarket(chosenRoute, ids, "end");
+                        string tmp = "";
+                        foreach (double d in distanceB)
+                        {
+                            tmp += d + ",";
+                        }
+                        tmp = tmp.Remove(tmp.Length - 1);
+                        user.Profile.SecondEndDistance = tmp;
+                    }
                 }
                 else if (user.Profile.ThirdRouteName == Routes)
                 {
                     chosenRoute = user.Profile.ThirdRoute;
                     ids = user.Profile.ThirdMarkets.Split(',');
+                    if (user.Profile.ThirdStartDistance != null)
+                    {
+                        string[] distances = user.Profile.ThirdStartDistance.Split(',');
+                        foreach (string s in distances)
+                        {
+                            double tmp = Double.Parse(s);
+                            distanceA.Add(tmp);
+                        }
+                    }
+                    else
+                    {
+                        distanceA = CalculateDistanceHelper.DistanceToAllMarket(chosenRoute, ids, "start");
+                        string tmp = "";
+                        foreach (double d in distanceA)
+                        {
+                            tmp += d + ",";
+                        }
+                        tmp = tmp.Remove(tmp.Length - 1);
+                        user.Profile.ThirdStartDistance = tmp;
+                    }
+                    if (user.Profile.ThirdEndDistance != null)
+                    {
+                        string[] distances = user.Profile.ThirdEndDistance.Split(',');
+                        foreach (string s in distances)
+                        {
+                            double tmp = Double.Parse(s);
+                            distanceB.Add(tmp);
+                        }
+                    }
+                    else
+                    {
+                        distanceB = CalculateDistanceHelper.DistanceToAllMarket(chosenRoute, ids, "end");
+                        string tmp = "";
+                        foreach (double d in distanceB)
+                        {
+                            tmp += d + ",";
+                        }
+                        tmp = tmp.Remove(tmp.Length - 1);
+                        user.Profile.ThirdEndDistance = tmp;
+                    }
                 }
+                context.SaveChanges();
                 
                 // Get route
                 ViewBag.Route = chosenRoute;
@@ -167,7 +296,7 @@ namespace SmartB.UI.Controllers
                     }
                 }
 
-                var route = new SuggestRouteHelper(products, markets);
+                var route = new SuggestRouteHelper(products, markets, distanceA, distanceB);
                 model = route.Suggest();
 
                 // Construct the dropdownlist

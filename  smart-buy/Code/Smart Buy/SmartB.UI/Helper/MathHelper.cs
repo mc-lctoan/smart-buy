@@ -42,8 +42,8 @@ namespace SmartB.UI.Helper
             string origins = lat1 + "," + lng1;
             string destinations = lat2 + "," + lng2;
 
-            //string fullPath = url + "key=" + key + "&origins=" + origins + "&destinations=" + destinations + "&sensor=" + sensor;
-            string fullPath = url + "origins=" + origins + "&destinations=" + destinations + "&sensor=" + sensor;
+            string fullPath = url + "key=" + key + "&origins=" + origins + "&destinations=" + destinations + "&sensor=" + sensor;
+            //string fullPath = url + "origins=" + origins + "&destinations=" + destinations + "&sensor=" + sensor;
 
             var client = new WebClient();
             Stream stream = client.OpenRead(fullPath);

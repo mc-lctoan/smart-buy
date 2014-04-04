@@ -12,7 +12,7 @@ namespace SmartB.UI.Models
         public int Price { get; set; }
         public int MinPrice { get; set; }
         public int MaxPrice { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

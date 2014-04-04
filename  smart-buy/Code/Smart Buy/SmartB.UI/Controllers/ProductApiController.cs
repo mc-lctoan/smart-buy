@@ -105,8 +105,8 @@ namespace SmartB.UI.Controllers
                 Id = markets[0].Id.ToString(),
                 Name = markets[0].Name,
                 Address = markets[0].Address,
-                Latitude = markets[0].Latitude,
-                Longitude = markets[0].Longitude
+                Latitude = markets[0].Latitude.Value,
+                Longitude = markets[0].Longitude.Value
             };
             result.Add(defaulMarket);
 
@@ -120,8 +120,8 @@ namespace SmartB.UI.Controllers
                     Id = marketsOrder[i].Id.ToString(),
                     Name = marketsOrder[i].Name,
                     Address = marketsOrder[i].Address,
-                    Latitude = marketsOrder[i].Latitude,
-                    Longitude = marketsOrder[i].Longitude
+                    Latitude = marketsOrder[i].Latitude.Value,
+                    Longitude = marketsOrder[i].Longitude.Value
                 };
                 result.Add(item);
             }
