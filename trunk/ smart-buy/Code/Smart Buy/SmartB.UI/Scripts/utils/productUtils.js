@@ -465,11 +465,4 @@ function updateQuantityCart(id) {
     }
 }
 
-$(document).ready(function () {
-    //$("#order-total").load("../Cart/ViewCart #order-total-detail").val();
-    //if ($("#order-total").load("../Cart/ViewCart #order-total-detail").val() == "") {
-    //    $("#order-summary").hide();
-    //}
-    //if ($("#order-total").load("../Cart/ViewCart #order-total-detail").val() != "")
-    //    $("#order-summary").show();
-});
+
