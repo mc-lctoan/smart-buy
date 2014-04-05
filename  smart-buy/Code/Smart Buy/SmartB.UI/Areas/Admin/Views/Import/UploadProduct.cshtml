@@ -176,13 +176,13 @@
                     if(result.status.toString() == "Duplicate Products List")
                     {
                         alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
-                        $('tr:has(td:contains("'+result.nameDupProduct+'"))').parent('tbody').find("tr:last").after("<tr><td style='width:5%'>"+
+                        $('tr:has(td:contains("'+result.nameDupProduct+'"))').parent('tbody').find("tr:last").after("<tr><td style='width:5%;text-align:center'>"+
                                                                                   "<input type='checkbox'/>"+
                                                                               "</td> " +
                                                                               "<td style='width:40%'>"+productName+"</td> " +
                                                                               "<td style='width:35%'>"+ productMarketName+"</td>" +
-                                                                              "<td style='width:10%'>"+ productPrice+"</td>" +
-                                                                              "<td style='width:10%'> "+
+                                                                              "<td style='width:10%;text-align:center'>"+ productPrice+"</td>" +
+                                                                              "<td style='width:10%;text-align:center'> "+
                                                                               "<input  type='radio' name='productPrice_"+result.tableId+"' id='Check_"+result.tableId+"'/> "+
                                                                               "</td>"+
                                                                            "</tr>")
@@ -215,29 +215,32 @@
                                                                    "<table id='table_"+dupTableCount+"'  class='table table-bordered table-striped table-checkable'>" +
                                                                      "<thead>"+
                                                                           "<tr id='header_"+dupTableCount+"'> "+
-                                                                           "<th class='checkbox-column' id='checkboxAllTable_"+dupTableCount+"'  style='width:5%'>"+
+                                                                           "<th class='checkbox-column' id='checkboxAllTable_"+dupTableCount+"'  style='width:5%;text-align:center;border-right: 1px solid #dddddd;'>"+
                                                                              "<input type='checkbox' class='uniform' onclick='checkboxAllTable("+dupTableCount+")' />"+
                                                                            "</th> " +
-                                                                           "<th style='width:40%'>Tên Sản Phẩm</th>"+
-                                                                           "<th style='width:35%'>Tên Chợ</th> "+
-                                                                           "<th style='width:10%'>Giá</th> "+
-                                                                           "<th style='width:10%'>Chọn giá</th> " +
+                                                                           "<th style='width:40%;text-align:center;border-right: 1px solid #dddddd;'>Tên Sản Phẩm</th>"+
+                                                                           "<th style='width:35%;text-align:center;border-right: 1px solid #dddddd;'>Tên Chợ</th> "+
+                                                                           "<th style='width:10%;text-align:center;border-right: 1px solid #dddddd;'>Giá</th> "+
+                                                                           "<th style='width:10%;text-align:center'>Chọn giá</th> " +
                                                                           "</tr> "+
                                                                      "</thead>"+
                                                                      "<tr class='checked'>"+
-                                                                        "<td class='checked' id='checkbox_0' onclick='checkboxChecked(0)'  style='width:5%'>"+
+                                                                        "<td class='checked' id='checkbox_0' onclick='checkboxChecked(0)'  style='width:5%;text-align:center;border-right: 1px solid #dddddd;'>"+
                                                                            "<input type='checkbox' checked='checked' id='checkbox' />"+
                                                                         "</td> " +
-                                                                                     "<td  style='width:40%'>"+productName+"</td> " +
-                                                                                     "<td  style='width:35%'>"+ productMarketName+"</td>" +
-                                                                                     "<td style='width:10%>"+ productPrice+"</td>" +
-                                                                                     "<td style='width:10%><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"' checked='checked'/>" +
+                                                                                     "<td  style='width:40%;border-right: 1px solid #dddddd;'>"+productName+"</td> " +
+                                                                                     "<td  style='width:35%;border-right: 1px solid #dddddd;'>"+ productMarketName+"</td>" +
+                                                                                     "<td style='width:10%;text-align:center;border-right: 1px solid #dddddd;>"+ productPrice+"</td>" +
+                                                                                     "<td style='width:10%;text-align:center><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"' checked='checked'/>" +
                                                                      "</tr> "+
-                                                                     "<tr><td id='checkbox_1' onclick='checkboxChecked(1)' style='width:5%'><input type='checkbox' id='checkbox'/></td> " +
+                                                                     "<tr>"+
+                                                                        "<td id='checkbox_1' onclick='checkboxChecked(1)' style='width:5%;text-align:center'>"+
+                                                                           "<input type='checkbox' id='checkbox'/>"+
+                                                                        "</td> " +
                                                                                     "<td style='width:40%'>"+result.correctProductName+"</td> " +
                                                                                     "<td style='width:35%'>"+result.correctMarketName+"</td>" +
-                                                                                    "<td style='width:10%>"+result.correctProductPrice+"</td>" +
-                                                                                    "<td style='width:10%><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"'/>"+ 
+                                                                                    "<td style='width:10%;text-align:center>"+result.correctProductPrice+"</td>" +
+                                                                                    "<td style='width:10%;text-align:center><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"'/>"+ 
                                                                     "</tr> "+
                                                                   "</table>"+
                                                                  "</div> "+
@@ -258,29 +261,40 @@
                                                                "<div class='span12 widget'>"+
                                                                  "<div class='widget-header'>"+
                                                                    "<span class='title'>Nhóm sản phẩm trùng</span>"+
+                                                                   "<div class='toolbar'>"+
+                                                                     "<div class='btn-group'>"+
+                                                                       "<button class='btn' id='combine_"+idDupTable+"' onclick='mergeProduct("+idDupTable+")'>"+
+                                                                       "<i class='icol-arrow-join'></i>Gộp</button>"+
+                                                                       "<button class='btn' id='split_"+idDupTable+"' onclick='split("+idDupTable+")'>"+
+                                                                       "<i class='icol-arrow-divide'></i>Tách</button>"+
+                                                                       "</div>"+
+                                                                     "</div>"+
+                                                                   "</div>"+
                                                                  "</div>"+
                                                                  "<div class='widget-content table-container'>"+
                                                                    "<table id='table_"+idDupTable+"'  class='table table-striped'>" +
                                                                      "<thead>"+
                                                                           "<tr id='header_"+idDupTable+"'> "+
-                                                                           "<th></th> " +
-                                                                           "<th>Tên Sản Phẩm</th>"+
-                                                                           "<th>Tên Chợ</th> "+
-                                                                           "<th>Giá</th> "+
-                                                                           "<th>Chọn giá</th> " +
+                                                                           "<th class='checkbox-column' id='checkboxAllTable_"+idDupTable+"'  style='width:5%;text-align:center;border-right: 1px solid #dddddd;'>"+
+                                                                             "<input type='checkbox' class='uniform' onclick='checkboxAllTable("+idDupTable+")' />"+
+                                                                           "</th> " +
+                                                                           "<th style='width:40%;text-align:center;border-right: 1px solid #dddddd;'>Tên Sản Phẩm</th>"+
+                                                                           "<th style='width:35%;text-align:center;border-right: 1px solid #dddddd;'>Tên Chợ</th> "+
+                                                                           "<th style='width:10%;text-align:center;border-right: 1px solid #dddddd;'>Giá</th> "+
+                                                                           "<th style='width:10%;text-align:center;border-right: 1px solid #dddddd;'>Chọn giá</th> " +
                                                                           "</tr> "+
                                                                      "</thead>"+
-                                                                     "<tr><td><input type='checkbox' checked /></td> " +
-                                                                                     "<td>"+productName+"</td> " +
-                                                                                     "<td>"+ productMarketName+"</td>" +
-                                                                                     "<td>"+ productPrice+"</td>" +
-                                                                                     "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
+                                                                     "<tr><td style='text-align:center;border-right: 1px solid #dddddd;'><input type='checkbox' checked /></td> " +
+                                                                                     "<td style='border-right: 1px solid #dddddd;'>"+productName+"</td> " +
+                                                                                     "<td style='border-right: 1px solid #dddddd;'>"+ productMarketName+"</td>" +
+                                                                                     "<td style='text-align:center;border-right: 1px solid #dddddd;'>"+ productPrice+"</td>" +
+                                                                                     "<td style='text-align:center'><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
                                                                      "</tr> "+
-                                                                     "<tr><td><input type='checkbox' /></td> " +
-                                                                                    "<td>"+result.correctProductName+"</td> " +
-                                                                                    "<td>"+result.correctMarketName+"</td>" +
-                                                                                    "<td>"+result.correctProductPrice+"</td>" +
-                                                                                    "<td><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
+                                                                     "<tr><td style='text-align:center;border-right: 1px solid #dddddd;'><input type='checkbox' /></td> " +
+                                                                                    "<td style='border-right: 1px solid #dddddd;'>"+result.correctProductName+"</td> " +
+                                                                                    "<td style='border-right: 1px solid #dddddd;'>"+result.correctMarketName+"</td>" +
+                                                                                    "<td style='text-align:center;border-right: 1px solid #dddddd'>"+result.correctProductPrice+"</td>" +
+                                                                                    "<td style='text-align:center;border-right: 1px solid #dddddd'><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
                                                                     "</tr> "+
                                                                   "</table>"+
                                                                   "<div class='dt_footer'>"+
@@ -926,10 +940,14 @@
 
 <form action="@Url.Action("UploadProduct", "Import")" enctype="multipart/form-data" method="post">
     <div class="control-group">
-        <label class="control-label" for="excelFile">Chọn file excel</label>
         <div class="controls">
-            <input type="file" id="excelFile" name="excelFile" data-provide="fileinput" />
-            <input type="submit" value="Tải lên" class="btn btn-primary" />
+            <div style="float:left">
+            <input type="file" id="excelFile" name="excelFile" data-provide="fileinput"/>
+                </div>
+            <div style="margin-left:310px">
+                 <input type="submit" value="Tải lên" class="btn btn-primary" />
+            </div>
+           
         </div>
     </div>
 </form>
@@ -1192,7 +1210,7 @@
                             {
                                @Model.ErrorNameLines[i] <b>,</b>   
                             }  </lable>
-                        <label style="color: red">Tên chợ phải từ 5 đến 20 ký tự</label>
+                        <label style="color: red">Tên chợ phải từ 5 đến 100 ký tự</label>
                         <lable><b style="font-weight:bold;color:blue">Dòng:</b> @for (int i = 0; i < @Model.ErrorMarketNameLines.Count; i++)
                                                                                 {
                                      @Model.ErrorMarketNameLines[i] <b>,</b>    
@@ -1289,7 +1307,7 @@
                             {
                                 <li>@Model.ExceptionName</li>
                             }
-                            @if (Model.ExceptionMarket == "Tên chợ phải từ 5 đến 20 ký tự")
+                            @if (Model.ExceptionMarket == "Tên chợ phải từ 5 đến 100 ký tự")
                             {
                                 <li>@Model.ExceptionMarket</li>
                             }
@@ -1304,15 +1322,16 @@
                         <div class="span12 widget">
                             <div class="widget-header">
                                 <span class="title">Sản phẩm lỗi</span>
+                        <span class="title" style="margin-left:70%">Đơn vị tính: nghìn đồng</span>
                             </div>
                             <div class="widget-content table-container">
                                 <table class="table table-bordered table-striped table-flipscroll" id="ErrorProduct">
                                     <thead>
                                         <tr class="bg-header">
                                             <th style="width:5%;text-align:center">STT</th>
-                                            <th style="width:35%;text-align:center">Tên Sản Phẩm</th>
-                                            <th style="width:20%;text-align:center">Tên Chợ</th>
-                                            <th style="width:25%;text-align:center">Giá (Nghìn đồng)</th>
+                                            <th style="width:40%;text-align:center">Tên Sản Phẩm</th>
+                                            <th style="width:30%;text-align:center">Tên Chợ</th>
+                                            <th style="width:10%;text-align:center">Giá </th>
                                             <th style="width:15%;text-align:center"></th>
                                         </tr>
                                     </thead>
@@ -1326,7 +1345,7 @@
                                                 <td>
                                                     <div class="control-group error">
                                                         <div class="controls">
-                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i })
+                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i, @style="width:90%" })
                                                             <span class="help-block" id="productNameAlert"></span>
                                                         </div>
                                                     </div>
@@ -1335,7 +1354,7 @@
                                             else
                                             {
                                                 <td>
-                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i })
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i, @style="width:90%" })
                                                     <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
                                                 </td>
                                             }
@@ -1344,7 +1363,7 @@
                                                 <td>
                                                     <div class="control-group error">
                                                         <div class="controls">
-                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i })
+                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i, @style="width:90%" })
                                                             <span class="help-block" id="marketNameAlert"></span>
                                                         </div>
                                                     </div>
@@ -1353,7 +1372,7 @@
                                             else
                                             {
                                                 <td>
-                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i })
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i, @style="width:90%"})
                                                     <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].MarketName)</p>
                                                 </td> 
                                             }
@@ -1371,11 +1390,11 @@
                                             else
                                             {
                                                 <td>
-                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i, @class = "input-mini" })
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i, @class = "input-mini"  })
                                                     <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Price)</p>
                                                 </td>
                                             }
-                                            <td>
+                                            <td style="text-align:center">
                                                 <button type="button" class="btn" onclick="saveProduct(@i,@Model.CorrectSellProducts.Count)">
                                                     <i class="icol-accept"></i>
                                                     Lưu
@@ -1447,10 +1466,10 @@
                                                 <th class="checkbox-column" id="checkboxAllTable_@i" style="width:5%">
                                                     <input id="checkAll" type="checkbox" class="uniform" onclick="checkboxAllTable(@i)" />
                                                 </th>
-                                                <th style="width: 40%">Tên Sản Phẩm</th>
-                                                <th style="width: 35%">Tên Chợ</th>
-                                                <th style="width: 10%">Giá</th>
-                                                <th style="width: 10%">Chọn giá</th>
+                                                <th style="width: 40%;text-align:center">Tên Sản Phẩm</th>
+                                                <th style="width: 35%;text-align:center">Tên Chợ</th>
+                                                <th style="width: 10%;text-align:center">Giá</th>
+                                                <th style="width: 10%;text-align:center">Chọn giá</th>
                                             </tr>
                                         </thead>
 
@@ -1460,13 +1479,13 @@
                                             if (j == 0)
                                             {
                                             <tr class="checked">
-                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)"  style="text-align:center">
                                                     <input type="checkbox" checked="checked" id="checkbox" />
                                                 </td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].Name</td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
-                                                <td>@Model.duplicateCorrectProduct[i][j].Price</td>
-                                                <td>
+                                                <td style="text-align:center">@Model.duplicateCorrectProduct[i][j].Price</td>
+                                                <td style="text-align:center">
                                                     <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
                                                 </td>
                                             </tr>
@@ -1474,13 +1493,13 @@
                                             else
                                             {
                                             <tr>
-                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)"  style="text-align:center">
                                                     <input type="checkbox" id="checkbox" />
                                                 </td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].Name</td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
-                                                <td>@Model.duplicateCorrectProduct[i][j].Price</td>
-                                                <td>
+                                                <td style="text-align:center">@Model.duplicateCorrectProduct[i][j].Price</td>
+                                                <td style="text-align:center">
                                                     <input type="radio" name="productPrice_@i"  id="Check_@i" />
                                                 </td>
                                             </tr>
@@ -1524,10 +1543,10 @@
                                                 <th class="checkbox-column" id="checkboxAllTable_@i" style="width:5%">
                                                     <input id="checkAll" type="checkbox" class="uniform" onclick="checkboxAllTable(@i)" />
                                                 </th>
-                                                <th style="width: 40%">Tên Sản Phẩm</th>
-                                                <th style="width: 35%">Tên Chợ</th>
-                                                <th style="width: 10%">Giá</th>
-                                                <th style="width: 10%">Chọn giá</th>
+                                                <th style="width: 40%;text-align:center">Tên Sản Phẩm</th>
+                                                <th style="width: 35%;text-align:center">Tên Chợ</th>
+                                                <th style="width: 10%;text-align:center">Giá</th>
+                                                <th style="width: 10%;text-align:center">Chọn giá</th>
                                             </tr>
                                         </thead>
 
@@ -1537,13 +1556,13 @@
                                             if (j == 0)
                                             {
                                             <tr class="checked">
-                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)" style="text-align:center">
                                                     <input type="checkbox" checked="checked" id="checkbox" />
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
-                                                <td>@ViewBag.dupSellProduct[i][j].Price</td>
-                                                <td>
+                                                <td style="text-align:center">@ViewBag.dupSellProduct[i][j].Price</td>
+                                                <td style="text-align:center">
                                                     <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
                                                 </td>
                                             </tr>
@@ -1551,13 +1570,13 @@
                                             else
                                             {
                                             <tr>
-                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)">
+                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)" style="text-align:center">
                                                     <input type="checkbox" id="checkbox"/>
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
-                                                <td>@ViewBag.dupSellProduct[i][j].Price</td>
-                                                <td>
+                                                <td style="text-align:center">@ViewBag.dupSellProduct[i][j].Price</td>
+                                                <td style="text-align:center">
                                                     <input type="radio" name="productPrice_@i"  id="Check_@i"/>
                                                 </td>
                                             </tr>

@@ -2,8 +2,13 @@
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
-    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
 
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+    <script>
+    $(document).ready(function () {
+        $("#order-summary").hide();
+    });
+</script>
         <div class="rev-slider-wrapper" style="margin-top: 100px">
             <div class="rev-slider" style="min-height:550px">
                 <ul class="unstyled">

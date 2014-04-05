@@ -326,7 +326,7 @@ namespace SmartB.UI.UploadedExcelFiles
 
                             if (sellProductError.MarketName.Length < 5 || sellProductError.MarketName.Length > 100)
                             {
-                                InvalidNumberException invalidNumberException = new InvalidNumberException("Tên chợ phải từ 5 đến 20 ký tự");
+                                InvalidNumberException invalidNumberException = new InvalidNumberException("Tên chợ phải từ 5 đến 100 ký tự");
                                 errorMarket = invalidNumberException.Message;
                                 error = true;
                                 errorCount++;

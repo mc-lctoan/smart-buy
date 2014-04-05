@@ -20,7 +20,14 @@
     <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables_themeroller.css")">
     <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
 
-
+    <script>
+        $(document).ready(function () {
+            var table = $('#ProductTable').dataTable();
+            if ($("#order-total").load("../Cart/ViewCart #order-total-detail").text() != "") {
+                $("#order-summary").show();
+            }
+        });
+</script>
     <script type="text/javascript">
         var map, directionsService, directionsDisplay;
         var str = '@Html.Raw(HttpUtility.HtmlDecode(ViewBag.Route))';
