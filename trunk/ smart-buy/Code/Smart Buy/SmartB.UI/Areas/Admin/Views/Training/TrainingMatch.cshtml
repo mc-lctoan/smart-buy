@@ -21,7 +21,7 @@
                 <li>
                     <span title="General">
                         <i class="icon-home"></i>
-                        <span class="nav-title">Trang chủ</span>
+                        <span class="nav-title">Hệ thống</span>
                     </span>
                     <ul class="inner-nav">
                         <li>
@@ -225,14 +225,14 @@
                         $("#split_" + i).click();
                     }
                     window.parent.location.href = window.parent.location.href;
-                        //var mes = "Gộp thành công";
-                        //showNotifyDialog(mes);
+                    //var mes = "Gộp thành công";
+                    //showNotifyDialog(mes);
                     //}
                     //else {
-                        
-                        //showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
-                        //var mesDialog = document.getElementById('mesDialog');
-                        //mesDialog.style.color = 'red';
+
+                    //showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
+                    //var mesDialog = document.getElementById('mesDialog');
+                    //mesDialog.style.color = 'red';
                     //}
                 },
                 error: function (e) {
@@ -327,53 +327,51 @@
 
 </script>
 
- @if (TempData["MergeProduct"] != null)
-        {
-            string message = TempData["MergeProduct"].ToString();
-            if (message == "Success")
-            {
-            <div class="alert alert-success fade in">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <strong>Thành công</strong><br />
-                Gộp thành công
-            </div>
-            }
-            else if (message == "Failed")
-            {
-            <div class="alert alert-danger fade in">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <strong>Thất bại</strong><br />
-                Gộp thất bại. Vui lòng thử lại sau.
-            </div>
-            }
-        }
+@if (TempData["MergeProduct"] != null)
+{
+    string message = TempData["MergeProduct"].ToString();
+    if (message == "Success")
+    {
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Gộp thành công</strong><br />
+    </div>
+    }
+    else if (message == "Failed")
+    {
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Gộp thất bại</strong>
+    </div>
+    }
+}
 
-        @if (TempData["SplitProduct"] != null)
-        {
-            string messageSplit = TempData["SplitProduct"].ToString();
-            if (messageSplit == "Success")
-            {
-            <div class="alert alert-success fade in">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <strong>Thành công</strong><br />
-                Tách thành công
-            </div>
-            }
-            else if (messageSplit == "Failed")
-            {
-            <div class="alert alert-danger fade in">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <strong>Thất bại</strong><br />
-                Tách thất bại. Vui lòng thử lại sau.
-            </div>
-            }
-        }
+@if (TempData["SplitProduct"] != null)
+{
+    string messageSplit = TempData["SplitProduct"].ToString();
+    if (messageSplit == "Success")
+    {
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Tách thành công</strong>
+    </div>
+    }
+    else if (messageSplit == "Failed")
+    {
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Tách thất bại</strong>
+    </div>
+    }
+}
 
 @if (ViewBag.dupDictionary != null)
 {
-    for (int i = 0; i < ViewBag.dupDictionary.Count; i++)
+    if (ViewBag.dupDictionary.Count > 0)
     {
-        int productId = 0;
+        for (int i = 0; i < ViewBag.dupDictionary.Count; i++)
+        {
+            int productId = 0;
     <div id="dupTable_@i">
         <div class="row-fluid">
             <div class="span8 widget">
@@ -407,14 +405,14 @@
                             <tr class="trFor_@i">
                                 @if (j == 0)
                                 {
-                                    <td>
+                                    <td style="width: 5%">
                                         <input type="checkbox" checked /></td>
                                     <td>@ViewBag.dupDictionary[i][j].Name</td>                                  
                             
                                 }
                                 else
                                 {
-                                    <td>
+                                    <td style="width: 5%">
                                         <input type="checkbox" /></td>
                                     <td>@ViewBag.dupDictionary[i][j].Name</td>                                    
                             
@@ -436,6 +434,11 @@
             </div>
         </div>
     </div>
+        }
+    }
+    else
+    {
+    <h3>Chưa có dữ liệu</h3>
     }
 }
 
