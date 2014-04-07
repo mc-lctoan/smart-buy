@@ -172,11 +172,13 @@
                 if (result.error.length == 0) {
                     var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
                     var id = result.id;
+                    var lastId = parseInt($("tr:last").find("td")[0].id) +1;
+                    var lastId2 = lastId++;
                     $("#ErrorArea").html("");
                     if(result.status.toString() == "Duplicate Products List")
                     {
                         alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
-                        $('tr:has(td:contains("'+result.nameDupProduct+'"))').parent('tbody').find("tr:last").after("<tr><td style='width:5%;text-align:center'>"+
+                        $('tr:has(td:contains("'+result.nameDupProduct+'"))').parent('tbody').find("tr:last").after("<tr><td id='"+lastId+"' style='width:5%;text-align:center'>"+
                                                                                   "<input type='checkbox'/>"+
                                                                               "</td> " +
                                                                               "<td style='width:40%'>"+productName+"</td> " +
@@ -225,7 +227,7 @@
                                                                           "</tr> "+
                                                                      "</thead>"+
                                                                      "<tr class='checked'>"+
-                                                                        "<td class='checked' id='checkbox_0' onclick='checkboxChecked(0)'  style='width:5%;text-align:center;border-right: 1px solid #dddddd;'>"+
+                                                                        "<td class='checked' id='"+lastId+"' onclick='checkboxChecked("+lastId+")'  style='width:5%;text-align:center;border-right: 1px solid #dddddd;'>"+
                                                                            "<input type='checkbox' checked='checked' id='checkbox' />"+
                                                                         "</td> " +
                                                                                      "<td  style='width:40%;border-right: 1px solid #dddddd;'>"+productName+"</td> " +
@@ -234,7 +236,7 @@
                                                                                      "<td style='width:10%;text-align:center><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"' checked='checked'/>" +
                                                                      "</tr> "+
                                                                      "<tr>"+
-                                                                        "<td id='checkbox_1' onclick='checkboxChecked(1)' style='width:5%;text-align:center'>"+
+                                                                        "<td id='"+lastId2+"' onclick='checkboxChecked("+lastId2+")' style='width:5%;text-align:center'>"+
                                                                            "<input type='checkbox' id='checkbox'/>"+
                                                                         "</td> " +
                                                                                     "<td style='width:40%'>"+result.correctProductName+"</td> " +
