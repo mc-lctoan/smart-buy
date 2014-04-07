@@ -2,7 +2,7 @@
 @using PagedList.Mvc;*@
 @model List<SmartB.UI.Areas.Admin.Models.ProductInfo>
 @{
-    ViewBag.Title = "SearchProduct";
+    ViewBag.Title = "Tìm kiếm sản phẩm";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
 
@@ -46,35 +46,36 @@
         </div>
         <div class="main-content" style="padding: 40px 20px 20px; min-height: 560px;">
             <div style="min-height: 700px; font-size: 11px; padding: 0px;">
-                <div style="float:left">
-                @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search", style = "margin:2px;float:left" }))
-                {
-                    <div class="metro">
-                        <div class="input-control text size5" style="margin: 0px">
-                            @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
-                            <button type="submit" class="btn-search"></button>
+                <div style="float: left">
+                    @using (Html.BeginForm("SearchProduct", "Product", FormMethod.Get, new { role = "search", style = "margin:2px;float:left" }))
+                    {
+                        <div class="metro">
+                            <div class="input-control text size5" style="margin: 0px">
+                                @Html.TextBox("q", ViewBag.CurrentFilter as string, new { id = "q", type = "text", placeholder = "Tên sản phẩm" })
+                                <button type="submit" class="btn-search"></button>
+                            </div>
                         </div>
-                    </div>
-                }
-                     <br /><br />
-                <div class="ProductNameDetail">Kết quả tìm kiếm</div>
-                 </div>
-               
+                    }
+                    <br />
+                    <br />
+                    <div class="ProductNameDetail">Kết quả tìm kiếm</div>
+                </div>
+
 
                 @if (Model != null)
                 {
-                   <div style="text-align: left; float: right;width:35%">
-                        <div style="font-weight: bold;float:right;margin-left: 10px; ">*Đơn vị tính Nghìn đồng.</div>
-                        <div style="background-color: rgba(0, 214, 255, 0.23);width: 50%; float: right">
+                    <div style="text-align: left; float: right; width: 35%">
+                        <div style="font-weight: bold; float: right; margin-left: 10px;">*Đơn vị tính Nghìn đồng.</div>
+                        <div style="background-color: rgba(0, 214, 255, 0.23); width: 50%; float: right">
                             <img src="@Url.Content("~/Images/InfoPrice.png")"/>
                         </div>
                     </div>
                     <table class="table table-bordered table-hover" id="ProductTable">
                         <thead class="bg-header">
                             <tr>
-                                <th style="width: 40%;text-align:center">Tên sản phẩm</th>
-                                <th style="width: 20%;text-align:center">Giá sản phẩm</th>
-                                <th style="width: 40%;text-align:center">Thao tác</th>
+                                <th style="width: 40%; text-align: center">Tên sản phẩm</th>
+                                <th style="width: 20%; text-align: center">Giá sản phẩm</th>
+                                <th style="width: 40%; text-align: center">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,7 +92,7 @@
 
                                     </td>
 
-                                    <td style="padding: 3px 10px;color:white;text-align:center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                    <td style="padding: 3px 10px; color: white; text-align: center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
                                     var minPrice = item.MinPrice;
                                     var maxPrice = item.MaxPrice;
@@ -103,32 +104,35 @@
                                                 <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
                                                 <div style="color: black">Thêm vào giỏ</div>
                                             </div>
-                                            <div class="SuggestPrice">
-                                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
-                                                <div style="color: black">Đề xuất giá</div>
-                                            </div>
-                                        </div>
-                                        <script>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <div class="SuggestPrice">
+                                                    <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                                    <div style="color: black">Đề xuất giá</div>
+                                                </div>
+                                                <script>
 
-                                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
-                                                $.Dialog({
-                                                    overlay: true,
-                                                    shadow: true,
-                                                    flat: true,
-                                                    width: 442,
-                                                    icon: '<i class="btnSuggestPrice"></i>',
-                                                    title: 'Đề xuất giá',
-                                                    content: '',
-                                                    padding: 10,
-                                                    onShow: function (_dialog) {
-                                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
-                                                        $.Dialog.content(content);
-                                                        $.Metro.initInputs();
-                                                    }
-                                                });
-                                                return true;
-                                            });
-                                        </script>
+                                                    $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
+                                                        $.Dialog({
+                                                            overlay: true,
+                                                            shadow: true,
+                                                            flat: true,
+                                                            width: 442,
+                                                            icon: '<i class="btnSuggestPrice"></i>',
+                                                            title: 'Đề xuất giá',
+                                                            content: '',
+                                                            padding: 10,
+                                                            onShow: function (_dialog) {
+                                                                var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                                                $.Dialog.content(content);
+                                                                $.Metro.initInputs();
+                                                            }
+                                                        });
+                                                        return true;
+                                                    });
+                                                </script>
+                                            }
+                                        </div>
                                     </td>
                                 </tr>
                                 }
@@ -143,7 +147,7 @@
 
                                     </td>
 
-                                    <td style="padding: 3px 10px;text-align:center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                    <td style="padding: 3px 10px; text-align: center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
                                     var minPrice = item.MinPrice;
                                     var maxPrice = item.MaxPrice;
@@ -155,32 +159,34 @@
                                                 <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
                                                 <div style="color: black">Thêm vào giỏ</div>
                                             </div>
-                                            <div class="SuggestPrice">
-                                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
-                                                <div style="color: black">Đề xuất giá</div>
-                                            </div>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <div class="SuggestPrice">
+                                                    <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                                    <div style="color: black">Đề xuất giá</div>
+                                                </div>
+                                                <script>
+                                                    $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
+                                                        $.Dialog({
+                                                            overlay: true,
+                                                            shadow: true,
+                                                            flat: true,
+                                                            width: 442,
+                                                            icon: '<i class="btnSuggestPrice"></i>',
+                                                            title: 'Đề xuất giá',
+                                                            content: '',
+                                                            padding: 10,
+                                                            onShow: function (_dialog) {
+                                                                var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                                                $.Dialog.content(content);
+                                                                $.Metro.initInputs();
+                                                            }
+                                                        });
+                                                        return true;
+                                                    });
+                                                </script>
+                                            }
                                         </div>
-                                        <script>
-
-                                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
-                                                $.Dialog({
-                                                    overlay: true,
-                                                    shadow: true,
-                                                    flat: true,
-                                                    width: 442,
-                                                    icon: '<i class="btnSuggestPrice"></i>',
-                                                    title: 'Đề xuất giá',
-                                                    content: '',
-                                                    padding: 10,
-                                                    onShow: function (_dialog) {
-                                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
-                                                        $.Dialog.content(content);
-                                                        $.Metro.initInputs();
-                                                    }
-                                                });
-                                                return true;
-                                            });
-                                        </script>
                                     </td>
                                 </tr>
                                 }
@@ -194,7 +200,7 @@
                                         }
 
                                     </td>
-                                    <td style="padding: 3px 10px;text-align:center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
+                                    <td style="padding: 3px 10px; text-align: center">@Html.DisplayFor(modelItem => item.MinPrice) - @Html.DisplayFor(modelItem => item.MaxPrice)
                                         @{
                                     var minPrice = item.MinPrice;
                                     var maxPrice = item.MaxPrice;
@@ -206,32 +212,34 @@
                                                 <input type="button" name="action" value="Add" onclick="addToCart('@productId    ')" class="btnAddToCardDetail" data-id ="" />
                                                 <div style="color: black">Thêm vào giỏ</div>
                                             </div>
-                                            <div class="SuggestPrice">
-                                                <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
-                                                <div style="color: black">Đề xuất giá</div>
-                                            </div>
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                <div class="SuggestPrice">
+                                                    <input type="button" name="action" value="Add" class="btnSuggestPrice" data-id ="@productId" />
+                                                    <div style="color: black">Đề xuất giá</div>
+                                                </div>
+                                                <script>
+                                                    $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
+                                                        $.Dialog({
+                                                            overlay: true,
+                                                            shadow: true,
+                                                            flat: true,
+                                                            width: 442,
+                                                            icon: '<i class="btnSuggestPrice"></i>',
+                                                            title: 'Đề xuất giá',
+                                                            content: '',
+                                                            padding: 10,
+                                                            onShow: function (_dialog) {
+                                                                var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
+                                                                $.Dialog.content(content);
+                                                                $.Metro.initInputs();
+                                                            }
+                                                        });
+                                                        return true;
+                                                    });
+                                                </script>
+                                            }
                                         </div>
-                                        <script>
-
-                                            $(".SuggestPrice").on("click", function (e) { // e.preventDefault(); use this or return false
-                                                $.Dialog({
-                                                    overlay: true,
-                                                    shadow: true,
-                                                    flat: true,
-                                                    width: 442,
-                                                    icon: '<i class="btnSuggestPrice"></i>',
-                                                    title: 'Đề xuất giá',
-                                                    content: '',
-                                                    padding: 10,
-                                                    onShow: function (_dialog) {
-                                                        var content = ["<iframe id='iframeId' width='420' height='260' scrolling='no' src='/Product/ProposeProductPrice/" + @productId + "' frameborder='0'></iframe>"].join('');
-                                                        $.Dialog.content(content);
-                                                        $.Metro.initInputs();
-                                                    }
-                                                });
-                                                return true;
-                                            });
-                                        </script>
                                     </td>
                                 </tr>
                                 }

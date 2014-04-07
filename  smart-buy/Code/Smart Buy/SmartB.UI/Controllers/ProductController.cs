@@ -220,7 +220,7 @@ namespace SmartB.UI.Controllers
                 if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
                 {
                     var userPrice = new UserPrice();
-                    userPrice.Username = parseJson.Username;
+                    userPrice.Username = User.Identity.Name;
                     userPrice.MarketId = parseJson.MarketId;
                     userPrice.ProductId = pId;
                     userPrice.UpdatedPrice = updatedPrice;
