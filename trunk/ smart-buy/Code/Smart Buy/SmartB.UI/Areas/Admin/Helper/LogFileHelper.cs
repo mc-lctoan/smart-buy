@@ -26,15 +26,15 @@ namespace SmartB.UI.Areas.Admin.Helper
                              "Tạo file lúc: " + DateTime.Now.ToShortDateString() + ", " +
                              DateTime.Now.ToShortTimeString() + "\n";
             content += horizontalLine;
-            content += string.Format("|{0,-3}|{1}|{2,-15}|{3,-13}|{4,-17}|{5,-15}|\n", "STT", link, "Thời gian parse",
-                                     "Tổng sản phẩm", "Insert thành công", "Insert thất bại");
+            content += string.Format("|{0,-3}|{1}|{2,-15}|{3,-13}|{4,-19}|\n", "STT", link, "Thời gian parse",
+                                     "Tổng sản phẩm", "Insert vào database");
             content += horizontalLine;
 
             for (int i = 0; i < infos.Count; i++)
             {
-                content += string.Format("|{0,-3}|{1}|{2,-15}|{3,-13}|{4,-17}|{5,-15}|\n",
+                content += string.Format("|{0,-3}|{1}|{2,-15}|{3,-13}|{4,-19}|\n",
                                          i + 1, infos[i].Link.PadRight(max), infos[i].ElapsedTime, infos[i].TotalItems,
-                                         infos[i].ToDatabase, infos[i].TotalItems - infos[i].ToDatabase);
+                                         infos[i].ToDatabase);
                 content += horizontalLine;
             }
             int totalTime = infos.Sum(x => x.ElapsedTime);
@@ -60,7 +60,7 @@ namespace SmartB.UI.Areas.Admin.Helper
 
         private static string HorizontalLine(int max)
         {
-            int length = 70 + max;
+            int length = 56 + max;
             string line = "";
             for (int i = 0; i < length; i++)
             {
