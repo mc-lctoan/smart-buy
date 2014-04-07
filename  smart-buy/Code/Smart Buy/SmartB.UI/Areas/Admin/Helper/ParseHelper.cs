@@ -243,8 +243,15 @@ namespace SmartB.UI.Areas.Admin.Helper
                     var goodMatch = new List<int>();
                     var averageMatch = new List<int>();
                     int pId = -1;
+                    bool wholeMatch = false;
                     foreach (var dictionary in context.Dictionaries)
                     {
+                        if (pair.Key == dictionary.Name)
+                        {
+                            wholeMatch = true;
+                            pId = dictionary.ProductId.Value;
+                            break;
+                        }
                         double match = CompareStringHelper.CompareString(pair.Key, dictionary.Name);
                         
                         if (match > 0.9)
@@ -259,22 +266,25 @@ namespace SmartB.UI.Areas.Admin.Helper
                         }
                     }
 
-                    if (goodMatch.Count == 1)
+                    if (!wholeMatch)
                     {
-                        // Match well with only 1 product, take it
-                        pId = goodMatch[0];
-                    }
-                    else if (goodMatch.Count > 1)
-                    {
-                        // Match well with more than 1 product, admin decide
-                        ExportTrainingFile(goodMatch, pair.Key);
-                        continue;
-                    } 
-                    else if (averageMatch.Count > 0 && pId == -1)
-                    {
-                        // Only average match, admin decide
-                        ExportTrainingFile(averageMatch, pair.Key);
-                        continue;
+                        if (goodMatch.Count == 1)
+                        {
+                            // Match well with only 1 product, take it
+                            pId = goodMatch[0];
+                        }
+                        else if (goodMatch.Count > 1)
+                        {
+                            // Match well with more than 1 product, admin decide
+                            ExportTrainingFile(goodMatch, pair.Key);
+                            continue;
+                        }
+                        else if (averageMatch.Count > 0 && pId == -1)
+                        {
+                            // Only average match, admin decide
+                            ExportTrainingFile(averageMatch, pair.Key);
+                            continue;
+                        }
                     }
 
                     // Already existed?
