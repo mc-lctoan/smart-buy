@@ -106,7 +106,7 @@
     font-family: "open sans";
     font-size: 36px;
     font-weight: lighter;
-    line-height: 45px;
+    /*line-height: 45px;*/
     color: #fff;
     background: url('img/header-bg.png') repeat;
     padding: 0 10px;
