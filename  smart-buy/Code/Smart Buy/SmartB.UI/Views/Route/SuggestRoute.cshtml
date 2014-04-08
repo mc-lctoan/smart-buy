@@ -27,7 +27,7 @@
                 $("#order-summary").show();
             }
         });
-</script>
+    </script>
     <script type="text/javascript">
         var map, directionsService, directionsDisplay;
         var str = '@Html.Raw(HttpUtility.HtmlDecode(ViewBag.Route))';
@@ -157,47 +157,49 @@
                         </div>
                     </div>                    
                 }
-                
+
                 @if (Model.Any())
                 {
-                    <div style="float: right;margin-bottom: -20px;font-weight: bold;">*Đơn vị tính Nghìn đồng</div>
+                    <div style="float: right; margin-bottom: -20px; font-weight: bold;">*Đơn vị tính Nghìn đồng</div>
                     <table id="ProductTable" class="table table-bordered table-hover" style="background: white">
                         <thead>
                             <tr class="bg-header">
-                                <th style="width: 10%;text-align:center">STT</th>
-                                <th style="width: 40%;text-align:center">Tên sản phẩm</th>
-                                <th style="width: 30%;text-align:center">Tên chợ</th>
-                                <th style="width: 20%;text-align:center">Giá bán</th>
+                                <th style="width: 10%; text-align: center">STT</th>
+                                <th style="width: 40%; text-align: center">Tên sản phẩm</th>
+                                <th style="width: 30%; text-align: center">Tên chợ</th>
+                                <th style="width: 20%; text-align: center">Giá bán</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
                                 counter++;
+                                if (item.MarketName != "")
+                                {
                                 <tr>
-                                    <td style="text-align:center">@counter</td>
+                                    <td style="text-align: center">@counter</td>
                                     <td>@item.ProductName</td>
                                     <td>
-                                        @if (item.MarketName != "")
-                                        {
-                                            <span>@item.MarketName</span>
-                                        }
-                                        else
-                                        {
-                                            <span>Không tìm thấy</span>
-                                        }
+                                        <span>@item.MarketName</span>
                                     </td>
-                                    <td style="text-align:center">
-                                        @if (item.MarketName != "")
-                                        {
-                                            <span>@item.Price</span>
-                                        }
-                                        else
-                                        {
-                                            <span>@item.MinPrice - @item.MaxPrice</span>
-                                        }
+                                    <td style="text-align: center">
+                                        <span>@item.Price</span>
                                     </td>
                                 </tr>
+                                }
+                                else
+                                {
+                                <tr class="yellowWeek">
+                                    <td style="text-align: center">@counter</td>
+                                    <td>@item.ProductName</td>
+                                    <td>
+                                        <span>Không tìm thấy</span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span>@item.MinPrice - @item.MaxPrice</span>
+                                    </td>
+                                </tr>
+                                }
                             }
                         </tbody>
                     </table>
