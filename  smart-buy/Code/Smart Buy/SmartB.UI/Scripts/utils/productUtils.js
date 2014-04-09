@@ -239,8 +239,7 @@ function saveUserPrice(productId) {
 
     var userPrice = document.getElementById('txtUserPrice').value;
 
-    var userPriceData = {
-        Username: 'Sergey Pimenov',
+    var userPriceData = {        
         MarketId: marketId,
         ProductId: productId,
         UpdatedPrice: userPrice
@@ -264,6 +263,8 @@ function saveUserPrice(productId) {
                     message = "Cảm ơn sự đóng góp của bạn. Chúng tôi sẽ xem xét.";
                     document.getElementById("pppStatus").innerHTML = message;
                     //showNotifyDialog(message);
+                    setTimeout(function(){window.parent.location.href = window.parent.location.href},3000);
+                    
                 } else {
                     message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
                     showNotifyDialog(message);

@@ -217,7 +217,7 @@ namespace SmartB.UI.Controllers
                 var rangeFrom = minPrice - ep * averagePrice;
                 var rangeTo = maxPrice + ep * averagePrice;
 
-                if (updatedPrice >= rangeFrom && updatedPrice <= rangeTo)
+                if ((updatedPrice >= rangeFrom && updatedPrice <= minPrice) || ( updatedPrice >= maxPrice && updatedPrice <= rangeTo))
                 {
                     var userPrice = new UserPrice();
                     userPrice.Username = User.Identity.Name;
