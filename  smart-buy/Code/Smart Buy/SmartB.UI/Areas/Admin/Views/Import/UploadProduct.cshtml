@@ -190,7 +190,7 @@
                                                                            "</tr>")
                         $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                     }
-                    if(result.status.toString() == "Correct Products List")
+                    else if(result.status.toString() == "Correct Products List")
                     {
                         alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
                         if(result.count == 1) // chưa có sp trùng
@@ -230,10 +230,10 @@
                                                                         "<td class='checked' id='"+lastId+"' onclick='checkboxChecked("+lastId+")'  style='width:5%;text-align:center;border-right: 1px solid #dddddd;'>"+
                                                                            "<input type='checkbox' checked='checked' id='checkbox' />"+
                                                                         "</td> " +
-                                                                                     "<td  style='width:40%;border-right: 1px solid #dddddd;'>"+productName+"</td> " +
-                                                                                     "<td  style='width:35%;border-right: 1px solid #dddddd;'>"+ productMarketName+"</td>" +
+                                                                                     "<td style='width:40%;border-right: 1px solid #dddddd;'>"+productName+"</td> " +
+                                                                                     "<td style='width:35%;border-right: 1px solid #dddddd;'>"+ productMarketName+"</td>" +
                                                                                      "<td style='width:10%;text-align:center;border-right: 1px solid #dddddd;>"+ productPrice+"</td>" +
-                                                                                     "<td style='width:10%;text-align:center><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"' checked='checked'/>" +
+                                                                                     "<td style='width:10%;text-align:center><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"' checked='checked'/> </td>" +
                                                                      "</tr> "+
                                                                      "<tr>"+
                                                                         "<td id='"+lastId2+"' onclick='checkboxChecked("+lastId2+")' style='width:5%;text-align:center'>"+
@@ -242,7 +242,7 @@
                                                                                     "<td style='width:40%'>"+result.correctProductName+"</td> " +
                                                                                     "<td style='width:35%'>"+result.correctMarketName+"</td>" +
                                                                                     "<td style='width:10%;text-align:center>"+result.correctProductPrice+"</td>" +
-                                                                                    "<td style='width:10%;text-align:center><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"'/>"+ 
+                                                                                    "<td style='width:10%;text-align:center><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"'/> </td>"+ 
                                                                     "</tr> "+
                                                                   "</table>"+
                                                                  "</div> "+
@@ -263,18 +263,18 @@
                                                                "<div class='span12 widget'>"+
                                                                  "<div class='widget-header'>"+
                                                                    "<span class='title'>Nhóm sản phẩm trùng</span>"+
-                                                                   "<div class='toolbar'>"+
-                                                                     "<div class='btn-group'>"+
-                                                                       "<button class='btn' id='combine_"+idDupTable+"' onclick='mergeProduct("+idDupTable+")'>"+
-                                                                       "<i class='icol-arrow-join'></i>Gộp</button>"+
-                                                                       "<button class='btn' id='split_"+idDupTable+"' onclick='split("+idDupTable+")'>"+
-                                                                       "<i class='icol-arrow-divide'></i>Tách</button>"+
+                                                                    "<div class='toolbar'>"+
+                                                                       "<div class='btn-group'>"+
+                                                                          "<button class='btn' id='combine_"+idDupTable+"' onclick='mergeProduct("+idDupTable+")'>"+
+                                                                          "<i class='icol-arrow-join'></i>Gộp</button>"+
+                                                                          "<button class='btn' id='split_"+idDupTable+"' onclick='split("+idDupTable+")'>"+
+                                                                          "<i class='icol-arrow-divide'></i>Tách</button>"+
                                                                        "</div>"+
-                                                                     "</div>"+
-                                                                   "</div>"+
+                                                                    "</div>"+
                                                                  "</div>"+
+                                                              
                                                                  "<div class='widget-content table-container'>"+
-                                                                   "<table id='table_"+idDupTable+"'  class='table table-striped'>" +
+                                                                   "<table id='table_"+idDupTable+"'  class='table table-bordered table-striped table-checkable'>" +
                                                                      "<thead>"+
                                                                           "<tr id='header_"+idDupTable+"'> "+
                                                                            "<th class='checkbox-column' id='checkboxAllTable_"+idDupTable+"'  style='width:5%;text-align:center;border-right: 1px solid #dddddd;'>"+
@@ -286,27 +286,29 @@
                                                                            "<th style='width:10%;text-align:center;border-right: 1px solid #dddddd;'>Chọn giá</th> " +
                                                                           "</tr> "+
                                                                      "</thead>"+
-                                                                     "<tr><td style='text-align:center;border-right: 1px solid #dddddd;'><input type='checkbox' checked /></td> " +
-                                                                                     "<td style='border-right: 1px solid #dddddd;'>"+productName+"</td> " +
-                                                                                     "<td style='border-right: 1px solid #dddddd;'>"+ productMarketName+"</td>" +
-                                                                                     "<td style='text-align:center;border-right: 1px solid #dddddd;'>"+ productPrice+"</td>" +
-                                                                                     "<td style='text-align:center'><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
+                                                                     "<tr class='checked'>"+
+                                                                        "<td id='"+lastId+"' onclick='checkboxChecked("+lastId+")'  style='width:5%;text-align:center;border-right: 1px solid #dddddd;'>"+
+                                                                          "<input type='checkbox' checked='checked' id='checkbox' />"+
+                                                                        "</td> " +
+                                                                        "<td style='width:40%;border-right: 1px solid #dddddd;'>"+productName+"</td> " +
+                                                                        "<td style='width:35%;border-right: 1px solid #dddddd;'>"+ productMarketName+"</td>" +
+                                                                        "<td style='width:10%;border-right: 1px solid #dddddd;'>"+ productPrice+"</td>" +
+                                                                        "<td style='width:10%;border-right: 1px solid #dddddd;'>"+
+                                                                           "<input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"' checked/>" +
+                                                                        "</td>"+
                                                                      "</tr> "+
-                                                                     "<tr><td style='text-align:center;border-right: 1px solid #dddddd;'><input type='checkbox' /></td> " +
-                                                                                    "<td style='border-right: 1px solid #dddddd;'>"+result.correctProductName+"</td> " +
-                                                                                    "<td style='border-right: 1px solid #dddddd;'>"+result.correctMarketName+"</td>" +
-                                                                                    "<td style='text-align:center;border-right: 1px solid #dddddd'>"+result.correctProductPrice+"</td>" +
-                                                                                    "<td style='text-align:center;border-right: 1px solid #dddddd'><input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
+                                                                     "<tr>"+
+                                                                        "<td id='"+lastId2+"' onclick='checkboxChecked("+lastId2+")' style='width:5%;text-align:center'>"+
+                                                                            "<input type='checkbox' id='checkbox'/> "+
+                                                                        "</td> " +
+                                                                        "<td style='width:40%;border-right: 1px solid #dddddd;'>"+result.correctProductName+"</td> " +
+                                                                        "<td style='width:35%;border-right: 1px solid #dddddd;'>"+result.correctMarketName+"</td>" +
+                                                                        "<td style='width:10%;border-right: 1px solid #dddddd;'>"+result.correctProductPrice+"</td>" +
+                                                                        "<td style='width:10%;border-right: 1px solid #dddddd;'>"+
+                                                                           "<input type='radio' name='productPrice_"+idDupTable+"'  id='Check_"+idDupTable+"'/>"+ 
+                                                                        "</td>"+
                                                                     "</tr> "+
                                                                   "</table>"+
-                                                                  "<div class='dt_footer'>"+
-                                                                    "<div class='row-fluid'>"+
-                                                                      " <div class='pull-right'>"+
-                                                                   "<input type='button' value='Gộp' onclick='mergeProduct("+idDupTable+")' class='primary' id='combine_"+idDupTable+"' /> "+
-                                                                   "<input type='button' value='Tách'  onclick='split("+idDupTable+")' id='split_"+idDupTable+"' />"+
-                                                                        "</div> "+
-                                                                     "</div> "+
-                                                                   "</div> "+
                                                                 "</div> "+
                                                                "</div> "+
                                                               "</div> "+
