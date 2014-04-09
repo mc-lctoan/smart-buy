@@ -147,19 +147,19 @@
         <thead>
             <tr class="bg-header">
                 <th style="width:5%;text-align:center">No.</th>
-                <th style="width:30%;text-align:center">Ngày chạy</th>
-                <th style="width:30%;text-align:center">Giờ chạy</th>
-                <th style="width:35%;text-align:center">Hành động</th>
+                <th style="width:40%;text-align:center">Ngày chạy</th>
+                <th style="width:40%;text-align:center">Giờ chạy</th>
+                <th style="width:15%;text-align:center">Hành động</th>
             </tr>
         </thead>
         <tbody>
             @foreach (LogFile log in Model)
             {
                 <tr>
-                    <td>@(start + 1)</td>
-                    <td>@log.CreatedTime.Value.ToShortDateString()</td>
-                    <td>@log.CreatedTime.Value.ToShortTimeString()</td>
-                    <td>
+                    <td style="text-align:center">@(start + 1)</td>
+                    <td style="text-align:center">@log.CreatedTime.Value.ToShortDateString()</td>
+                    <td style="text-align:center">@log.CreatedTime.Value.ToShortTimeString()</td>
+                    <td style="text-align:center">
                         <a href="@Url.Content("~/Areas/Admin/LogFiles/" + log.FileName)" target="_blank">Xem</a>
                     </td>
                 </tr>

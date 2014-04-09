@@ -32,7 +32,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="@Url.Action("ConfigureSystem", "System")">
                                 <i class="icol-cog"></i>
                                 Cấu hình hệ thống
                             </a>
@@ -945,13 +945,13 @@
 <form action="@Url.Action("UploadProduct", "Import")" enctype="multipart/form-data" method="post">
     <div class="control-group">
         <div class="controls">
-            <div style="float:left">
-            <input type="file" id="excelFile" name="excelFile" data-provide="fileinput"/>
-                </div>
-            <div style="margin-left:310px">
-                 <input type="submit" value="Tải lên" class="btn btn-primary" />
+            <div style="float: left">
+                <input type="file" id="excelFile" name="excelFile" data-provide="fileinput" />
             </div>
-           
+            <div style="margin-left: 310px">
+                <input type="submit" value="Tải lên" class="btn btn-primary" />
+            </div>
+
         </div>
     </div>
 </form>
@@ -1098,11 +1098,11 @@
                                     <thead>
                                         <tr class="bg-header">
                                             <td style="display: none"></td>
-                                            <th style="width:5%;text-align:center">STT</th>
-                                            <th  style="width:35%;text-align:center">Tên Sản Phẩm</th>
-                                            <th style="width:20%;text-align:center">Tên Chợ</th>
-                                            <th  style="width:25%;text-align:center">Giá (Nghìn đồng)</th>
-                                            <th  style="width:15%;text-align:center"></th>
+                                            <th style="width: 5%; text-align: center">STT</th>
+                                            <th style="width: 35%; text-align: center">Tên Sản Phẩm</th>
+                                            <th style="width: 20%; text-align: center">Tên Chợ</th>
+                                            <th style="width: 25%; text-align: center">Giá (Nghìn đồng)</th>
+                                            <th style="width: 15%; text-align: center"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1113,17 +1113,17 @@
                                                 <td style="display: none">
                                                     @Model.PagedCorrectProducts[i].Id
                                                 </td>
-                                                <td id="STT">@(i + 1)</td>
+                                                <td style="text-align: center" id="STT">@(i + 1)</td>
 
                                                 <td>
                                                     @Model.PagedCorrectProducts[i].Name
                                                 </td>
 
-                                                <td>
+                                                <td style="text-align: center">
                                                     @Model.PagedCorrectProducts[i].MarketName
                                                 </td>
 
-                                                <td>
+                                                <td style="text-align: center">
                                                     @Model.PagedCorrectProducts[i].Price
                                                 </td>
                                                 <td>
@@ -1175,11 +1175,11 @@
                                     <thead>
                                         <tr class="bg-header">
                                             <td style="display: none"></td>
-                                            <th style="width:5%;text-align:center">STT</th>
-                                            <th  style="width:35%;text-align:center">Tên Sản Phẩm</th>
-                                            <th style="width:20%;text-align:center">Tên Chợ</th>
-                                            <th  style="width:25%;text-align:center">Giá (Nghìn đồng)</th>
-                                            <th  style="width:15%;text-align:center"></th>
+                                            <th style="width: 5%; text-align: center">STT</th>
+                                            <th style="width: 35%; text-align: center">Tên Sản Phẩm</th>
+                                            <th style="width: 20%; text-align: center">Tên Chợ</th>
+                                            <th style="width: 25%; text-align: center">Giá (Nghìn đồng)</th>
+                                            <th style="width: 15%; text-align: center"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1226,64 +1226,69 @@
                                                                                 }  </lable>
                     </div> <br />
                     <input href="#" onclick="setTable('tableProductError');return false" value="Ẩn/Hiện chi tiết" type="button" style="font-weight: bold" />
-                                                                                // Table nhiều hơn 5 lỗi            
-                    <div id="tableProductError" style="display: none;">
+                                                                                // Table nhiều hơn 5 lỗi 
+                    <div id="tableProductError" style="display: none; margin-top: 20px;">
                         <lable style="font-size: x-large; font-weight: bold; color: blue">Danh sách sản phẩm bị lỗi</lable>
-                        <table class="table">
+                        <table class="table"style="margin-top:10px">
                             <tr style="font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold">
-                                <td style="padding: 8px; width: 55px;">Số dòng</td>
-                                <td style="padding: 8px; width: 187px;">Tên Sản Phẩm</td>
-                                <td style="padding: 8px; width: 202px;">Tên Chợ</td>
-                                <td style="padding: 8px; width: 176px;">Giá (Nghìn đồng)</td>
+                                <td style="width: 10%; text-align: center">Số dòng</td>
+                                <td style="width: 40%; text-align: center">Tên Sản Phẩm</td>
+                                <td style="width: 30%; text-align: center">Tên Chợ</td>
+                                <td style="width: 20%; text-align: center">Giá (Nghìn đồng)</td>
                             </tr>
 
                             @for (int i = 0; i < @Model.InCorrectSellProducts.Count; i++)
                             {
                                 <tr>
                                     @Html.HiddenFor(model => model.InCorrectSellProducts[i].Id)
-                                    <td style="padding: 8px; width: 100px;">@Model.InCorrectSellProducts[i].RowNumber</td>
+                                    <td style="text-align: center">@Model.InCorrectSellProducts[i].RowNumber</td>
                                     @if (@Model.InCorrectSellProducts[i].Name.Length < 5 || @Model.InCorrectSellProducts[i].Name.Length > 100)
                                     {
-                                        <td style="color: red; width: 187px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { style = "color: red;font-weight:bold; width: 155px", @readonly = "readonly" })</td>
-                                        <span>
-                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
-                                        </span>
+                                        <td>
+                                            <div class="control-group error">
+                                                <div class="controls">
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { style = "color: red;font-weight:bold", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </td>
                                     }
                                     else
                                     {
-                                        <td style="width: 187px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { disabled = "disabled", @readonly = "readonly" })</td>
-                                        <span>
-                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
-                                        </span>
+                                        <td>
+                                        @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { disabled = "disabled", @readonly = "readonly" })
+                                        </td>
                                     }
                                     @if (@Model.InCorrectSellProducts[i].MarketName.Length < 5 || @Model.InCorrectSellProducts[i].MarketName.Length > 100)
                                     {
-                                        <td style="color: red; width: 202px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { style = "color: red;font-weight:bold; width: 155px", @readonly = "readonly" })</td>       
-                                        <span>
-                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].MarketName)</p>
-                                        </span>
+                                        <td>
+                                            <div class="control-group error">
+                                                <div class="controls">
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { style = "color: red;font-weight:bold", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </td>
                                     }
                                     else
                                     {
-                                        <td style="width: 202px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { disabled = "disabled", @readonly = "readonly" })</td> 
-                                        <span>
-                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].MarketName)</p>
-                                        </span>
-                                       
+                                        <td>
+                                        @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { disabled = "disabled", @readonly = "readonly" })
+                                        </td>
                                     }
                                     @if (@Model.InCorrectSellProducts[i].Price < 1 || @Model.InCorrectSellProducts[i].Price > 10000)
                                     {
-                                        <td style="color: red; width: 176px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { style = "color: red;font-weight:bold; width: 155px", @readonly = "readonly" })</td>
-                                        <span>
-                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Price)</p>
-                                        </span>
+                                        <td>
+                                            <div class="control-group error">
+                                                <div class="controls">
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { style = "color: red;font-weight:bold", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </td>
                                     }
                                     else
                                     {
-                                        <td style="width: 176px">@Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { disabled = "disabled", @readonly = "readonly" })</td>
-                                        <span>
-                                            <p style="color: Red">@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Price)</p>
-                                        </span>
+                                        <td>
+                                        @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { disabled = "disabled", @readonly = "readonly" })
+                                        </td>
                                     }
 
                                 </tr>
@@ -1326,30 +1331,30 @@
                         <div class="span12 widget">
                             <div class="widget-header">
                                 <span class="title">Sản phẩm lỗi</span>
-                        <span class="title" style="margin-left:70%">Đơn vị tính: nghìn đồng</span>
+                                <span class="title" style="margin-left: 70%">Đơn vị tính: nghìn đồng</span>
                             </div>
                             <div class="widget-content table-container">
                                 <table class="table table-bordered table-striped table-flipscroll" id="ErrorProduct">
                                     <thead>
                                         <tr class="bg-header">
-                                            <th style="width:5%;text-align:center">STT</th>
-                                            <th style="width:40%;text-align:center">Tên Sản Phẩm</th>
-                                            <th style="width:30%;text-align:center">Tên Chợ</th>
-                                            <th style="width:10%;text-align:center">Giá </th>
-                                            <th style="width:15%;text-align:center"></th>
+                                            <th style="width: 5%; text-align: center">STT</th>
+                                            <th style="width: 40%; text-align: center">Tên Sản Phẩm</th>
+                                            <th style="width: 30%; text-align: center">Tên Chợ</th>
+                                            <th style="width: 10%; text-align: center">Giá </th>
+                                            <th style="width: 15%; text-align: center"></th>
                                         </tr>
                                     </thead>
                                     @for (int i = 0; i < Model.InCorrectSellProducts.Count; i++)
                                     {
                                         <tr id="@("ErrorProductTD" + i)">
                                             @Html.HiddenFor(model => model.InCorrectSellProducts[i].Id, new { id = "ProductId" + i })
-                                            <td>@(i + 1)</td>
+                                            <td style="text-align: center">@(i + 1)</td>
                                             @if (Model.InCorrectSellProducts[i].Name.Length < 5 || Model.InCorrectSellProducts[i].Name.Length > 100)
                                             {
                                                 <td>
                                                     <div class="control-group error">
                                                         <div class="controls">
-                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i, @style="width:90%" })
+                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i, @style = "width:90%" })
                                                             <span class="help-block" id="productNameAlert"></span>
                                                         </div>
                                                     </div>
@@ -1358,7 +1363,7 @@
                                             else
                                             {
                                                 <td>
-                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i, @style="width:90%" })
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { id = "ProductName" + i, @style = "width:90%" })
                                                     <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Name)</p>
                                                 </td>
                                             }
@@ -1367,7 +1372,7 @@
                                                 <td>
                                                     <div class="control-group error">
                                                         <div class="controls">
-                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i, @style="width:90%" })
+                                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i, @style = "width:90%" })
                                                             <span class="help-block" id="marketNameAlert"></span>
                                                         </div>
                                                     </div>
@@ -1376,7 +1381,7 @@
                                             else
                                             {
                                                 <td>
-                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i, @style="width:90%"})
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { id = "ProductMarketName" + i, @style = "width:90%" })
                                                     <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].MarketName)</p>
                                                 </td> 
                                             }
@@ -1394,11 +1399,11 @@
                                             else
                                             {
                                                 <td>
-                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i, @class = "input-mini"  })
+                                                    @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { id = "ProductPrice" + i, @class = "input-mini" })
                                                     <p>@Html.ValidationMessageFor(model => model.InCorrectSellProducts[i].Price)</p>
                                                 </td>
                                             }
-                                            <td style="text-align:center">
+                                            <td style="text-align: center">
                                                 <button type="button" class="btn" onclick="saveProduct(@i,@Model.CorrectSellProducts.Count)">
                                                     <i class="icol-accept"></i>
                                                     Lưu
@@ -1439,12 +1444,12 @@
                         </div>
                     </div>
                 </div>
-                @if (Model != null)
+                @if (Model != null && Model.ErrorCount < 5)
                 {
                     if (Model.duplicateCorrectProduct != null)
                     {
                         var idCheckbox = 0;
-                        
+
                         for (int i = 0; i < Model.duplicateCorrectProduct.Count; i++)
                         {
                     <div id="dupTable_@i" >
@@ -1472,10 +1477,10 @@
                                                 <th class="checkbox-column" id="checkboxAllTable_@i" style="width:5%">
                                                     <input id="checkAll" type="checkbox" class="uniform" onclick="checkboxAllTable(@i)" />
                                                 </th>
-                                                <th style="width: 40%;text-align:center">Tên Sản Phẩm</th>
-                                                <th style="width: 35%;text-align:center">Tên Chợ</th>
-                                                <th style="width: 10%;text-align:center">Giá</th>
-                                                <th style="width: 10%;text-align:center">Chọn giá</th>
+                                                <th style="width: 40%; text-align: center">Tên Sản Phẩm</th>
+                                                <th style="width: 35%; text-align: center">Tên Chợ</th>
+                                                <th style="width: 10%; text-align: center">Giá</th>
+                                                <th style="width: 10%; text-align: center">Chọn giá</th>
                                             </tr>
                                         </thead>
 
@@ -1490,12 +1495,12 @@
                                                 </td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].Name</td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
-                                                <td style="text-align:center">@Model.duplicateCorrectProduct[i][j].Price</td>
-                                                <td style="text-align:center">
+                                                <td style="text-align: center">@Model.duplicateCorrectProduct[i][j].Price</td>
+                                                <td style="text-align: center">
                                                     <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
                                                 </td>
                                             </tr>
-                                            idCheckbox++;
+                                                idCheckbox++;
                                             }
                                             else
                                             {
@@ -1505,12 +1510,12 @@
                                                 </td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].Name</td>
                                                 <td>@Model.duplicateCorrectProduct[i][j].MarketName</td>
-                                                <td style="text-align:center">@Model.duplicateCorrectProduct[i][j].Price</td>
-                                                <td style="text-align:center">
+                                                <td style="text-align: center">@Model.duplicateCorrectProduct[i][j].Price</td>
+                                                <td style="text-align: center">
                                                     <input type="radio" name="productPrice_@i"  id="Check_@i" />
                                                 </td>
                                             </tr>
-                                            idCheckbox++;
+                                                idCheckbox++;
                                             }
 
                                         }
@@ -1526,7 +1531,7 @@
                 {
                     for (int i = 0; i < ViewBag.dupSellProduct.Count; i++)
                     {
-                   <div id="dupTable_@i" >
+                    <div id="dupTable_@i" >
                         <div class="row-fluid">
                             <div class="span12 widget">
                                 <div class="widget-header">
@@ -1551,10 +1556,10 @@
                                                 <th class="checkbox-column" id="checkboxAllTable_@i" style="width:5%">
                                                     <input id="checkAll" type="checkbox" class="uniform" onclick="checkboxAllTable(@i)" />
                                                 </th>
-                                                <th style="width: 40%;text-align:center">Tên Sản Phẩm</th>
-                                                <th style="width: 35%;text-align:center">Tên Chợ</th>
-                                                <th style="width: 10%;text-align:center">Giá</th>
-                                                <th style="width: 10%;text-align:center">Chọn giá</th>
+                                                <th style="width: 40%; text-align: center">Tên Sản Phẩm</th>
+                                                <th style="width: 35%; text-align: center">Tên Chợ</th>
+                                                <th style="width: 10%; text-align: center">Giá</th>
+                                                <th style="width: 10%; text-align: center">Chọn giá</th>
                                             </tr>
                                         </thead>
 
@@ -1569,8 +1574,8 @@
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
-                                                <td style="text-align:center">@ViewBag.dupSellProduct[i][j].Price</td>
-                                                <td style="text-align:center">
+                                                <td style="text-align: center">@ViewBag.dupSellProduct[i][j].Price</td>
+                                                <td style="text-align: center">
                                                     <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
                                                 </td>
                                             </tr>
@@ -1579,12 +1584,12 @@
                                             {
                                             <tr>
                                                 <td id="checkbox_@j" onclick="checkboxChecked(@j)" style="text-align:center">
-                                                    <input type="checkbox" id="checkbox"/>
+                                                    <input type="checkbox" id="checkbox" />
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
-                                                <td style="text-align:center">@ViewBag.dupSellProduct[i][j].Price</td>
-                                                <td style="text-align:center">
+                                                <td style="text-align: center">@ViewBag.dupSellProduct[i][j].Price</td>
+                                                <td style="text-align: center">
                                                     <input type="radio" name="productPrice_@i"  id="Check_@i"/>
                                                 </td>
                                             </tr>
