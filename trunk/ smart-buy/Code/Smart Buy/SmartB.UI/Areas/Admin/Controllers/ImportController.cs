@@ -267,12 +267,20 @@ namespace SmartB.UI.Areas.Admin.Controllers
                     {
                         if (dictionary != productNameFirst.ToString() && dictionary != "")
                         {
-                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                            var dictionaryDB = db.Dictionaries.Where(d => d.Name.Equals(dictionary)).FirstOrDefault();
+                            if (dictionaryDB != null)
                             {
-                                Name = dictionary,
-                                ProductId = dupProduct.Id
-                            };
-                            var addProductDic = db.Dictionaries.Add(ProductDic);
+                                dictionaryDB.ProductId = dupProduct.Id;
+                            }
+                            else
+                            {
+                                var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                                {
+                                    Name = dictionary,
+                                    ProductId = dupProduct.Id
+                                };
+                                var addProductDic = db.Dictionaries.Add(ProductDic);
+                            }
                         }
                     }
                     db.SaveChanges(); // Save to database
@@ -314,12 +322,20 @@ namespace SmartB.UI.Areas.Admin.Controllers
                     {
                         if (dupProductDictionary == null && dictionary != "")
                         {
-                            var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                            var dictionaryDB = db.Dictionaries.Where(d => d.Name.Equals(dictionary)).FirstOrDefault();
+                            if (dictionaryDB == null)
                             {
-                                Name = dictionary,
-                                ProductId = dupProduct.Id
-                            };
-                            var addProductDic = db.Dictionaries.Add(ProductDic);
+                                var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                                {
+                                    Name = dictionary,
+                                    ProductId = dupProduct.Id
+                                };
+                                var addProductDic = db.Dictionaries.Add(ProductDic);
+                            }
+                            else
+                            {
+                                dictionaryDB.ProductId = addedProduct.Id;
+                            }
                         }
                     }
                     db.SaveChanges(); // Save to database
@@ -471,13 +487,17 @@ namespace SmartB.UI.Areas.Admin.Controllers
 
             //Kiem tra productName voi dictionary
             List<SellProductModel> sellProducts = null;
-            var productId = CheckProductNameWithDictionary(productNameFirst, db.Dictionaries);
-            if (productId != 0)
+            List<Product> listProduct = CheckProductNameWithDictionary(productNameFirst, db.Dictionaries);
+
+            if (listProduct != null)
             {
-                var existedSellProduct = db.SellProducts.FirstOrDefault(x => x.ProductId == productId && x.MarketId == dupMarket.Id);
-                var existedSellProductModel = SellProductModel.MapToSellProductEntity(existedSellProduct);
                 sellProducts = new List<SellProductModel>();
-                sellProducts.Add(existedSellProductModel);
+                foreach (var productId in listProduct)
+                {
+                    var existedSellProduct = db.SellProducts.FirstOrDefault(x => x.ProductId == productId.Id && x.MarketId == dupMarket.Id);
+                    var existedSellProductModel = SellProductModel.MapToSellProductEntity(existedSellProduct);
+                    sellProducts.Add(existedSellProductModel);
+                }
                 sellProducts.Add(product);
             }
             else
@@ -523,23 +543,53 @@ namespace SmartB.UI.Areas.Admin.Controllers
                         var addProductDic = db.Dictionaries.Add(ProductDic);
                     }
                 }
-
                 db.SaveChanges(); // Save to database
-
             }
             return sellProducts;
         }
 
-        private static int? CheckProductNameWithDictionary(string productNameFirst, DbSet<Dictionary> dictionaries)
+        private static List<Product> CheckProductNameWithDictionary(string productNameFirst, DbSet<Dictionary> dictionaries)
         {
-            foreach (var dictionary in dictionaries.ToList())
+            List<Product> products = new List<Product>();
+            SmartBuyEntities db = new SmartBuyEntities();
+            List<Dictionary> listDictionaryDB = dictionaries.ToList();
+            var status = false;
+            for (int i = 0; i < listDictionaryDB.Count(); i++)
             {
-                if (CompareStringHelper.CompareString(dictionary.Name, productNameFirst) > 0.85)
+                if (status == true)
                 {
-                    return dictionary.ProductId;
+                    break;
+                }
+                if (products.Count == 0)
+                {
+                    var dupDictionary = db.Dictionaries.Where(d => d.Name == productNameFirst).FirstOrDefault();
+                    if (dupDictionary != null)
+                    {
+                        var existProduct = db.Products.Where(p => p.Id == dupDictionary.ProductId).FirstOrDefault();
+                        products.Add(existProduct);
+                        status = true;
+                    }
+                }
+               if (CompareStringHelper.CompareString(listDictionaryDB[i].Name, productNameFirst) > 0.85)
+                {
+                    var id = listDictionaryDB[i].ProductId;
+                    var product = db.Products.Where(p => p.Id == id).FirstOrDefault();
+                    if (products != null)
+                    {
+                        var result = products.Where(p => p.Id == product.Id).FirstOrDefault();
+                        if (result == null)
+                        {
+                            products.Add(product);
+                        }
+                    }
+                    else
+                    {
+                        products.Add(product);
+                    }
                 }
             }
-            return 0;
+
+            return products;
         }
 
         private static void TrungHoanToan(ref int countUpdate, ref int countInsert, SellProductModel product, SmartBuyEntities db, Market dupMarket, Product dupProduct)
