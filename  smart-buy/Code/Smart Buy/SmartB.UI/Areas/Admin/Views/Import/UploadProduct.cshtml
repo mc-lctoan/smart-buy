@@ -699,14 +699,14 @@
                 var productMarket = "";
                 var productPrice;
                 var nonstop = true;
-                //for(var n = 0; n < products.length && nonstop; n++) {
-                //    if(products[n].checked) {
-                //        var temp = products[n];
-                //        products[n] = products[0];
-                //        products[0] = temp;
-                //        nonstop = false;
-                //    }
-                //}
+                for(var n = 0; n < products.length && nonstop; n++) {
+                    if(products[n].checked) {
+                        var temp = products[n];
+                        products[n] = products[0];
+                        products[0] = temp;
+                        nonstop = false;
+                    }
+                }
                 for(var k = 0; k < products.length; k++) {
                     if (k != products.length) {
                         productName += products[k].productName + ";"
