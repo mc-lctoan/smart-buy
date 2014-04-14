@@ -241,8 +241,8 @@
                                                                         "</td> " +
                                                                                     "<td style='width:40%'>"+result.correctProductName+"</td> " +
                                                                                     "<td style='width:35%'>"+result.correctMarketName+"</td>" +
-                                                                                    "<td style='width:10%;text-align:center>"+result.correctProductPrice+"</td>" +
-                                                                                    "<td style='width:10%;text-align:center><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"'/> </td>"+ 
+                                                                                    "<td style='width:10%;text-align:center'>"+result.correctProductPrice+"</td>" +
+                                                                                    "<td style='width:10%;text-align:center'><input type='radio' name='productPrice_"+dupTableCount+"'  id='Check_"+dupTableCount+"'/> </td>"+ 
                                                                     "</tr> "+
                                                                   "</table>"+
                                                                  "</div> "+
@@ -321,11 +321,11 @@
                     } else if(result.status.toString() != "Duplicate Products List" && result.status.toString() != "Correct Products List")
                     {
                         $("#ProductTable tr:last").after("<tr id='product_"+id+"'>"+
-                                                            "<td id='STT'>" + stt + "</td>"+
+                                                            "<td id='STT' style='text-align:center'>" + stt + "</td>"+
                                                             "<td>"+productName+"</td>"+
-                                                            "<td>"+ productMarketName +"</td>"+
-                                                            "<td>" + productPrice +"</td>"+
-                                                            "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<td style='text-align:center'>"+ productMarketName +"</td>"+
+                                                            "<td style='text-align:center'>" + productPrice +"</td>"+
+                                                            "<td style='text-align:center'> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
                                                             "<i class='icol-cross'></i>Xóa</button></td>"+
                                                          "</tr>")
                         $("#ErrorProduct tr#ErrorProductTD" + index).remove();
@@ -507,11 +507,11 @@
                         var id = newId;
                         var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
                         $("#ProductTable tr:last").after("<tr id='product_"+id+"'>"+
-                                                            "<td id='STT'>" + stt + "</td>"+
+                                                            "<td id='STT' style='text-align:center'>" + stt + "</td>"+
                                                             "<td>"+productName+"</td>"+
-                                                            "<td>"+ productMarket +"</td>"+
-                                                            "<td>" + productPrice +"</td>"+
-                                                            "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<td style='text-align:center'>"+ productMarket +"</td>"+
+                                                            "<td style='text-align:center'>" + productPrice +"</td>"+
+                                                            "<td style='text-align:center'> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
                                                             "<i class='icol-cross'></i>Xóa</button></td>"+
                                                          "</tr>")
                         for (var h = 0; h < products.length; h++) {
@@ -606,11 +606,11 @@
                         var id = result.id;
                         var stt = parseInt($('#ProductTable tr:last #STT').html()) + 1;
                         $("#ProductTable tr:last").after("<tr id='product_"+id+"'>"+
-                                                            "<td id='STT'>" + stt + "</td>"+
+                                                            "<td id='STT' style='text-align:center'>" + stt + "</td>"+
                                                             "<td>"+ result.correctProductName+"</td>"+
-                                                            "<td>"+ result.correctMarketName +"</td>"+
-                                                            "<td>" + result.correctProductPrice +"</td>"+
-                                                            "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<td style='text-align:center'>"+ result.correctMarketName +"</td>"+
+                                                            "<td style='text-align:center'>" + result.correctProductPrice +"</td>"+
+                                                            "<td style='text-align:center'> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
                                                             "<i class='icol-cross'></i>Xóa</button></td>"+
                                                          "</tr>")
                     }
@@ -738,11 +738,11 @@
                         }
                        
                         $("#dupSellProductTable tr:last").after("<tr id='product_"+id+"'>"+
-                                                            "<td id='STT'>" + stt + "</td>"+
+                                                            "<td id='STT' style='text-align:center'>" + stt + "</td>"+
                                                             "<td>"+ result.correctProductName+"</td>"+
-                                                            "<td>"+ result.correctMarketName +"</td>"+
-                                                            "<td>" + result.correctProductPrice +"</td>"+
-                                                            "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<td style='text-align:center;'>"+ result.correctMarketName +"</td>"+
+                                                            "<td style='text-align:center;'>" + result.correctProductPrice +"</td>"+
+                                                            "<td style='text-align:center;'> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
                                                             "<i class='icol-cross'></i>Xóa</button></td>"+
                                                          "</tr>")
                         // var testChecked = false;
@@ -841,11 +841,11 @@
                             stt = 1;
                         }
                         $("#dupSellProductTable tr:last").after("<tr id='product_"+id+"'>"+
-                                                            "<td id='STT'>" + stt + "</td>"+
+                                                            "<td id='STT' style='text-align:center'>" + stt + "</td>"+
                                                             "<td>"+ result.correctProductName+"</td>"+
-                                                            "<td>"+ result.correctMarketName +"</td>"+
-                                                            "<td>" + result.correctProductPrice +"</td>"+
-                                                            "<td> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
+                                                            "<td style='text-align:center;'>"+ result.correctMarketName +"</td>"+
+                                                            "<td style='text-align:center;'>" + result.correctProductPrice +"</td>"+
+                                                            "<td style='text-align:center;'> <button type='button' class='btn' onclick='deleteProduct("+id+")'>"+
                                                             "<i class='icol-cross'></i>Xóa</button></td>"+
                                                          "</tr>")
                     }
@@ -1126,7 +1126,7 @@
                                                 <td style="text-align: center">
                                                     @Model.PagedCorrectProducts[i].Price
                                                 </td>
-                                                <td>
+                                                <td style="text-align: center">
                                                     <button type="button" class="btn" onclick="deleteProduct(@i)">
                                                         <i class="icol-cross"></i>
                                                         Xóa
