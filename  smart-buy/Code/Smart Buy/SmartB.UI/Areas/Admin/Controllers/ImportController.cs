@@ -225,68 +225,77 @@ namespace SmartB.UI.Areas.Admin.Controllers
             {
                 var productNameFirst = product.Name.Split(';').First(); // Cắt chuỗi 
                 var dupProduct = db.Products.Where(p => p.Name.Equals(productNameFirst)).FirstOrDefault();
-                var dupMarket = db.Markets.Where(m => m.Name.Equals(product.MarketName)).FirstOrDefault();
-                var sellProduct = db.SellProducts.Where(s => s.ProductId == dupProduct.Id && s.MarketId == dupMarket.Id).FirstOrDefault();
-
-                if (sellProduct != null)
+                if (dupProduct != null)
                 {
-                    sellProduct.SellPrice = product.Price;
-                    sellProduct.LastUpdatedTime = System.DateTime.Now;
-                    countUpdate++;
+                    var dupMarket = db.Markets.Where(m => m.Name.Equals(product.MarketName)).FirstOrDefault();
+                    var sellProduct = db.SellProducts.Where(s => s.ProductId == dupProduct.Id && s.MarketId == dupMarket.Id).FirstOrDefault();
 
-                    //add new product Attribute      
-                    var oldAttribute = db.ProductAttributes.Where(p => p.ProductId == dupProduct.Id).FirstOrDefault(); // get old Attribute
-                    if (product.Price < oldAttribute.MinPrice)
+                    if (sellProduct != null)
                     {
-                        var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
+                        sellProduct.SellPrice = product.Price;
+                        sellProduct.LastUpdatedTime = System.DateTime.Now;
+                        countUpdate++;
+
+                        //add new product Attribute      
+                        var oldAttribute = db.ProductAttributes.Where(p => p.ProductId == dupProduct.Id).FirstOrDefault(); // get old Attribute
+                        if (product.Price < oldAttribute.MinPrice)
                         {
-                            ProductId = dupProduct.Id,
-                            MinPrice = product.Price,
-                            MaxPrice = oldAttribute.MaxPrice,
-                            LastUpdatedTime = DateTime.Now,
-                        };
-                        var addedProductAtt = db.ProductAttributes.Add(productAttribute);
-                        db.SaveChanges(); // Save to database
-                    }
-                    else if (product.Price > oldAttribute.MaxPrice)
-                    {
-                        var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
-                        {
-                            ProductId = dupProduct.Id,
-                            MinPrice = oldAttribute.MinPrice,
-                            MaxPrice = product.Price,
-                            LastUpdatedTime = DateTime.Now,
-                        };
-                        var addedProductAtt = db.ProductAttributes.Add(productAttribute);
-                        db.SaveChanges(); // Save to database
-                    }
-                    // add Product Dictionary
-                    var dictionaries = product.Name.Split(';').ToList();
-                    var dupProductDictionary = db.Dictionaries.Where(p => p.Name.Equals(productNameFirst)).FirstOrDefault();
-                    foreach (string dictionary in dictionaries)
-                    {
-                        if (dictionary != productNameFirst.ToString() && dictionary != "")
-                        {
-                            var dictionaryDB = db.Dictionaries.Where(d => d.Name.Equals(dictionary)).FirstOrDefault();
-                            if (dictionaryDB != null)
+                            var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
                             {
-                                dictionaryDB.ProductId = dupProduct.Id;
-                            }
-                            else
+                                ProductId = dupProduct.Id,
+                                MinPrice = product.Price,
+                                MaxPrice = oldAttribute.MaxPrice,
+                                LastUpdatedTime = DateTime.Now,
+                            };
+                            var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                            db.SaveChanges(); // Save to database
+                        }
+                        else if (product.Price > oldAttribute.MaxPrice)
+                        {
+                            var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
                             {
-                                var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                                ProductId = dupProduct.Id,
+                                MinPrice = oldAttribute.MinPrice,
+                                MaxPrice = product.Price,
+                                LastUpdatedTime = DateTime.Now,
+                            };
+                            var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                            db.SaveChanges(); // Save to database
+                        }
+                        // add Product Dictionary
+                        var dictionaries = product.Name.Split(';').ToList();
+                        var dupProductDictionary = db.Dictionaries.Where(p => p.Name.Equals(productNameFirst)).FirstOrDefault();
+                        foreach (string dictionary in dictionaries)
+                        {
+                            if (dictionary != productNameFirst.ToString() && dictionary != "")
+                            {
+                                var dictionaryDB = db.Dictionaries.Where(d => d.Name.Equals(dictionary)).FirstOrDefault();
+                                if (dictionaryDB != null)
                                 {
-                                    Name = dictionary,
-                                    ProductId = dupProduct.Id
-                                };
-                                var addProductDic = db.Dictionaries.Add(ProductDic);
+                                  //  var getProduct = db.Products.Where(p => p.Name.Equals(dictionaryDB.Name)).FirstOrDefault();
+                                    var getProductId = Convert.ToInt32(dictionaryDB.ProductId);
+                                    var listDic = db.Dictionaries.Where(p => p.ProductId == getProductId).ToList();
+                                    foreach (var item in listDic)
+                                    {
+                                        item.ProductId = dupProduct.Id;
+                                    }
+                                }
+                                else
+                                {
+                                    var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
+                                    {
+                                        Name = dictionary,
+                                        ProductId = dupProduct.Id
+                                    };
+                                    var addProductDic = db.Dictionaries.Add(ProductDic);
+                                }
                             }
                         }
+                        db.SaveChanges(); // Save to database
                     }
-                    db.SaveChanges(); // Save to database
-                }
-                else
+                } else
                 {
+                    var dupMarket = db.Markets.Where(m => m.Name.Equals(product.MarketName)).FirstOrDefault();
                     var newProduct = new SmartB.UI.Models.EntityFramework.Product // add Product
                     {
                         Name = productNameFirst,
@@ -328,13 +337,20 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 var ProductDic = new SmartB.UI.Models.EntityFramework.Dictionary
                                 {
                                     Name = dictionary,
-                                    ProductId = dupProduct.Id
+                                    ProductId = newProduct.Id
                                 };
                                 var addProductDic = db.Dictionaries.Add(ProductDic);
                             }
                             else
                             {
-                                dictionaryDB.ProductId = addedProduct.Id;
+                                //var getProductId = db.Products.Where(p => p.Name.Equals(dictionary)).FirstOrDefault();
+                                //var listDic = db.Dictionaries.Where(d => d.ProductId.Equals(getProductId.Id)).ToList();
+                                var getProductId = Convert.ToInt32(dictionaryDB.ProductId);
+                                var listDic = db.Dictionaries.Where(p => p.ProductId == getProductId).ToList();
+                                foreach (var item in listDic)
+                                {
+                                    item.ProductId = addedProduct.Id;
+                                }
                             }
                         }
                     }
