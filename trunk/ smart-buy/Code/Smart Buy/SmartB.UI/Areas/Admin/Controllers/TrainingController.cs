@@ -66,7 +66,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
         }
 
         [HttpGet, ActionName("MergeProductTraining")]
-        public JsonResult MergeProductTraining(String productJson, string productName)
+        public JsonResult MergeProductTraining(String productJson, string productName, int productId, int position)
         {
             var check = false;
 
@@ -74,76 +74,133 @@ namespace SmartB.UI.Areas.Admin.Controllers
             List<DictionaryModel> parseJson = ser.Deserialize<List<DictionaryModel>>(productJson);
             try
             {
-                var pName = parseJson[parseJson.Count - 1].Name;
-                var dupDictionary = db.Dictionaries.Where(d => d.Name == pName).FirstOrDefault();
+                //var pName = parseJson[parseJson.Count - 1].Name;
+                //var dupDictionary = db.Dictionaries.Where(d => d.Name == pName).FirstOrDefault();
 
-                //check co chon item trong db hay ko
-                //if (dupDictionary != null)
+                //pName = parseJson[0].Name;
+                //var dupProductName = db.Products.Where(p => p.Name == pName).FirstOrDefault();
+                //if (dupProductName == null)
                 //{
-                //    for (int i = 0; i < parseJson.Count - 1; i++)
+                //    var newProduct = new Product();
+                //    newProduct.Name = pName;
+                //    newProduct.IsActive = true;
+                //    db.Products.Add(newProduct);
+                //    dupDictionary = db.Dictionaries.Where(d => d.Name == pName && d.ProductId == newProduct.Id).FirstOrDefault();
+
+                //    if (dupDictionary == null)
                 //    {
-                //        var pId = dupDictionary.ProductId;
-                //        pName = parseJson[i].Name;
-                //        var dupName = db.Dictionaries.Where(d => d.Name == pName);
-                //        if (!dupName.Any(n => n.Name.Equals(pName)))
-                //        {
-                //            var dictionary = new Dictionary();
-                //            dictionary.Name = pName;
-                //            dictionary.ProductId = pId;
-                //            db.Dictionaries.Add(dictionary);
-                //            db.SaveChanges();
-                //        }
+                //        var newDictionary = new Dictionary();
+                //        newDictionary.Name = pName;
+                //        newDictionary.Product = newProduct;
+                //        db.Dictionaries.Add(newDictionary);
                 //    }
                 //}
                 //else
                 //{
-                    pName = parseJson[0].Name;
-                    var dupProductName = db.Products.Where(p => p.Name == pName).FirstOrDefault();
-                    if (dupProductName == null)
-                    {
-                        var newProduct = new Product();
-                        newProduct.Name = pName;
-                        newProduct.IsActive = true;
-                        db.Products.Add(newProduct);
-                        dupDictionary = db.Dictionaries.Where(d => d.Name == pName && d.ProductId == newProduct.Id).FirstOrDefault();
+                //    dupDictionary = db.Dictionaries.Where(d => d.Name == pName && d.ProductId == dupProductName.Id).FirstOrDefault();
 
-                        if (dupDictionary == null)
-                        {
-                            var newDictionary = new Dictionary();
-                            newDictionary.Name = pName;
-                            newDictionary.Product = newProduct;
-                            db.Dictionaries.Add(newDictionary);
-                        }
-                    }
-                    else
-                    {
-                        dupDictionary = db.Dictionaries.Where(d => d.Name == pName && d.ProductId == dupProductName.Id).FirstOrDefault();
+                //    if (dupDictionary == null)
+                //    {
+                //        var newDictionary = new Dictionary();
+                //        newDictionary.Name = pName;
+                //        newDictionary.ProductId = dupProductName.Id;
+                //        db.Dictionaries.Add(newDictionary);
+                //    }
+                //}
+                //db.SaveChanges();
 
-                        if (dupDictionary == null)
-                        {
-                            var newDictionary = new Dictionary();
-                            newDictionary.Name = pName;
-                            newDictionary.ProductId = dupProductName.Id;
-                            db.Dictionaries.Add(newDictionary);
-                        }
-                    }
-                    db.SaveChanges();
+                //var pId = db.Products.Where(p => p.Name == pName).FirstOrDefault().Id;
+                //for (int i = 1; i < parseJson.Count; i++)
+                //{
+                //    pName = parseJson[i].Name;
+                //    dupDictionary = db.Dictionaries.Where(d => d.Name == pName).FirstOrDefault();
+                //    if (dupDictionary == null)
+                //    {
+                //        var newDictionary = new Dictionary();
+                //        newDictionary.Name = parseJson[i].Name;
+                //        newDictionary.ProductId = pId;
+                //        db.Dictionaries.Add(newDictionary);
+                //        db.SaveChanges();
+                //    }
+                //}
 
-                    var pId = db.Products.Where(p => p.Name == pName).FirstOrDefault().Id;
-                    for (int i = 1; i < parseJson.Count; i++)
+                if (productId != 0)
+                {
+                    for (int i = 0; i < parseJson.Count; i++)
                     {
-                        pName = parseJson[i].Name;
-                        dupDictionary = db.Dictionaries.Where(d => d.Name == pName).FirstOrDefault();
+                        string pName = parseJson[i].Name;
+                        var dupDictionary = db.Dictionaries.Where(d => d.Name == pName).FirstOrDefault();
                         if (dupDictionary == null)
                         {
                             var newDictionary = new Dictionary();
                             newDictionary.Name = parseJson[i].Name;
-                            newDictionary.ProductId = pId;
-                            db.Dictionaries.Add(newDictionary);
-                            db.SaveChanges();
+                            newDictionary.ProductId = productId;
+                            db.Dictionaries.Add(newDictionary);                            
                         }
+                        else
+                        {
+                            dupDictionary.ProductId = productId;                            
+                        }
+                        db.SaveChanges();
                     }
-                //}
+                }
+                else
+                {
+                    var proName = parseJson[position].Name;
+                    var checkDupPName = db.Products.Where(p => p.Name == proName).FirstOrDefault();
+                    var pId = 0;
+                    var product = new Product();
+                    if (checkDupPName == null)
+                    {
+                        var newProduct = new Product();
+                        newProduct.Name = proName;
+                        newProduct.IsActive = true;
+                        db.Products.Add(newProduct);
+                        pId = newProduct.Id;
+                        product = newProduct;
+                    }
+                    else
+                    {
+                        pId = checkDupPName.Id;
+                        product = checkDupPName;
+                    }
+                        var dictionary = db.Dictionaries.Where(d => d.Name == proName && d.ProductId == pId).FirstOrDefault();
+
+                        if (dictionary == null)
+                        {
+                            var newDictionary = new Dictionary();
+                            newDictionary.Name = proName;
+                            newDictionary.Product = product;
+                            db.Dictionaries.Add(newDictionary);
+                        }
+                        else
+                        {
+                            dictionary.ProductId = pId;
+                        }
+                        for (int i = 0; i < parseJson.Count; i++)
+                        {
+                            if (i != position)
+                            {
+                                string pName = parseJson[i].Name;
+                                var dupDictionary = db.Dictionaries.Where(d => d.Name == pName).FirstOrDefault();
+                                if (dupDictionary == null)
+                                {
+                                    var newDictionary = new Dictionary();
+                                    newDictionary.Name = parseJson[i].Name;
+                                    newDictionary.ProductId = pId;
+                                    db.Dictionaries.Add(newDictionary);
+                                }
+                                else
+                                {
+                                    dupDictionary.ProductId = pId;
+                                }
+                            }
+                            else { continue; }
+                            //db.SaveChanges();
+                        }
+                    
+                    db.SaveChanges();
+                }
 
                 writeToTxt(productName);
                 TempData["MergeProduct"] = "Success";
@@ -169,7 +226,8 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 {
                     var pName = parseJson[i].Name;
                     var dupProductName = db.Products.Where(p => p.Name == pName).FirstOrDefault();
-
+                    var pId = 0;
+                    var product = new Product();
 
                     if (dupProductName == null)
                     {
@@ -177,18 +235,24 @@ namespace SmartB.UI.Areas.Admin.Controllers
                         newProduct.Name = pName;
                         newProduct.IsActive = true;
                         db.Products.Add(newProduct);
-                        var dupDictionaryName = db.Dictionaries.Where(d => d.Name == pName && d.ProductId == newProduct.Id).FirstOrDefault();
+                        pId = newProduct.Id;
+                        product = newProduct;
+                    }
+                    else
+                    {
+                        pId = dupProductName.Id;
+                        product = dupProductName;
+                    }
+                        var dupDictionaryName = db.Dictionaries.Where(d => d.Name == pName && d.ProductId == pId).FirstOrDefault();
                         if (dupDictionaryName == null)
                         {
 
                             var newDictionary = new Dictionary();
                             newDictionary.Name = pName;
-                            newDictionary.Product = newProduct;
+                            newDictionary.Product = product;
                             db.Dictionaries.Add(newDictionary);
                         }
-                        db.SaveChanges();
-                    }
-
+                        db.SaveChanges();                    
                 }
 
                 writeToTxt(productName);
@@ -280,13 +344,20 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 for (int i = 0; i < productName.Length; i++)
                 {
                     var name = productName[i];
-                    var productId = CheckProductNameWithDictionary(name, db.Dictionaries);
-                    if (productId != 0)
+                    var checkproductId = CheckProductNameWithDictionary(name, db.Dictionaries);
+                    var product = db.Dictionaries.Where(p => p.Name.Equals(name)).Select(p => p.ProductId);
+                    int productId = 0;
+                    if (product != null)
+                    {
+                        productId = product.FirstOrDefault().GetValueOrDefault();
+                    }
+
+                    if (checkproductId != 0)
                     {
                         dupDictionaries.Add(new DictionaryModel
                         {
                             Name = name,
-                            ProductId = productId.GetValueOrDefault()
+                            ProductId = productId
                         });
 
                         //var productInDB = db.Products.Where(p => p.Id == productId).FirstOrDefault();

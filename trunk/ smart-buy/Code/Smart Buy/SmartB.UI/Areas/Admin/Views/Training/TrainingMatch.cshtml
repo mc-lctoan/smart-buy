@@ -150,7 +150,7 @@
 }
 
 <script>
-    function mergeProduct(i, productId) {
+    function mergeProduct(i) {
 
         var duplicateTable = $("#table_" + i);
         var listTr = duplicateTable.find("tr");
@@ -167,9 +167,15 @@
                 }
 
                 var name = cells[1].innerHTML;
-
+                var pId = cells[2].innerHTML;
+                for (var m = 0; m < 2; m++) {
+                    var checked = cells[3].childNodes[m].checked;
+                    if (checked == true || checked == false) {
+                        break;
+                    }
+                }
                 if (checkbox == true) {
-                    var dictionary = new Dictionary(productId, name);
+                    var dictionary = new Dictionary(pId, name, checked);
                     dictionaries.push(dictionary);
                 }
             }
@@ -177,70 +183,97 @@
         if (dictionaries.length < 2) {
             alert("Vui lòng chọn ít nhất 2 sản phẩm.");
         } else {
-            var productName = "";
-            for (var k = 0; k < dictionaries.length; k++) {
-                if (k != dictionaries.length) {
-                    productName += dictionaries[k].Name + ";"
-
+            var testChecked = false;
+            for (var c = 0; c < dictionaries.length; c++) {
+                if (dictionaries[c].checked == false) {
+                    testChecked = false;
                 } else {
-                    productName += dictionaries[k].Name;
+                    testChecked = true;
+                    break;
+                }
+            }
+            if (testChecked == false) {
+                alert("Vui lòng chọn sản phẩm chính để gộp.");
+            } else {
+                var productName = "";
+                var productId = 0;
+                var position = 0;
+                var nonstop = true;
+                for (var n = 0; n < dictionaries.length && nonstop; n++) {
+                    if (dictionaries[n].checked) {
+                        
+                        productId = dictionaries[n].productId;
+                        position = n;
+                        nonstop = false;
+                    }
+                }
+                
+                for (var k = 0; k < dictionaries.length; k++) {
+                    if (k != dictionaries.length) {
+                        productName += dictionaries[k].Name + ";"
+
+                    } else {
+                        productName += dictionaries[k].Name;
+                    }
+
                 }
 
-            }
 
 
+                var productJson = JSON.stringify(dictionaries);
+                $.ajax({
+                    type: 'GET',
+                    url: 'MergeProductTraining',
+                    data: { 'productJson': productJson, 'productName': productName, 'productId': productId, 'position': position },
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function (data) {
+                        //if (data == true) {
+                        //var length = trFor.length;
+                        //var checked = new Array();
+                        //var count = 0;
+                        if (trFor.length >= 3) {
+                            for (var j = 0; j < trFor.length; j++) {
+                                var cell = trFor[j].cells;
+                                //var checkbox = cell[0].checkbox.checked;
+                                for (var l = 0; l < 2; l++) {
+                                    var checkbox = cell[0].childNodes[l].checked;
+                                    if (checkbox == true || checkbox == false) {
+                                        break;
+                                    }
+                                }
+                                if (checkbox == true) {
+                                    document.getElementById("table_" + i).deleteRow(j + 1);
+                                    j = -1;
+                                }
+                            }
 
-            var productJson = JSON.stringify(dictionaries);
-            $.ajax({
-                type: 'GET',
-                url: 'MergeProductTraining',
-                data: { 'productJson': productJson, 'productName': productName },
-                contentType: "application/json",
-                dataType: 'json',
-                success: function (data) {
-                    //if (data == true) {
-                    //var length = trFor.length;
-                    //var checked = new Array();
-                    //var count = 0;
-                    for (var j = 0; j < trFor.length; j++) {
-                        var cell = trFor[j].cells;
-                        //var checkbox = cell[0].checkbox.checked;
-                        for (var l = 0; l < 2; l++) {
-                            var checkbox = cell[0].childNodes[l].checked;
-                            if (checkbox == true || checkbox == false) {
-                                break;
+                            //for (var k = 0; k < checked.length; k++) {
+                            //}
+
+                            if (trFor.length == 1) {
+                                $("#dupTable_" + i).find("tr").find("input:checkbox");
+                                $("#split_" + i).click();
                             }
                         }
-                        if (checkbox == true) {
-                            document.getElementById("table_" + i).deleteRow(j + 1);
-                            j = -1;
-                        }
+                        window.parent.location.href = window.parent.location.href;
+                        //var mes = "Gộp thành công";
+                        //showNotifyDialog(mes);
+                        //}
+                        //else {
+
+                        //showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
+                        //var mesDialog = document.getElementById('mesDialog');
+                        //mesDialog.style.color = 'red';
+                        //}
+                    },
+                    error: function (e) {
+                        showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại. " + e.message);
+                        var mesDialog = document.getElementById('mesDialog');
+                        mesDialog.style.color = 'red';
                     }
-
-                    //for (var k = 0; k < checked.length; k++) {
-                    //}
-
-                    if (trFor.length == 1) {
-                        $("#dupTable_" + i).find("tr").find("input:checkbox");
-                        $("#split_" + i).click();
-                    }
-                    window.parent.location.href = window.parent.location.href;
-                    //var mes = "Gộp thành công";
-                    //showNotifyDialog(mes);
-                    //}
-                    //else {
-
-                    //showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
-                    //var mesDialog = document.getElementById('mesDialog');
-                    //mesDialog.style.color = 'red';
-                    //}
-                },
-                error: function (e) {
-                    showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại. " + e.message);
-                    var mesDialog = document.getElementById('mesDialog');
-                    mesDialog.style.color = 'red';
-                }
-            });
+                });
+            }
         }
 
     }
@@ -300,25 +333,37 @@
                 contentType: "application/json",
                 dataType: 'json',
                 success: function (data) {
-                    //if (data == true) {
-                    //    var mes = "Tách thành công";
-                    //    showNotifyDialog(mes);
-                    //}
-                    //else {
+                    for (var j = 0; j < trFor.length; j++) {
+                        var cell = trFor[j].cells;
+                       
+                        for (var l = 0; l < 2; l++) {
+                            var checkbox = cell[0].childNodes[l].checked;
+                            if (checkbox == true || checkbox == false) {
+                                break;
+                            }
+                        }
+                        if (checkbox == true) {
+                            document.getElementById("table_" + i).deleteRow(j + 1);
+                            j = -1;
+                        }
+                    }
+
+                    if (trFor.length == 1) {
+                        $("#dupTable_" + i).find("tr").find("input:checkbox");
+                        $("#split_" + i).click();
+                    }
                     window.parent.location.href = window.parent.location.href;
-                    //    showNotifyDialog("(*) Có lỗi xảy ra. Vui lòng thử lại.");
-                    //    var mesDialog = document.getElementById('mesDialog');
-                    //    mesDialog.style.color = 'red';
-                    //}
+                    
                 }
             });
         }
     }
 
 
-    function Dictionary(productId, Name) {
+    function Dictionary(productId, Name, checked) {
         this.productId = productId;
         this.Name = Name;
+        this.checked = checked;        
     }
 
     function Product(Name) {
@@ -395,7 +440,9 @@
                         <thead>
                             <tr id="header_@i">
                                 <th></th>
-                                <th>Tên Sản Phẩm</th>
+                                <th style="text-align:center">Tên Sản Phẩm</th>
+                                <th style="display:none">Id</th>
+                                <th style="width:25%; text-align:center" title="Chọn sản phẩm chính để gộp">Chọn sản phẩm</th>
                             </tr>
                         </thead>
 
@@ -407,15 +454,21 @@
                                 {
                                     <td style="width: 5%">
                                         <input type="checkbox" checked /></td>
-                                    <td>@ViewBag.dupDictionary[i][j].Name</td>                                  
-                            
+                                    <td>@ViewBag.dupDictionary[i][j].Name</td>  
+                                    <td style="display:none">@ViewBag.dupDictionary[i][j].ProductId</td>                                
+                                    <td title="Chọn sản phẩm chính để gộp" style="text-align: center">
+                                        <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
+                                    </td>
                                 }
                                 else
                                 {
                                     <td style="width: 5%">
                                         <input type="checkbox" /></td>
-                                    <td>@ViewBag.dupDictionary[i][j].Name</td>                                    
-                            
+                                    <td>@ViewBag.dupDictionary[i][j].Name</td> 
+                                    <td style="display:none">@ViewBag.dupDictionary[i][j].ProductId</td>                                        
+                                    <td title="Chọn sản phẩm chính để gộp" style="text-align: center">
+                                        <input type="radio" name="productPrice_@i"  id="Check_@i"/>
+                                    </td>
                                 }
                             </tr>  
                         }
