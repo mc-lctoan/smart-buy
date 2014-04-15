@@ -694,7 +694,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                         status = "Duplicate Products List";
                         break;
                     }
-                    for (int j = 0; j < dupCorrectProducts[j].Count; j++)
+                    for (int j = 0; j < dupCorrectProducts[i].Count; j++)
                     {
                         if (ProductMarketName == dupCorrectProducts[i][j].MarketName)
                         {
