@@ -1009,7 +1009,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 var nameDupProduct = correctDupProducts[i][j].Name;
                                 var percentage =
                                     CompareStringHelper.CompareString(nameDupProduct, productsDB[d].Product.Name);
-                                if (percentage > 0.85)
+                                if (percentage > 0.85 && percentage != 1)
                                 {
                                     SellProductModel model = new SellProductModel();
                                     model.Id = productsDB[d].Id;
