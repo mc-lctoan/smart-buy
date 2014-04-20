@@ -700,7 +700,15 @@ namespace SmartB.UI.Areas.Admin.Controllers
                         {
                             var percentage =
                                 CompareStringHelper.CompareString(ProductName.Split(';').First(), dupCorrectProducts[i][j].Name.Split(';').First());
-                            if (percentage > 0.7 && percentage < 1)
+                            if (percentage == 1)
+                            {
+                                error.Add("Sản phẩm bị trùng.");
+                                nameDupProduct = dupCorrectProducts[i][j].Name;
+                                result.updatedPrice = ProductPrice;
+                                compareResult = true;
+                                break;
+                            }
+                            else if (percentage > 0.7 && percentage < 1)
                             {
                                 var largerId = correctProducts.OrderByDescending(p => p.Id).FirstOrDefault();
                                 int newId = largerId.Id + 1;
@@ -777,7 +785,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 if (percentage == 1)
                                 {
                                     error.Add("Sản phẩm đã có.");
-                                    result.id = correctProducts[l].Id;
+                                    nameDupProduct = correctProducts[l].Name;
                                     result.updatedPrice = ProductPrice;
                                     compareCorrectResult = true;
                                     break;
