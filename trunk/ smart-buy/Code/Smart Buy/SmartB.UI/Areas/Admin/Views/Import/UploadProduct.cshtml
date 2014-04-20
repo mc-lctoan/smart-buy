@@ -342,8 +342,25 @@
                         var message = confirm("Sản phẩm đã có, bạn có muốn cập nhật sản phẩm này?")
                         if(message == true)
                         {
-                            if(result.id) {
-                                $("#product_"+result.id).find("td").find("input")[2].value = result.updatedPrice;
+                            if(result.nameDupProduct) {
+                                //  $("#product_"+result.id).find("td").find("input")[2].value = result.updatedPrice;
+                                $('tr:has(td:contains("'+result.nameDupProduct+'"))').find("td")[4].innerHTML = result.updatedPrice;
+                                $("#ErrorProduct tr#ErrorProductTD" + index).remove();
+                                $("#ErrorArea").html("");
+                            }
+                            return true;
+                        }else
+                        {
+                            return false;
+                        }
+                    } else if(result.error.toString() == "Sản phẩm bị trùng.")
+                    {
+                        var message = confirm("Sản phẩm đã có, bạn có muốn cập nhật sản phẩm này?")
+                        if(message == true)
+                        {
+                            if(result.nameDupProduct) {
+                                // $("#dupTable_"+result.id).find("td").find("input")[2].value = result.updatedPrice;
+                                $('tr:has(td:contains("'+result.nameDupProduct+'"))').find("td")[3].innerHTML = result.updatedPrice;
                                 $("#ErrorProduct tr#ErrorProductTD" + index).remove();
                                 $("#ErrorArea").html("");
                             }
@@ -1229,7 +1246,7 @@
                                                                                 // Table nhiều hơn 5 lỗi 
                     <div id="tableProductError" style="display: none; margin-top: 20px;">
                         <lable style="font-size: x-large; font-weight: bold; color: blue">Danh sách sản phẩm bị lỗi</lable>
-                        <table class="table"style="margin-top:10px">
+                        <table class="table" style="margin-top: 10px">
                             <tr style="font-size: 14px; line-height: 14pt; padding: 8px; border-bottom: 1px #eaeaea solid; font-weight: bold">
                                 <td style="width: 10%; text-align: center">Số dòng</td>
                                 <td style="width: 40%; text-align: center">Tên Sản Phẩm</td>
@@ -1255,7 +1272,7 @@
                                     else
                                     {
                                         <td>
-                                        @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { disabled = "disabled", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Name, new { disabled = "disabled", @readonly = "readonly" })
                                         </td>
                                     }
                                     @if (@Model.InCorrectSellProducts[i].MarketName.Length < 5 || @Model.InCorrectSellProducts[i].MarketName.Length > 100)
@@ -1271,7 +1288,7 @@
                                     else
                                     {
                                         <td>
-                                        @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { disabled = "disabled", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].MarketName, new { disabled = "disabled", @readonly = "readonly" })
                                         </td>
                                     }
                                     @if (@Model.InCorrectSellProducts[i].Price < 1 || @Model.InCorrectSellProducts[i].Price > 10000)
@@ -1287,7 +1304,7 @@
                                     else
                                     {
                                         <td>
-                                        @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { disabled = "disabled", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.InCorrectSellProducts[i].Price, new { disabled = "disabled", @readonly = "readonly" })
                                         </td>
                                     }
 
@@ -1426,26 +1443,27 @@
                 </strong>
             </div>
             <div class="analytics-tab-content">
-                <div class="btn-toolbar" id="tableEmpty">
-                    <div class="pull-right">
-                        <div class="btn-group">
-                            <button type="button" class="btn" onclick="mergeAll()">
-                                <i class="icol-arrow-in"></i>
-                                Gộp tất cả
-                            </button>
-                            <button type="button" class="btn" onclick="splitAll()">
-                                <i class="icol-arrow-out"></i>
-                                Tách tất cả
-                            </button>
-                            <button type="button" class="btn" onclick="saveFile()">
-                                <i class="icol-page-white-text"></i>
-                                Lưu file
-                            </button>
-                        </div>
-                    </div>
-                </div>
+
                 @if (Model != null && Model.ErrorCount < 5)
                 {
+                    <div class="btn-toolbar" id="tableEmpty">
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn" onclick="mergeAll()">
+                                    <i class="icol-arrow-in"></i>
+                                    Gộp tất cả
+                                </button>
+                                <button type="button" class="btn" onclick="splitAll()">
+                                    <i class="icol-arrow-out"></i>
+                                    Tách tất cả
+                                </button>
+                                <button type="button" class="btn" onclick="saveFile()">
+                                    <i class="icol-page-white-text"></i>
+                                    Lưu file
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     if (Model.duplicateCorrectProduct != null)
                     {
                         var idCheckbox = 0;
