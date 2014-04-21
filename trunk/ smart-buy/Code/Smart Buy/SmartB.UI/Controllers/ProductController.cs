@@ -55,7 +55,7 @@ namespace SmartB.UI.Controllers
                     .OrderByDescending(x => x.LastUpdatedTime)
                     .Select(x => x.MaxPrice)
                     .ToList();
-                var lastUpdated = db.ProductAttributes.Where(p => p.ProductId == dictionary.ProductId).Select(p => p.LastUpdatedTime).FirstOrDefault();
+                var lastUpdated = db.ProductAttributes.OrderByDescending(p=>p.LastUpdatedTime).Where(p => p.ProductId == dictionary.ProductId).Select(p => p.LastUpdatedTime).FirstOrDefault();
                 var productName = db.Products.Where(p => p.Id == dictionary.ProductId).Select(p => p.Name).FirstOrDefault();
                 var proAtt = db.ProductAttributes.Where(p => p.ProductId == dictionary.ProductId).OrderByDescending(x => x.LastUpdatedTime).FirstOrDefault();
                 if (proAtt != null)

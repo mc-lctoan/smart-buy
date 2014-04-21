@@ -56,19 +56,21 @@
                             </div>
                         </div>
                     }
-                    <br />
-                    <br />
-                    <div class="ProductNameDetail">Kết quả tìm kiếm</div>
+
                 </div>
 
-                <div style="text-align: left; float: right; width: 35%">
+
+                @if (Model != null)
+                {
+                    <div style="text-align: left; float: right; width: 35%">
                         <div style="font-weight: bold; float: right; margin-left: 10px;">*Đơn vị tính Nghìn đồng.</div>
                         <div style="background-color: rgba(0, 214, 255, 0.23); width: 50%; float: right">
                             <img src="@Url.Content("~/Images/InfoPrice.png")"/>
                         </div>
                     </div>
-                @if (Model != null)
-                {
+                    <br />
+                    <br />
+                    <h4 class="ProductNameDetail" style="margin-top: 50px">Kết quả tìm kiếm</h4>
                     
                     <table class="table table-bordered table-hover" id="ProductTable">
                         <thead class="bg-header">
