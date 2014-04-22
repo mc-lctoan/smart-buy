@@ -5,12 +5,13 @@
     ViewBag.Title = "Nhập từ Excel";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayoutNew.cshtml";
 }
+    <script type="text/javascript" src="@Url.Content("~/Template/ToastMessage/javascript/jquery.toastmessage.js")"></script>
+    <link href="@Url.Content("~/Template/ToastMessage/resources/css/jquery.toastmessage.css")" rel="stylesheet" type="text/css" />
 
 @section headScript
 {
     <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Admin.css")" rel="stylesheet" type="text/css" />
-
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
 }
 
@@ -177,7 +178,7 @@
                     $("#ErrorArea").html("");
                     if(result.status.toString() == "Duplicate Products List")
                     {
-                        alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
+                        $().toastmessage('showNoticeToast', '<div style="font-size:16px"><div style="text-align:center">Sản phẩm có thể bị trùng.</div><div style="margin-top:15px;text-align:center"> Vui lòng kiểm tra danh sách sản phẩm trùng.</div></div>');
                         $('tr:has(td:contains("'+result.nameDupProduct+'"))').parent('tbody').find("tr:last").after("<tr><td id='"+lastId+"' style='width:5%;text-align:center'>"+
                                                                                   "<input type='checkbox'/>"+
                                                                               "</td> " +
@@ -192,7 +193,7 @@
                     }
                     else if(result.status.toString() == "Correct Products List")
                     {
-                        alert("Sản phẩm bị trùng, vui lòng kiểm tra danh sách sản phẩm trùng.");
+                        $().toastmessage('showNoticeToast', '<div style="font-size:16px"><div style="text-align:center">Sản phẩm có thể bị trùng.</div><div style="margin-top:15px;text-align:center"> Vui lòng kiểm tra danh sách sản phẩm trùng.</div></div>');
                         if(result.count == 1) // chưa có sp trùng
                         {
                             var dupTableCount = (result.count -1);
@@ -552,10 +553,20 @@
                                 $("#dupTable_"+i).remove();
                             }
                         }
-                        if(listTr.length = 2)
+                        //if(listTr.length = 2)
+                        //{
+                        //    $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
+                        //    $("#split_"+i).click()
+                        //}
+                        if($("#dupTable_"+i).find("tr")[1] != null && $("#dupTable_"+i).find("tr")[2] == null)
                         {
-                            $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( ':checkbox' ) ? 'checked' : '' );
-                            $("#split_"+i).click()
+                            $("#dupTable_"+i).find("tr").find("input:checkbox").attr( 'checked', $( this ).is( 'checked' ) ? 'checked' : '' );
+                            split(i);
+                        }
+                    
+                        if($("#dupTable_"+i).find("tr")[1] == null)
+                        {
+                            $("#dupTable_"+i).remove();
                         }
                     }
                 });
@@ -927,7 +938,8 @@
             data: { },
             cache: true,
             success: function (message) {
-                alert(message);
+              //  alert(message);
+                $().toastmessage('showSuccessToast', '<div style="font-size:16px"><div style="text-align:center">'+message+'</div></div>');
             }
         });
     }
