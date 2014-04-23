@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using SmartB.UI.Helper;
 using SmartB.UI.Infrastructure;
@@ -15,7 +13,6 @@ using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
 using System.Net;
 using System.Data.Entity;
-using PagedList;
 
 namespace SmartB.UI.Controllers
 {
@@ -46,6 +43,11 @@ namespace SmartB.UI.Controllers
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
                 Session["Username"] = model.UserName;
+                var user = context.Users.FirstOrDefault(x => x.Username == model.UserName);
+                if (user != null)
+                {
+                    Session["Role"] = user.Role.Name;
+                }
                 return RedirectToLocal(returnUrl);
             }
 
@@ -182,6 +184,10 @@ namespace SmartB.UI.Controllers
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
+            }
+            else if (Session["Role"].ToString() == "member")
+            {
+                return RedirectToAction("SearchProduct", "Product");
             }
             else
             {
