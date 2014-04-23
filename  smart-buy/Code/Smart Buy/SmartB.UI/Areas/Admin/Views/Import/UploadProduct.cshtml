@@ -470,7 +470,8 @@
         }
         if(products.length < 2)
         {
-            alert("Vui lòng chọn ít nhất 2 sản phẩm.");
+          //  alert("Vui lòng chọn ít nhất 2 sản phẩm.");
+            $().toastmessage('showNoticeToast', '<div style="font-size:16px"><div style="text-align:center">Vui lòng chọn ít nhất 2 sản phẩm.</div></div>');
         } else
         {
             var testChecked = false;
@@ -486,7 +487,8 @@
             }
             if(testChecked == false)
             {
-                alert("Vui lòng chọn giá của sản phẩm đã chọn.");
+             //   alert("Vui lòng chọn giá của sản phẩm đã chọn.");
+                $().toastmessage('showNoticeToast', '<div style="font-size:16px"><div style="text-align:center">"Vui lòng chọn giá của sản phẩm đã chọn.</div></div>');
             } else {
                 var productName = "";
                 var productMarket = "";
@@ -618,7 +620,8 @@
         }
         if(products.length < 1)
         {
-            alert("Vui lòng chọn ít nhất 1 sản phẩm để tách.");
+          //  alert("Vui lòng chọn ít nhất 1 sản phẩm để tách.");
+            $().toastmessage('showNoticeToast', '<div style="font-size:16px"><div style="text-align:center">Vui lòng chọn ít nhất 1 sản phẩm để tách.</div></div>');
         } 
         else {
             var id = parseInt($('#ProductTable tr:last #STT').html());
@@ -673,7 +676,7 @@
     }
     function mergeProduct1(i) {
        
-        var duplicateTable = $("#table_"+i);
+        var duplicateTable = $("#dupTable_"+i);
         var listTr = duplicateTable.find("tr");
         var products = [];
         for(var j = 0; j < listTr.length; j++) {
@@ -705,7 +708,9 @@
         }
         if(products.length < 2)
         {
-            alert("Vui lòng chọn ít nhất 2 sản phẩm.")
+        //    alert("Vui lòng chọn ít nhất 2 sản phẩm.")
+            $().toastmessage('showNoticeToast', '<div style="font-size:16px"><div style="text-align:center">Vui lòng chọn ít nhất 2 sản phẩm.</div></div>');
+
         } else
         {
             var testChecked = false;
@@ -721,7 +726,9 @@
             }
             if(testChecked == false)
             {
-                alert("Vui lòng chọn giá của sản phẩm đã chọn.")
+             //   alert("Vui lòng chọn giá của sản phẩm đã chọn.")
+                $().toastmessage('showNoticeToast', '<div style="font-size:16px"><div style="text-align:center">Vui lòng chọn giá của sản phẩm đã chọn.</div></div>');
+
             } else {
                 var productName = "";
                 var productMarket = "";
@@ -849,7 +856,9 @@
         }
         if(products.length < 1)
         {
-            alert("Vui lòng chọn ít nhất 1 sản phẩm để tách.")
+         //   alert("Vui lòng chọn ít nhất 1 sản phẩm để tách.")
+            $().toastmessage('showNoticeToast', '<div style="font-size:16px"><div style="text-align:center">Vui lòng chọn ít nhất 1 sản phẩm để tách.</div></div>');
+
         } 
         else {
             var id = parseInt($('#dupSellProductTable tr:last #STT').html());
@@ -1559,6 +1568,7 @@
                 }
                 @if (ViewBag.dupSellProduct != null)
                 {
+                    var idCheckbox = 0;
                     for (int i = 0; i < ViewBag.dupSellProduct.Count; i++)
                     {
                     <div id="dupTable_@i" >
@@ -1599,30 +1609,32 @@
                                             if (j == 0)
                                             {
                                             <tr class="checked">
-                                                <td class="checked" id="checkbox_@j" onclick="checkboxChecked(@j)" style="text-align:center">
+                                                <td class="checked" id="@idCheckbox" onclick="checkboxChecked(@idCheckbox)" style="text-align:center">
                                                     <input type="checkbox" checked="checked" id="checkbox" />
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
                                                 <td style="text-align: center">@ViewBag.dupSellProduct[i][j].Price</td>
                                                 <td style="text-align: center">
-                                                    <input type="radio" name="productPrice_@i"  id="Check_@i" checked="checked"/>
+                                                    <input type="radio" name="productPrice_@i"  id="Check_@idCheckbox" checked="checked"/>
                                                 </td>
                                             </tr>
+                                                idCheckbox++;
                                             }
                                             else
                                             {
                                             <tr>
-                                                <td id="checkbox_@j" onclick="checkboxChecked(@j)" style="text-align:center">
+                                                <td id="@idCheckbox" onclick="checkboxChecked(@idCheckbox)" style="text-align:center">
                                                     <input type="checkbox" id="checkbox" />
                                                 </td>
                                                 <td>@ViewBag.dupSellProduct[i][j].Name</td>
                                                 <td>@ViewBag.dupSellProduct[i][j].MarketName</td>
                                                 <td style="text-align: center">@ViewBag.dupSellProduct[i][j].Price</td>
                                                 <td style="text-align: center">
-                                                    <input type="radio" name="productPrice_@i"  id="Check_@i"/>
+                                                    <input type="radio" name="productPrice_@i"  id="Check_@idCheckbox"/>
                                                 </td>
                                             </tr>
+                                                idCheckbox++;
                                             }
                                         }
                                     </table>
