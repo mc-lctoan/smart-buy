@@ -184,6 +184,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                     var addedProductAtt = context.ProductAttributes.Add(productAttribute);
                     context.SaveChanges(); // Save to database
                 }
+                
                 else if (sellProduct.SellPrice > oldAttribute.MaxPrice)
                 {
                     var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
@@ -196,6 +197,19 @@ namespace SmartB.UI.Areas.Admin.Controllers
                     var addedProductAtt = context.ProductAttributes.Add(productAttribute);
                     context.SaveChanges(); // Save to database
                 }
+                else if (sellProduct.SellPrice > oldAttribute.MinPrice && sellProduct.SellPrice < oldAttribute.MaxPrice)
+                {
+                    var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
+                    {
+                        ProductId = product.Id,
+                        MinPrice = oldAttribute.MinPrice,
+                        MaxPrice = oldAttribute.MaxPrice,
+                        LastUpdatedTime = DateTime.Now,
+                    };
+                    var addedProductAtt = context.ProductAttributes.Add(productAttribute);
+                    context.SaveChanges(); // Save to database
+                }
+                
                 context.SaveChanges(); // Save to database
                 message = "Success";
             }else

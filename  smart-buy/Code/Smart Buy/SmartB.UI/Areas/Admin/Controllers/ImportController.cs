@@ -237,7 +237,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                         countUpdate++;
 
                         //add new product Attribute      
-                        var oldAttribute = db.ProductAttributes.Where(p => p.ProductId == dupProduct.Id).FirstOrDefault(); // get old Attribute
+                        var oldAttribute = db.ProductAttributes.Where(p => p.ProductId == dupProduct.Id).OrderByDescending(p => p.LastUpdatedTime).FirstOrDefault(); // get old Attribute
                         if (product.Price < oldAttribute.MinPrice)
                         {
                             var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
@@ -260,6 +260,11 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 LastUpdatedTime = DateTime.Now,
                             };
                             var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                            db.SaveChanges(); // Save to database
+                        }
+                        else if (product.Price > oldAttribute.MinPrice && product.Price < oldAttribute.MaxPrice)
+                        {
+                            oldAttribute.LastUpdatedTime = System.DateTime.Now;
                             db.SaveChanges(); // Save to database
                         }
                         // add Product Dictionary
@@ -640,19 +645,37 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 }
             }
             // Cập nhật giá Min, Max ProductAttribute
-            var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
-            if (product.Price < dupProductAtt.MinPrice)
+            var oldAttribute = db.ProductAttributes.Where(p => p.ProductId == dupProduct.Id).OrderByDescending(p => p.LastUpdatedTime).FirstOrDefault(); // get old Attribute
+          //  var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
+            if (product.Price < oldAttribute.MinPrice)
             {
-                dupProductAtt.MinPrice = product.Price;
-                dupProductAtt.LastUpdatedTime = System.DateTime.Now;
+                var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
+                {
+                    ProductId = product.Id,
+                    MinPrice = product.Price,
+                    MaxPrice = oldAttribute.MaxPrice,
+                    LastUpdatedTime = DateTime.Now,
+                };
+                var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                db.SaveChanges(); // Save to database
             }
-            else if (product.Price > dupProductAtt.MaxPrice)
+            else if (product.Price > oldAttribute.MaxPrice)
             {
-                dupProductAtt.MaxPrice = product.Price;
-                dupProductAtt.LastUpdatedTime = System.DateTime.Now;
+                var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
+                {
+                    ProductId = product.Id,
+                    MinPrice = oldAttribute.MinPrice,
+                    MaxPrice = product.Price,
+                    LastUpdatedTime = DateTime.Now,
+                };
+                var addedProductAtt = db.ProductAttributes.Add(productAttribute);
+                db.SaveChanges(); // Save to database
             }
-            dupProductAtt.LastUpdatedTime = System.DateTime.Now;
-            db.SaveChanges(); // Save to database
+            else if (product.Price > oldAttribute.MinPrice && product.Price < oldAttribute.MaxPrice)
+            {
+                oldAttribute.LastUpdatedTime = System.DateTime.Now;
+                db.SaveChanges(); // Save to database
+            }
         }
 
         public JsonResult SaveProductError(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
