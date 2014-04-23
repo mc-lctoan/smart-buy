@@ -243,7 +243,7 @@ table.dataTable td {
 .dataTables_wrapper .dataTables_paginate {
   float: left;
   text-align: right;
-  padding-top: 1.25em;
+  padding-top: 0.25em;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   box-sizing: border-box;
