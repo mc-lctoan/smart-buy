@@ -643,6 +643,7 @@
     <Content Include="Images\dollar.png" />
     <Content Include="Images\header2.png" />
     <Content Include="Images\InfoPrice.png" />
+    <Content Include="Images\loader.gif" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\Marker\Home.png" />
     <Content Include="Images\Marker\Shopping.png" />

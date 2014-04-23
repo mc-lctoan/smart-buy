@@ -75,48 +75,68 @@ namespace SmartB.UI.Controllers
         {
             var model = new List<SuggestRouteModel>();
             var routes = new List<SelectListItem>();
+            var markets = context.Markets
+                .Where(x => x.IsActive && x.Latitude != null && x.Longitude != null)
+                .ToList();
+            ViewBag.Markets = markets;
+
             var user = context.Users
                 .Include(x => x.Profile)
                 .FirstOrDefault(x => x.Username == User.Identity.Name);
             if (user != null)
             {
-                if (user.Profile.FirstRoute != null)
+                if (user.Profile != null)
                 {
-                    var item = new SelectListItem
-                                   {
-                                       Text = user.Profile.FirstRouteName,
-                                       Value = user.Profile.FirstRouteName
-                                   };
-                    routes.Add(item);
+                    if (user.Profile.FirstRoute != null)
+                    {
+                        var item = new SelectListItem
+                                       {
+                                           Text = user.Profile.FirstRouteName,
+                                           Value = user.Profile.FirstRouteName
+                                       };
+                        routes.Add(item);
+                    }
+                    if (user.Profile.SecondRoute != null)
+                    {
+                        var item = new SelectListItem
+                                       {
+                                           Text = user.Profile.SecondRouteName,
+                                           Value = user.Profile.SecondRouteName
+                                       };
+                        routes.Add(item);
+                    }
+                    if (user.Profile.ThirdRoute != null)
+                    {
+                        var item = new SelectListItem
+                                       {
+                                           Text = user.Profile.ThirdRouteName,
+                                           Value = user.Profile.ThirdRouteName
+                                       };
+                        routes.Add(item);
+                    }
                 }
-                if (user.Profile.SecondRoute != null)
-                {
-                    var item = new SelectListItem
-                                   {
-                                       Text = user.Profile.SecondRouteName,
-                                       Value = user.Profile.SecondRouteName
-                                   };
-                    routes.Add(item);
-                }
-                if (user.Profile.ThirdRoute != null)
-                {
-                    var item = new SelectListItem
-                                   {
-                                       Text = user.Profile.ThirdRouteName,
-                                       Value = user.Profile.ThirdRouteName
-                                   };
-                    routes.Add(item);
-                }
+                var other = new SelectListItem
+                                {
+                                    Text = "Đường đi khác",
+                                    Value = "Other"
+                                };
+                routes.Add(other);
                 ViewBag.Routes = routes;
             }
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult SuggestRoute(Cart cart, string Routes)
+        public ActionResult SuggestRoute(Cart cart, string Routes, OtherRoute other)
         {
+            var allMarkets = context.Markets
+                .Where(x => x.IsActive && x.Latitude != null && x.Longitude != null)
+                .ToList();
+            ViewBag.Markets = allMarkets;
+
             var model = new List<SuggestRouteModel>();
             var routes = new List<SelectListItem>();
+            ViewBag.Other = other;
 
             var cartProducts = cart.Lines.Select(x => x.Product.Product).ToList();
 
@@ -125,10 +145,90 @@ namespace SmartB.UI.Controllers
                 .FirstOrDefault(x => x.Username == User.Identity.Name);
             if (user != null)
             {
+                // Construct the dropdownlist
+                if (user.Profile.FirstRoute != null)
+                {
+                    var item = new SelectListItem
+                    {
+                        Text = user.Profile.FirstRouteName,
+                        Value = user.Profile.FirstRouteName
+                    };
+                    routes.Add(item);
+                }
+                if (user.Profile.SecondRoute != null)
+                {
+                    var item = new SelectListItem
+                    {
+                        Text = user.Profile.SecondRouteName,
+                        Value = user.Profile.SecondRouteName
+                    };
+                    routes.Add(item);
+                }
+                if (user.Profile.ThirdRoute != null)
+                {
+                    var item = new SelectListItem
+                    {
+                        Text = user.Profile.ThirdRouteName,
+                        Value = user.Profile.ThirdRouteName
+                    };
+                    routes.Add(item);
+                }
+                var otherOption = new SelectListItem
+                                {
+                                    Text = "Đường đi khác",
+                                    Value = "Other"
+                                };
+                routes.Add(otherOption);
+                ViewBag.Routes = routes;
+
                 string chosenRoute = "";
                 string[] ids = null;
                 var distanceA = new List<double>();
                 var distanceB = new List<double>();
+
+                // Other route
+                if (Routes == "Other")
+                {
+                    // Get route
+                    ViewBag.Route = other.Waypoints;
+
+                    string[] idsOther = other.NearbyMarkets.Split(',');
+                    var distanceAOther = new List<double>();
+                    var distanceBOther = new List<double>();
+
+                    distanceAOther = CalculateDistanceHelper.DistanceToAllMarket(other.Waypoints, idsOther, "start");
+                    distanceBOther = CalculateDistanceHelper.DistanceToAllMarket(other.Waypoints, idsOther, "end");
+
+                    // Construct a market list
+                    var marketsOther = new List<Market>();
+                    foreach (string id in idsOther)
+                    {
+                        int tmp = Int32.Parse(id);
+                        var market = context.Markets.FirstOrDefault(x => x.Id == tmp);
+                        if (market != null)
+                        {
+                            marketsOther.Add(market);
+                        }
+                    }
+
+                    // Construct a product list
+                    var productsOther = new List<Product>();
+                    foreach (var product in cartProducts)
+                    {
+                        var tmp = context.Products
+                            .Include(x => x.SellProducts)
+                            .Include(x => x.ProductAttributes)
+                            .FirstOrDefault(x => x.Id == product.Id);
+                        if (tmp != null)
+                        {
+                            productsOther.Add(tmp);
+                        }
+                    }
+
+                    var routeOther = new SuggestRouteHelper(productsOther, marketsOther, distanceAOther, distanceBOther);
+                    model = routeOther.Suggest();
+                    return View(model);
+                }
 
                 if (user.Profile.FirstRouteName == Routes)
                 {
@@ -298,36 +398,6 @@ namespace SmartB.UI.Controllers
 
                 var route = new SuggestRouteHelper(products, markets, distanceA, distanceB);
                 model = route.Suggest();
-
-                // Construct the dropdownlist
-                if (user.Profile.FirstRoute != null)
-                {
-                    var item = new SelectListItem
-                    {
-                        Text = user.Profile.FirstRouteName,
-                        Value = user.Profile.FirstRouteName
-                    };
-                    routes.Add(item);
-                }
-                if (user.Profile.SecondRoute != null)
-                {
-                    var item = new SelectListItem
-                    {
-                        Text = user.Profile.SecondRouteName,
-                        Value = user.Profile.SecondRouteName
-                    };
-                    routes.Add(item);
-                }
-                if (user.Profile.ThirdRoute != null)
-                {
-                    var item = new SelectListItem
-                    {
-                        Text = user.Profile.ThirdRouteName,
-                        Value = user.Profile.ThirdRouteName
-                    };
-                    routes.Add(item);
-                }
-                ViewBag.Routes = routes;
             }
 
             return View(model);
