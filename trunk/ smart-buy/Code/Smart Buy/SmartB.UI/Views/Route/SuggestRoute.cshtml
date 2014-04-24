@@ -385,29 +385,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="OtherRoute">
-                        <label>Điểm xuất phát</label>
-                        <div class="metro">
-                            <div class="input-control text size5">
-                                <input type="text" id="StartAddress" name="StartAddress" value="@other.StartAddress"/>
-                                <input type="hidden" id="StartPointLat" name="StartPoint.Lat" value="@other.StartPoint.Lat"/>
-                                <input type="hidden" id="StartPointLng" name="StartPoint.Lng" value="@other.StartPoint.Lng"/>
-                            </div>
-                        </div>
+                    <div style="background-color: white; width: 400px; margin-top: 5px">
+                        <div style="padding: 10px; margin-left: 20px;">
+                            <div class="row" id="OtherRoute">
+                                <label>Điểm xuất phát</label>
+                                <div class="metro">
+                                    <div class="input-control text size5">
+                                        <input type="text" id="StartAddress" name="StartAddress" value="@other.StartAddress"/>
+                                        <input type="hidden" id="StartPointLat" name="StartPoint.Lat" value="@other.StartPoint.Lat"/>
+                                        <input type="hidden" id="StartPointLng" name="StartPoint.Lng" value="@other.StartPoint.Lng"/>
+                                    </div>
+                                </div>
 
-                        <label>Điểm kết thúc</label>
-                        <div class="metro">
-                            <div class="input-control text size5">
-                                <input type="text" id="EndAddress" name="EndAddress" value="@other.EndAddress"/>
-                                <input type="hidden" id="EndPointLat" name="EndPoint.Lat" value="@other.EndPoint.Lat"/>
-                                <input type="hidden" id="EndPointLng" name="EndPoint.Lng" value="@other.EndPoint.Lng"/>
-                                <input type="hidden" id="Nearby" name="NearbyMarkets" value="@other.NearbyMarkets"/>
-                                <input type="hidden" id="Waypoints" name="Waypoints" value="@other.Waypoints"/>
+                                <label>Điểm kết thúc</label>
+                                <div class="metro">
+                                    <div class="input-control text size5">
+                                        <input type="text" id="EndAddress" name="EndAddress" value="@other.EndAddress"/>
+                                        <input type="hidden" id="EndPointLat" name="EndPoint.Lat" value="@other.EndPoint.Lat"/>
+                                        <input type="hidden" id="EndPointLng" name="EndPoint.Lng" value="@other.EndPoint.Lng"/>
+                                        <input type="hidden" id="Nearby" name="NearbyMarkets" value="@other.NearbyMarkets"/>
+                                        <input type="hidden" id="Waypoints" name="Waypoints" value="@other.Waypoints"/>
+                                    </div>
+                                    <button type="button" class="primary" id="Confirm">
+                                        <i class="icon-checkmark"></i>
+                                        Xem
+                                    </button>
+                                </div>
                             </div>
-                            <button type="button" class="primary" id="Confirm">
-                                <i class="icon-checkmark"></i>
-                                Xem
-                            </button>
                         </div>
                     </div>
                 }
