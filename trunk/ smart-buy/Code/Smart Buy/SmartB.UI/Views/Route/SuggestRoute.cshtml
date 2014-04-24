@@ -368,104 +368,110 @@
 
         <div class="main-content" style="padding: 60px 20px 20px; min-height: 560px;">
             <div style="min-height: 700px;">
-
-                @using (Html.BeginForm("SuggestRoute", "Route", FormMethod.Post, new { id = "RouteForm" }))
-                {
-                    <div class="ProductNameDetail" style="margin-bottom: 10px;">Chọn đường đi</div>
-                    <div class="row">
-                        <div class="span3" style="width: inherit">
-                            @Html.DropDownList("Routes")
-                        </div>
-                        <div class="span2">
-                            <div class="metro">
-                                <button type="submit" class="primary">
-                                    <i class="icon-checkmark"></i>
-                                    Chọn
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="background-color: white; width: 400px; margin-top: 5px">
-                        <div style="padding: 10px; margin-left: 20px;">
-                            <div class="row" id="OtherRoute">
-                                <label>Điểm xuất phát</label>
-                                <div class="metro">
-                                    <div class="input-control text size5">
-                                        <input type="text" id="StartAddress" name="StartAddress" value="@other.StartAddress"/>
-                                        <input type="hidden" id="StartPointLat" name="StartPoint.Lat" value="@other.StartPoint.Lat"/>
-                                        <input type="hidden" id="StartPointLng" name="StartPoint.Lng" value="@other.StartPoint.Lng"/>
+                
+                    @using (Html.BeginForm("SuggestRoute", "Route", FormMethod.Post, new { id = "RouteForm" }))
+                    {
+                    
+                        <div class="ProductNameDetail" style="margin-bottom: 10px;">Chọn đường đi</div>
+                        <div style="width: 400px; float: left">
+                            <div class="row">
+                                <div class="span3" style="width: inherit">
+                                    @Html.DropDownList("Routes")
+                                </div>
+                                <div class="span2">
+                                    <div class="metro">
+                                        <button type="submit" class="primary">
+                                            <i class="icon-checkmark"></i>
+                                            Chọn
+                                        </button>
                                     </div>
                                 </div>
+                            </div>
+                            <div style="background-color: white; margin-top: 5px">
+                                <div style="padding: 10px; margin-left: 20px;">
+                                    <div class="row" id="OtherRoute">
+                                        <label>Điểm xuất phát</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                <input type="text" id="StartAddress" name="StartAddress" value="@other.StartAddress"/>
+                                                <input type="hidden" id="StartPointLat" name="StartPoint.Lat" value="@other.StartPoint.Lat"/>
+                                                <input type="hidden" id="StartPointLng" name="StartPoint.Lng" value="@other.StartPoint.Lng"/>
+                                            </div>
+                                        </div>
 
-                                <label>Điểm kết thúc</label>
-                                <div class="metro">
-                                    <div class="input-control text size5">
-                                        <input type="text" id="EndAddress" name="EndAddress" value="@other.EndAddress"/>
-                                        <input type="hidden" id="EndPointLat" name="EndPoint.Lat" value="@other.EndPoint.Lat"/>
-                                        <input type="hidden" id="EndPointLng" name="EndPoint.Lng" value="@other.EndPoint.Lng"/>
-                                        <input type="hidden" id="Nearby" name="NearbyMarkets" value="@other.NearbyMarkets"/>
-                                        <input type="hidden" id="Waypoints" name="Waypoints" value="@other.Waypoints"/>
+                                        <label>Điểm kết thúc</label>
+                                        <div class="metro">
+                                            <div class="input-control text size5">
+                                                <input type="text" id="EndAddress" name="EndAddress" value="@other.EndAddress"/>
+                                                <input type="hidden" id="EndPointLat" name="EndPoint.Lat" value="@other.EndPoint.Lat"/>
+                                                <input type="hidden" id="EndPointLng" name="EndPoint.Lng" value="@other.EndPoint.Lng"/>
+                                                <input type="hidden" id="Nearby" name="NearbyMarkets" value="@other.NearbyMarkets"/>
+                                                <input type="hidden" id="Waypoints" name="Waypoints" value="@other.Waypoints"/>
+                                            </div>
+                                            <button type="button" class="primary" id="Confirm">
+                                                <i class="icon-checkmark"></i>
+                                                Xem
+                                            </button>
+                                        </div>
                                     </div>
-                                    <button type="button" class="primary" id="Confirm">
-                                        <i class="icon-checkmark"></i>
-                                        Xem
-                                    </button>
                                 </div>
                             </div>
+                            <br />
                         </div>
+                        <div style="background-color: rgba(0, 214, 255, 0.23); width: 20%; margin-left: 80%">
+                            <img src="@Url.Content("~/Images/note_Suggest.png")"/>
+                        </div>
+                    }
+                    
+                    @if (Model.Any())
+                    {
+                        <div style="margin-left: 70%; margin-bottom: -20px; font-weight: bold;">*Đơn vị tính Nghìn đồng</div>
+                        <table id="ProductTable" class="table table-bordered table-hover" style="background: white">
+                            <thead>
+                                <tr class="bg-header">
+                                    <th style="width: 10%; text-align: center">STT</th>
+                                    <th style="width: 40%; text-align: center">Tên sản phẩm</th>
+                                    <th style="width: 30%; text-align: center">Tên chợ</th>
+                                    <th style="width: 20%; text-align: center">Giá bán</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    counter++;
+                                    if (item.MarketName != "")
+                                    {
+                                    <tr>
+                                        <td style="text-align: center">@counter</td>
+                                        <td>@item.ProductName</td>
+                                        <td>
+                                            <span>@item.MarketName</span>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <span>@item.Price</span>
+                                        </td>
+                                    </tr>
+                                    }
+                                    else
+                                    {
+                                    <tr class="yellowWeek">
+                                        <td style="text-align: center">@counter</td>
+                                        <td>@item.ProductName</td>
+                                        <td>
+                                            <span>Không tìm thấy</span>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <span>@item.MinPrice - @item.MaxPrice</span>
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    <div class="google-map">
+                        <div id="map-canvas"  style="min-width:766px"/>
                     </div>
-                }
-
-                @if (Model.Any())
-                {
-                    <div style="float: right; margin-bottom: -20px; font-weight: bold;">*Đơn vị tính Nghìn đồng</div>
-                    <table id="ProductTable" class="table table-bordered table-hover" style="background: white">
-                        <thead>
-                            <tr class="bg-header">
-                                <th style="width: 10%; text-align: center">STT</th>
-                                <th style="width: 40%; text-align: center">Tên sản phẩm</th>
-                                <th style="width: 30%; text-align: center">Tên chợ</th>
-                                <th style="width: 20%; text-align: center">Giá bán</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                counter++;
-                                if (item.MarketName != "")
-                                {
-                                <tr>
-                                    <td style="text-align: center">@counter</td>
-                                    <td>@item.ProductName</td>
-                                    <td>
-                                        <span>@item.MarketName</span>
-                                    </td>
-                                    <td style="text-align: center">
-                                        <span>@item.Price</span>
-                                    </td>
-                                </tr>
-                                }
-                                else
-                                {
-                                <tr class="yellowWeek">
-                                    <td style="text-align: center">@counter</td>
-                                    <td>@item.ProductName</td>
-                                    <td>
-                                        <span>Không tìm thấy</span>
-                                    </td>
-                                    <td style="text-align: center">
-                                        <span>@item.MinPrice - @item.MaxPrice</span>
-                                    </td>
-                                </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                }
-
-                <div class="google-map fadeDown">
-                    <div id="map-canvas" />
-                </div>
             </div>
         </div>
     </div>
