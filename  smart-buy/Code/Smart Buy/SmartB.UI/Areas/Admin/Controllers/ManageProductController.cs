@@ -153,8 +153,8 @@ namespace SmartB.UI.Areas.Admin.Controllers
                              select m;
                 listMarket.Add(market.FirstOrDefault());
             }
-
-            ViewBag.ddlMarket = new SelectList(listMarket, "Id", "Name");
+            var sortListMarket = listMarket.OrderBy(m => m.Name);
+            ViewBag.ddlMarket = new SelectList(sortListMarket, "Id", "Name");
             return View(sellProduct);
         }
 
