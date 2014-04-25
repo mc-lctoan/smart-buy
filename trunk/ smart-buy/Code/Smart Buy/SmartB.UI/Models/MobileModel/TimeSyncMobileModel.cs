@@ -10,4 +10,9 @@ namespace SmartB.UI.Models.MobileModel
         public string todayFormat { get; set; }
         public bool CheckTimeSync { get; set; }
     }
+
+    public class UpdateUserPriceModel
+    {
+        public static bool checkApprove { get; set; }
+    }
 }
