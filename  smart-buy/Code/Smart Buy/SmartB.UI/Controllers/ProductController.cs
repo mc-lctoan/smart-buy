@@ -225,6 +225,7 @@ namespace SmartB.UI.Controllers
                     userPrice.ProductId = pId;
                     userPrice.UpdatedPrice = updatedPrice;
                     userPrice.LastUpdatedTime = DateTime.Now;
+                    userPrice.isApprove = false;
                     db.UserPrices.Add(userPrice);
                     db.SaveChanges();
                 }

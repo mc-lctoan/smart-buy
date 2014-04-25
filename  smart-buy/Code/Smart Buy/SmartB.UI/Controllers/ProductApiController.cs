@@ -310,6 +310,7 @@ namespace SmartB.UI.Controllers
                         userPrice.ProductId = pId;
                         userPrice.UpdatedPrice = updatedPrice;
                         userPrice.LastUpdatedTime = DateTime.Now;
+                        userPrice.isApprove = false;
                         context.UserPrices.Add(userPrice);
                         context.SaveChanges();
                     }                    
@@ -493,6 +494,17 @@ namespace SmartB.UI.Controllers
             {
                 return null;
             }
+        }
+
+        [HttpGet]
+        public bool getCheckApprove()
+        {            
+            if (UpdateUserPriceModel.checkApprove == true)
+            {
+                UpdateUserPriceModel.checkApprove = false;
+                return true;
+            }
+            return false;
         }
     }
 
