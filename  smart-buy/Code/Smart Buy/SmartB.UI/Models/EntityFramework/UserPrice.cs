@@ -20,9 +20,10 @@ namespace SmartB.UI.Models.EntityFramework
         public Nullable<int> ProductId { get; set; }
         public Nullable<int> UpdatedPrice { get; set; }
         public Nullable<System.DateTime> LastUpdatedTime { get; set; }
+        public Nullable<bool> isApprove { get; set; }
     
+        public virtual Market Market { get; set; }
         public virtual Product Product { get; set; }
         public virtual User User { get; set; }
-        public virtual Market Market { get; set; }
     }
 }

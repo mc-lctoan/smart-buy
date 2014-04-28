@@ -240,6 +240,7 @@
     <Compile Include="Helper\CalculateDistanceHelper.cs" />
     <Compile Include="Helper\DistanceConfigHelper.cs" />
     <Compile Include="Helper\MathHelper.cs" />
+    <Compile Include="Helper\PriceHelper.cs" />
     <Compile Include="Helper\SuggestRouteHelper.cs" />
     <Compile Include="Infrastructure\CalculateDistanceJob.cs" />
     <Compile Include="Infrastructure\MyAuthorizeAttribute.cs" />
@@ -648,6 +649,7 @@
     <Content Include="Images\Marker\Home.png" />
     <Content Include="Images\Marker\Shopping.png" />
     <Content Include="Images\Marker\Market.png" />
+    <Content Include="Images\note_Suggest.png" />
     <Content Include="Images\paper.png" />
     <Content Include="Images\shopping_cart_accept.png" />
     <Content Include="Metro\css\docs.css" />
@@ -1108,6 +1110,13 @@
     <Content Include="Template\Stylish\vendors\revolution-slider\images\gradient\g30.png" />
     <Content Include="Template\Stylish\vendors\revolution-slider\images\gradient\g40.png" />
     <Content Include="Template\Stylish\vendors\revolution-slider\js\jquery.themepunch.revolution.min.js" />
+    <Content Include="Template\ToastMessage\javascript\jquery.toastmessage.js" />
+    <Content Include="Template\ToastMessage\resources\css\jquery.toastmessage.css" />
+    <Content Include="Template\ToastMessage\resources\images\close.gif" />
+    <Content Include="Template\ToastMessage\resources\images\error.png" />
+    <Content Include="Template\ToastMessage\resources\images\notice.png" />
+    <Content Include="Template\ToastMessage\resources\images\success.png" />
+    <Content Include="Template\ToastMessage\resources\images\warning.png" />
     <Content Include="UploadedExcelFiles\ProductName.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

@@ -19,5 +19,6 @@ namespace SmartB.UI.Models.EntityFramework
         public Nullable<double> Distance { get; set; }
     
         public virtual Market Market { get; set; }
+        public virtual Market Market1 { get; set; }
     }
 }
