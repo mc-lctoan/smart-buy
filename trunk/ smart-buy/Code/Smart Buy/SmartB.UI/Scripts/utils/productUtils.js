@@ -429,41 +429,6 @@ function removeFromCart(id) {
     });
 }
 
-function updateQuantityCart(id) {
-    var el = document.getElementById("quantityItem " + id);
-    var quantity = el.value;
-    if (validateQuantity(quantity) == false) {
-        window.parent.location.href = window.parent.location.href;
-        return;
-    } else {
-        if (quantity <= 0) {
-            quantity = 1;
-        } else if (quantity > 10) {
-            quantity = 10;
-        }
-        $.ajax({
-            type: 'GET',
-            url: '../Cart/UpdateItemInCart',
-            data: { 'productId': id, 'quantity': quantity },
-            contentType: "application/json",
-            dataType: 'json',
 
-            success: function (data) {
-
-                if (data == true) {
-                    window.parent.location.href = window.parent.location.href;
-                } else {
-                    message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
-                    showNotifyDialog(message);
-                }
-            },
-            error: function (e) {
-                $.Dialog.close();
-                message = "(*) Có lỗi xảy ra. Vui lòng thử lại " + e.message;
-                showNotifyDialog(message);
-            }
-        });
-    }
-}
 
 

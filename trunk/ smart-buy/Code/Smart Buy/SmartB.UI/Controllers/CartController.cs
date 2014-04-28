@@ -82,7 +82,7 @@ namespace SmartB.UI.Controllers
             }
         }
 
-        [HttpGet, ActionName("UpdateItemInCart")]
+        //[HttpGet, ActionName("UpdateItemInCart")]
         public JsonResult UpdateItemInCart(int productId, float quantity)
         {
             var check = false;
@@ -96,8 +96,9 @@ namespace SmartB.UI.Controllers
                 {
                     GetCart().UpdateItem(product, quantity);
                 }
-                check = true;
-                return Json(check, JsonRequestBehavior.AllowGet);
+                string totalPrice = Math.Floor(GetCart().ComputeTotalMin()) + " - " + Math.Floor(GetCart().ComputeTotalMax());
+
+                return Json(totalPrice);
             }
             catch
             {

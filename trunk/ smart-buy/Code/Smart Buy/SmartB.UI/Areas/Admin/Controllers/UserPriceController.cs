@@ -59,37 +59,41 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 ProductAttribute product = db.ProductAttributes
                     .Where(p => p.ProductId == productId)
                     .OrderByDescending(p => p.LastUpdatedTime).FirstOrDefault();
-                var getSellProduct = db.SellProducts.Where(s => s.Product.Id == productId & s.MarketId == marketId).FirstOrDefault();
+                //var getSellProduct = db.SellProducts.Where(s => s.Product.Id == productId & s.MarketId == marketId).FirstOrDefault();
+                var sellProduct = new SellProduct();
+                sellProduct.MarketId = marketId;
+                sellProduct.ProductId = productId;
+                sellProduct.SellPrice = price;
+                sellProduct.LastUpdatedTime = lastUpdatedTime;
+                db.SellProducts.Add(sellProduct);
+                
                 if (product != null && price < product.MinPrice.GetValueOrDefault())
                 {
-                    if (getSellProduct != null)
-                    {
-                        getSellProduct.SellPrice = price; //update Price
-                    }
+                    //if (getSellProduct != null)
+                    //{
+                    //    getSellProduct.SellPrice = price; //update Price
+                    //}
                     var proAtt = new ProductAttribute();
                     proAtt.ProductId = productId;
                     proAtt.MinPrice = price;
                     proAtt.MaxPrice = product.MaxPrice;
                     proAtt.LastUpdatedTime = lastUpdatedTime;
                     db.ProductAttributes.Add(proAtt);
-                                        
-                    db.SaveChanges();
                 }
 
                 else if (product != null && price > product.MaxPrice.GetValueOrDefault())
                 {
-                    if (getSellProduct != null)
-                    {
-                        getSellProduct.SellPrice = price; //update Price
-                    }
+                    //if (getSellProduct != null)
+                    //{
+                    //    getSellProduct.SellPrice = price; //update Price
+                    //}
+                    
                     var proAtt = new ProductAttribute();
                     proAtt.ProductId = productId;
                     proAtt.MinPrice = product.MinPrice;
                     proAtt.MaxPrice = price;
                     proAtt.LastUpdatedTime = lastUpdatedTime;
                     db.ProductAttributes.Add(proAtt);
-
-                    db.SaveChanges();
                 }
 
                 UserPrice up = db.UserPrices.Find(id);
