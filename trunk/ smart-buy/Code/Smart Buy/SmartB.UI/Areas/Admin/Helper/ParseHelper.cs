@@ -9,6 +9,7 @@ using System.Text;
 using System.Web;
 using HtmlAgilityPack;
 using SmartB.UI.Areas.Admin.Models;
+using SmartB.UI.Helper;
 using SmartB.UI.Infrastructure;
 using SmartB.UI.Models.EntityFramework;
 
@@ -232,6 +233,8 @@ namespace SmartB.UI.Areas.Admin.Helper
         private static int InsertProductToDb(IEnumerable<KeyValuePair<string, string>> data, int marketId)
         {
             int success = 0;
+            var helper = new PriceHelper();
+
             using (var context = new SmartBuyEntities())
             {
                 foreach (var pair in data)
@@ -290,37 +293,19 @@ namespace SmartB.UI.Areas.Admin.Helper
                     // Already existed?
                     if (pId != -1)
                     {
-                        // Get product
-                        var product = context.Products
-                            .Include(x => x.ProductAttributes)
-                            .FirstOrDefault(x => x.Id == pId);
-
-                        // Get latest product attributes
-                        ProductAttribute latest = product.ProductAttributes
-                            .OrderByDescending(x => x.LastUpdatedTime)
-                            .FirstOrDefault();
-
-                        // Create new attribute
-                        var attribute = new ProductAttribute();
-                        attribute.LastUpdatedTime = DateTime.Now;
-
-                        if (latest != null)
-                        {
-                            // Calculate max and min price
-                            attribute.MinPrice = price < latest.MinPrice ? price : latest.MinPrice;
-                            attribute.MaxPrice = price > latest.MaxPrice ? price : latest.MaxPrice;
-                        }
-                        else
-                        {
-                            // Calculate max and min price
-                            attribute.MinPrice = price;
-                            attribute.MaxPrice = price;
-                        }
-
-                        // Save to database
-                        product.ProductAttributes.Add(attribute);
+                        // Insert new price
+                        var sell = new SellProduct
+                                       {
+                                           MarketId = marketId,
+                                           ProductId = pId,
+                                           SellPrice = price,
+                                           LastUpdatedTime = DateTime.Now
+                                       };
+                        context.SellProducts.Add(sell);
                         try
                         {
+                            helper.CalculatePriceRange(pId);
+
                             context.SaveChanges();
                             success++;
                         }
