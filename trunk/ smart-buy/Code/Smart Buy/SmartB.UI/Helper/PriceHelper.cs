@@ -17,7 +17,7 @@ namespace SmartB.UI.Helper
                     .Where(x => x.ProductId == productId)
                     .ToList();
                 priceList = priceList
-                    .Where(x => x.LastUpdatedTime == DateTime.Today)
+                    .Where(x => x.LastUpdatedTime.Date == DateTime.Today)
                     .ToList();
                 var minPrice = priceList.Min(x => x.SellPrice);
                 var maxPrice = priceList.Max(x => x.SellPrice);
