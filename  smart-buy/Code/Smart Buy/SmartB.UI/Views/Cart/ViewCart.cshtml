@@ -4,7 +4,8 @@
     ViewBag.Title = "Giỏ hàng";
     Layout = "~/Views/Shared/_LayoutNew.cshtml";
 }
-
+<script type="text/javascript" src="@Url.Content("~/Template/ToastMessage/javascript/jquery.toastmessage.js")"></script>
+    <link href="@Url.Content("~/Template/ToastMessage/resources/css/jquery.toastmessage.css")" rel="stylesheet" type="text/css" />
 @section head
 {
     <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
@@ -17,6 +18,70 @@
     <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
 
 }
+
+<script>
+    $(document).ready(function () {
+        $(".quantityItem").keydown(function (e) {
+            if ((e.which >= 48 && e.which <= 57) || e.which == 8 || (e.which >= 37 && e.which <=40)) {
+                return true;
+            } else {
+                e.preventDefault();
+            }
+        });
+    });
+
+        function updateQuantityCart(id) {
+            var el = document.getElementById("quantityItem " + id);
+            var quantity = el.value;
+            //if (validateQuantity(quantity) == false) {
+            //    window.parent.location.href = window.parent.location.href;
+            //    return;
+            //} else {
+            if (quantity <= 0) {
+                quantity = 1;
+                $().toastmessage('showErrorToast', '<div style="font-size:16px; color:white">Số lượng của 1 sản phẩm trong giỏ ít nhất là 1</div>');
+                el.value = quantity;
+            } else if (quantity > 10) {
+                quantity = 10;
+                $().toastmessage('showErrorToast', '<div style="font-size:16px; color:white">Số lượng của 1 sản phẩm trong giỏ nhiều nhất là 10</div>');
+                el.value = quantity;
+            }
+            $.ajax({
+                //type: 'GET',
+                //url: '../Cart/UpdateItemInCart',
+                //data: { 'productId': id, 'quantity': quantity },
+                url: '@Url.Action("UpdateItemInCart", "Cart")',
+                type: 'POST',
+                data: JSON.stringify({ productId: id, quantity: quantity }),
+                contentType: "application/json",
+                dataType: 'json',
+
+                success: function (totalPrice) {
+
+                    //if (data == true) {
+                    //    window.parent.location.href = window.parent.location.href;
+                    //} else {
+                    //    message = "(*) Có lỗi xảy ra. Vui lòng thử lại.";
+                    //    showNotifyDialog(message);
+                    //}
+                    $("#order-total-detail").text(totalPrice);                    
+                    
+                },
+
+            });
+            //}
+        }
+
+        function onKeyDown(id) {
+            var el = document.getElementById("quantityItem " + id);
+            var quantity = el.value;
+            if (validateQuantity(quantity) == false) {            
+                return;
+            }
+        }
+
+
+</script>
 
 <div class="bgSizeCover">
     <div id="Contain" class="bgContainCover">
@@ -62,9 +127,10 @@
                                         <td style="text-align:center">
                                             <div class="metro">
                                                 <div class='input-control text size1' style="margin: 0px; padding: 3px">
-                                                    <input type="text" maxlength="2" style="text-align:center" value="@line.Quantity" id="quantityItem @line.Product.ProductId"  onblur="updateQuantityCart('@line.Product.ProductId')"/>
+                                                    <input class="quantityItem" type="text" maxlength="2" style="text-align:center" value="@line.Quantity" id="quantityItem @line.Product.ProductId"  onblur="updateQuantityCart('@line.Product.ProductId')"/>
                                                 </div>
                                             </div>
+
                                         </td>
                                         <td style="text-align:center">
                                             <div class="metro">
@@ -78,7 +144,7 @@
                                 }
                             </tbody>
                             <tr>
-                                <th colspan="5" align="right" style="text-align: right; font-size: 16px;">Tổng tiền: <span style="font-weight: bold" id="order-total-detail">@Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax())</span> (nghìn đồng)
+                                <th colspan="5"  style="text-align: right; font-size: 16px; text-align:right">Tổng tiền: <span style="font-weight: bold" id="order-total-detail">@Math.Floor(Model.Cart.ComputeTotalMin()) - @Math.Floor(Model.Cart.ComputeTotalMax())</span> (nghìn đồng)
                                 </th>
 
                             </tr>
