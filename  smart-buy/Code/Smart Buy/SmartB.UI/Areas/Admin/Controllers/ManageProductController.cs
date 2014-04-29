@@ -9,6 +9,7 @@ using PagedList;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.Script.Services;
+using SmartB.UI.Helper;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
@@ -76,6 +77,24 @@ namespace SmartB.UI.Areas.Admin.Controllers
                     if (sellProduct != null)
                     {
                         TempData["create"] = "Duplicate";
+                    }
+                    else
+                    {
+                        var newSellProduct = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
+                        {
+                            Market = market,
+                            Product = product,
+                            SellPrice = sellPrice,
+                            LastUpdatedTime = DateTime.Now
+                        };
+                        var addedSellProduct = context.SellProducts.Add(newSellProduct);
+                        context.SaveChanges(); // Save to database
+
+                        PriceHelper helper = new PriceHelper();
+                        helper.CalculatePriceRange(product.Id);
+
+                        context.SaveChanges(); // Save to database
+                        TempData["create"] = "Success";
                     }
                 }
                 else

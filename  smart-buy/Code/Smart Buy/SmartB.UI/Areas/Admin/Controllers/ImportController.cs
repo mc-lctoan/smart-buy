@@ -12,6 +12,7 @@ using SmartB.UI.Models;
 using SmartB.UI.Models.EntityFramework;
 using SmartB.UI.UploadedExcelFiles;
 using PagedList;
+using SmartB.UI.Helper;
 
 namespace SmartB.UI.Areas.Admin.Controllers
 {
@@ -176,7 +177,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 var productNameFirst = product.Name.Split(';').First(); // Cắt chuỗi 
                 var dupMarket = db.Markets.Where(m => m.Name.Equals(product.MarketName)).FirstOrDefault();
                 var dupProduct = db.Products.Where(p => p.Name.Equals(productNameFirst)).FirstOrDefault();
-                var dupProductDictionary = db.Dictionaries.Where(p => p.Name.Equals(product.Name)).FirstOrDefault();
+                var dupProductDictionary = db.Dictionaries.Where(p => p.Name.Equals(productNameFirst)).FirstOrDefault();
 
                 //Trung hoan toan
                 if (dupMarket != null & dupProduct != null)
@@ -475,14 +476,9 @@ namespace SmartB.UI.Areas.Admin.Controllers
         private static int TrungTenSanPham(int countInsert, SellProductModel product, SmartBuyEntities db, Product dupProduct)
         {
             var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
-            if (product.Price < dupProductAtt.MinPrice)
-            {
-                dupProductAtt.MinPrice = product.Price;
-            }
-            else if (product.Price > dupProductAtt.MaxPrice)
-            {
-                dupProductAtt.MaxPrice = product.Price;
-            }
+            // Cập nhật giá Min, Max ProductAttribute
+            PriceHelper helper = new PriceHelper();
+            helper.CalculatePriceRange(dupProductAtt.Id);
             var market = new Market
             {
                 Name = product.MarketName,
@@ -616,66 +612,27 @@ namespace SmartB.UI.Areas.Admin.Controllers
         private static void TrungHoanToan(ref int countUpdate, ref int countInsert, SellProductModel product, SmartBuyEntities db, Market dupMarket, Product dupProduct)
         {
             var sellProduct = db.SellProducts.Where(s => s.ProductId == dupProduct.Id && s.MarketId == dupMarket.Id).FirstOrDefault();
+            var sellProduct1 = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
+            {
+                Market = dupMarket,
+                Product = dupProduct,
+                SellPrice = product.Price,
+                LastUpdatedTime = DateTime.Now
+            };
+            var addedSellProduct = db.SellProducts.Add(sellProduct1);
+            db.SaveChanges(); // Save to database
             // Check sellProduct có trùng không??
             if (sellProduct == null)
             {
-                var sellProduct1 = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
-                {
-                    Market = dupMarket,
-                    Product = dupProduct,
-                    SellPrice = product.Price,
-                    LastUpdatedTime = DateTime.Now
-                };
-                var addedSellProduct = db.SellProducts.Add(sellProduct1);
-
                 countInsert++;
-                db.SaveChanges(); // Save to database
             }
             else
             {
-                if (sellProduct.SellPrice != product.Price)
-                {
-                    sellProduct.SellPrice = product.Price;
-                    sellProduct.LastUpdatedTime = System.DateTime.Now;
-                    countUpdate++;
-                }
-                else
-                {
-                    sellProduct.SellPrice = product.Price;
-                }
+                countUpdate++;
             }
             // Cập nhật giá Min, Max ProductAttribute
-            var oldAttribute = db.ProductAttributes.Where(p => p.ProductId == dupProduct.Id).OrderByDescending(p => p.LastUpdatedTime).FirstOrDefault(); // get old Attribute
-          //  var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
-            if (product.Price < oldAttribute.MinPrice)
-            {
-                var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
-                {
-                    ProductId = product.Id,
-                    MinPrice = product.Price,
-                    MaxPrice = oldAttribute.MaxPrice,
-                    LastUpdatedTime = DateTime.Now,
-                };
-                var addedProductAtt = db.ProductAttributes.Add(productAttribute);
-                db.SaveChanges(); // Save to database
-            }
-            else if (product.Price > oldAttribute.MaxPrice)
-            {
-                var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
-                {
-                    ProductId = product.Id,
-                    MinPrice = oldAttribute.MinPrice,
-                    MaxPrice = product.Price,
-                    LastUpdatedTime = DateTime.Now,
-                };
-                var addedProductAtt = db.ProductAttributes.Add(productAttribute);
-                db.SaveChanges(); // Save to database
-            }
-            else if (product.Price > oldAttribute.MinPrice && product.Price < oldAttribute.MaxPrice)
-            {
-                oldAttribute.LastUpdatedTime = System.DateTime.Now;
-                db.SaveChanges(); // Save to database
-            }
+            PriceHelper helper = new PriceHelper();
+            helper.CalculatePriceRange(dupProduct.Id);
         }
 
         public JsonResult SaveProductError(string ProductId, string ProductName, string ProductMarketName, int ProductPrice)
