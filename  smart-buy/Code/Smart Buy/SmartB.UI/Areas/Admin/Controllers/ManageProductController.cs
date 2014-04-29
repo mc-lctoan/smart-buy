@@ -190,45 +190,9 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 sellProduct.LastUpdatedTime = System.DateTime.Now;
                 context.SaveChanges();
                 //add new product Attribute      
-                var oldAttribute = context.ProductAttributes.Where(p => p.ProductId == product.Id).OrderByDescending(p => p.LastUpdatedTime).FirstOrDefault(); // get old Attribute
-                if (sellProduct.SellPrice < oldAttribute.MinPrice)
-                {
-                    var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
-                    {
-                        ProductId = product.Id,
-                        MinPrice = sellProduct.SellPrice,
-                        MaxPrice = oldAttribute.MaxPrice,
-                        LastUpdatedTime = DateTime.Now,
-                    };
-                    var addedProductAtt = context.ProductAttributes.Add(productAttribute);
-                    context.SaveChanges(); // Save to database
-                }
-                
-                else if (sellProduct.SellPrice > oldAttribute.MaxPrice)
-                {
-                    var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
-                    {
-                        ProductId = product.Id,
-                        MinPrice = oldAttribute.MinPrice,
-                        MaxPrice = sellProduct.SellPrice,
-                        LastUpdatedTime = DateTime.Now,
-                    };
-                    var addedProductAtt = context.ProductAttributes.Add(productAttribute);
-                    context.SaveChanges(); // Save to database
-                }
-                else if (sellProduct.SellPrice > oldAttribute.MinPrice && sellProduct.SellPrice < oldAttribute.MaxPrice)
-                {
-                    var productAttribute = new SmartB.UI.Models.EntityFramework.ProductAttribute
-                    {
-                        ProductId = product.Id,
-                        MinPrice = oldAttribute.MinPrice,
-                        MaxPrice = oldAttribute.MaxPrice,
-                        LastUpdatedTime = DateTime.Now,
-                    };
-                    var addedProductAtt = context.ProductAttributes.Add(productAttribute);
-                    context.SaveChanges(); // Save to database
-                }
-                
+                PriceHelper helper = new PriceHelper();
+                helper.CalculatePriceRange(product.Id);
+
                 context.SaveChanges(); // Save to database
                 message = "Success";
             }else
