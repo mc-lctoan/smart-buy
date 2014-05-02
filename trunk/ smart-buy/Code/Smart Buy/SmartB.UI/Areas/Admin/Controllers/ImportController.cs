@@ -927,63 +927,47 @@ namespace SmartB.UI.Areas.Admin.Controllers
             var directoryPath = Path.GetDirectoryName(assemblyPath);
             var text = Path.GetDirectoryName(directoryPath);
             var filePath = Path.Combine(text, "UploadedExcelFiles\\ProductName.txt");
+            //read txt
+            string path = Server.MapPath("~/UploadedExcelFiles/ProductName.txt");
+            string [] lines = System.IO.File.ReadAllLines(path);
+            List<string> existDuplicates = lines.ToList();
 
-            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Append))
             {
-                fileStream.Close();
-
-                TextWriter sw = new StreamWriter(text + "\\UploadedExcelFiles\\ProductName.txt");
+               
+             //   fileStream.Close();
+                TextWriter sw = new StreamWriter(fileStream);
                 var correctDupProducts = (List<List<SellProductModel>>)Session["duplicateProducts"];
-                List<SellProduct> productsDB = db.SellProducts.ToList();
-                for (int d = 0; d < productsDB.Count; d++)
-                {
-                    var status = false;
-                    for (int i = 0; i < correctDupProducts.Count; i++)
-                    {
 
-                        if (status == true)
-                        {
-                            break;
-                        }
-                        for (int j = 0; j < correctDupProducts[i].Count; j++)
-                        {
-                            if (correctDupProducts[i][j].MarketName != productsDB[d].Market.Name)
-                            {
-                                status = true;
-                                break;
-                            }
-                            else
-                            {
-                                var nameDupProduct = correctDupProducts[i][j].Name;
-                                var percentage =
-                                    CompareStringHelper.CompareString(nameDupProduct, productsDB[d].Product.Name);
-                                if (percentage > 0.85 && percentage != 1)
-                                {
-                                    SellProductModel model = new SellProductModel();
-                                    model.Id = productsDB[d].Id;
-                                    model.Name = productsDB[d].Product.Name;
-                                    model.MarketName = productsDB[d].Market.Name;
-                                    model.Price = Convert.ToInt32(productsDB[d].SellPrice);
-
-                                    correctDupProducts[i].Add(model);
-                                    status = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
+                // Convert session to list string
+                List<string> duplicateProducts = new List<string>();
                 for (int i = 0; i < correctDupProducts.Count; i++)
                 {
-                    var productName = "";
-                    //        sw.WriteLine(dataGridView1.Rows[i].Cells[0].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[1].Value.ToString() + "\t" + dataGridView1.Rows[i].Cells[2].Value.ToString());
+                    var nameProducts = "";
                     for (int j = 0; j < correctDupProducts[i].Count; j++)
                     {
-
-                        productName += correctDupProducts[i][j].Name + ";";
+                        nameProducts += correctDupProducts[i][j].Name + ";";                        
                     }
-                    sw.WriteLine(productName + "\t");
+                    duplicateProducts.Add(nameProducts);
                 }
+
+                for (int i = 0; i < duplicateProducts.Count; i++)
+                {
+                    var status = true;
+                    for (int j = 0; j < existDuplicates.Count; j++)
+                    {
+                        if (existDuplicates[j].ToString() == duplicateProducts[i].ToString())
+                        {
+                            status = false;
+                            break;
+                        }
+                    }
+                    if (status)
+                    {
+                        sw.WriteLine(duplicateProducts[i].ToString() + "\n");
+                    }
+                }
+
                 sw.Close();
             }
             var message = "Lưu file thành công";
