@@ -21,7 +21,11 @@
     <script src="@Url.Content("~/Template/HighChart/js/highcharts.js")"></script>
     <script src="@Url.Content("~/Template/HighChart/js/highcharts-more.js")"></script>
     <script src="@Url.Content("~/Template/HighChart/js/modules/exporting.js")"></script>
-
+       <script>
+           $(document).ready(function () {
+               $("#order-summary").hide();
+           });
+</script>
     <script>
         $(document).ready(function () {
             var data = [];
