@@ -53,6 +53,7 @@ namespace SmartB.UI.Controllers
                 // Get data from 10 latest days
                 var attributes = product.ProductAttributes
                     .OrderByDescending(x => x.LastUpdatedTime)
+                    .Take(7)
                     .ToList();
                 for (int i = 0; i < attributes.Count; i++)
                 {

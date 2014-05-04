@@ -365,6 +365,7 @@ namespace SmartB.UI.Areas.Admin.Helper
 
         private static void ExportTrainingFile(List<int> match, string name)
         {
+            List<string> data = ReadDataFromFile();
             string path = ConstantManager.TrainingFilePath;
             string content = "";
 
@@ -380,12 +381,40 @@ namespace SmartB.UI.Areas.Admin.Helper
                 }
             }
 
-            content += name + "\n";
+            content += name;
 
-            using (StreamWriter writer = File.AppendText(path))
+            bool isExisted = false;
+            foreach (var item in data)
             {
-                writer.Write(content);
+                if (item == content)
+                {
+                    isExisted = true;
+                    break;
+                }
             }
+
+            if (!isExisted)
+            {
+                using (StreamWriter writer = File.AppendText(path))
+                {
+                    writer.WriteLine(content);
+                }
+            }
+        }
+
+        private static List<string> ReadDataFromFile()
+        {
+            string path = ConstantManager.TrainingFilePath;
+            var result = new List<string>();
+            string line;
+
+            var reader = new StreamReader(path);
+            while ((line = reader.ReadLine()) != null)
+            {
+                result.Add(line);
+            }
+            reader.Close();
+            return result;
         }
     }
 }
