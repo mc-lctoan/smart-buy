@@ -185,10 +185,20 @@ namespace SmartB.UI.Areas.Admin.Controllers
             string message;
             if (sellProduct != null)
             {
-                sellProduct.MarketId = model.MarketId;
-                sellProduct.SellPrice = model.SellPrice;
-                sellProduct.LastUpdatedTime = System.DateTime.Now;
-                context.SaveChanges();
+                //sellProduct.MarketId = model.MarketId;
+                //sellProduct.SellPrice = model.SellPrice;
+                //sellProduct.LastUpdatedTime = System.DateTime.Now;
+                //context.SaveChanges();
+                var Market = context.Markets.Where(x => x.Id == model.MarketId).FirstOrDefault();
+                var newSellProduct = new SmartB.UI.Models.EntityFramework.SellProduct //add SellProduct
+                {
+                    Market = Market,
+                    Product = product,
+                    SellPrice = model.SellPrice,
+                    LastUpdatedTime = System.DateTime.Now
+                };
+                var addedSellProduct = context.SellProducts.Add(newSellProduct);
+                context.SaveChanges(); // Save to database
                 //add new product Attribute      
                 PriceHelper helper = new PriceHelper();
                 helper.CalculatePriceRange(product.Id);
