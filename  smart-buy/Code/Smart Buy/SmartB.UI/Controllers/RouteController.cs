@@ -181,11 +181,6 @@ namespace SmartB.UI.Controllers
                 routes.Add(otherOption);
                 ViewBag.Routes = routes;
 
-                if (other.Waypoints == null)
-                {
-                    return View(model);
-                }
-
                 string chosenRoute = "";
                 string[] ids = null;
                 var distanceA = new List<double>();
@@ -194,6 +189,11 @@ namespace SmartB.UI.Controllers
                 // Other route
                 if (Routes == "Other")
                 {
+                    if (other.Waypoints == null)
+                    {
+                        return View(model);
+                    }
+
                     // Get route
                     ViewBag.Route = other.Waypoints;
                     string[] idsOther = new string[0];
