@@ -181,6 +181,11 @@ namespace SmartB.UI.Controllers
                 routes.Add(otherOption);
                 ViewBag.Routes = routes;
 
+                if (other.Waypoints == null)
+                {
+                    return View(model);
+                }
+
                 string chosenRoute = "";
                 string[] ids = null;
                 var distanceA = new List<double>();
@@ -191,13 +196,15 @@ namespace SmartB.UI.Controllers
                 {
                     // Get route
                     ViewBag.Route = other.Waypoints;
+                    string[] idsOther = new string[0];
 
-                    string[] idsOther = other.NearbyMarkets.Split(',');
-                    var distanceAOther = new List<double>();
-                    var distanceBOther = new List<double>();
+                    if (other.NearbyMarkets != null)
+                    {
+                        idsOther = other.NearbyMarkets.Split(',');
+                    }
 
-                    distanceAOther = CalculateDistanceHelper.DistanceToAllMarket(other.Waypoints, idsOther, "start");
-                    distanceBOther = CalculateDistanceHelper.DistanceToAllMarket(other.Waypoints, idsOther, "end");
+                    List<double> distanceAOther = CalculateDistanceHelper.DistanceToAllMarket(other.Waypoints, idsOther, "start");
+                    List<double> distanceBOther = CalculateDistanceHelper.DistanceToAllMarket(other.Waypoints, idsOther, "end");
 
                     // Construct a market list
                     var marketsOther = new List<Market>();
