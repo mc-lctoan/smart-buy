@@ -16,7 +16,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
     public class ManageProductController : Controller
     {
         private SmartBuyEntities context = new SmartBuyEntities();
-      //  private const int PageSize = 10;
+        //  private const int PageSize = 10;
         //
         // GET: /Admin/ManageProduct/
 
@@ -146,13 +146,13 @@ namespace SmartB.UI.Areas.Admin.Controllers
 
                     TempData["create"] = "Success";
                 }
-               return Json(JsonRequestBehavior.AllowGet);
+                return Json(JsonRequestBehavior.AllowGet);
             }
             catch
             {
                 return Json(JsonRequestBehavior.AllowGet);
             }
-            
+
         }
 
         public ActionResult Edit(int id)
@@ -162,18 +162,41 @@ namespace SmartB.UI.Areas.Admin.Controllers
                 .Include(x => x.Market)
                 .Where(x => x.ProductId == id)
                 .ToList();
-            
+
             //bind drop down list
             List<Market> listMarket = new List<Market>();
             foreach (var sp in listSellProduct)
             {
-                var market = from m in context.Markets where m.Id == sp.MarketId
+                var market = from m in context.Markets
+                             where m.Id == sp.MarketId
                              orderby m.Name
                              select m;
-                listMarket.Add(market.FirstOrDefault());
+                if (listMarket.Count == 0)
+                {
+                    listMarket.Add(market.FirstOrDefault());
+                }
+                else
+                {
+                    var status = true;
+                    foreach (var item in listMarket)
+                    {
+                        if (sp.Market.Name == item.Name)
+                        {
+                            status = false;
+                            break;
+                        }
+                    }
+                    if (status)
+                    {
+                        listMarket.Add(market.FirstOrDefault());
+                    }
+                }
             }
-            var sortListMarket = listMarket.OrderBy(m => m.Name);
-            ViewBag.ddlMarket = new SelectList(sortListMarket, "Id", "Name");
+            var newList = from m in listMarket
+                          orderby m.Name
+                          select m;
+
+            ViewBag.ddlMarket = new SelectList(newList, "Id", "Name");
             return View(sellProduct);
         }
 
@@ -205,7 +228,8 @@ namespace SmartB.UI.Areas.Admin.Controllers
 
                 context.SaveChanges(); // Save to database
                 message = "Success";
-            }else
+            }
+            else
             {
                 message = "Failed";
             }
@@ -247,10 +271,10 @@ namespace SmartB.UI.Areas.Admin.Controllers
         {
             SmartBuyEntities context = new SmartBuyEntities();
             List<string> allCompanyName = new List<string>();
-            
-                allCompanyName = (from a in context.Products
-                                  where a.Name.StartsWith(pre)
-                                  select a.Name).ToList();
+
+            allCompanyName = (from a in context.Products
+                              where a.Name.StartsWith(pre)
+                              select a.Name).ToList();
             return allCompanyName;
         }
 
