@@ -130,6 +130,12 @@ namespace SmartB.UI.Areas.Admin.Controllers
                                 result.Add(compareListProduct[j]);
                                 compareListProduct.Remove(compareListProduct[j]);
                             }
+                            else if (percentage == 1)
+                            {
+                                compareListProduct[i].Name += ";" + compareListProduct[j].Name ;
+                                compareListProduct[i].Price = compareListProduct[j].Price;
+                                compareListProduct.Remove(compareListProduct[j]);
+                            }
                         }
                     }
                     if (result.Count() != 0)
