@@ -64,11 +64,14 @@
         var map, directionsService, directionsDisplay;
         var str = '@Html.Raw(HttpUtility.HtmlDecode(ViewBag.Route))';
         var data = null;
+        var pStart, pEnd;
         if (str != '') {
             data = eval('(' + str + ')');
+            pStart = new google.maps.LatLng(data.start.lat, data.start.lng);
+            pEnd = new google.maps.LatLng(data.end.lat, data.end.lng);
         }
         //var data = eval('(' + str + ')');
-        var startAddress, endAddress, pStart, pEnd, boxes, userRoute;
+        var startAddress, endAddress, boxes, userRoute;
         var rboxer = new RouteBoxer();
         var nearbyMarkets = [];
         var marketList = create_marketList();
@@ -139,6 +142,9 @@
                 title: 'Nơi kết thúc',
                 animation: google.maps.Animation.DROP
             });
+
+            markers.push(startMarker);
+            markers.push(endMarker);
 
             draw_markets();
 

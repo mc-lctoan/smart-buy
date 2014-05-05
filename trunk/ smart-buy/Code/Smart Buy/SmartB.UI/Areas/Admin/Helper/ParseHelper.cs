@@ -304,9 +304,8 @@ namespace SmartB.UI.Areas.Admin.Helper
                         context.SellProducts.Add(sell);
                         try
                         {
-                            helper.CalculatePriceRange(pId);
-
                             context.SaveChanges();
+                            helper.CalculatePriceRange(pId);
                             success++;
                         }
                         catch (DbUpdateException)

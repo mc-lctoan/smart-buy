@@ -22,15 +22,18 @@ namespace SmartB.UI.Helper
                 var minPrice = priceList.Min(x => x.SellPrice);
                 var maxPrice = priceList.Max(x => x.SellPrice);
 
-                var attribute = new ProductAttribute
-                                    {
-                                        ProductId = productId,
-                                        MinPrice = minPrice,
-                                        MaxPrice = maxPrice,
-                                        LastUpdatedTime = DateTime.Now
-                                    };
-                context.ProductAttributes.Add(attribute);
-                context.SaveChanges();
+                if (minPrice != null && maxPrice != null)
+                {
+                    var attribute = new ProductAttribute
+                                        {
+                                            ProductId = productId,
+                                            MinPrice = minPrice,
+                                            MaxPrice = maxPrice,
+                                            LastUpdatedTime = DateTime.Now
+                                        };
+                    context.ProductAttributes.Add(attribute);
+                    context.SaveChanges();
+                }
             }
         }
     }
