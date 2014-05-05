@@ -4,7 +4,10 @@
     <link rel="stylesheet" href="@Url.Content("~/Template/Metro/css/metro-bootstrap.css")" />
     <script src="@Url.Content("~/Template/Metro/js/jquery/jquery.widget.min.js")"></script>
     <script src="@Url.Content("~/Template/Metro/js/metro/metro.min.js")"></script>
-
+    <link href="@Url.Content("~/Content/Order.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables.css")">
+    <script type="text/javascript" src="@Url.Content("~/Metro/js/jquery/jquery.dataTables.js")"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Metro/css/jquery.dataTables_themeroller.css")">
 <script>
     $(document).ready(function () {
         var table = $('#ProductTable').dataTable();
@@ -25,12 +28,12 @@
     <br />
     <h4 class="ProductNameDetail" style="margin-top:50px">Sản phẩm ưa thích</h4>
      
-    <table class="table table-bordered table-hover" >
-        <thead>
-            <tr style="background-color: white;">
-                <th style="width: 50%">Tên sản phẩm</th>
-                <th style="width: 15%">Giá sản phẩm</th>
-                <th style="width: 35%">Thao tác</th>
+    <table class="table table-bordered table-hover" id="ProductTable">
+        <thead class="bg-header">
+            <tr>
+                <th style="width: 40%; text-align: center">Tên sản phẩm</th>
+                <th style="width: 20%; text-align: center">Giá sản phẩm</th>
+                <th style="width: 40%; text-align: center">Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -45,14 +48,14 @@
                 if ((DateTime.Now - Convert.ToDateTime(proAtt.LastUpdatedTime)).TotalDays >= 14)
                 {
                     <tr class="redWeek" style="background-color:white" >
-                    <td id="addProduct_@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)
+                    <td style="padding: 3px 10px;color:white"  id="addProduct_@item.Product.Id">@Html.DisplayFor(modelItem => item.Product.Name)
                         @{                
                     var productName = item.Product.Name;
                         }
 
                     </td>
 
-                    <td>@proAtt.MinPrice - @proAtt.MaxPrice
+                    <td style="padding: 3px 10px;color:white; text-align: center" >@proAtt.MinPrice - @proAtt.MaxPrice
                         @{
                     var minPrice = proAtt.MinPrice;
                     var maxPrice = proAtt.MaxPrice;
@@ -104,7 +107,7 @@
 
                     </td>
 
-                    <td>@proAtt.MinPrice - @proAtt.MaxPrice
+                    <td style="text-align:center">@proAtt.MinPrice - @proAtt.MaxPrice
                         @{
                     var minPrice = proAtt.MinPrice;
                     var maxPrice = proAtt.MaxPrice;
@@ -156,7 +159,7 @@
 
                     </td>
 
-                    <td>@proAtt.MinPrice - @proAtt.MaxPrice
+                    <td style="text-align:center">@proAtt.MinPrice - @proAtt.MaxPrice
                         @{
                     var minPrice = proAtt.MinPrice;
                     var maxPrice = proAtt.MaxPrice;

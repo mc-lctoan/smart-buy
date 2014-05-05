@@ -438,7 +438,7 @@ namespace SmartB.UI.Areas.Admin.Controllers
             var dupProductAtt = db.ProductAttributes.Where(p => p.ProductId.Equals(dupProduct.Id)).FirstOrDefault();
             // Cập nhật giá Min, Max ProductAttribute
             PriceHelper helper = new PriceHelper();
-            helper.CalculatePriceRange(dupProductAtt.Id);
+            helper.CalculatePriceRange(dupProductAtt.Product.Id);
             var market = new Market
             {
                 Name = product.MarketName,
